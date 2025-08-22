@@ -1,0 +1,15 @@
+{
+  "@@locale": "vi",
+  "appTitle": "NoZie",
+  "login": "Đăng nhập",
+  "email": "Email",
+  "password": "Mật khẩu",
+  "themeLight": "Sáng",
+  "themeDark": "Tối",
+  "itemsCount": "{count, plural, =0{Không có mục} =1{1 mục} other{{count} mục}}",
+  "@itemsCount": {
+    "description": "Đếm số mục",
+    "placeholders": {"count": {"type": "num"}}
+  },
+  "helloUser": "Xin chào, {name}!"
+}

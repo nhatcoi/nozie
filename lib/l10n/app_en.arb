@@ -1,0 +1,19 @@
+{
+  "@@locale": "en",
+  "appTitle": "NoZie",
+  "login": "Login",
+  "email": "Email",
+  "password": "Password",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "itemsCount": "{count} items",
+  "@itemsCount": {
+    "description": "Pluralized item count",
+    "placeholders": {"count": {"type": "num"}}
+  },
+  "helloUser": "Hello, {name}!",
+  "@helloUser": {
+    "description": "Greets user by name",
+    "placeholders": {"name": {"type": "String"}}
+  }
+}
