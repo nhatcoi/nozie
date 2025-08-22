@@ -31,14 +31,14 @@ class AppTheme {
     useMaterial3: true,
     brightness: Brightness.dark,
     colorScheme: ColorScheme.fromSeed(
-      seedColor: Colors.orange,      // primary khi tối
+      seedColor: AppColors.primary500,      // primary khi tối
       brightness: Brightness.dark,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.orange, // màu button tối
+        backgroundColor: AppColors.primary500, // màu button tối
         foregroundColor: Colors.black,  // chữ đen
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
       ),
     ),
