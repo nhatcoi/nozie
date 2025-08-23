@@ -12,6 +12,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'NoZie';
 
   @override
+  String get forgotPasswordTitle => 'Forgot Password 🔑';
+
+  @override
+  String get forgotPasswordDes => 'Enter your email address. We will send an OTP code for verification in the next step.';
+
+  @override
+  String get continueText => 'Continue';
+
+  @override
   String get login => 'Login';
 
   @override

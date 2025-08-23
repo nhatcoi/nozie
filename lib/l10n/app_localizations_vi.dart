@@ -12,6 +12,15 @@ class AppLocalizationsVi extends AppLocalizations {
   String get appTitle => 'NoZie';
 
   @override
+  String get forgotPasswordTitle => 'Quên Mật Khẩu 🔑';
+
+  @override
+  String get forgotPasswordDes => 'Nhập email của bạn, chúng tôi sẽ gửi mã OTP để xác minh ở bước tiếp theo.';
+
+  @override
+  String get continueText => 'Tiếp tục';
+
+  @override
   String get login => 'Đăng nhập';
 
   @override

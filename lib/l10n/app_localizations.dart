@@ -101,6 +101,24 @@ abstract class AppLocalizations {
   /// **'NoZie'**
   String get appTitle;
 
+  /// No description provided for @forgotPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password 🔑'**
+  String get forgotPasswordTitle;
+
+  /// No description provided for @forgotPasswordDes.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email address. We will send an OTP code for verification in the next step.'**
+  String get forgotPasswordDes;
+
+  /// No description provided for @continueText.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueText;
+
   /// No description provided for @login.
   ///
   /// In en, this message translates to:

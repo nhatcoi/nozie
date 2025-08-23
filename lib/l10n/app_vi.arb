@@ -1,6 +1,9 @@
 {
   "@@locale": "vi",
   "appTitle": "NoZie",
+  "forgotPasswordTitle": "Quên Mật Khẩu \uD83D\uDD11",
+  "forgotPasswordDes": "Nhập email của bạn, chúng tôi sẽ gửi mã OTP để xác minh ở bước tiếp theo.",
+  "continueText": "Tiếp tục",
   "login": "Đăng nhập",
   "email": "Email",
   "password": "Mật khẩu",
