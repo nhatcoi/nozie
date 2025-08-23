@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_fe/core/theme/app_colors.dart';
+import 'package:movie_fe/core/theme/app_typography.dart';
 
 class AppTheme {
   // Light theme
@@ -9,14 +10,44 @@ class AppTheme {
     colorScheme: ColorScheme.fromSeed(
       seedColor: AppColors.primary500,        // primary khi sáng
       brightness: Brightness.light,
-      secondary: AppColors.secondary500
+      secondary: AppColors.secondary500,
+      surface: AppColors.white
+    ),
+    textTheme: TextTheme(
+      // Display
+      displayLarge:  AppTypography.h1,
+      displayMedium: AppTypography.h2,
+      displaySmall:  AppTypography.h3,
+
+      // Headline
+      headlineLarge:  AppTypography.h4,
+      headlineMedium: AppTypography.h5,
+      headlineSmall:  AppTypography.h6,
+
+      // Title (map bodyXL)
+      titleLarge:  AppTypography.bodyXLRegular,
+      titleMedium: AppTypography.bodyXLSemibold,
+      titleSmall:  AppTypography.bodyXLMedium,
+
+      // Body
+      bodyLarge:  AppTypography.bodyLRegular,
+      bodyMedium: AppTypography.bodyMRegular,
+      bodySmall:  AppTypography.bodySBRegular,
+
+      // Label (cho text rất nhỏ hoặc caption, nút)
+      labelLarge:  AppTypography.bodyLSemibold,
+      labelMedium: AppTypography.bodyMSemibold,
+      labelSmall:  AppTypography.bodyXSRegular,
+    ).apply(
+      bodyColor: AppColors.greyscale900,
+      displayColor: AppColors.greyscale900,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primary500,   // màu button sáng
         foregroundColor: Colors.white,  // chữ trắng
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
       ),
     ),
     appBarTheme: const AppBarTheme(
@@ -33,6 +64,35 @@ class AppTheme {
     colorScheme: ColorScheme.fromSeed(
       seedColor: AppColors.primary500,
       brightness: Brightness.dark,
+    ),
+    textTheme: TextTheme(
+      // Display
+      displayLarge:  AppTypography.h1,
+      displayMedium: AppTypography.h2,
+      displaySmall:  AppTypography.h3,
+
+      // Headline
+      headlineLarge:  AppTypography.h4,
+      headlineMedium: AppTypography.h5,
+      headlineSmall:  AppTypography.h6,
+
+      // Title (map bodyXL)
+      titleLarge:  AppTypography.bodyXLRegular,
+      titleMedium: AppTypography.bodyXLSemibold,
+      titleSmall:  AppTypography.bodyXLMedium,
+
+      // Body
+      bodyLarge:  AppTypography.bodyLRegular,
+      bodyMedium: AppTypography.bodyMRegular,
+      bodySmall:  AppTypography.bodySBRegular,
+
+      // Label (cho text rất nhỏ hoặc caption, nút)
+      labelLarge:  AppTypography.bodyLSemibold,
+      labelMedium: AppTypography.bodyMSemibold,
+      labelSmall:  AppTypography.bodyXSRegular,
+    ).apply(
+      bodyColor: Colors.white,
+      displayColor: Colors.white,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
