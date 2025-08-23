@@ -162,7 +162,7 @@ class WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                                                     fontSize: titleFontSize,
                                                   ),
                                                   children: [
-                                                    if (data['title']!.contains('NoZie'))
+                                                    if (data.title.contains('NoZie'))
                                                       ...[
                                                         const TextSpan(text: 'Welcome to '),
                                                         TextSpan(
@@ -174,7 +174,7 @@ class WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                                                         ),
                                                       ]
                                                     else
-                                                      TextSpan(text: data['title']),
+                                                      TextSpan(text: data.title),
                                                   ],
                                                 ),
                                               ),

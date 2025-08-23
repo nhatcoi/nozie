@@ -11,7 +11,7 @@ class WelcomeSlide {
     required this.description,
   });
 
-  String? operator [](String other) {}
+
 }
 
 class WelcomeData {

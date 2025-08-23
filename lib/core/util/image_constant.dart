@@ -1,23 +1,22 @@
 class ImageConstant {
-
   // base path
-  static final String _basePath = 'lib/assets/images/';
+  static const String _basePath = 'lib/assets/images/';
 
-  // Placeholder image for fallback
-  static String imgPlaceholder = '${_basePath}placeholder.png';
+  // sub paths
+
+  static const String subPathWelcome = '${_basePath}welcome/';
+  static const String subPathIcon    = '${_basePath}icons/';
+  static const String subPathCommon  = '${_basePath}common/';
 
   // Common Images
-  // Model Splash Model Screen
-  static String imgLogo = '${_basePath}icon/icon_logo.svg';
-  static String loadingSvg = '${_basePath}icon/icon_loading.svg';
+  static const String imgLogo      = '${subPathIcon}icon_logo.svg';
+  static const String loadingSvg   = '${subPathIcon}icon_loading.svg';
+  static const String imgGoogleIcon= '${subPathIcon}icon_google.svg';
+  static const String imgImageNotFound = '${_basePath}placeholder.png';
 
-  // welcome
-  static String imgGoogleIcon = '${_basePath}icon/icon_google.svg';
-  static String imgBackground1 = '${_basePath}welcome/background-1.png';
-  static String imgBackground2 = '${_basePath}welcome/background-2.png';
-  static String imgBackground3 = '${_basePath}welcome/background-3.png';
-  static String imgBackground4 = '${_basePath}welcome/background-4.png';
-
-  // Custom Image View Screen
-  static String imgImageNotFound = '${_basePath}placeholder.png';
+  // Welcome
+  static const String imgBackground1       = '${subPathWelcome}background-1.png';
+  static const String imgBackground2       = '${subPathWelcome}background-2.png';
+  static const String imgBackground3       = '${subPathWelcome}background-3.png';
+  static const String imgBackground4       = '${subPathWelcome}background-4.png';
 }
