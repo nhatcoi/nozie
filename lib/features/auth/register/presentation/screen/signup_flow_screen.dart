@@ -1,20 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../core/theme/app_typography.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/widgets/primary_button.dart';
+import '../viewmodel/signup_viewmodel.dart';
 import 'steps/step_gender.dart';
+import 'steps/step_age.dart';
+import 'steps/step_genre.dart';
+import 'steps/step_profile.dart';
+import 'steps/step_signup.dart';
 
-class SignupFlowScreen extends StatefulWidget {
+class SignupFlowScreen extends ConsumerStatefulWidget {
   const SignupFlowScreen({super.key});
 
   @override
-  State<SignupFlowScreen> createState() => _SignupFlowScreenState();
+  ConsumerState<SignupFlowScreen> createState() => _SignupFlowScreenState();
 }
 
-class _SignupFlowScreenState extends State<SignupFlowScreen> {
+class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
   int currentStep = 0;
   final int totalSteps = 5;
   String? selectedGender;
+  String? selectedAge;
+  List<String> selectedGenres = [];
+  Map<String, String> profileData = {};
+  Map<String, dynamic> signupData = {};
 
   void _nextStep() {
     if (currentStep < totalSteps - 1) {
@@ -32,8 +42,75 @@ class _SignupFlowScreenState extends State<SignupFlowScreen> {
     }
   }
 
+  bool _canProceedToNextStep() {
+    switch (currentStep) {
+      case 0:
+        return selectedGender != null;
+      case 1:
+        return selectedAge != null;
+      case 2:
+        return true; // Genre step can be skipped
+      case 3:
+        return profileData.isNotEmpty && 
+               profileData['fullName']?.isNotEmpty == true &&
+               profileData['phone']?.isNotEmpty == true &&
+               profileData['dob']?.isNotEmpty == true &&
+               profileData['country']?.isNotEmpty == true;
+      case 4:
+        return signupData.isNotEmpty && 
+               signupData['username']?.isNotEmpty == true &&
+               signupData['email']?.isNotEmpty == true &&
+               signupData['password']?.isNotEmpty == true &&
+               signupData['confirmPassword']?.isNotEmpty == true;
+      default:
+        return true;
+    }
+  }
+
+  void _handleSignUp() {
+    final signupViewModel = ref.read(signupViewModelProvider.notifier);
+    
+    signupViewModel.registerUser(
+      gender: selectedGender,
+      age: selectedAge,
+      genres: selectedGenres,
+      profileData: profileData,
+      accountData: signupData,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final signupState = ref.watch(signupViewModelProvider);
+    
+    // Handle success state
+    if (signupState.isSuccess) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Registration successful!'),
+            backgroundColor: AppColors.green,
+          ),
+        );
+        // Navigate to next screen or reset
+        Navigator.pop(context);
+      });
+    }
+
+    // Handle error state
+    if (signupState.error != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(signupState.error!),
+            backgroundColor: AppColors.red,
+          ),
+        );
+        // Clear error after showing
+        ref.read(signupViewModelProvider.notifier).clearError();
+      });
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -47,9 +124,6 @@ class _SignupFlowScreenState extends State<SignupFlowScreen> {
               child: _buildStepContent(),
             ),
 
-
-
-
             // Button Bar Section
             _buildButtonBar(),
           ],
@@ -58,7 +132,6 @@ class _SignupFlowScreenState extends State<SignupFlowScreen> {
     );
   }
 
-  
   Widget _buildProcessBar() {
     final progress = (currentStep + 1) / totalSteps;
 
@@ -122,7 +195,6 @@ class _SignupFlowScreenState extends State<SignupFlowScreen> {
                 } else {
                   _previousStep();
                 }
-
               },
               child: SizedBox(
                 width: 32,
@@ -151,6 +223,42 @@ class _SignupFlowScreenState extends State<SignupFlowScreen> {
           },
           selectedGender: selectedGender,
         );
+      case 1:
+        return StepAge(
+          onAgeSelected: (age) {
+            setState(() {
+              selectedAge = age;
+            });
+          },
+          selectedAge: selectedAge,
+        );
+      case 2:
+        return StepGenre(
+          onGenresSelected: (genres) {
+            setState(() {
+              selectedGenres = genres;
+            });
+          },
+          selectedGenres: selectedGenres,
+        );
+      case 3:
+        return StepProfile(
+          onProfileCompleted: (data) {
+            setState(() {
+              profileData = data;
+            });
+          },
+          initialData: profileData.isNotEmpty ? profileData : null,
+        );
+      case 4:
+        return StepSignup(
+          onSignupCompleted: (data) {
+            setState(() {
+              signupData = data;
+            });
+          },
+          initialData: signupData.isNotEmpty ? signupData : null,
+        );
       default:
         return Center(
           child: Column(
@@ -177,7 +285,8 @@ class _SignupFlowScreenState extends State<SignupFlowScreen> {
 
   Widget _buildButtonBar() {
     final isLastStep = currentStep == totalSteps - 1;
-    final isStep3 = currentStep == 2;
+    final isStep3 = currentStep == 2; // Genre step
+    final signupState = ref.watch(signupViewModelProvider);
 
     return Container(
       padding: const EdgeInsets.all(24),
@@ -213,13 +322,19 @@ class _SignupFlowScreenState extends State<SignupFlowScreen> {
           Expanded(
             child: PrimaryButton(
               text: isLastStep ? 'Sign Up' : 'Continue',
-              onPressed: (currentStep == 0 && selectedGender == null) ? null : _nextStep,
-              backgroundColor: (currentStep == 0 && selectedGender == null) 
-                  ? AppColors.greyscale200 
-                  : AppColors.primary500,
-              textColor: (currentStep == 0 && selectedGender == null) 
-                  ? AppColors.greyscale500 
-                  : AppColors.white,
+              onPressed: signupState.isLoading 
+                  ? null 
+                  : (isLastStep ? _handleSignUp : (_canProceedToNextStep() ? _nextStep : null)),
+              backgroundColor: signupState.isLoading
+                  ? AppColors.greyscale200
+                  : (_canProceedToNextStep() 
+                      ? AppColors.primary500 
+                      : AppColors.greyscale200),
+              textColor: signupState.isLoading
+                  ? AppColors.greyscale500
+                  : (_canProceedToNextStep() 
+                      ? AppColors.white 
+                      : AppColors.greyscale500),
             ),
           ),
         ],

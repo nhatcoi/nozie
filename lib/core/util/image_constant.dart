@@ -9,10 +9,13 @@ class ImageConstant {
   static const String subPathCommon  = '${_basePath}common/';
 
   // Common Images
-  static const String imgLogo      = '${subPathIcon}icon_logo.svg';
-  static const String loadingSvg   = '${subPathIcon}icon_loading.svg';
+  static const String logoIcon      = '${subPathIcon}icon_logo.svg';
+  static const String loadingIcon   = '${subPathIcon}icon_loading.svg';
   static const String imgGoogleIcon= '${subPathIcon}icon_google.svg';
+  static const String scheduleIcon = '${subPathIcon}schedule.svg';
+  static const String toggleIcon = '${subPathIcon}toggle.svg';
   static const String imgImageNotFound = '${_basePath}placeholder.png';
+  static const String imgAvatar = '${_basePath}avatar.png';
 
   // Welcome
   static const String imgBackground1       = '${subPathWelcome}background-1.png';
