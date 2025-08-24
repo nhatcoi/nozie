@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:country_utils/country_utils.dart';
 
 import '../l10n/app_localizations.dart';
 import '../core/services/locale_setting.dart';
@@ -23,10 +22,7 @@ class NozieApp extends ConsumerWidget {
 
       // i18n
       locale: locale,
-      localizationsDelegates: [
-        CountryLocalizations.delegate, // 👈 thêm dòng này
-        ...AppLocalizations.localizationsDelegates,
-      ],
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
 
       // theme

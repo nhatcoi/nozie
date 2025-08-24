@@ -7,7 +7,7 @@ import '../../../../../../core/util/image_constant.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_typography.dart';
 import '../../../../../../core/widgets/info_field.dart';
-import '../../../../../../core/widgets/country_dropdown.dart';
+import '../../../../../../core/widgets/dropdown.dart';
 import '../../../../../../core/extension/context_extensions.dart';
 
 class StepProfile extends StatefulWidget {
@@ -28,17 +28,40 @@ class _StepProfileState extends State<StepProfile> {
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _dobController = TextEditingController();
+  final TextEditingController _countryController = TextEditingController();
 
   final FocusNode _fullNameFocus = FocusNode();
   final FocusNode _phoneFocus = FocusNode();
   final FocusNode _dobFocus = FocusNode();
+  final FocusNode _countryFocus = FocusNode();
 
   Map<String, String> _formData = {};
   File? _selectedImage;
   final ImagePicker _picker = ImagePicker();
 
-  // Selected country code for country dropdown
-  String? _selectedCountryCode;
+  // Countries data
+  final List<DropdownItem> _countries = [
+    DropdownItem(value: 'vn', label: 'Vietnam'),
+    DropdownItem(value: 'us', label: 'United States'),
+    DropdownItem(value: 'uk', label: 'United Kingdom'),
+    DropdownItem(value: 'ca', label: 'Canada'),
+    DropdownItem(value: 'au', label: 'Australia'),
+    DropdownItem(value: 'de', label: 'Germany'),
+    DropdownItem(value: 'fr', label: 'France'),
+    DropdownItem(value: 'jp', label: 'Japan'),
+    DropdownItem(value: 'kr', label: 'South Korea'),
+    DropdownItem(value: 'cn', label: 'China'),
+    DropdownItem(value: 'in', label: 'India'),
+    DropdownItem(value: 'br', label: 'Brazil'),
+    DropdownItem(value: 'mx', label: 'Mexico'),
+    DropdownItem(value: 'sg', label: 'Singapore'),
+    DropdownItem(value: 'my', label: 'Malaysia'),
+    DropdownItem(value: 'th', label: 'Thailand'),
+    DropdownItem(value: 'ph', label: 'Philippines'),
+    DropdownItem(value: 'id', label: 'Indonesia'),
+    DropdownItem(value: 'tw', label: 'Taiwan'),
+    DropdownItem(value: 'hk', label: 'Hong Kong'),
+  ];
 
   @override
   void initState() {
@@ -58,7 +81,7 @@ class _StepProfileState extends State<StepProfile> {
       _fullNameController.text = _formData['fullName'] ?? '';
       _phoneController.text = _formData['phone'] ?? '';
       _dobController.text = _formData['dob'] ?? '';
-      _selectedCountryCode = _formData['country'];
+      _countryController.text = _formData['country'] ?? '';
     }
   }
 
@@ -68,6 +91,7 @@ class _StepProfileState extends State<StepProfile> {
       _fullNameController.addListener(_validateForm);
       _phoneController.addListener(_validateForm);
       _dobController.addListener(_validateForm);
+      _countryController.addListener(_validateForm);
     });
   }
 
@@ -75,7 +99,7 @@ class _StepProfileState extends State<StepProfile> {
     final fullName = _fullNameController.text.trim();
     final phone = _phoneController.text.trim();
     final dob = _dobController.text.trim();
-    final country = _selectedCountryCode ?? '';
+    final country = _countryController.text.trim();
 
     _formData = {
       'fullName': fullName,
@@ -211,9 +235,11 @@ class _StepProfileState extends State<StepProfile> {
     _fullNameController.dispose();
     _phoneController.dispose();
     _dobController.dispose();
+    _countryController.dispose();
     _fullNameFocus.dispose();
     _phoneFocus.dispose();
     _dobFocus.dispose();
+    _countryFocus.dispose();
     super.dispose();
   }
 
@@ -347,7 +373,7 @@ class _StepProfileState extends State<StepProfile> {
                     validator: _validateDOB,
                     isReadOnly: true,
                     onTap: _selectDate,
-                    onSubmitted: (_) {},
+                    onSubmitted: (_) => _countryFocus.requestFocus(),
                     suffixIcon: Transform.scale(
                       scale: 0.5,
                       child: SvgPicture.asset(
@@ -363,17 +389,29 @@ class _StepProfileState extends State<StepProfile> {
                   const SizedBox(height: 16),
 
                   // Country Dropdown
-                  CountryDropdown(
+                  CustomDropdown(
                     label: context.l10n.country,
-                    value: _selectedCountryCode,
-                    hintText: context.l10n.enterYourCountry,
+                    value: _formData['country'],
+                    hint: context.l10n.enterYourCountry,
+                    items: _countries,
+                    isRequired: true,
                     onChanged: (value) {
                       setState(() {
-                        _selectedCountryCode = value;
+                        _formData['country'] = value ?? '';
                       });
                       _validateForm();
                     },
-                    errorText: _validateCountry(_selectedCountryCode),
+                    validator: _validateCountry,
+                    suffixIcon: Transform.scale(
+                      scale: 0.5,
+                      child: SvgPicture.asset(
+                        ImageConstant.toggleIcon,
+                        colorFilter: ColorFilter.mode(
+                          AppColors.getTextSecondary(context),
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                    ),
                   ),
 
                   const SizedBox(height: 32),
