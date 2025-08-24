@@ -23,12 +23,10 @@ class _StepProfileState extends State<StepProfile> {
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _dobController = TextEditingController();
-  final TextEditingController _countryController = TextEditingController();
 
   final FocusNode _fullNameFocus = FocusNode();
   final FocusNode _phoneFocus = FocusNode();
   final FocusNode _dobFocus = FocusNode();
-  final FocusNode _countryFocus = FocusNode();
 
   Map<String, String> _formData = {};
   File? _selectedImage;
@@ -76,7 +74,6 @@ class _StepProfileState extends State<StepProfile> {
       _fullNameController.text = _formData['fullName'] ?? '';
       _phoneController.text = _formData['phone'] ?? '';
       _dobController.text = _formData['dob'] ?? '';
-      _countryController.text = _formData['country'] ?? '';
     }
   }
 
@@ -86,7 +83,6 @@ class _StepProfileState extends State<StepProfile> {
       _fullNameController.addListener(_validateForm);
       _phoneController.addListener(_validateForm);
       _dobController.addListener(_validateForm);
-      _countryController.addListener(_validateForm);
     });
   }
 
@@ -94,14 +90,17 @@ class _StepProfileState extends State<StepProfile> {
     final fullName = _fullNameController.text.trim();
     final phone = _phoneController.text.trim();
     final dob = _dobController.text.trim();
-    final country = _countryController.text.trim();
+    // Don't override country if it already exists in _formData
+    final country = _formData['country'] ?? '';
 
-    _formData = {
-      'fullName': fullName,
-      'phone': phone,
-      'dob': dob,
-      'country': country,
-    };
+    // Only update the fields that use controllers
+    _formData['fullName'] = fullName;
+    _formData['phone'] = phone;
+    _formData['dob'] = dob;
+    // Keep existing country value if it exists
+
+    // Debug log
+    print('StepProfile _validateForm: $_formData');
 
     // Notify parent
     widget.onProfileCompleted(_formData);
@@ -230,11 +229,9 @@ class _StepProfileState extends State<StepProfile> {
     _fullNameController.dispose();
     _phoneController.dispose();
     _dobController.dispose();
-    _countryController.dispose();
     _fullNameFocus.dispose();
     _phoneFocus.dispose();
     _dobFocus.dispose();
-    _countryFocus.dispose();
     super.dispose();
   }
 
@@ -368,7 +365,7 @@ class _StepProfileState extends State<StepProfile> {
                     validator: _validateDOB,
                     isReadOnly: true,
                     onTap: _selectDate,
-                    onSubmitted: (_) => _countryFocus.requestFocus(),
+                    onSubmitted: (_) {},
                     suffixIcon: Transform.scale(
                       scale: 0.5,
                       child: SvgPicture.asset(
@@ -391,6 +388,7 @@ class _StepProfileState extends State<StepProfile> {
                     items: _countries,
                     isRequired: true,
                     onChanged: (value) {
+                      print('CustomDropdown onChanged: $value');
                       setState(() {
                         _formData['country'] = value ?? '';
                       });
