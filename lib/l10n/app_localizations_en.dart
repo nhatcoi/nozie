@@ -35,4 +35,308 @@ class AppLocalizationsEn extends AppLocalizations {
   String helloUser(String name) {
     return 'Hello, $name!';
   }
+
+  @override
+  String get skip => 'Skip';
+
+  @override
+  String get continueText => 'Continue';
+
+  @override
+  String get signUp => 'Sign Up';
+
+  @override
+  String get registrationSuccessful => 'Registration successful!';
+
+  @override
+  String stepOf(int current, int total) {
+    return 'Step $current of $total';
+  }
+
+  @override
+  String contentForStep(int step) {
+    return 'Content for step $step';
+  }
+
+  @override
+  String get selectGender => 'Select your gender';
+
+  @override
+  String get selectAge => 'Select your age';
+
+  @override
+  String get selectGenres => 'Select your favorite genres';
+
+  @override
+  String get profileInfo => 'Profile Information';
+
+  @override
+  String get accountInfo => 'Account Information';
+
+  @override
+  String get fullName => 'Full Name';
+
+  @override
+  String get phone => 'Phone Number';
+
+  @override
+  String get dateOfBirth => 'Date of Birth';
+
+  @override
+  String get country => 'Country';
+
+  @override
+  String get username => 'Username';
+
+  @override
+  String get confirmPassword => 'Confirm Password';
+
+  @override
+  String get male => 'Male';
+
+  @override
+  String get female => 'Female';
+
+  @override
+  String get other => 'Other';
+
+  @override
+  String get preferNotToSay => 'Prefer not to say';
+
+  @override
+  String get chooseYourAge => 'Choose your Age';
+
+  @override
+  String get selectAgeRange => 'Select age range for better content';
+
+  @override
+  String get age14to17 => '14-17';
+
+  @override
+  String get age18to24 => '18-24';
+
+  @override
+  String get age25to29 => '25-29';
+
+  @override
+  String get age30to34 => '30-34';
+
+  @override
+  String get age35to39 => '35-39';
+
+  @override
+  String get age40to44 => '40-44';
+
+  @override
+  String get age45to49 => '45-49';
+
+  @override
+  String get age50plus => '50+';
+
+  @override
+  String get whatIsYourGender => 'What is your gender?';
+
+  @override
+  String get selectGenderForBetterContent => 'Select gender for better content';
+
+  @override
+  String get iAmMale => 'I am male';
+
+  @override
+  String get iAmFemale => 'I am female';
+
+  @override
+  String get ratherNotToSay => 'Rather not to say';
+
+  @override
+  String get chooseMovieGenre => 'Choose the Movie Genre You Like';
+
+  @override
+  String get selectPreferredGenre => 'Select your preferred movie genre for better recommendation or you can skip it';
+
+  @override
+  String get action => 'Action';
+
+  @override
+  String get adventure => 'Adventure';
+
+  @override
+  String get animation => 'Animation';
+
+  @override
+  String get comedy => 'Comedy';
+
+  @override
+  String get crime => 'Crime';
+
+  @override
+  String get documentary => 'Documentary';
+
+  @override
+  String get drama => 'Drama';
+
+  @override
+  String get family => 'Family';
+
+  @override
+  String get fantasy => 'Fantasy';
+
+  @override
+  String get horror => 'Horror';
+
+  @override
+  String get mystery => 'Mystery';
+
+  @override
+  String get romance => 'Romance';
+
+  @override
+  String get sciFi => 'Sci-Fi';
+
+  @override
+  String get thriller => 'Thriller';
+
+  @override
+  String get war => 'War';
+
+  @override
+  String get western => 'Western';
+
+  @override
+  String get completeYourProfile => 'Complete Your Profile';
+
+  @override
+  String get profilePrivacyNote => 'Don\'t worry, only you can see your personal data. No one else will be able to see it.';
+
+  @override
+  String get addPhoto => 'Add Photo';
+
+  @override
+  String get tapToAddProfilePicture => 'Tap to add profile picture';
+
+  @override
+  String get enterYourFullName => 'Enter your full name';
+
+  @override
+  String get phoneNumber => 'Phone Number';
+
+  @override
+  String get enterYourPhoneNumber => 'Enter your phone number';
+
+  @override
+  String get dateFormat => 'DD/MM/YYYY';
+
+  @override
+  String get enterYourCountry => 'Enter your country';
+
+  @override
+  String get fullNameRequired => 'Full name is required';
+
+  @override
+  String get fullNameMinLength => 'Full name must be at least 2 characters';
+
+  @override
+  String get phoneRequired => 'Phone number is required';
+
+  @override
+  String get phoneMinLength => 'Phone number must be at least 10 digits';
+
+  @override
+  String get dobRequired => 'Date of birth is required';
+
+  @override
+  String get countryRequired => 'Country is required';
+
+  @override
+  String get imagePickerNotSupported => 'Image picker is not supported on web platform';
+
+  @override
+  String get usingPlaceholderImage => 'Using placeholder image for Simulator testing';
+
+  @override
+  String get createAnAccount => 'Create an Account';
+
+  @override
+  String get signupDescription => 'Enter your username, email & password. If you forget it, then you have to do forgot password.';
+
+  @override
+  String get enterYourUsername => 'Enter your username';
+
+  @override
+  String get enterYourPassword => 'Enter your password';
+
+  @override
+  String get enterYourEmailAddress => 'Enter your email address';
+
+  @override
+  String get confirmYourPassword => 'Confirm your password';
+
+  @override
+  String get rememberMe => 'Remember me';
+
+  @override
+  String get usernameRequired => 'Username is required';
+
+  @override
+  String get usernameMinLength => 'Username must be at least 3 characters';
+
+  @override
+  String get usernameInvalidChars => 'Username can only contain letters, numbers, and underscores';
+
+  @override
+  String get emailRequired => 'Email is required';
+
+  @override
+  String get emailInvalid => 'Please enter a valid email address';
+
+  @override
+  String get passwordRequired => 'Password is required';
+
+  @override
+  String get passwordMinLength => 'Password must be at least 8 characters';
+
+  @override
+  String get passwordComplexity => 'Password must contain at least one uppercase letter, one lowercase letter, and one number';
+
+  @override
+  String get confirmPasswordRequired => 'Please confirm your password';
+
+  @override
+  String get passwordsDoNotMatch => 'Passwords do not match';
+
+  @override
+  String get welcomeToNoZie => 'Welcome to NoZie 👋';
+
+  @override
+  String get welcomeTo => 'Welcome to ';
+
+  @override
+  String get welcomeDescription => 'Your personal movie companion. Get personalized recommendations, discover new films, and track your watchlist.';
+
+  @override
+  String get discoverNewMovies => 'Discover New Movies';
+
+  @override
+  String get discoverDescription => 'Explore thousands of movies from different genres. Find hidden gems and trending films that match your taste.';
+
+  @override
+  String get trackYourWatchlist => 'Track Your Watchlist';
+
+  @override
+  String get trackDescription => 'Save movies you want to watch, mark what you\'ve seen, and get recommendations based on your preferences.';
+
+  @override
+  String get joinTheCommunity => 'Join the Community';
+
+  @override
+  String get joinDescription => 'Connect with other movie lovers, share reviews, and discover what\'s trending in the film world.';
+
+  @override
+  String get getStarted => 'Get Started';
+
+  @override
+  String get continueWithGoogle => 'Continue with Google';
+
+  @override
+  String get iAlreadyHaveAnAccount => 'I Already Have an Account';
 }

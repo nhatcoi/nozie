@@ -2,6 +2,30 @@ import 'package:flutter/material.dart';
 
 
 class AppColors{
+  // Theme-aware colors
+  static Color getBackground(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? dark1 
+        : white;
+  }
+  
+  static Color getSurface(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? dark2 
+        : greyscale100;
+  }
+  
+  static Color getText(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? white 
+        : greyscale900;
+  }
+  
+  static Color getTextSecondary(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? greyscale400 
+        : greyscale600;
+  }
   static const Color primary500 = Color(0xFFF89300);
   static const Color primary400 = Color(0xFFF9A933);
   static const Color primary300 = Color(0xFFFBBE66);

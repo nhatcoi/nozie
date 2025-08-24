@@ -6,6 +6,8 @@ import '../../../../core/util/image_constant.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/widgets/primary_button.dart';
+import '../../../../core/widgets/secondary_button.dart';
+import '../../../../core/extension/context_extensions.dart';
 import 'data/welcome_constant.dart';
 
 class WelcomeScreen extends ConsumerStatefulWidget {
@@ -70,11 +72,14 @@ class WelcomeScreenState extends ConsumerState<WelcomeScreen> {
 
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [AppColors.dark1, AppColors.dark2],
+            colors: [
+              AppColors.getBackground(context),
+              AppColors.getSurface(context),
+            ],
           ),
         ),
         child: Stack(
@@ -112,8 +117,8 @@ class WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                     stops: WelcomeGradientValues.overlayGradientStops,
                     colors: [
                       Colors.transparent,
-                      AppColors.dark1.withValues(alpha: WelcomeGradientValues.overlayGradientAlpha[1]),
-                      AppColors.dark1.withValues(alpha: WelcomeGradientValues.overlayGradientAlpha[2]),
+                      AppColors.getBackground(context).withValues(alpha: WelcomeGradientValues.overlayGradientAlpha[1]),
+                      AppColors.getBackground(context).withValues(alpha: WelcomeGradientValues.overlayGradientAlpha[2]),
                     ],
                   ),
                 ),
@@ -158,13 +163,13 @@ class WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                                                 textAlign: TextAlign.center,
                                                 text: TextSpan(
                                                   style: AppTypography.h3.copyWith(
-                                                    color: AppColors.white,
+                                                    color: AppColors.getText(context),
                                                     fontSize: titleFontSize,
                                                   ),
                                                   children: [
-                                                    if (data.title.contains('NoZie'))
+                                                    if (data.titleKey == 'welcomeToNoZie')
                                                       ...[
-                                                        const TextSpan(text: 'Welcome to '),
+                                                        TextSpan(text: context.l10n.welcomeTo),
                                                         TextSpan(
                                                           text: 'NoZie 👋',
                                                           style: AppTypography.h3.copyWith(
@@ -174,7 +179,7 @@ class WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                                                         ),
                                                       ]
                                                     else
-                                                      TextSpan(text: data.title),
+                                                      TextSpan(text: data.getTitle(context)),
                                                   ],
                                                 ),
                                               ),
@@ -184,9 +189,9 @@ class WelcomeScreenState extends ConsumerState<WelcomeScreen> {
 
                                             // Description
                                             Text(
-                                              data.description,
+                                              data.getDescription(context),
                                               style: AppTypography.bodyLRegular.copyWith(
-                                                color: AppColors.greyscale400,
+                                                color: AppColors.getTextSecondary(context),
                                                 height: WelcomeResponsiveValues.descriptionLineHeight,
                                                 fontSize: titleFontSize * WelcomeResponsiveValues.descriptionFontSizeRatio,
                                               ),
@@ -215,7 +220,7 @@ class WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                                         shape: BoxShape.circle,
                                         color: _currentPage == index
                                             ? AppColors.primary500
-                                            : AppColors.greyscale400,
+                                            : AppColors.getTextSecondary(context),
                                       ),
                                     ),
                                   ),
@@ -234,13 +239,12 @@ class WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                                 SizedBox(
                                   height: buttonHeight,
                                   child: PrimaryButton(
-                                    text: WelcomeButtonTexts.googleText,
+                                    text: WelcomeButtonTexts.getGoogleText(context),
                                     onPressed: () {
                                       // TODO: Handle Google sign in
                                     },
-                                    backgroundColor: AppColors.white,
-                                    textColor: AppColors.greyscale900,
-                                    hasShadow: true,
+                                    backgroundColor: AppColors.getSurface(context),
+                                    textColor: AppColors.getText(context),
                                     icon: SvgPicture.asset(
                                       ImageConstant.imgGoogleIcon,
                                       width: iconSize,
@@ -255,12 +259,11 @@ class WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                                 SizedBox(
                                   height: buttonHeight,
                                   child: PrimaryButton(
-                                    text: WelcomeButtonTexts.signUpText,
+                                    text: WelcomeButtonTexts.getSignUpText(context),
                                     onPressed: () {
                                       Navigator.pushNamed(context, '/signup');
                                     },
-                                    backgroundColor: AppColors.primary500,
-                                    textColor: AppColors.white,
+
                                   ),
                                 ),
 
@@ -269,13 +272,11 @@ class WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                                 // Sign In Button
                                 SizedBox(
                                   height: buttonHeight,
-                                  child: PrimaryButton(
-                                    text: WelcomeButtonTexts.loginText,
+                                  child: SecondaryButton(
+                                    text: WelcomeButtonTexts.getLoginText(context),
                                     onPressed: () {
-                                      Navigator.pushNamed(context, '/login');
+                                      Navigator.pushNamed(context, '/home');
                                     },
-                                    backgroundColor: AppColors.primary100,
-                                    textColor: AppColors.primary500,
                                   ),
                                 ),
 

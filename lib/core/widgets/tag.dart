@@ -51,7 +51,7 @@ class Tag extends StatelessWidget {
       decoration: BoxDecoration(
         color: isSelected 
             ? (selectedBackgroundColor ?? AppColors.primary500)
-            : (backgroundColor ?? AppColors.white),
+            : (backgroundColor ?? AppColors.getSurface(context)),
         borderRadius: BorderRadius.circular(borderRadius),
         border: showBorder ? Border.all(
           color: isSelected 
@@ -64,7 +64,7 @@ class Tag extends StatelessWidget {
         duration: animationDuration,
         style: AppTypography.bodyMRegular.copyWith(
           color: isSelected 
-              ? (selectedTextColor ?? AppColors.white)
+              ? (selectedTextColor ?? AppColors.getText(context))
               : (textColor ?? AppColors.primary500),
           fontSize: fontSize ?? 16,
           fontWeight: fontWeight ?? FontWeight.w500,

@@ -60,6 +60,14 @@ class RadioBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    
+    // Theme-aware default colors
+    final defaultBorderColor = AppColors.primary500;
+    final defaultSelectedBorderColor = AppColors.primary500;
+    final defaultRadioBackgroundColor = isDarkMode ? AppColors.dark2 : AppColors.white;
+    final defaultTextColor = isDarkMode ? AppColors.white : AppColors.greyscale900;
+    
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
@@ -73,8 +81,8 @@ class RadioBox extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius),
           border: borderWidth > 0 ? Border.all(
             color: isSelected
-                ? (selectedBorderColor ?? AppColors.primary500)
-                : (borderColor ?? AppColors.greyscale200),
+                ? (selectedBorderColor ?? defaultSelectedBorderColor)
+                : (borderColor ?? defaultBorderColor),
             width: borderWidth,
           ) : null,
         ),
@@ -90,11 +98,11 @@ class RadioBox extends StatelessWidget {
                 shape: BoxShape.circle,
                 border: Border.all(
                   color: isSelected
-                      ? (selectedRadioBorderColor ?? AppColors.primary500)
-                      : (radioBorderColor ?? AppColors.greyscale300),
+                      ? (selectedRadioBorderColor ?? defaultSelectedBorderColor)
+                      : (radioBorderColor ?? defaultBorderColor),
                   width: radioBorderWidth,
                 ),
-                color: Colors.white,
+                color: defaultRadioBackgroundColor,
               ),
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 200),
@@ -122,7 +130,7 @@ class RadioBox extends StatelessWidget {
               child: AnimatedDefaultTextStyle(
                 duration: const Duration(milliseconds: 200),
                 style: AppTypography.bodyLSemibold.copyWith(
-                  color: AppColors.greyscale900,
+                  color: textColor ?? defaultTextColor,
                   fontSize: fontSize,
                   fontWeight: fontWeight,
                 ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_typography.dart';
 import '../../../../../../core/widgets/info_field.dart';
+import '../../../../../../core/extension/context_extensions.dart';
 
 class StepSignup extends StatefulWidget {
   final Function(Map<String, dynamic>) onSignupCompleted;
@@ -18,8 +19,6 @@ class StepSignup extends StatefulWidget {
 }
 
 class _StepSignupState extends State<StepSignup> {
-  static const String title = 'Create an Account';
-  static const String subtitle = 'Enter your username, email & password. If you forget it, then you have to do forgot password.';
 
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -104,46 +103,46 @@ class _StepSignupState extends State<StepSignup> {
 
   String? _validateUsername(String? value) {
     if (value?.trim().isEmpty ?? true) {
-      return 'Username is required';
+      return context.l10n.usernameRequired;
     }
     if (value!.trim().length < 3) {
-      return 'Username must be at least 3 characters';
+      return context.l10n.usernameMinLength;
     }
     if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(value.trim())) {
-      return 'Username can only contain letters, numbers, and underscores';
+      return context.l10n.usernameInvalidChars;
     }
     return null;
   }
 
   String? _validateEmail(String? value) {
     if (value?.trim().isEmpty ?? true) {
-      return 'Email is required';
+      return context.l10n.emailRequired;
     }
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value!.trim())) {
-      return 'Please enter a valid email address';
+      return context.l10n.emailInvalid;
     }
     return null;
   }
 
   String? _validatePassword(String? value) {
     if (value?.trim().isEmpty ?? true) {
-      return 'Password is required';
+      return context.l10n.passwordRequired;
     }
     if (value!.trim().length < 8) {
-      return 'Password must be at least 8 characters';
+      return context.l10n.passwordMinLength;
     }
     if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)').hasMatch(value.trim())) {
-      return 'Password must contain at least one uppercase letter, one lowercase letter, and one number';
+      return context.l10n.passwordComplexity;
     }
     return null;
   }
 
   String? _validateConfirmPassword(String? value) {
     if (value?.trim().isEmpty ?? true) {
-      return 'Please confirm your password';
+      return context.l10n.confirmPasswordRequired;
     }
     if (value!.trim() != _passwordController.text.trim()) {
-      return 'Passwords do not match';
+      return context.l10n.passwordsDoNotMatch;
     }
     return null;
   }
@@ -172,9 +171,9 @@ class _StepSignupState extends State<StepSignup> {
           
           // Title
           Text(
-            title,
+            context.l10n.createAnAccount,
             style: AppTypography.h3.copyWith(
-              color: AppColors.greyscale900,
+              color: AppColors.getText(context),
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -183,9 +182,9 @@ class _StepSignupState extends State<StepSignup> {
           
           // Subtitle
           Text(
-            subtitle,
+            context.l10n.signupDescription,
             style: AppTypography.bodyLRegular.copyWith(
-              color: AppColors.greyscale900,
+              color: AppColors.getTextSecondary(context),
             ),
           ),
           
@@ -198,8 +197,8 @@ class _StepSignupState extends State<StepSignup> {
                 children: [
                   // Username Field
                   InfoField(
-                    label: 'Username',
-                    hintText: 'Enter your username',
+                    label: context.l10n.username,
+                    hintText: context.l10n.enterYourUsername,
                     controller: _usernameController,
                     focusNode: _usernameFocus,
                     isRequired: true,
@@ -212,8 +211,8 @@ class _StepSignupState extends State<StepSignup> {
                   
                   // Email Field
                   InfoField(
-                    label: 'Email',
-                    hintText: 'Enter your email address',
+                    label: context.l10n.email,
+                    hintText: context.l10n.enterYourEmailAddress,
                     controller: _emailController,
                     focusNode: _emailFocus,
                     isRequired: true,
@@ -226,8 +225,8 @@ class _StepSignupState extends State<StepSignup> {
                   
                   // Password Field
                   InfoField(
-                    label: 'Password',
-                    hintText: 'Enter your password',
+                    label: context.l10n.password,
+                    hintText: context.l10n.enterYourPassword,
                     controller: _passwordController,
                     focusNode: _passwordFocus,
                     isRequired: true,
@@ -248,8 +247,8 @@ class _StepSignupState extends State<StepSignup> {
                   
                   // Confirm Password Field
                   InfoField(
-                    label: 'Confirm Password',
-                    hintText: 'Confirm your password',
+                    label: context.l10n.confirmPassword,
+                    hintText: context.l10n.confirmYourPassword,
                     controller: _confirmPasswordController,
                     focusNode: _confirmPasswordFocus,
                     isRequired: true,
@@ -282,9 +281,9 @@ class _StepSignupState extends State<StepSignup> {
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          'Remember me',
+                          context.l10n.rememberMe,
                           style: AppTypography.bodyMRegular.copyWith(
-                            color: AppColors.greyscale900,
+                            color: AppColors.getText(context),
                           ),
                         ),
                       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_typography.dart';
 import '../../../../../../core/widgets/tag.dart';
+import '../../../../../../core/extension/context_extensions.dart';
 
 class StepGenre extends StatefulWidget {
   final Function(List<String>) onGenresSelected;
@@ -20,29 +21,27 @@ class StepGenre extends StatefulWidget {
 class _StepGenreState extends State<StepGenre> {
   List<String> selectedGenres = [];
 
-  // Text content variables
-  static const String title = 'Choose the Movie Genre You Like';
-  static const String subtitle = 'Select your preferred movie genre for better recommendation or you can skip it';
-
-  // Movie genre options
-  static const Map<String, String> genreOptions = {
-    'action': 'Action',
-    'adventure': 'Adventure',
-    'animation': 'Animation',
-    'comedy': 'Comedy',
-    'crime': 'Crime',
-    'documentary': 'Documentary',
-    'drama': 'Drama',
-    'family': 'Family',
-    'fantasy': 'Fantasy',
-    'horror': 'Horror',
-    'mystery': 'Mystery',
-    'romance': 'Romance',
-    'sci_fi': 'Sci-Fi',
-    'thriller': 'Thriller',
-    'war': 'War',
-    'western': 'Western',
-  };
+  // Movie genre options with localization
+  Map<String, String> getGenreOptions(BuildContext context) {
+    return {
+      'action': context.l10n.action,
+      'adventure': context.l10n.adventure,
+      'animation': context.l10n.animation,
+      'comedy': context.l10n.comedy,
+      'crime': context.l10n.crime,
+      'documentary': context.l10n.documentary,
+      'drama': context.l10n.drama,
+      'family': context.l10n.family,
+      'fantasy': context.l10n.fantasy,
+      'horror': context.l10n.horror,
+      'mystery': context.l10n.mystery,
+      'romance': context.l10n.romance,
+      'sci_fi': context.l10n.sciFi,
+      'thriller': context.l10n.thriller,
+      'war': context.l10n.war,
+      'western': context.l10n.western,
+    };
+  }
 
   @override
   void initState() {
@@ -72,9 +71,9 @@ class _StepGenreState extends State<StepGenre> {
           
           // Title
           Text(
-            title,
+            context.l10n.chooseMovieGenre,
             style: AppTypography.h3.copyWith(
-              color: AppColors.greyscale900,
+              color: AppColors.getText(context),
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -82,28 +81,33 @@ class _StepGenreState extends State<StepGenre> {
           
           // Subtitle
           Text(
-            subtitle,
+            context.l10n.selectPreferredGenre,
             style: AppTypography.bodyLRegular.copyWith(
-              color: AppColors.greyscale900,
+              color: AppColors.getTextSecondary(context),
             ),
           ),
           const SizedBox(height: 32),
 
-          // Genre Options Grid
-          Wrap(
-            spacing: 12,
-            runSpacing: 16,
-            children: genreOptions.entries.map((entry) => Tag(
-              text: entry.value,
-              isSelected: selectedGenres.contains(entry.key),
-              onTap: () => _toggleGenre(entry.key),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 10,
-              ),
-              fontSize: 14,
-              fontWeight: FontWeight.w800,
-            )).toList(),
+          // Grid
+          Builder(
+            builder: (context) {
+              final genreOptions = getGenreOptions(context);
+              return Wrap(
+                spacing: 12,
+                runSpacing: 16,
+                children: genreOptions.entries.map((entry) => Tag(
+                  text: entry.value,
+                  isSelected: selectedGenres.contains(entry.key),
+                  onTap: () => _toggleGenre(entry.key),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  ),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w800,
+                )).toList(),
+              );
+            },
           ),
         ],
       ),
