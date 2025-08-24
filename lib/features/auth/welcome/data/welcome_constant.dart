@@ -1,36 +1,64 @@
 import '../../../../core/util/image_constant.dart';
+import '../../../../core/extension/context_extensions.dart';
+import 'package:flutter/material.dart';
 
-
-// TODO: add i10n support
 class WelcomeSlide {
-  final String title;
-  final String description;
+  final String titleKey;
+  final String descriptionKey;
 
   const WelcomeSlide({
-    required this.title,
-    required this.description,
+    required this.titleKey,
+    required this.descriptionKey,
   });
 
+  String getTitle(BuildContext context) {
+    switch (titleKey) {
+      case 'welcomeToNoZie':
+        return context.l10n.welcomeToNoZie;
+      case 'discoverNewMovies':
+        return context.l10n.discoverNewMovies;
+      case 'trackYourWatchlist':
+        return context.l10n.trackYourWatchlist;
+      case 'joinTheCommunity':
+        return context.l10n.joinTheCommunity;
+      default:
+        return titleKey;
+    }
+  }
 
+  String getDescription(BuildContext context) {
+    switch (descriptionKey) {
+      case 'welcomeDescription':
+        return context.l10n.welcomeDescription;
+      case 'discoverDescription':
+        return context.l10n.discoverDescription;
+      case 'trackDescription':
+        return context.l10n.trackDescription;
+      case 'joinDescription':
+        return context.l10n.joinDescription;
+      default:
+        return descriptionKey;
+    }
+  }
 }
 
 class WelcomeData {
   static const List<WelcomeSlide> slides = [
     WelcomeSlide(
-      title: 'Welcome to NoZie 👋',
-      description: 'Your personal movie companion. Get personalized recommendations, discover new films, and track your watchlist.',
+      titleKey: 'welcomeToNoZie',
+      descriptionKey: 'welcomeDescription',
     ),
     WelcomeSlide(
-      title: 'Discover New Movies',
-      description: 'Explore thousands of movies from different genres. Find hidden gems and trending films that match your taste.',
+      titleKey: 'discoverNewMovies',
+      descriptionKey: 'discoverDescription',
     ),
     WelcomeSlide(
-      title: 'Track Your Watchlist',
-      description: 'Save movies you want to watch, mark what you\'ve seen, and get recommendations based on your preferences.',
+      titleKey: 'trackYourWatchlist',
+      descriptionKey: 'trackDescription',
     ),
     WelcomeSlide(
-      title: 'Join the Community',
-      description: 'Connect with other movie lovers, share reviews, and discover what\'s trending in the film world.',
+      titleKey: 'joinTheCommunity',
+      descriptionKey: 'joinDescription',
     ),
   ];
 }
@@ -89,7 +117,7 @@ class WelcomeGradientValues {
 }
 
 class WelcomeButtonTexts {
-  static const String signUpText = 'Get Started';
-  static const String googleText = 'Continue with Google';
-  static const String loginText = 'I Already Have an Account';
+  static String getSignUpText(BuildContext context) => context.l10n.getStarted;
+  static String getGoogleText(BuildContext context) => context.l10n.continueWithGoogle;
+  static String getLoginText(BuildContext context) => context.l10n.iAlreadyHaveAnAccount;
 }

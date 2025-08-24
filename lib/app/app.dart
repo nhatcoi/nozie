@@ -15,7 +15,7 @@ class NozieApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider);
-    final locale = ref.watch(localeControllerProvider); // <- locale từ Riverpod
+    final locale = ref.watch(localeControllerProvider); // locale từ Riverpod
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,

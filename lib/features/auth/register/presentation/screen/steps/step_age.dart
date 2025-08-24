@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../../core/theme/app_colors.dart';
-import '../../../../../../core/theme/app_typography.dart';
-import '../../../../../../core/widgets/tag.dart';
+import '../../../../../../core/app_export.dart';
 
 class StepAge extends StatefulWidget {
   final Function(String) onAgeSelected;
@@ -20,21 +18,18 @@ class StepAge extends StatefulWidget {
 class _StepAgeState extends State<StepAge> {
   String? selectedAge;
 
-  // Text content variables
-  static const String title = 'Choose your Age';
-  static const String subtitle = 'Select age range for better content';
-
-  // Age range options
-  static const Map<String, String> ageOptions = {
-    '14-17': '14-17',
-    '18-24': '18-24',
-    '25-29': '25-29',
-    '30-34': '30-34',
-    '35-39': '35-39',
-    '40-44': '40-44',
-    '45-49': '45-49',
-    '50': '50+',
-  };
+  Map<String, String> getAgeOptions(BuildContext context) {
+    return {
+      '14-17': context.l10n.age14to17,
+      '18-24': context.l10n.age18to24,
+      '25-29': context.l10n.age25to29,
+      '30-34': context.l10n.age30to34,
+      '35-39': context.l10n.age35to39,
+      '40-44': context.l10n.age40to44,
+      '45-49': context.l10n.age45to49,
+      '50': context.l10n.age50plus,
+    };
+  }
 
   @override
   void initState() {
@@ -60,9 +55,9 @@ class _StepAgeState extends State<StepAge> {
           
           // Title
           Text(
-            title,
+            context.l10n.chooseYourAge,
             style: AppTypography.h3.copyWith(
-              color: AppColors.greyscale900,
+              color: AppColors.getText(context),
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -70,19 +65,20 @@ class _StepAgeState extends State<StepAge> {
           
           // Subtitle
           Text(
-            subtitle,
+            context.l10n.selectAgeRange,
             style: AppTypography.bodyLRegular.copyWith(
-              color: AppColors.greyscale900,
+              color: AppColors.getTextSecondary(context),
             ),
           ),
           const SizedBox(height: 32),
 
-          // Age Options Grid
+          // Grid
           LayoutBuilder(
             builder: (context, constraints) {
               final screenWidth = constraints.maxWidth;
-              final tagWidth = (screenWidth - 48) / 2; // 2 columns with 12px gap
+              final tagWidth = (screenWidth - 48) / 2;
               
+              final ageOptions = getAgeOptions(context);
               return Wrap(
                 spacing: 16,
                 runSpacing: 16,

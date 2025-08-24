@@ -9,7 +9,7 @@ StateNotifierProvider<LocaleController, Locale>((ref) {
 });
 
 class LocaleController extends StateNotifier<Locale> {
-  LocaleController(this._prefs, {String defaultCode = 'en'})
+  LocaleController(this._prefs, {String defaultCode = 'vi'})
       : super(Locale(_prefs.getString('app_locale') ?? defaultCode));
 
   final SharedPreferences _prefs;

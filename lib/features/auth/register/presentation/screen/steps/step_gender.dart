@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../../core/theme/app_colors.dart';
-import '../../../../../../core/theme/app_typography.dart';
-import '../../../../../../core/widgets/radio_box.dart';
+import '../../../../../../core/app_export.dart';
 
 class StepGender extends StatefulWidget {
   final Function(String) onGenderSelected;
@@ -20,17 +18,13 @@ class StepGender extends StatefulWidget {
 class _StepGenderState extends State<StepGender> {
   String? selectedGender;
 
-  // TODO: apply i18n
-  // Text content variables
-  static const String title = 'What is your gender?';
-  static const String subtitle = 'Select gender for better content';
-  
-  // Gender options map
-  static const Map<String, String> genderOptions = {
-    'male': 'I am male',
-    'female': 'I am female',
-    'other': 'Rather not to say',
-  };
+  Map<String, String> getGenderOptions(BuildContext context) {
+    return {
+      'male': context.l10n.iAmMale,
+      'female': context.l10n.iAmFemale,
+      'other': context.l10n.ratherNotToSay,
+    };
+  }
 
   @override
   void initState() {
@@ -55,9 +49,9 @@ class _StepGenderState extends State<StepGender> {
           const SizedBox(height: 32),
           // Title
           Text(
-            title,
+            context.l10n.whatIsYourGender,
             style: AppTypography.h3.copyWith(
-              color: AppColors.greyscale900,
+              color: AppColors.getText(context),
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -65,32 +59,39 @@ class _StepGenderState extends State<StepGender> {
           
           // Subtitle
           Text(
-            subtitle,
+            context.l10n.selectGenderForBetterContent,
             style: AppTypography.bodyLRegular.copyWith(
-              color: AppColors.greyscale900,
+              color: AppColors.getTextSecondary(context),
             ),
           ),
           const SizedBox(height: 24),
 
-          // Gender Options
-          ...genderOptions.entries.map((entry) => Column(
-            children: [
-              RadioBox(
-                title: entry.value,
-                value: entry.key,
-                isSelected: selectedGender == entry.key,
-                onTap: () => _selectGender(entry.key),
-              ),
-              if (entry.key != genderOptions.keys.last) ...[
-                const SizedBox(height: 16),
-                Container(
-                  height: 1,
-                  color: AppColors.greyscale200,
-                ),
-                const SizedBox(height: 16),
-              ],
-            ],
-          )),
+          // Gender
+          Builder(
+            builder: (context) {
+              final genderOptions = getGenderOptions(context);
+              return Column(
+                children: genderOptions.entries.map((entry) => Column(
+                  children: [
+                    RadioBox(
+                      title: entry.value,
+                      value: entry.key,
+                      isSelected: selectedGender == entry.key,
+                      onTap: () => _selectGender(entry.key),
+                    ),
+                    if (entry.key != genderOptions.keys.last) ...[
+                      const SizedBox(height: 16),
+                      Container(
+                        height: 1,
+                        color: AppColors.getSurface(context),
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  ],
+                )).toList(),
+              );
+            },
+          ),
           const SizedBox(height: 16),
 
         ],

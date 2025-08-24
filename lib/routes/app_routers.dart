@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../features/auth/register/presentation/screen/signup_flow_screen.dart';
 import '../features/auth/welcome/welcome_screen.dart';
+import '../features/setting/presentation/screens/home_screen.dart';
+import '../core/services/locale_setting.dart';
 
 class AppRouters {
   static const String welcome = '/';
@@ -37,21 +39,33 @@ class AppRouters {
     
     if (name == home) {
       return MaterialPageRoute(
-        builder: (_) => const Scaffold(
-          body: Center(
-            child: Text('Home Screen - Coming Soon'),
-          ),
-        ),
+        builder: (context) {
+          // Get locale from context
+          final locale = Localizations.localeOf(context);
+          return HomePage(
+            locale,
+            (newLocale) {
+              // Handle locale change - you might want to use a provider here
+              print('Locale changed to: ${newLocale.languageCode}');
+            },
+          );
+        },
       );
     }
     
     if (name == settings) {
       return MaterialPageRoute(
-        builder: (_) => const Scaffold(
-          body: Center(
-            child: Text('Settings Screen - Coming Soon'),
-          ),
-        ),
+        builder: (context) {
+          // Get locale from context
+          final locale = Localizations.localeOf(context);
+          return HomePage(
+            locale,
+            (newLocale) {
+              // Handle locale change - you might want to use a provider here
+              print('Locale changed to: ${newLocale.languageCode}');
+            },
+          );
+        },
       );
     }
     

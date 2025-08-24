@@ -139,14 +139,14 @@ class _InfoFieldState extends State<InfoField> {
         if (widget.label != null) ...[
           Row(
             children: [
-              Text(
-                widget.label!,
-                style: AppTypography.bodyMSemibold.copyWith(
-                  color: widget.labelColor ?? AppColors.greyscale900,
-                  fontSize: widget.labelFontSize ?? widget.fontSize ?? 14,
-                  fontWeight: widget.labelFontWeight ?? widget.fontWeight ?? FontWeight.w600,
+                              Text(
+                  widget.label!,
+                  style: AppTypography.bodyMSemibold.copyWith(
+                    color: widget.labelColor ?? AppColors.getText(context),
+                    fontSize: widget.labelFontSize ?? widget.fontSize ?? 14,
+                    fontWeight: widget.labelFontWeight ?? widget.fontWeight ?? FontWeight.w600,
+                  ),
                 ),
-              ),
               if (widget.isRequired) ...[
                 const SizedBox(width: 4),
                 Text(
@@ -168,7 +168,7 @@ class _InfoFieldState extends State<InfoField> {
           duration: widget.animationDuration,
           curve: widget.animationCurve,
           decoration: BoxDecoration(
-            color: widget.backgroundColor ?? AppColors.white,
+            color: widget.backgroundColor ?? Colors.transparent,
             borderRadius: BorderRadius.circular(widget.borderRadius),
             border: widget.showBorder ? Border.all(
               color: _getBorderColor(),
@@ -192,22 +192,22 @@ class _InfoFieldState extends State<InfoField> {
             onFieldSubmitted: widget.onSubmitted,
             onTap: widget.onTap,
             style: AppTypography.bodyMRegular.copyWith(
-              color: widget.textColor ?? AppColors.greyscale900,
+              color: widget.textColor ?? AppColors.getText(context),
               fontSize: widget.inputFontSize ?? widget.fontSize ?? 14,
               fontWeight: widget.inputFontWeight ?? widget.fontWeight ?? FontWeight.w400,
             ),
             decoration: InputDecoration(
               hintText: widget.hintText,
               hintStyle: AppTypography.bodyMRegular.copyWith(
-                color: widget.hintColor ?? AppColors.greyscale500,
+                color: widget.hintColor ?? AppColors.getTextSecondary(context),
                 fontSize: widget.inputFontSize ?? widget.fontSize ?? 14,
                 fontWeight: widget.inputFontWeight ?? widget.fontWeight ?? FontWeight.w400,
               ),
               prefixIcon: widget.prefixIcon,
               suffixIcon: _buildSuffixIcon(),
               contentPadding: widget.contentPadding ?? const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 16,
+                horizontal: 0,
+                vertical: 10,
               ),
               border: InputBorder.none,
               counterText: '',
@@ -245,7 +245,7 @@ class _InfoFieldState extends State<InfoField> {
     if (_isFocused) {
       return widget.focusedBorderColor ?? AppColors.primary500;
     }
-    return widget.borderColor ?? AppColors.greyscale300;
+    return widget.borderColor ?? AppColors.getSurface(context);
   }
 
   Widget? _buildSuffixIcon() {
@@ -253,7 +253,7 @@ class _InfoFieldState extends State<InfoField> {
       return IconButton(
         icon: Icon(
           _isObscured ? Icons.visibility : Icons.visibility_off,
-          color: AppColors.greyscale500,
+          color: AppColors.getTextSecondary(context),
           size: 20,
         ),
         onPressed: () {
