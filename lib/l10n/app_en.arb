@@ -4,6 +4,8 @@
   "forgotPasswordTitle": "Forgot Password \uD83D\uDD11",
   "forgotPasswordDes": "Enter your email address. We will send an OTP code for verification in the next step.",
   "continueText": "Continue",
+  "loginTitle": "Hello there \uD83D\uDC4B",
+  "loginDescription": "Please enter your username/email and password to sign in.",
   "login": "Login",
   "email": "Email",
   "password": "Password",
