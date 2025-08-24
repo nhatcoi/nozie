@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../../core/theme/app_colors.dart';
-import '../../../../../../core/theme/app_typography.dart';
-import '../../../../../../core/widgets/tag.dart';
-import '../../../../../../core/extension/context_extensions.dart';
+import '../../../../../../core/app_export.dart';
 
 class StepGenre extends StatefulWidget {
   final Function(List<String>) onGenresSelected;

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../../core/theme/app_colors.dart';
-import '../../../../../../core/theme/app_typography.dart';
-import '../../../../../../core/widgets/info_field.dart';
-import '../../../../../../core/extension/context_extensions.dart';
+import '../../../../../../core/app_export.dart';
 
 class StepSignup extends StatefulWidget {
   final Function(Map<String, dynamic>) onSignupCompleted;

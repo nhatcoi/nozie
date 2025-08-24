@@ -2,12 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:async';
-import '../../../../core/util/image_constant.dart';
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_typography.dart';
-import '../../../../core/widgets/primary_button.dart';
-import '../../../../core/widgets/secondary_button.dart';
-import '../../../../core/extension/context_extensions.dart';
+import '../../../core/app_export.dart';
 import 'data/welcome_constant.dart';
 
 class WelcomeScreen extends ConsumerStatefulWidget {

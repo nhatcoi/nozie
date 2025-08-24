@@ -3,12 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart';
-import '../../../../../../core/util/image_constant.dart';
-import '../../../../../../core/theme/app_colors.dart';
-import '../../../../../../core/theme/app_typography.dart';
-import '../../../../../../core/widgets/info_field.dart';
-import '../../../../../../core/widgets/dropdown.dart';
-import '../../../../../../core/extension/context_extensions.dart';
+import '../../../../../../core/app_export.dart';
 
 class StepProfile extends StatefulWidget {
   final Function(Map<String, String>) onProfileCompleted;
@@ -124,17 +119,17 @@ class _StepProfileState extends State<StepProfile> {
           data: Theme.of(context).copyWith(
             colorScheme: Theme.of(context).brightness == Brightness.dark
                 ? ColorScheme.dark(
-                    primary: AppColors.primary500,
-                    onPrimary: AppColors.white,
-                    surface: AppColors.dark2,
-                    onSurface: AppColors.white,
-                  )
+              primary: AppColors.primary500,
+              onPrimary: AppColors.white,
+              surface: AppColors.dark2,
+              onSurface: AppColors.white,
+            )
                 : ColorScheme.light(
-                    primary: AppColors.primary500,
-                    onPrimary: AppColors.white,
-                    surface: AppColors.white,
-                    onSurface: AppColors.greyscale900,
-                  ),
+              primary: AppColors.primary500,
+              onPrimary: AppColors.white,
+              surface: AppColors.white,
+              onSurface: AppColors.greyscale900,
+            ),
           ),
           child: child!,
         );
@@ -143,7 +138,7 @@ class _StepProfileState extends State<StepProfile> {
 
     if (picked != null) {
       _dobController.text =
-          "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
+      "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
       _validateForm();
     }
   }
@@ -289,31 +284,31 @@ class _StepProfileState extends State<StepProfile> {
                     ),
                     child: _selectedImage != null
                         ? ClipOval(
-                            child: Image.file(
-                              _selectedImage!,
-                              width: 100,
-                              height: 100,
-                              fit: BoxFit.cover,
-                            ),
-                          )
+                      child: Image.file(
+                        _selectedImage!,
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      ),
+                    )
                         : Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.camera_alt_outlined,
-                                size: 32,
-                                color: AppColors.greyscale500,
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                context.l10n.addPhoto,
-                                style: AppTypography.bodySBRegular.copyWith(
-                                  color: AppColors.greyscale500,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.camera_alt_outlined,
+                          size: 32,
+                          color: AppColors.greyscale500,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          context.l10n.addPhoto,
+                          style: AppTypography.bodySBRegular.copyWith(
+                            color: AppColors.greyscale500,
+                            fontSize: 12,
                           ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 16),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../l10n/app_localizations.dart';
-import '/core/services/theme_mode_notifier.dart';
+import '../../../../core/app_export.dart';
 
 class HomePage extends ConsumerWidget {
 
@@ -12,7 +11,7 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final t = AppLocalizations.of(context)!;
+    final t = context.l10n;
 
     final themeMode = ref.watch(themeModeProvider);
 

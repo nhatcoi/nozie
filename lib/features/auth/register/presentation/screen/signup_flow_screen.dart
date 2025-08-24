@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:movie_fe/core/extension/context_extensions.dart';
-import '../../../../../core/theme/app_colors.dart';
-import '../../../../../core/widgets/primary_button.dart';
-import '../../../../../core/widgets/secondary_button.dart';
+import '../../../../../core/app_export.dart';
 import '../viewmodel/signup_viewmodel.dart';
 import '../models/signup_step.dart';
 import 'steps/step_gender.dart';
