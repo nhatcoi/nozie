@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:movie_fe/features/auth/login/presentation/login_screen.dart';
 
 import '../l10n/app_localizations.dart';
 import '../core/services/locale_setting.dart';
@@ -33,6 +34,8 @@ class NozieApp extends ConsumerWidget {
       // routing
       initialRoute: AppRouters.welcome,
       onGenerateRoute: AppRouters.generateRoute,
+
+      home: LoginScreen(),
     );
   }
 }

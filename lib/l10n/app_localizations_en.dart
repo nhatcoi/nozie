@@ -21,6 +21,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get continueText => 'Continue';
 
   @override
+  String get loginTitle => 'Hello there 👋';
+
+  @override
+  String get loginDescription => 'Please enter your username/email and password to sign in.';
+
+  @override
   String get login => 'Login';
 
   @override
