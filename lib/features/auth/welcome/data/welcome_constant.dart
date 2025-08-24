@@ -73,7 +73,7 @@ class WelcomeBackgroundImages {
 }
 
 class WelcomeResponsiveValues {
-  // Screen sizing ratios
+  // ratios
   static const double topSpacingRatio = 0.35;
   static const double horizontalPaddingRatio = 0.06;
   static const double titleFontSizeRatio = 0.075;
@@ -82,32 +82,32 @@ class WelcomeResponsiveValues {
   static const double spaceBetweenRatio = 0.02;
   static const double bottomSpacingRatio = 0.04;
   
-  // Font size caps
+  // Font
   static const double maxTitleFontSize = 32;
   static const double maxIconSize = 24;
   
-  // Description text scaling
+  // text
   static const double descriptionFontSizeRatio = 0.45;
   static const double descriptionLineHeight = 1.5;
   static const int maxDescriptionLines = 4;
   
-  // Page indicator sizing
+  // Page indicator
   static const double pageIndicatorWidthRatio = 0.02;
   static const double pageIndicatorHeightRatio = 0.02;
   static const double pageIndicatorMarginRatio = 0.01;
   
-  // Layout flex ratios
+  // flex
   static const int welcomeContentFlex = 3;
   static const int actionsAreaFlex = 4;
   
-  // Spacing adjustments
+  // Spacing
   static const double topSpacingAdjustment = 0.9;
   static const double pageIndicatorSpacingRatio = 0.5;
   static const double pageIndicatorBottomSpacing = 2.0;
 }
 
 class WelcomeAnimationValues {
-  static const int backgroundChangeInterval = 12;
+  static const int backgroundChangeInterval = 3;
   static const int fadeTransitionDuration = 1200;
 }
 

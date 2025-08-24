@@ -90,8 +90,6 @@ class _StepProfileState extends State<StepProfile> {
     final fullName = _fullNameController.text.trim();
     final phone = _phoneController.text.trim();
     final dob = _dobController.text.trim();
-    // Don't override country if it already exists in _formData
-    final country = _formData['country'] ?? '';
 
     // Only update the fields that use controllers
     _formData['fullName'] = fullName;
