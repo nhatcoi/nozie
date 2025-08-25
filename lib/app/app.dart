@@ -35,7 +35,6 @@ class NozieApp extends ConsumerWidget {
       initialRoute: AppRouters.welcome,
       onGenerateRoute: AppRouters.generateRoute,
 
-      home: LoginScreen(),
     );
   }
 }

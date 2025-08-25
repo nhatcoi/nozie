@@ -219,7 +219,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get western => 'Viễn Tây';
 
   @override
-  String get completeYourProfile => 'Hoàn thành hồ sơ của bạn';
+  String get completeYourProfile => 'Hoàn thành hồ sơ';
 
   @override
   String get profilePrivacyNote => 'Đừng lo lắng, chỉ bạn mới có thể xem dữ liệu cá nhân của mình. Không ai khác có thể xem được.';

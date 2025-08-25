@@ -16,11 +16,11 @@ class StepSignup extends StatefulWidget {
 }
 
 class _StepSignupState extends State<StepSignup> {
-
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   final FocusNode _usernameFocus = FocusNode();
   final FocusNode _emailFocus = FocusNode();
@@ -165,7 +165,7 @@ class _StepSignupState extends State<StepSignup> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 32),
-          
+
           // Title
           Text(
             context.l10n.createAnAccount,
@@ -174,9 +174,9 @@ class _StepSignupState extends State<StepSignup> {
               fontWeight: FontWeight.w600,
             ),
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Subtitle
           Text(
             context.l10n.signupDescription,
@@ -184,9 +184,9 @@ class _StepSignupState extends State<StepSignup> {
               color: AppColors.getTextSecondary(context),
             ),
           ),
-          
+
           const SizedBox(height: 32),
-          
+
           // Form Fields
           Expanded(
             child: SingleChildScrollView(
@@ -203,9 +203,9 @@ class _StepSignupState extends State<StepSignup> {
                     keyboardType: TextInputType.text,
                     onSubmitted: (_) => _emailFocus.requestFocus(),
                   ),
-                  
+
                   const SizedBox(height: 24),
-                  
+
                   // Email Field
                   InfoField(
                     label: context.l10n.email,
@@ -217,9 +217,9 @@ class _StepSignupState extends State<StepSignup> {
                     keyboardType: TextInputType.emailAddress,
                     onSubmitted: (_) => _passwordFocus.requestFocus(),
                   ),
-                  
+
                   const SizedBox(height: 24),
-                  
+
                   // Password Field
                   InfoField(
                     label: context.l10n.password,
@@ -232,16 +232,18 @@ class _StepSignupState extends State<StepSignup> {
                     onSubmitted: (_) => _confirmPasswordFocus.requestFocus(),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                        _obscurePassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                         color: AppColors.greyscale500,
                         size: 20,
                       ),
                       onPressed: _togglePasswordVisibility,
                     ),
                   ),
-                  
+
                   const SizedBox(height: 24),
-                  
+
                   // Confirm Password Field
                   InfoField(
                     label: context.l10n.confirmPassword,
@@ -253,17 +255,18 @@ class _StepSignupState extends State<StepSignup> {
                     isPassword: true,
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
+                        _obscureConfirmPassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                         color: AppColors.greyscale500,
                         size: 20,
                       ),
                       onPressed: _toggleConfirmPasswordVisibility,
                     ),
                   ),
-                  
+
                   const SizedBox(height: 24),
-                  
-                  // Remember Me Checkbox
+
                   Row(
                     children: [
                       Checkbox(
@@ -286,7 +289,7 @@ class _StepSignupState extends State<StepSignup> {
                       ),
                     ],
                   ),
-                  
+
                   const SizedBox(height: 32),
                 ],
               ),

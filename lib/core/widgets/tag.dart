@@ -36,7 +36,7 @@ class Tag extends StatelessWidget {
     this.borderRadius = 100.0,
     this.padding,
     this.fontSize,
-    this.fontWeight,
+    this.fontWeight = FontWeight.w700,
     this.showBorder = true,
     this.animationDuration = const Duration(milliseconds: 200),
     this.animationCurve = Curves.easeInOut,
