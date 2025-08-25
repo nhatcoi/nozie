@@ -143,6 +143,30 @@ abstract class AppLocalizations {
   /// **'Sign In'**
   String get signIn;
 
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @otpDidntReceiveCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t receive the code?'**
+  String get otpDidntReceiveCode;
+
+  /// No description provided for @otpResendCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Code'**
+  String get otpResendCode;
+
+  /// No description provided for @otpResendAfter.
+  ///
+  /// In en, this message translates to:
+  /// **'You can resend after {seconds}s'**
+  String otpResendAfter(Object seconds);
+
   /// No description provided for @loginTitle.
   ///
   /// In en, this message translates to:

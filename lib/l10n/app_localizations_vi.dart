@@ -33,6 +33,20 @@ class AppLocalizationsVi extends AppLocalizations {
   String get signIn => 'Đăng Nhập';
 
   @override
+  String get confirm => 'Xác Nhận';
+
+  @override
+  String get otpDidntReceiveCode => 'Chưa có mã?';
+
+  @override
+  String get otpResendCode => 'Gửi lại mã ngay';
+
+  @override
+  String otpResendAfter(Object seconds) {
+    return 'Đợi ${seconds}s rồi gửi lại';
+  }
+
+  @override
   String get loginTitle => 'Xin chào bạn 👋';
 
   @override

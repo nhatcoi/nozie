@@ -33,6 +33,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signIn => 'Sign In';
 
   @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get otpDidntReceiveCode => 'Didn\'t receive the code?';
+
+  @override
+  String get otpResendCode => 'Resend Code';
+
+  @override
+  String otpResendAfter(Object seconds) {
+    return 'You can resend after ${seconds}s';
+  }
+
+  @override
   String get loginTitle => 'Hello there 👋';
 
   @override
