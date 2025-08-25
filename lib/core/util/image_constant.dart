@@ -12,6 +12,9 @@ class ImageConstant {
   static const String logoIcon      = '${subPathIcon}icon_logo.svg';
   static const String loadingIcon   = '${subPathIcon}icon_loading.svg';
   static const String imgGoogleIcon= '${subPathIcon}icon_google.svg';
+  static const String imgFBIcon= '${subPathIcon}icon_facebook.svg';
+  static const String imgUncheckedIcon= '${subPathIcon}unchecked.svg';
+  static const String imgCheckedIcon= '${subPathIcon}checked.svg';
   static const String scheduleIcon = '${subPathIcon}schedule.svg';
   static const String toggleIcon = '${subPathIcon}toggle.svg';
   static const String imgImageNotFound = '${_basePath}placeholder.png';

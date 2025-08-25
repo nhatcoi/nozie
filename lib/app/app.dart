@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:movie_fe/features/auth/login/presentation/login_screen.dart';
 
+
+import '../features/auth/forgot_password/presentation/forgot_password_otp_screen.dart';
 import '../l10n/app_localizations.dart';
 import '../core/services/locale_setting.dart';
 import '../core/services/theme_mode_notifier.dart';
@@ -35,7 +36,7 @@ class NozieApp extends ConsumerWidget {
       initialRoute: AppRouters.welcome,
       onGenerateRoute: AppRouters.generateRoute,
 
-      home: LoginScreen(),
+      home: ForgotPasswordOtpScreen(email: 'ndviet.dev@gmail.com'),
     );
   }
 }
