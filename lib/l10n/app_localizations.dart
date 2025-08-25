@@ -155,18 +155,6 @@ abstract class AppLocalizations {
   /// **'Please enter your username/email and password to sign in.'**
   String get loginDescription;
 
-  /// No description provided for @loginTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Hello there 👋'**
-  String get loginTitle;
-
-  /// No description provided for @loginDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Please enter your username/email and password to sign in.'**
-  String get loginDescription;
-
   /// No description provided for @login.
   ///
   /// In en, this message translates to:
