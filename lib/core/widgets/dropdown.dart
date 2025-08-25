@@ -101,7 +101,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Label
+
         if (widget.label != null) ...[
           Row(
             children: [
@@ -116,7 +116,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
               if (widget.isRequired) ...[
                 const SizedBox(width: 4),
                 Text(
-                  '*',
+                  '',
                   style: AppTypography.bodyMSemibold.copyWith(
                     color: AppColors.red,
                     fontSize: widget.labelFontSize ?? widget.fontSize ?? 14,

@@ -14,7 +14,6 @@ class AppColors{
         ? dark2 
         : greyscale100;
   }
-  
   static Color getText(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark 
         ? white
@@ -25,6 +24,12 @@ class AppColors{
     return Theme.of(context).brightness == Brightness.dark 
         ? greyscale400 
         : greyscale600;
+  }
+
+  static Color getModalBackground(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? dark2
+        : white;
   }
 
 

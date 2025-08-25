@@ -77,7 +77,9 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
       context: context,
       barrierDismissible: false,
       builder: (context) => Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 32.0),
           child: Column(
@@ -87,12 +89,17 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
                 ImageConstant.loadingIcon,
                 width: 141,
                 height: 141,
-                colorFilter: ColorFilter.mode(AppColors.primary500, BlendMode.srcIn),
+                colorFilter: ColorFilter.mode(
+                  AppColors.primary500,
+                  BlendMode.srcIn,
+                ),
               ),
               const SizedBox(height: 16),
               Text(
                 'Processing...',
-                style: AppTypography.bodyLRegular.copyWith(color: AppColors.getTextSecondary(context)),
+                style: AppTypography.bodyLRegular.copyWith(
+                  color: AppColors.getTextSecondary(context),
+                ),
               ),
             ],
           ),
@@ -135,6 +142,10 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
             text: 'Close',
             onPressed: () => Navigator.pop(context),
           ),
+          secondaryButton: SecondaryButton(
+            text: 'ok',
+            onPressed: () => Navigator.pop(context),
+          ),
         );
         break;
       case Loading<UserReg>():
@@ -145,7 +156,6 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: AppColors.getBackground(context),
       body: SafeArea(
@@ -162,29 +172,27 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
     );
   }
 
-
-
-
   Widget _buildProcessBar() {
     final progress = currentStep.stepNumber / SignupStepExtension.totalSteps;
 
     return Container(
       width: double.infinity,
       height: 48,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Stack(
         children: [
-
           Center(
             child: LayoutBuilder(
               builder: (context, constraints) {
-                final barWidth = (constraints.maxWidth * 0.5).clamp(160.0, 320.0,); // %50
+                final barWidth = (constraints.maxWidth * 0.5).clamp(
+                  160.0,
+                  320.0,
+                ); // %50
                 return SizedBox(
                   width: barWidth,
                   height: 12,
                   child: Stack(
                     children: [
-
                       Container(
                         decoration: ShapeDecoration(
                           color: AppColors.getSurface(context),
@@ -205,7 +213,6 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
                           ),
                         ),
                       ),
-
                     ],
                   ),
                 );
@@ -229,12 +236,14 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
                 height: 16,
                 child: SvgPicture.asset(
                   ImageConstant.arrowIcon,
-                  colorFilter: ColorFilter.mode(AppColors.getText(context), BlendMode.srcIn),
+                  colorFilter: ColorFilter.mode(
+                    AppColors.getText(context),
+                    BlendMode.srcIn,
+                  ),
                 ),
               ),
             ),
-          )
-
+          ),
         ],
       ),
     );
@@ -290,7 +299,6 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
     }
   }
 
-
   Widget _buildButtonBar() {
     final isLastStep = currentStep.isLast;
     final isGenreStep = currentStep.canSkip;
@@ -306,7 +314,6 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
       ),
       child: Row(
         children: [
-
           if (isGenreStep)
             Expanded(
               child: SecondaryButton(
@@ -329,8 +336,12 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
               text: isLastStep
                   ? context.l10n.signUp
                   : context.l10n.continueText,
-              onPressed: isLastStep ? _handleSignUp : (_canNextStep() ? _nextStep : null),
-              backgroundColor: (_canNextStep() ? AppColors.primary500 : AppColors.getSurface(context)),
+              onPressed: isLastStep
+                  ? _handleSignUp
+                  : (_canNextStep() ? _nextStep : null),
+              backgroundColor: (_canNextStep()
+                  ? AppColors.primary500
+                  : AppColors.getSurface(context)),
             ),
           ),
         ],

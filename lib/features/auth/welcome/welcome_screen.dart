@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:movie_fe/routes/app_routers.dart';
 import 'dart:async';
 import '../../../core/app_export.dart';
 import 'data/welcome_constant.dart';
@@ -189,7 +190,7 @@ class WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                           PrimaryButton(
                             text: WelcomeButtonTexts.getSignUpText(context),
                             onPressed: () {
-                              Navigator.pushNamed(context, '/signup');
+                              Navigator.pushNamed(context, AppRouters.signup);
                             },
                           ),
 
@@ -198,7 +199,7 @@ class WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                           SecondaryButton(
                             text: WelcomeButtonTexts.getLoginText(context),
                             onPressed: () {
-                              Navigator.pushNamed(context, '/home');
+                              Navigator.pushNamed(context, AppRouters.home);
                             },
                           ),
 
