@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_fe/features/auth/login/presentation/login_screen.dart';
 import '../features/auth/register/presentation/screen/signup_flow_screen.dart';
 import '../features/auth/welcome/welcome_screen.dart';
 import '../features/setting/presentation/screens/home_screen.dart';
@@ -25,15 +26,9 @@ class AppRouters {
         builder: (_) => const SignupFlowScreen(),
       );
     }
-
-    // TODO: Implement login screen
     if (name == login) {
       return MaterialPageRoute(
-        builder: (_) => const Scaffold(
-          body: Center(
-            child: Text('Login Screen - Coming Soon'),
-          ),
-        ),
+        builder: (_) => const LoginScreen()
       );
     }
     
