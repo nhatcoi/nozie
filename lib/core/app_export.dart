@@ -13,6 +13,7 @@ export 'theme/app_typography.dart';
 
 // Utils
 export 'util/image_constant.dart';
+export 'utils/validation_utils.dart';
 
 // Widgets
 export 'widgets/info_field.dart';

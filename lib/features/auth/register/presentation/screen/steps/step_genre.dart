@@ -18,7 +18,6 @@ class StepGenre extends StatefulWidget {
 class _StepGenreState extends State<StepGenre> {
   List<String> selectedGenres = [];
 
-  // Movie genre options with localization
   Map<String, String> getGenreOptions(BuildContext context) {
     return {
       'action': context.l10n.action,
@@ -64,9 +63,9 @@ class _StepGenreState extends State<StepGenre> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           const SizedBox(height: 32),
-          
-          // Title
+
           Text(
             context.l10n.chooseMovieGenre,
             style: AppTypography.h3.copyWith(
@@ -74,18 +73,18 @@ class _StepGenreState extends State<StepGenre> {
               fontWeight: FontWeight.w600,
             ),
           ),
+
           const SizedBox(height: 16),
-          
-          // Subtitle
+
           Text(
             context.l10n.selectPreferredGenre,
             style: AppTypography.bodyLRegular.copyWith(
               color: AppColors.getTextSecondary(context),
             ),
           ),
+
           const SizedBox(height: 32),
 
-          // Grid
           Builder(
             builder: (context) {
               final genreOptions = getGenreOptions(context);
@@ -101,11 +100,11 @@ class _StepGenreState extends State<StepGenre> {
                     vertical: 10,
                   ),
                   fontSize: 14,
-                  fontWeight: FontWeight.w800,
                 )).toList(),
               );
             },
           ),
+
         ],
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../../../core/app_export.dart';
+import '../../../../../../core/utils/validation_utils.dart';
 
 class StepSignup extends StatefulWidget {
   final Function(Map<String, dynamic>) onSignupCompleted;
@@ -99,49 +100,19 @@ class _StepSignupState extends State<StepSignup> {
   }
 
   String? _validateUsername(String? value) {
-    if (value?.trim().isEmpty ?? true) {
-      return context.l10n.usernameRequired;
-    }
-    if (value!.trim().length < 3) {
-      return context.l10n.usernameMinLength;
-    }
-    if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(value.trim())) {
-      return context.l10n.usernameInvalidChars;
-    }
-    return null;
+    return ValidationUtils.validateUsername(value, context);
   }
 
   String? _validateEmail(String? value) {
-    if (value?.trim().isEmpty ?? true) {
-      return context.l10n.emailRequired;
-    }
-    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value!.trim())) {
-      return context.l10n.emailInvalid;
-    }
-    return null;
+    return ValidationUtils.validateEmail(value, context);
   }
 
   String? _validatePassword(String? value) {
-    if (value?.trim().isEmpty ?? true) {
-      return context.l10n.passwordRequired;
-    }
-    if (value!.trim().length < 8) {
-      return context.l10n.passwordMinLength;
-    }
-    if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)').hasMatch(value.trim())) {
-      return context.l10n.passwordComplexity;
-    }
-    return null;
+    return ValidationUtils.validatePassword(value, context);
   }
 
   String? _validateConfirmPassword(String? value) {
-    if (value?.trim().isEmpty ?? true) {
-      return context.l10n.confirmPasswordRequired;
-    }
-    if (value!.trim() != _passwordController.text.trim()) {
-      return context.l10n.passwordsDoNotMatch;
-    }
-    return null;
+    return ValidationUtils.validateConfirmPassword(value, _passwordController.text, context);
   }
 
   @override
@@ -164,9 +135,9 @@ class _StepSignupState extends State<StepSignup> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           const SizedBox(height: 32),
 
-          // Title
           Text(
             context.l10n.createAnAccount,
             style: AppTypography.h3.copyWith(
@@ -177,7 +148,6 @@ class _StepSignupState extends State<StepSignup> {
 
           const SizedBox(height: 16),
 
-          // Subtitle
           Text(
             context.l10n.signupDescription,
             style: AppTypography.bodyLRegular.copyWith(
@@ -187,12 +157,11 @@ class _StepSignupState extends State<StepSignup> {
 
           const SizedBox(height: 32),
 
-          // Form Fields
           Expanded(
-            child: SingleChildScrollView(
+            child: SingleChildScrollView( // scroll
               child: Column(
                 children: [
-                  // Username Field
+
                   InfoField(
                     label: context.l10n.username,
                     hintText: context.l10n.enterYourUsername,
@@ -206,7 +175,6 @@ class _StepSignupState extends State<StepSignup> {
 
                   const SizedBox(height: 24),
 
-                  // Email Field
                   InfoField(
                     label: context.l10n.email,
                     hintText: context.l10n.enterYourEmailAddress,
@@ -220,7 +188,6 @@ class _StepSignupState extends State<StepSignup> {
 
                   const SizedBox(height: 24),
 
-                  // Password Field
                   InfoField(
                     label: context.l10n.password,
                     hintText: context.l10n.enterYourPassword,
@@ -244,7 +211,6 @@ class _StepSignupState extends State<StepSignup> {
 
                   const SizedBox(height: 24),
 
-                  // Confirm Password Field
                   InfoField(
                     label: context.l10n.confirmPassword,
                     hintText: context.l10n.confirmYourPassword,

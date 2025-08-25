@@ -72,41 +72,6 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
   Future<void> _handleSignUp() async {
     final signupViewModel = ref.read(signupViewModelProvider.notifier);
 
-    // Show loading dialog (SVG spinner), no buttons
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.0),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 32.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SvgPicture.asset(
-                ImageConstant.loadingIcon,
-                width: 141,
-                height: 141,
-                colorFilter: ColorFilter.mode(
-                  AppColors.primary500,
-                  BlendMode.srcIn,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Processing...',
-                style: AppTypography.bodyLRegular.copyWith(
-                  color: AppColors.getTextSecondary(context),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-
     final result = await signupViewModel.registerUser(
       gender: selectedGender,
       age: selectedAge,
@@ -115,7 +80,7 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
       accountData: signupData,
     );
 
-    if (mounted) Navigator.of(context).pop(); // close loading
+    // if (mounted) Navigator.of(context).pop(); // đóng loading
 
     switch (result) {
       case Success<UserReg>(data: final _):
@@ -181,13 +146,11 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Stack(
         children: [
+
           Center(
             child: LayoutBuilder(
               builder: (context, constraints) {
-                final barWidth = (constraints.maxWidth * 0.5).clamp(
-                  160.0,
-                  320.0,
-                ); // %50
+                final barWidth = (constraints.maxWidth * 0.5).clamp(160.0, 320.0,); // %50
                 return SizedBox(
                   width: barWidth,
                   height: 12,
@@ -244,6 +207,7 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
               ),
             ),
           ),
+
         ],
       ),
     );

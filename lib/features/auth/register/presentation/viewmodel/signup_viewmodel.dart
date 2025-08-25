@@ -4,24 +4,20 @@ import '../../domain/entities/user_registration.dart';
 import '../../domain/usecases/register_user_usecase.dart';
 import '../../data/repositories/auth_repository_impl.dart';
 
-// Repository Provider
 final authRepositoryProvider = Provider<AuthRepositoryImpl>((ref) {
   return AuthRepositoryImpl();
 });
 
-// Use Case Provider
 final registerUserUseCaseProvider = Provider<RegisterUserUseCase>((ref) {
   final repository = ref.watch(authRepositoryProvider);
   return RegisterUserUseCase(repository);
 });
 
-// ViewModel Provider
 final signupViewModelProvider = StateNotifierProvider<SignupViewModel, UIState<UserReg>>((ref) {
   final useCase = ref.watch(registerUserUseCaseProvider);
   return SignupViewModel(useCase);
 });
 
-// ViewModel Class
 class SignupViewModel extends StateNotifier<UIState<UserReg>> {
   final RegisterUserUseCase _registerUserUseCase;
 

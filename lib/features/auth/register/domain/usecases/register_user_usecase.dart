@@ -7,15 +7,13 @@ class RegisterUserUseCase {
   RegisterUserUseCase(this.repository);
 
   Future<void> execute(UserReg userRegistration) async {
-    // Validate user registration data
+
     _validateUserRegistration(userRegistration);
-    
-    // Register user
+
     await repository.registerUser(userRegistration);
   }
 
   void _validateUserRegistration(UserReg userRegistration) {
-    // Validate profile
     if (userRegistration.profile.fullName.isEmpty) {
       throw Exception('Full name is required');
     }
@@ -28,8 +26,6 @@ class RegisterUserUseCase {
     if (userRegistration.profile.country.isEmpty) {
       throw Exception('Country is required');
     }
-
-    // Validate account
     if (userRegistration.account.username.isEmpty) {
       throw Exception('Username is required');
     }

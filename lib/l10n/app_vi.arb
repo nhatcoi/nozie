@@ -102,8 +102,6 @@
   "phoneMinLength": "Số điện thoại phải có ít nhất 10 chữ số",
   "dobRequired": "Ngày sinh là bắt buộc",
   "countryRequired": "Quốc gia là bắt buộc",
-  "imagePickerNotSupported": "Trình chọn ảnh không được hỗ trợ trên nền tảng web",
-  "usingPlaceholderImage": "Sử dụng ảnh mẫu cho việc thử nghiệm trên Simulator",
   "createAnAccount": "Tạo tài khoản",
   "signupDescription": "Nhập tên đăng nhập, email và mật khẩu. Nếu bạn quên, bạn sẽ phải làm quên mật khẩu.",
   "username": "Tên đăng nhập",

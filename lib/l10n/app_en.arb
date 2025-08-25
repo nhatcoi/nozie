@@ -102,8 +102,6 @@
   "phoneMinLength": "Phone number must be at least 10 digits",
   "dobRequired": "Date of birth is required",
   "countryRequired": "Country is required",
-  "imagePickerNotSupported": "Image picker is not supported on web platform",
-  "usingPlaceholderImage": "Using placeholder image for Simulator testing",
   "createAnAccount": "Create an Account",
   "signupDescription": "Enter your username, email & password. If you forget it, then you have to do forgot password.",
   "username": "Username",
