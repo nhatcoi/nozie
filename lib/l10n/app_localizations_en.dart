@@ -12,6 +12,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'NoZie';
 
   @override
+  String get forgotPasswordTitle => 'Forgot Password 🔑';
+
+  @override
+  String get forgotPasswordDes => 'Enter your email address. We will send an OTP code for verification in the next step.';
+
+  @override
+  String get forgotPassword => 'Forgot Password';
+
+  @override
+  String get orContinueWith => 'or continue with';
+
+  @override
+  String get otpTitle => 'You’ve Got Mail 📩';
+
+  @override
+  String get otpDes => 'We have sent the OTP verification code to your email address. Check your email and enter the code below.';
+
+  @override
+  String get signIn => 'Sign In';
+
+  @override
+  String get loginTitle => 'Hello there 👋';
+
+  @override
+  String get loginDescription => 'Please enter your username/email and password to sign in.';
+
+  @override
   String get login => 'Login';
 
   @override
@@ -72,24 +99,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accountInfo => 'Account Information';
-
-  @override
-  String get fullName => 'Full Name';
-
-  @override
-  String get phone => 'Phone Number';
-
-  @override
-  String get dateOfBirth => 'Date of Birth';
-
-  @override
-  String get country => 'Country';
-
-  @override
-  String get username => 'Username';
-
-  @override
-  String get confirmPassword => 'Confirm Password';
 
   @override
   String get male => 'Male';
@@ -215,6 +224,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tapToAddProfilePicture => 'Tap to add profile picture';
 
   @override
+  String get fullName => 'Full Name';
+
+  @override
   String get enterYourFullName => 'Enter your full name';
 
   @override
@@ -224,7 +236,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterYourPhoneNumber => 'Enter your phone number';
 
   @override
+  String get dateOfBirth => 'Date of Birth';
+
+  @override
   String get dateFormat => 'DD/MM/YYYY';
+
+  @override
+  String get country => 'Country';
 
   @override
   String get enterYourCountry => 'Enter your country';
@@ -260,6 +278,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signupDescription => 'Enter your username, email & password. If you forget it, then you have to do forgot password.';
 
   @override
+  String get username => 'Username';
+
+  @override
   String get enterYourUsername => 'Enter your username';
 
   @override
@@ -267,6 +288,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enterYourEmailAddress => 'Enter your email address';
+
+  @override
+  String get confirmPassword => 'Confirm Password';
 
   @override
   String get confirmYourPassword => 'Confirm your password';

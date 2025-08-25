@@ -12,6 +12,33 @@ class AppLocalizationsVi extends AppLocalizations {
   String get appTitle => 'NoZie';
 
   @override
+  String get forgotPasswordTitle => 'Quên Mật Khẩu 🔑';
+
+  @override
+  String get forgotPasswordDes => 'Nhập email của bạn, chúng tôi sẽ gửi mã OTP để xác minh ở bước tiếp theo.';
+
+  @override
+  String get forgotPassword => 'Quên Mật Khẩu';
+
+  @override
+  String get orContinueWith => 'hoặc tiếp tục với';
+
+  @override
+  String get otpTitle => 'OTP tới rồi nè 📩';
+
+  @override
+  String get otpDes => 'Chúng tôi đã gửi mã xác thực OTP đến email của bạn. Vui lòng kiểm tra email và nhập mã bên dưới nhé.';
+
+  @override
+  String get signIn => 'Đăng Nhập';
+
+  @override
+  String get loginTitle => 'Xin chào bạn 👋';
+
+  @override
+  String get loginDescription => 'Điền email/tên đăng nhập và mật khẩu để tiếp tục nha ✨';
+
+  @override
   String get login => 'Đăng nhập';
 
   @override
@@ -79,24 +106,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get accountInfo => 'Thông tin tài khoản';
-
-  @override
-  String get fullName => 'Họ và tên';
-
-  @override
-  String get phone => 'Số điện thoại';
-
-  @override
-  String get dateOfBirth => 'Ngày sinh';
-
-  @override
-  String get country => 'Quốc gia';
-
-  @override
-  String get username => 'Tên đăng nhập';
-
-  @override
-  String get confirmPassword => 'Xác nhận mật khẩu';
 
   @override
   String get male => 'Nam';
@@ -222,6 +231,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get tapToAddProfilePicture => 'Nhấn để thêm ảnh đại diện';
 
   @override
+  String get fullName => 'Họ và tên';
+
+  @override
   String get enterYourFullName => 'Nhập họ và tên của bạn';
 
   @override
@@ -231,7 +243,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get enterYourPhoneNumber => 'Nhập số điện thoại của bạn';
 
   @override
+  String get dateOfBirth => 'Ngày sinh';
+
+  @override
   String get dateFormat => 'DD/MM/YYYY';
+
+  @override
+  String get country => 'Quốc gia';
 
   @override
   String get enterYourCountry => 'Nhập quốc gia của bạn';
@@ -267,6 +285,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get signupDescription => 'Nhập tên đăng nhập, email và mật khẩu. Nếu bạn quên, bạn sẽ phải làm quên mật khẩu.';
 
   @override
+  String get username => 'Tên đăng nhập';
+
+  @override
   String get enterYourUsername => 'Nhập tên đăng nhập của bạn';
 
   @override
@@ -274,6 +295,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get enterYourEmailAddress => 'Nhập địa chỉ email của bạn';
+
+  @override
+  String get confirmPassword => 'Xác nhận mật khẩu';
 
   @override
   String get confirmYourPassword => 'Xác nhận mật khẩu của bạn';
