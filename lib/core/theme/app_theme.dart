@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:movie_fe/core/extension/lined_text_divider_theme_extensions.dart';
 import 'package:movie_fe/core/theme/app_colors.dart';
 import 'package:movie_fe/core/theme/app_typography.dart';
+import 'package:movie_fe/core/widgets/social_button.dart';
 
 class AppTheme {
   // Light theme
@@ -13,6 +15,10 @@ class AppTheme {
       secondary: AppColors.secondary500,
       surface: AppColors.white
     ),
+    extensions: [
+      LinedTextDividerTheme(lineColor: AppColors.greyscale200,textStyle: AppTypography.bodyXLMedium.copyWith(color: AppColors.greyscale700) ),
+    ],
+    dividerColor: AppColors.greyscale200,
     textTheme: TextTheme(
       // Display
       displayLarge:  AppTypography.h1,
@@ -64,7 +70,12 @@ class AppTheme {
     colorScheme: ColorScheme.fromSeed(
       seedColor: AppColors.primary500,
       brightness: Brightness.dark,
+      surface: AppColors.dark1
     ),
+    extensions: [
+      LinedTextDividerTheme(lineColor: AppColors.dark4,textStyle: AppTypography.bodyXLMedium.copyWith(color: AppColors.greyscale300) ),
+    ],
+    dividerColor: AppColors.dark4,
     textTheme: TextTheme(
       // Display
       displayLarge:  AppTypography.h1,
@@ -103,7 +114,7 @@ class AppTheme {
       ),
     ),
     appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.dark1,
       foregroundColor: Colors.white,
       elevation: 0,
     ),
