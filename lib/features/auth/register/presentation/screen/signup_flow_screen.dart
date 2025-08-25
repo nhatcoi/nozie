@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:movie_fe/core/widgets/modal.dart';
 import '../../../../../core/app_export.dart';
+import '../../../../../core/common/ui_state.dart';
 import '../viewmodel/signup_viewmodel.dart';
 import '../models/signup_step.dart';
+import '../../domain/entities/user_registration.dart';
 import 'steps/step_gender.dart';
 import 'steps/step_age.dart';
 import 'steps/step_genre.dart';
@@ -42,7 +46,7 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
     }
   }
 
-  bool _canProceedToNextStep() {
+  bool _canNextStep() {
     switch (currentStep) {
       case SignupStep.gender:
         return selectedGender != null;
@@ -51,63 +55,96 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
       case SignupStep.genre:
         return true; // có thể skip
       case SignupStep.profile:
-        return profileData.isNotEmpty && 
-               profileData['fullName']?.isNotEmpty == true &&
-               profileData['phone']?.isNotEmpty == true &&
-               profileData['dob']?.isNotEmpty == true &&
-               profileData['country']?.isNotEmpty == true;
+        return profileData.isNotEmpty &&
+            profileData['fullName']?.isNotEmpty == true &&
+            profileData['phone']?.isNotEmpty == true &&
+            profileData['dob']?.isNotEmpty == true &&
+            profileData['country']?.isNotEmpty == true;
       case SignupStep.signup:
-        return signupData.isNotEmpty && 
-               signupData['username']?.isNotEmpty == true &&
-               signupData['email']?.isNotEmpty == true &&
-               signupData['password']?.isNotEmpty == true &&
-               signupData['confirmPassword']?.isNotEmpty == true;
+        return signupData.isNotEmpty &&
+            signupData['username']?.isNotEmpty == true &&
+            signupData['email']?.isNotEmpty == true &&
+            signupData['password']?.isNotEmpty == true &&
+            signupData['confirmPassword']?.isNotEmpty == true;
     }
   }
 
-  void _handleSignUp() {
+  Future<void> _handleSignUp() async {
     final signupViewModel = ref.read(signupViewModelProvider.notifier);
-    
-    signupViewModel.registerUser(
+
+    // Show loading dialog (SVG spinner), no buttons
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 32.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SvgPicture.asset(
+                ImageConstant.loadingIcon,
+                width: 141,
+                height: 141,
+                colorFilter: ColorFilter.mode(AppColors.primary500, BlendMode.srcIn),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Processing...',
+                style: AppTypography.bodyLRegular.copyWith(color: AppColors.getTextSecondary(context)),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    final result = await signupViewModel.registerUser(
       gender: selectedGender,
       age: selectedAge,
       genres: selectedGenres,
       profileData: profileData,
       accountData: signupData,
     );
+
+    if (mounted) Navigator.of(context).pop(); // close loading
+
+    switch (result) {
+      case Success<UserReg>(data: final _):
+        if (!mounted) return;
+        await showAppModal(
+          context: context,
+          title: 'Success',
+          description: context.l10n.registrationSuccessful,
+          iconPath: ImageConstant.successIcon,
+          primaryButton: PrimaryButton(
+            text: 'OK',
+            onPressed: () => Navigator.pop(context),
+          ),
+        );
+        break;
+      case Error<UserReg>(message: final msg):
+        if (!mounted) return;
+        await showAppModal(
+          context: context,
+          title: 'Error',
+          description: 'Error',
+          iconPath: ImageConstant.successIcon,
+          primaryButton: PrimaryButton(
+            text: 'Close',
+            onPressed: () => Navigator.pop(context),
+          ),
+        );
+        break;
+      case Loading<UserReg>():
+      case Idle<UserReg>():
+        break;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final signupState = ref.watch(signupViewModelProvider);
-    
-    // Success
-    if (signupState.isSuccess) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(context.l10n.registrationSuccessful),
-            backgroundColor: AppColors.green,
-          ),
-        );
-        //
-        Navigator.pop(context);
-      });
-    }
-
-    // Error
-    if (signupState.error != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(signupState.error!),
-            backgroundColor: AppColors.red,
-          ),
-        );
-        // Clear
-        ref.read(signupViewModelProvider.notifier).clearError();
-      });
-    }
 
     return Scaffold(
       backgroundColor: AppColors.getBackground(context),
@@ -116,9 +153,7 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
           children: [
             _buildProcessBar(),
 
-            Expanded(
-              child: _buildStepContent(),
-            ),
+            Expanded(child: _buildStepContent()),
 
             _buildButtonBar(),
           ],
@@ -127,69 +162,79 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
     );
   }
 
+
+
+
   Widget _buildProcessBar() {
     final progress = currentStep.stepNumber / SignupStepExtension.totalSteps;
 
     return Container(
       width: double.infinity,
       height: 48,
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Stack(
         children: [
-          // Progress bar container
+
           Center(
             child: LayoutBuilder(
               builder: (context, constraints) {
-                final barWidth = (constraints.maxWidth * 0.5).clamp(160.0, 320.0); // %50 width
+                final barWidth = (constraints.maxWidth * 0.5).clamp(160.0, 320.0,); // %50
                 return SizedBox(
                   width: barWidth,
                   height: 12,
                   child: Stack(
                     children: [
+
                       Container(
                         decoration: ShapeDecoration(
                           color: AppColors.getSurface(context),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100),
+                          ),
                         ),
                       ),
+
                       AnimatedContainer(
                         duration: const Duration(milliseconds: 500),
                         curve: Curves.easeInOut,
                         width: barWidth * progress,
                         decoration: ShapeDecoration(
                           color: AppColors.primary500,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100),
+                          ),
                         ),
                       ),
+
                     ],
                   ),
                 );
               },
             ),
           ),
-          // Back arrow
-          Positioned(
-            left: 0,
-            top: -5,
-                          child: GestureDetector(
-                onTap: () {
-                  if (currentStep.isFirst) {
-                    Navigator.pop(context);
-                  } else {
-                    _previousStep();
-                  }
-                },
+
+          // <-
+          Align(
+            alignment: Alignment.centerLeft,
+            child: GestureDetector(
+              onTap: () {
+                if (currentStep.isFirst) {
+                  Navigator.pop(context);
+                } else {
+                  _previousStep();
+                }
+              },
               child: SizedBox(
-                width: 32,
-                height: 32,
-                child: Icon(
-                  Icons.arrow_back,
-                  size: 18,
-                  color: AppColors.getText(context),
+                width: 16,
+                height: 16,
+                child: SvgPicture.asset(
+                  ImageConstant.arrowIcon,
+                  colorFilter: ColorFilter.mode(AppColors.getText(context), BlendMode.srcIn),
                 ),
               ),
             ),
-          ),
+          )
+
         ],
       ),
     );
@@ -245,6 +290,7 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
     }
   }
 
+
   Widget _buildButtonBar() {
     final isLastStep = currentStep.isLast;
     final isGenreStep = currentStep.canSkip;
@@ -255,26 +301,21 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
       decoration: BoxDecoration(
         color: AppColors.getBackground(context),
         border: Border(
-          top: BorderSide(
-            color: AppColors.getSurface(context),
-            width: 1,
-          ),
+          top: BorderSide(color: AppColors.getSurface(context), width: 1),
         ),
       ),
       child: Row(
         children: [
-          // Skip button
+
           if (isGenreStep)
             Expanded(
               child: SecondaryButton(
                 text: context.l10n.skip,
                 onPressed: () {
                   setState(() {
-                    // Reset selection for current step
                     if (currentStep == SignupStep.genre) {
                       selectedGenres = [];
                     }
-                    // Move to next step
                     currentStep = currentStep.next ?? SignupStep.signup;
                   });
                 },
@@ -283,23 +324,13 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
 
           if (isGenreStep) const SizedBox(width: 16),
 
-          // Continue/Sign Up button
           Expanded(
             child: PrimaryButton(
-              text: isLastStep ? context.l10n.signUp : context.l10n.continueText,
-              onPressed: signupState.isLoading 
-                  ? null 
-                  : (isLastStep ? _handleSignUp : (_canProceedToNextStep() ? _nextStep : null)),
-              backgroundColor: signupState.isLoading
-                  ? AppColors.getSurface(context)
-                  : (_canProceedToNextStep() 
-                      ? AppColors.primary500 
-                      : AppColors.getSurface(context)),
-              textColor: signupState.isLoading
-                  ? AppColors.getTextSecondary(context)
-                  : (_canProceedToNextStep() 
-                      ? AppColors.getText(context) 
-                      : AppColors.getTextSecondary(context)),
+              text: isLastStep
+                  ? context.l10n.signUp
+                  : context.l10n.continueText,
+              onPressed: isLastStep ? _handleSignUp : (_canNextStep() ? _nextStep : null),
+              backgroundColor: (_canNextStep() ? AppColors.primary500 : AppColors.getSurface(context)),
             ),
           ),
         ],
@@ -307,4 +338,3 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
     );
   }
 }
-

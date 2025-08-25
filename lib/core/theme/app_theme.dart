@@ -31,7 +31,7 @@ class AppTheme {
     useMaterial3: true,
     brightness: Brightness.dark,
     colorScheme: ColorScheme.fromSeed(
-      seedColor: AppColors.primary500,      // primary khi tối
+      seedColor: AppColors.primary500,
       brightness: Brightness.dark,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(

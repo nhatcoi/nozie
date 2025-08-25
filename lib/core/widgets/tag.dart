@@ -28,8 +28,8 @@ class Tag extends StatelessWidget {
     this.onTap,
     this.backgroundColor,
     this.selectedBackgroundColor,
-    this.textColor,
-    this.selectedTextColor,
+    this.textColor = AppColors.primary500, // mặc định
+    this.selectedTextColor = AppColors.white,
     this.borderColor,
     this.selectedBorderColor,
     this.borderWidth = 1.5,

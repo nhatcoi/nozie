@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../../core/common/ui_state.dart';
 import '../../domain/entities/user_registration.dart';
 import '../../domain/usecases/register_user_usecase.dart';
 import '../../data/repositories/auth_repository_impl.dart';
@@ -15,47 +16,18 @@ final registerUserUseCaseProvider = Provider<RegisterUserUseCase>((ref) {
 });
 
 // ViewModel Provider
-final signupViewModelProvider = StateNotifierProvider<SignupViewModel, SignupState>((ref) {
+final signupViewModelProvider = StateNotifierProvider<SignupViewModel, UIState<UserReg>>((ref) {
   final useCase = ref.watch(registerUserUseCaseProvider);
   return SignupViewModel(useCase);
 });
 
-// State Class
-class SignupState {
-  final bool isLoading;
-  final String? error;
-  final bool isSuccess;
-  final UserRegistration? userData;
-
-  const SignupState({
-    this.isLoading = false,
-    this.error,
-    this.isSuccess = false,
-    this.userData,
-  });
-
-  SignupState copyWith({
-    bool? isLoading,
-    String? error,
-    bool? isSuccess,
-    UserRegistration? userData,
-  }) {
-    return SignupState(
-      isLoading: isLoading ?? this.isLoading,
-      error: error ?? this.error,
-      isSuccess: isSuccess ?? this.isSuccess,
-      userData: userData ?? this.userData,
-    );
-  }
-}
-
 // ViewModel Class
-class SignupViewModel extends StateNotifier<SignupState> {
+class SignupViewModel extends StateNotifier<UIState<UserReg>> {
   final RegisterUserUseCase _registerUserUseCase;
 
-  SignupViewModel(this._registerUserUseCase) : super(const SignupState());
+  SignupViewModel(this._registerUserUseCase) : super(const Idle<UserReg>());
 
-  Future<void> registerUser({
+  Future<UIState<UserReg>> registerUser({
     String? gender,
     String? age,
     List<String> genres = const [],
@@ -63,10 +35,7 @@ class SignupViewModel extends StateNotifier<SignupState> {
     required Map<String, dynamic> accountData,
   }) async {
     try {
-      // Set loading state
-      state = state.copyWith(isLoading: true, error: null);
 
-      // Create UserProfile
       final userProfile = UserProfile(
         fullName: profileData['fullName'] ?? '',
         phone: profileData['phone'] ?? '',
@@ -74,7 +43,6 @@ class SignupViewModel extends StateNotifier<SignupState> {
         country: profileData['country'] ?? '',
       );
 
-      // Create UserAccount
       final userAccount = UserAccount(
         username: accountData['username'] ?? '',
         email: accountData['email'] ?? '',
@@ -82,8 +50,7 @@ class SignupViewModel extends StateNotifier<SignupState> {
         rememberMe: accountData['rememberMe'] ?? false,
       );
 
-      // Create UserRegistration
-      final userRegistration = UserRegistration(
+      final userRegistration = UserReg(
         gender: gender,
         age: age,
         genres: genres,
@@ -91,30 +58,17 @@ class SignupViewModel extends StateNotifier<SignupState> {
         account: userAccount,
       );
 
-      // Execute registration
+      state = const Loading<UserReg>();
+
       await _registerUserUseCase.execute(userRegistration);
 
-      // Set success state
-      state = state.copyWith(
-        isLoading: false,
-        isSuccess: true,
-        userData: userRegistration,
-      );
+      state = Success<UserReg>(userRegistration);
+      return state;
     } catch (e) {
-      // Set error state
-      state = state.copyWith(
-        isLoading: false,
-        error: e.toString(),
-      );
+      state = Error<UserReg>(e.toString());
+      return state;
     }
   }
 
-  void resetState() {
-    state = const SignupState();
-  }
-
-  void clearError() {
-    state = state.copyWith(error: null);
-  }
 }
 

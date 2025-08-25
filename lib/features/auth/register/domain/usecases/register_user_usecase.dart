@@ -6,7 +6,7 @@ class RegisterUserUseCase {
 
   RegisterUserUseCase(this.repository);
 
-  Future<void> execute(UserRegistration userRegistration) async {
+  Future<void> execute(UserReg userRegistration) async {
     // Validate user registration data
     _validateUserRegistration(userRegistration);
     
@@ -14,7 +14,7 @@ class RegisterUserUseCase {
     await repository.registerUser(userRegistration);
   }
 
-  void _validateUserRegistration(UserRegistration userRegistration) {
+  void _validateUserRegistration(UserReg userRegistration) {
     // Validate profile
     if (userRegistration.profile.fullName.isEmpty) {
       throw Exception('Full name is required');

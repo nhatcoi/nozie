@@ -10,10 +10,15 @@ class ImageConstant {
 
   // Common Images
   static const String logoIcon      = '${subPathIcon}icon_logo.svg';
-  static const String loadingIcon   = '${subPathIcon}icon_loading.svg';
   static const String imgGoogleIcon= '${subPathIcon}icon_google.svg';
   static const String scheduleIcon = '${subPathIcon}schedule.svg';
-  static const String toggleIcon = '${subPathIcon}toggle.svg';
+
+  static const String successIcon = '${subPathIcon}icon_success.svg';
+  static const String loadingIcon   = '${subPathIcon}icon_loading.svg';
+  static const String dropdownIcon = '${subPathIcon}dropdown.svg';
+  static const String arrowIcon = '${subPathIcon}arrow.svg';
+
+
   static const String imgImageNotFound = '${_basePath}placeholder.png';
   static const String imgAvatar = '${_basePath}avatar.png';
 

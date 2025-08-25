@@ -396,7 +396,7 @@ class _StepProfileState extends State<StepProfile> {
                     suffixIcon: Transform.scale(
                       scale: 0.5,
                       child: SvgPicture.asset(
-                        ImageConstant.toggleIcon,
+                        ImageConstant.dropdownIcon,
                         colorFilter: ColorFilter.mode(
                           AppColors.getTextSecondary(context),
                           BlendMode.srcIn,
