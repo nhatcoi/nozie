@@ -113,11 +113,35 @@ abstract class AppLocalizations {
   /// **'Enter your email address. We will send an OTP code for verification in the next step.'**
   String get forgotPasswordDes;
 
-  /// No description provided for @continueText.
+  /// No description provided for @forgotPassword.
   ///
   /// In en, this message translates to:
-  /// **'Continue'**
-  String get continueText;
+  /// **'Forgot Password'**
+  String get forgotPassword;
+
+  /// No description provided for @orContinueWith.
+  ///
+  /// In en, this message translates to:
+  /// **'or continue with'**
+  String get orContinueWith;
+
+  /// No description provided for @otpTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You’ve Got Mail 📩'**
+  String get otpTitle;
+
+  /// No description provided for @otpDes.
+  ///
+  /// In en, this message translates to:
+  /// **'We have sent the OTP verification code to your email address. Check your email and enter the code below.'**
+  String get otpDes;
+
+  /// No description provided for @signIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get signIn;
 
   /// No description provided for @loginTitle.
   ///
@@ -238,42 +262,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Account Information'**
   String get accountInfo;
-
-  /// No description provided for @fullName.
-  ///
-  /// In en, this message translates to:
-  /// **'Full Name'**
-  String get fullName;
-
-  /// No description provided for @phone.
-  ///
-  /// In en, this message translates to:
-  /// **'Phone Number'**
-  String get phone;
-
-  /// No description provided for @dateOfBirth.
-  ///
-  /// In en, this message translates to:
-  /// **'Date of Birth'**
-  String get dateOfBirth;
-
-  /// No description provided for @country.
-  ///
-  /// In en, this message translates to:
-  /// **'Country'**
-  String get country;
-
-  /// No description provided for @username.
-  ///
-  /// In en, this message translates to:
-  /// **'Username'**
-  String get username;
-
-  /// No description provided for @confirmPassword.
-  ///
-  /// In en, this message translates to:
-  /// **'Confirm Password'**
-  String get confirmPassword;
 
   /// No description provided for @male.
   ///
@@ -521,6 +509,12 @@ abstract class AppLocalizations {
   /// **'Tap to add profile picture'**
   String get tapToAddProfilePicture;
 
+  /// No description provided for @fullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get fullName;
+
   /// No description provided for @enterYourFullName.
   ///
   /// In en, this message translates to:
@@ -539,11 +533,23 @@ abstract class AppLocalizations {
   /// **'Enter your phone number'**
   String get enterYourPhoneNumber;
 
+  /// No description provided for @dateOfBirth.
+  ///
+  /// In en, this message translates to:
+  /// **'Date of Birth'**
+  String get dateOfBirth;
+
   /// No description provided for @dateFormat.
   ///
   /// In en, this message translates to:
   /// **'DD/MM/YYYY'**
   String get dateFormat;
+
+  /// No description provided for @country.
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get country;
 
   /// No description provided for @enterYourCountry.
   ///
@@ -611,6 +617,12 @@ abstract class AppLocalizations {
   /// **'Enter your username, email & password. If you forget it, then you have to do forgot password.'**
   String get signupDescription;
 
+  /// No description provided for @username.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get username;
+
   /// No description provided for @enterYourUsername.
   ///
   /// In en, this message translates to:
@@ -628,6 +640,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter your email address'**
   String get enterYourEmailAddress;
+
+  /// No description provided for @confirmPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get confirmPassword;
 
   /// No description provided for @confirmYourPassword.
   ///
