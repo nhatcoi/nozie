@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:movie_fe/core/app_export.dart';
 import 'package:movie_fe/core/theme/app_colors.dart';
-import 'package:movie_fe/core/theme/app_typography.dart';
 
 import '../../../../l10n/app_localizations.dart';
 
@@ -30,22 +30,7 @@ class ForgotPasswordScreen extends StatelessWidget {
 
           const SizedBox(height: 16),
 
-          TextField(
-            decoration: InputDecoration(
-              hintText: "admin@ziet.dev",
-              hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Colors.black, // đổi màu nếu cần
-              ),
-              border: InputBorder.none, // bỏ viền mặc định
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: AppColors.primary500, width: 2),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: AppColors.primary500, width: 2),
-              ),
-              contentPadding: const EdgeInsets.symmetric(vertical: 8),
-            ),
-          ),
+          InfoField(hintText: "admin@ziet.dev"),
 
           const Spacer(),
 

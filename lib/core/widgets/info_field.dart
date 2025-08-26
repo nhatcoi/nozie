@@ -179,6 +179,7 @@ class _InfoFieldState extends State<InfoField> {
             focusNode: _focusNode,
             keyboardType: widget.keyboardType,
             obscureText: _isObscured,
+            obscuringCharacter: "●",
             enabled: widget.isEnabled,
             readOnly: widget.isReadOnly,
             maxLines: widget.maxLines,
@@ -254,8 +255,8 @@ class _InfoFieldState extends State<InfoField> {
       return IconButton(
         icon: Icon(
           _isObscured ? Icons.visibility : Icons.visibility_off,
-          color: AppColors.getTextSecondary(context),
-          size: 20,
+          color: AppColors.primary500,
+          size: 28,
         ),
         onPressed: () {
           setState(() {
