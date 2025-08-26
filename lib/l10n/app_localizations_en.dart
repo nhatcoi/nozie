@@ -266,12 +266,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get countryRequired => 'Country is required';
 
   @override
-  String get imagePickerNotSupported => 'Image picker is not supported on web platform';
-
-  @override
-  String get usingPlaceholderImage => 'Using placeholder image for Simulator testing';
-
-  @override
   String get createAnAccount => 'Create an Account';
 
   @override

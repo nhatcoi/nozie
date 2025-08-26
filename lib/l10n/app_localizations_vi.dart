@@ -162,7 +162,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get iAmFemale => 'Tôi là nữ';
 
   @override
-  String get ratherNotToSay => 'Không muốn nói';
+  String get ratherNotToSay => 'Lẩu gà Bình Thuận';
 
   @override
   String get chooseMovieGenre => 'Chọn thể loại phim bạn thích';
@@ -219,7 +219,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get western => 'Viễn Tây';
 
   @override
-  String get completeYourProfile => 'Hoàn thành hồ sơ';
+  String get completeYourProfile => 'Hoàn thành hồ sơ của bạn';
 
   @override
   String get profilePrivacyNote => 'Đừng lo lắng, chỉ bạn mới có thể xem dữ liệu cá nhân của mình. Không ai khác có thể xem được.';
@@ -234,13 +234,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get fullName => 'Họ và tên';
 
   @override
-  String get enterYourFullName => 'Nhập họ và tên của bạn';
+  String get enterYourFullName => 'Nguyễn Văn A';
 
   @override
   String get phoneNumber => 'Số điện thoại';
 
   @override
-  String get enterYourPhoneNumber => 'Nhập số điện thoại của bạn';
+  String get enterYourPhoneNumber => '0987-654-321';
 
   @override
   String get dateOfBirth => 'Ngày sinh';
@@ -252,7 +252,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get country => 'Quốc gia';
 
   @override
-  String get enterYourCountry => 'Nhập quốc gia của bạn';
+  String get enterYourCountry => 'Quốc gia';
 
   @override
   String get fullNameRequired => 'Họ và tên là bắt buộc';
@@ -273,12 +273,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get countryRequired => 'Quốc gia là bắt buộc';
 
   @override
-  String get imagePickerNotSupported => 'Trình chọn ảnh không được hỗ trợ trên nền tảng web';
-
-  @override
-  String get usingPlaceholderImage => 'Sử dụng ảnh mẫu cho việc thử nghiệm trên Simulator';
-
-  @override
   String get createAnAccount => 'Tạo tài khoản';
 
   @override
@@ -288,13 +282,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get username => 'Tên đăng nhập';
 
   @override
-  String get enterYourUsername => 'Nhập tên đăng nhập của bạn';
+  String get enterYourUsername => 'username';
 
   @override
   String get enterYourPassword => 'Nhập mật khẩu của bạn';
 
   @override
-  String get enterYourEmailAddress => 'Nhập địa chỉ email của bạn';
+  String get enterYourEmailAddress => 'vnhat@example.com';
 
   @override
   String get confirmPassword => 'Xác nhận mật khẩu';

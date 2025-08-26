@@ -18,7 +18,7 @@ class AppRouters {
       return MaterialPageRoute(
         builder: (_) => const WelcomeScreen(),
       );
-    }
+    } 
     
     if (name == signup) {
       return MaterialPageRoute(

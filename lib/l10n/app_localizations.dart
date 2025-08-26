@@ -593,18 +593,6 @@ abstract class AppLocalizations {
   /// **'Country is required'**
   String get countryRequired;
 
-  /// No description provided for @imagePickerNotSupported.
-  ///
-  /// In en, this message translates to:
-  /// **'Image picker is not supported on web platform'**
-  String get imagePickerNotSupported;
-
-  /// No description provided for @usingPlaceholderImage.
-  ///
-  /// In en, this message translates to:
-  /// **'Using placeholder image for Simulator testing'**
-  String get usingPlaceholderImage;
-
   /// No description provided for @createAnAccount.
   ///
   /// In en, this message translates to:
