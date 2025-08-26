@@ -7,6 +7,8 @@ import 'package:movie_fe/core/widgets/social_button.dart';
 import 'package:movie_fe/l10n/app_localizations.dart';
 import 'package:movie_fe/core/widgets/app_checkbox.dart';
 
+import '../../../../routes/app_routers.dart';
+
 final rememberMeProvider = StateProvider<bool>((ref) => false);
 
 class LoginScreen extends ConsumerWidget {
@@ -67,11 +69,16 @@ class LoginScreen extends ConsumerWidget {
               Container(
                 width: double.infinity, // full width
                 alignment: Alignment.center, // căn giữa text
-                child: Text(
-                  t.forgotPassword,
-                  style: type.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primary500,
+                child: GestureDetector(
+                  onTap: (){
+                    Navigator.pushNamed(context, AppRouters.forgotPassword);
+                  },
+                  child: Text(
+                    t.forgotPassword,
+                    style: type.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primary500,
+                    ),
                   ),
                 ),
               ),
@@ -124,7 +131,9 @@ class LoginScreen extends ConsumerWidget {
 
               PrimaryButton(
                   text: t.signIn,
-                  onPressed: (){}
+                  onPressed: (){
+                    Navigator.pushNamed(context, AppRouters.home);
+                  }
               ),
             ],
           ),

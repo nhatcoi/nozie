@@ -21,7 +21,6 @@ class HomePage extends ConsumerWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('${t.login} • ${t.password}'),
             const SizedBox(height: 16),
             SegmentedButton<String>(
               segments: const [

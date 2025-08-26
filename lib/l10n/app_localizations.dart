@@ -137,11 +137,47 @@ abstract class AppLocalizations {
   /// **'We have sent the OTP verification code to your email address. Check your email and enter the code below.'**
   String get otpDes;
 
+  /// No description provided for @createNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Create New Password 🔐'**
+  String get createNewPassword;
+
+  /// No description provided for @createNewPasswordDes.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your new password. If you forget it, then you have to do forgot password.'**
+  String get createNewPasswordDes;
+
   /// No description provided for @signIn.
   ///
   /// In en, this message translates to:
   /// **'Sign In'**
   String get signIn;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @otpDidntReceiveCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t receive the code?'**
+  String get otpDidntReceiveCode;
+
+  /// No description provided for @otpResendCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Code'**
+  String get otpResendCode;
+
+  /// No description provided for @otpResendAfter.
+  ///
+  /// In en, this message translates to:
+  /// **'You can resend after {seconds}s'**
+  String otpResendAfter(Object seconds);
 
   /// No description provided for @loginTitle.
   ///
@@ -592,18 +628,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Country is required'**
   String get countryRequired;
-
-  /// No description provided for @imagePickerNotSupported.
-  ///
-  /// In en, this message translates to:
-  /// **'Image picker is not supported on web platform'**
-  String get imagePickerNotSupported;
-
-  /// No description provided for @usingPlaceholderImage.
-  ///
-  /// In en, this message translates to:
-  /// **'Using placeholder image for Simulator testing'**
-  String get usingPlaceholderImage;
 
   /// No description provided for @createAnAccount.
   ///
