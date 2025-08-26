@@ -254,13 +254,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get fullName => 'Họ và tên';
 
   @override
-  String get enterYourFullName => 'Nhập họ và tên của bạn';
+  String get enterYourFullName => 'Nguyễn Văn A';
 
   @override
   String get phoneNumber => 'Số điện thoại';
 
   @override
-  String get enterYourPhoneNumber => 'Nhập số điện thoại của bạn';
+  String get enterYourPhoneNumber => '0987-654-321';
 
   @override
   String get dateOfBirth => 'Ngày sinh';
@@ -272,7 +272,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get country => 'Quốc gia';
 
   @override
-  String get enterYourCountry => 'Nhập quốc gia của bạn';
+  String get enterYourCountry => 'Quốc gia';
 
   @override
   String get fullNameRequired => 'Họ và tên là bắt buộc';
@@ -302,7 +302,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get username => 'Tên đăng nhập';
 
   @override
-  String get enterYourUsername => 'Nhập tên đăng nhập của bạn';
+  String get enterYourUsername => 'username';
 
   @override
   String get enterYourPassword => 'Nhập mật khẩu của bạn';
