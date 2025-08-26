@@ -6,6 +6,8 @@
   "forgotPassword": "Quên Mật Khẩu",
   "otpTitle": "OTP tới rồi nè \uD83D\uDCE9",
   "otpDes": "Chúng tôi đã gửi mã xác thực OTP đến email của bạn. Vui lòng kiểm tra email và nhập mã bên dưới nhé.",
+  "createNewPassword": "Tạo mật khẩu mới \uD83D\uDD10",
+  "createNewPasswordDes": "Nhập mật khẩu mới của bạn. Nếu quên, bạn sẽ cần thực hiện lại bước quên mật khẩu.",
   "orContinueWith": "hoặc tiếp tục với",
   "signIn": "Đăng Nhập",
   "confirm": "Xác Nhận",

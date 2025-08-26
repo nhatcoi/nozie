@@ -30,6 +30,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get otpDes => 'We have sent the OTP verification code to your email address. Check your email and enter the code below.';
 
   @override
+  String get createNewPassword => 'Create New Password 🔐';
+
+  @override
+  String get createNewPasswordDes => 'Enter your new password. If you forget it, then you have to do forgot password.';
+
+  @override
   String get signIn => 'Sign In';
 
   @override
@@ -278,12 +284,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get countryRequired => 'Country is required';
-
-  @override
-  String get imagePickerNotSupported => 'Image picker is not supported on web platform';
-
-  @override
-  String get usingPlaceholderImage => 'Using placeholder image for Simulator testing';
 
   @override
   String get createAnAccount => 'Create an Account';

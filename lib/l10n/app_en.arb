@@ -7,6 +7,8 @@
   "orContinueWith": "or continue with",
   "otpTitle": "You’ve Got Mail \uD83D\uDCE9",
   "otpDes": "We have sent the OTP verification code to your email address. Check your email and enter the code below.",
+  "createNewPassword": "Create New Password \uD83D\uDD10",
+  "createNewPasswordDes": "Enter your new password. If you forget it, then you have to do forgot password.",
   "signIn": "Sign In",
   "confirm": "Confirm",
   "otpDidntReceiveCode": "Didn't receive the code?",

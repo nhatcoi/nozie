@@ -199,7 +199,7 @@ class WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                           SecondaryButton(
                             text: WelcomeButtonTexts.getLoginText(context),
                             onPressed: () {
-                              Navigator.pushNamed(context, AppRouters.home);
+                              Navigator.pushNamed(context, AppRouters.signIn);
                             },
                           ),
 

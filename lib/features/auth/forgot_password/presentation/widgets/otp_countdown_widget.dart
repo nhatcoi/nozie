@@ -51,9 +51,7 @@ class OtpCountdownWidget extends StatelessWidget {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-        style: theme.titleMedium!.copyWith(
-          color: isDark ? AppColors.greyscale400 : AppColors.greyscale600,
-        ),
+        style: theme.titleSmall,
         children: [
           if (parts[0].isNotEmpty) TextSpan(text: parts[0]),
           TextSpan(
