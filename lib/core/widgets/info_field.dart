@@ -100,10 +100,11 @@ class _InfoFieldState extends State<InfoField> {
   @override
   void initState() {
     super.initState();
-    _controller = widget.controller ?? TextEditingController(text: widget.initialValue);
+    _controller =
+        widget.controller ?? TextEditingController(text: widget.initialValue);
     _focusNode = widget.focusNode ?? FocusNode();
     _isObscured = widget.isPassword;
-    
+
     _focusNode.addListener(() {
       setState(() {
         _isFocused = _focusNode.hasFocus;
@@ -139,24 +140,20 @@ class _InfoFieldState extends State<InfoField> {
         if (widget.label != null) ...[
           Row(
             children: [
-                              Text(
-                  widget.label!,
-                  style: AppTypography.bodyMSemibold.copyWith(
-                    color: widget.labelColor ?? AppColors.getText(context),
-                    fontSize: widget.labelFontSize ?? widget.fontSize ?? 14,
-                    fontWeight: widget.labelFontWeight ?? widget.fontWeight ?? FontWeight.w600,
-                  ),
+              Text(
+                widget.label!,
+                style: AppTypography.bodyMSemibold.copyWith(
+                  color: widget.labelColor ?? AppColors.getText(context),
+                  fontSize: widget.labelFontSize ?? widget.fontSize ?? 14,
+                  fontWeight:
+                      widget.labelFontWeight ??
+                      widget.fontWeight ??
+                      FontWeight.w600,
                 ),
+              ),
               if (widget.isRequired) ...[
                 const SizedBox(width: 4),
-                Text(
-                  '*',
-                  style: AppTypography.bodyMSemibold.copyWith(
-                    color: AppColors.red,
-                    fontSize: widget.labelFontSize ?? widget.fontSize ?? 14,
-                    fontWeight: widget.labelFontWeight ?? widget.fontWeight ?? FontWeight.w600,
-                  ),
-                ),
+                
               ],
             ],
           ),
@@ -170,10 +167,12 @@ class _InfoFieldState extends State<InfoField> {
           decoration: BoxDecoration(
             color: widget.backgroundColor ?? Colors.transparent,
             borderRadius: BorderRadius.circular(widget.borderRadius),
-            border: widget.showBorder ? Border.all(
-              color: _getBorderColor(),
-              width: widget.borderWidth,
-            ) : null,
+            border: widget.showBorder
+                ? Border.all(
+                    color: _getBorderColor(),
+                    width: widget.borderWidth,
+                  )
+                : null,
           ),
           child: TextFormField(
             controller: _controller,
@@ -195,21 +194,26 @@ class _InfoFieldState extends State<InfoField> {
             style: AppTypography.bodyMRegular.copyWith(
               color: widget.textColor ?? AppColors.getText(context),
               fontSize: widget.inputFontSize ?? widget.fontSize ?? 14,
-              fontWeight: widget.inputFontWeight ?? widget.fontWeight ?? FontWeight.w400,
+              fontWeight:
+                  widget.inputFontWeight ??
+                  widget.fontWeight ??
+                  FontWeight.w400,
             ),
             decoration: InputDecoration(
               hintText: widget.hintText,
               hintStyle: AppTypography.bodyMRegular.copyWith(
                 color: widget.hintColor ?? AppColors.getTextSecondary(context),
                 fontSize: widget.inputFontSize ?? widget.fontSize ?? 14,
-                fontWeight: widget.inputFontWeight ?? widget.fontWeight ?? FontWeight.w400,
+                fontWeight:
+                    widget.inputFontWeight ??
+                    widget.fontWeight ??
+                    FontWeight.w400,
               ),
               prefixIcon: widget.prefixIcon,
               suffixIcon: _buildSuffixIcon(),
-              contentPadding: widget.contentPadding ?? const EdgeInsets.symmetric(
-                horizontal: 0,
-                vertical: 10,
-              ),
+              contentPadding:
+                  widget.contentPadding ??
+                  const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
               border: InputBorder.none,
               counterText: '',
             ),
@@ -227,13 +231,10 @@ class _InfoFieldState extends State<InfoField> {
             ),
           ),
         ],
-        
+
         // Line Divider
         if (widget.showDivider) ...[
-          Container(
-            height: 1,
-            color: AppColors.primary500,
-          ),
+          Container(height: 1, color: AppColors.primary500),
         ],
       ],
     );

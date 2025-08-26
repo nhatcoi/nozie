@@ -47,7 +47,7 @@ class _StepGenderState extends State<StepGender> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 32),
-          // Title
+
           Text(
             context.l10n.whatIsYourGender,
             style: AppTypography.h3.copyWith(
@@ -57,7 +57,7 @@ class _StepGenderState extends State<StepGender> {
           ),
           const SizedBox(height: 16),
           
-          // Subtitle
+
           Text(
             context.l10n.selectGenderForBetterContent,
             style: AppTypography.bodyLRegular.copyWith(
@@ -92,6 +92,7 @@ class _StepGenderState extends State<StepGender> {
               );
             },
           ),
+
           const SizedBox(height: 16),
 
         ],

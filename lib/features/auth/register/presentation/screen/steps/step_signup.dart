@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../../../core/app_export.dart';
+import '../../../../../../core/utils/validation_utils.dart';
 
 class StepSignup extends StatefulWidget {
   final Function(Map<String, dynamic>) onSignupCompleted;
@@ -16,11 +17,11 @@ class StepSignup extends StatefulWidget {
 }
 
 class _StepSignupState extends State<StepSignup> {
-
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   final FocusNode _usernameFocus = FocusNode();
   final FocusNode _emailFocus = FocusNode();
@@ -99,49 +100,19 @@ class _StepSignupState extends State<StepSignup> {
   }
 
   String? _validateUsername(String? value) {
-    if (value?.trim().isEmpty ?? true) {
-      return context.l10n.usernameRequired;
-    }
-    if (value!.trim().length < 3) {
-      return context.l10n.usernameMinLength;
-    }
-    if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(value.trim())) {
-      return context.l10n.usernameInvalidChars;
-    }
-    return null;
+    return ValidationUtils.validateUsername(value, context);
   }
 
   String? _validateEmail(String? value) {
-    if (value?.trim().isEmpty ?? true) {
-      return context.l10n.emailRequired;
-    }
-    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value!.trim())) {
-      return context.l10n.emailInvalid;
-    }
-    return null;
+    return ValidationUtils.validateEmail(value, context);
   }
 
   String? _validatePassword(String? value) {
-    if (value?.trim().isEmpty ?? true) {
-      return context.l10n.passwordRequired;
-    }
-    if (value!.trim().length < 8) {
-      return context.l10n.passwordMinLength;
-    }
-    if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)').hasMatch(value.trim())) {
-      return context.l10n.passwordComplexity;
-    }
-    return null;
+    return ValidationUtils.validatePassword(value, context);
   }
 
   String? _validateConfirmPassword(String? value) {
-    if (value?.trim().isEmpty ?? true) {
-      return context.l10n.confirmPasswordRequired;
-    }
-    if (value!.trim() != _passwordController.text.trim()) {
-      return context.l10n.passwordsDoNotMatch;
-    }
-    return null;
+    return ValidationUtils.validateConfirmPassword(value, _passwordController.text, context);
   }
 
   @override
@@ -164,9 +135,9 @@ class _StepSignupState extends State<StepSignup> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           const SizedBox(height: 32),
-          
-          // Title
+
           Text(
             context.l10n.createAnAccount,
             style: AppTypography.h3.copyWith(
@@ -174,25 +145,23 @@ class _StepSignupState extends State<StepSignup> {
               fontWeight: FontWeight.w600,
             ),
           ),
-          
+
           const SizedBox(height: 16),
-          
-          // Subtitle
+
           Text(
             context.l10n.signupDescription,
             style: AppTypography.bodyLRegular.copyWith(
               color: AppColors.getTextSecondary(context),
             ),
           ),
-          
+
           const SizedBox(height: 32),
-          
-          // Form Fields
+
           Expanded(
-            child: SingleChildScrollView(
+            child: SingleChildScrollView( // scroll
               child: Column(
                 children: [
-                  // Username Field
+
                   InfoField(
                     label: context.l10n.username,
                     hintText: context.l10n.enterYourUsername,
@@ -203,10 +172,9 @@ class _StepSignupState extends State<StepSignup> {
                     keyboardType: TextInputType.text,
                     onSubmitted: (_) => _emailFocus.requestFocus(),
                   ),
-                  
+
                   const SizedBox(height: 24),
-                  
-                  // Email Field
+
                   InfoField(
                     label: context.l10n.email,
                     hintText: context.l10n.enterYourEmailAddress,
@@ -217,10 +185,9 @@ class _StepSignupState extends State<StepSignup> {
                     keyboardType: TextInputType.emailAddress,
                     onSubmitted: (_) => _passwordFocus.requestFocus(),
                   ),
-                  
+
                   const SizedBox(height: 24),
-                  
-                  // Password Field
+
                   InfoField(
                     label: context.l10n.password,
                     hintText: context.l10n.enterYourPassword,
@@ -232,17 +199,18 @@ class _StepSignupState extends State<StepSignup> {
                     onSubmitted: (_) => _confirmPasswordFocus.requestFocus(),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                        _obscurePassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                         color: AppColors.greyscale500,
                         size: 20,
                       ),
                       onPressed: _togglePasswordVisibility,
                     ),
                   ),
-                  
+
                   const SizedBox(height: 24),
-                  
-                  // Confirm Password Field
+
                   InfoField(
                     label: context.l10n.confirmPassword,
                     hintText: context.l10n.confirmYourPassword,
@@ -253,17 +221,18 @@ class _StepSignupState extends State<StepSignup> {
                     isPassword: true,
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
+                        _obscureConfirmPassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                         color: AppColors.greyscale500,
                         size: 20,
                       ),
                       onPressed: _toggleConfirmPasswordVisibility,
                     ),
                   ),
-                  
+
                   const SizedBox(height: 24),
-                  
-                  // Remember Me Checkbox
+
                   Row(
                     children: [
                       Checkbox(
@@ -286,7 +255,7 @@ class _StepSignupState extends State<StepSignup> {
                       ),
                     ],
                   ),
-                  
+
                   const SizedBox(height: 32),
                 ],
               ),

@@ -79,7 +79,6 @@ class PrimaryButton extends StatelessWidget {
       ),
     );
 
-    // Add shadow if needed
     if (hasShadow) {
       return Container(
         decoration: BoxDecoration(

@@ -36,7 +36,7 @@ class NozieApp extends ConsumerWidget {
       initialRoute: AppRouters.welcome,
       onGenerateRoute: AppRouters.generateRoute,
 
-      home: ForgotPasswordOtpScreen(email: 'ndviet.dev@gmail.com'),
+
     );
   }
 }

@@ -1,11 +1,11 @@
-class UserRegistration {
+class UserReg {
   final String? gender;
   final String? age;
   final List<String> genres;
   final UserProfile profile;
   final UserAccount account;
 
-  const UserRegistration({
+  const UserReg({
     this.gender,
     this.age,
     this.genres = const [],
@@ -23,8 +23,8 @@ class UserRegistration {
     };
   }
 
-  factory UserRegistration.fromJson(Map<String, dynamic> json) {
-    return UserRegistration(
+  factory UserReg.fromJson(Map<String, dynamic> json) {
+    return UserReg(
       gender: json['gender'],
       age: json['age'],
       genres: List<String>.from(json['genres'] ?? []),

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart';
 import '../../../../../../core/app_export.dart';
+import '../../../../../../core/utils/validation_utils.dart';
 
 class StepProfile extends StatefulWidget {
   final Function(Map<String, String>) onProfileCompleted;
@@ -62,7 +63,6 @@ class _StepProfileState extends State<StepProfile> {
     _initializeForm();
     _setupFocusListeners();
 
-    // Schedule validation
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _validateForm();
     });
@@ -90,19 +90,13 @@ class _StepProfileState extends State<StepProfile> {
     final fullName = _fullNameController.text.trim();
     final phone = _phoneController.text.trim();
     final dob = _dobController.text.trim();
-    // Don't override country if it already exists in _formData
-    final country = _formData['country'] ?? '';
 
-    // Only update the fields that use controllers
     _formData['fullName'] = fullName;
     _formData['phone'] = phone;
     _formData['dob'] = dob;
-    // Keep existing country value if it exists
 
-    // Debug log
     print('StepProfile _validateForm: $_formData');
 
-    // Notify parent
     widget.onProfileCompleted(_formData);
   }
 
@@ -110,7 +104,7 @@ class _StepProfileState extends State<StepProfile> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now().subtract(const Duration(days: 6570)),
-      // 18 years ago
+
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
       builder: (context, child) {
@@ -118,17 +112,17 @@ class _StepProfileState extends State<StepProfile> {
           data: Theme.of(context).copyWith(
             colorScheme: Theme.of(context).brightness == Brightness.dark
                 ? ColorScheme.dark(
-              primary: AppColors.primary500,
-              onPrimary: AppColors.white,
-              surface: AppColors.dark2,
-              onSurface: AppColors.white,
-            )
+                    primary: AppColors.primary500,
+                    onPrimary: AppColors.white,
+                    surface: AppColors.dark2,
+                    onSurface: AppColors.white,
+                  )
                 : ColorScheme.light(
-              primary: AppColors.primary500,
-              onPrimary: AppColors.white,
-              surface: AppColors.white,
-              onSurface: AppColors.greyscale900,
-            ),
+                    primary: AppColors.primary500,
+                    onPrimary: AppColors.white,
+                    surface: AppColors.white,
+                    onSurface: AppColors.greyscale900,
+                  ),
           ),
           child: child!,
         );
@@ -137,31 +131,19 @@ class _StepProfileState extends State<StepProfile> {
 
     if (picked != null) {
       _dobController.text =
-      "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
+          "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
       _validateForm();
     }
   }
 
   Future<void> _pickImage() async {
-    // Check if running on web
-    if (kIsWeb) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(context.l10n.imagePickerNotSupported),
-            backgroundColor: AppColors.red,
-          ),
-        );
-      }
-      return;
-    }
-
     try {
       final XFile? image = await _picker.pickImage(
+        // lấy ảnh
         source: ImageSource.gallery,
         maxWidth: 512,
         maxHeight: 512,
-        imageQuality: 80,
+        imageQuality: 80, // -> giảm chất lượng
       );
 
       if (image != null && mounted) {
@@ -169,59 +151,27 @@ class _StepProfileState extends State<StepProfile> {
           _selectedImage = File(image.path);
         });
       }
-    } catch (e) {
-      // For Simulator testing - use a placeholder image
+    } catch (_) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(context.l10n.usingPlaceholderImage),
-            backgroundColor: AppColors.primary500,
-            duration: const Duration(seconds: 2),
-          ),
-        );
-
-        // Set a placeholder image for testing
-        setState(() {
-          // This will show the default avatar state
-          _selectedImage = null;
-        });
+        setState(() => _selectedImage = null);
       }
     }
   }
 
   String? _validateFullName(String? value) {
-    if (value?.trim().isEmpty ?? true) {
-      return context.l10n.fullNameRequired;
-    }
-    if (value!.trim().length < 2) {
-      return context.l10n.fullNameMinLength;
-    }
-    return null;
+    return ValidationUtils.validateFullName(value, context);
   }
 
   String? _validatePhone(String? value) {
-    if (value?.trim().isEmpty ?? true) {
-      return context.l10n.phoneRequired;
-    }
-    // Basic phone validation - can be enhanced based on requirements
-    if (value!.trim().length < 10) {
-      return context.l10n.phoneMinLength;
-    }
-    return null;
+    return ValidationUtils.validatePhone(value, context);
   }
 
   String? _validateDOB(String? value) {
-    if (value?.trim().isEmpty ?? true) {
-      return context.l10n.dobRequired;
-    }
-    return null;
+    return ValidationUtils.validateDOB(value, context);
   }
 
   String? _validateCountry(String? value) {
-    if (value?.trim().isEmpty ?? true) {
-      return context.l10n.countryRequired;
-    }
-    return null;
+    return ValidationUtils.validateCountry(value, context);
   }
 
   @override
@@ -244,7 +194,6 @@ class _StepProfileState extends State<StepProfile> {
         children: [
           const SizedBox(height: 32),
 
-          // Title
           Text(
             context.l10n.completeYourProfile,
             style: AppTypography.h3.copyWith(
@@ -255,7 +204,6 @@ class _StepProfileState extends State<StepProfile> {
 
           const SizedBox(height: 16),
 
-          // Subtitle
           Text(
             context.l10n.profilePrivacyNote,
             style: AppTypography.bodyLRegular.copyWith(
@@ -265,10 +213,10 @@ class _StepProfileState extends State<StepProfile> {
 
           const SizedBox(height: 32),
 
-          // Avatar
           Center(
             child: Column(
               children: [
+
                 GestureDetector(
                   onTap: _pickImage,
                   child: Container(
@@ -281,34 +229,36 @@ class _StepProfileState extends State<StepProfile> {
                     ),
                     child: _selectedImage != null
                         ? ClipOval(
-                      child: Image.file(
-                        _selectedImage!,
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
-                      ),
-                    )
+                            child: Image.file(
+                              _selectedImage!,
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover,
+                            ),
+                          )
                         : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.camera_alt_outlined,
-                          size: 32,
-                          color: AppColors.greyscale500,
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          context.l10n.addPhoto,
-                          style: AppTypography.bodySBRegular.copyWith(
-                            color: AppColors.greyscale500,
-                            fontSize: 12,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.camera_alt_outlined,
+                                size: 32,
+                                color: AppColors.greyscale500,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                context.l10n.addPhoto,
+                                style: AppTypography.bodySBRegular.copyWith(
+                                  color: AppColors.greyscale500,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
                   ),
                 ),
+
                 const SizedBox(height: 16),
+
                 Text(
                   context.l10n.tapToAddProfilePicture,
                   style: AppTypography.bodySBRegular.copyWith(
@@ -322,12 +272,12 @@ class _StepProfileState extends State<StepProfile> {
 
           const SizedBox(height: 16),
 
-          // Form Fields
+
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // Full Name Field
+
                   InfoField(
                     label: context.l10n.fullName,
                     hintText: context.l10n.enterYourFullName,
@@ -341,7 +291,6 @@ class _StepProfileState extends State<StepProfile> {
 
                   const SizedBox(height: 16),
 
-                  // Phone Number Field
                   InfoField(
                     label: context.l10n.phoneNumber,
                     hintText: context.l10n.enterYourPhoneNumber,
@@ -355,7 +304,6 @@ class _StepProfileState extends State<StepProfile> {
 
                   const SizedBox(height: 16),
 
-                  // Date of Birth Field
                   InfoField(
                     label: context.l10n.dateOfBirth,
                     hintText: context.l10n.dateFormat,
@@ -380,7 +328,6 @@ class _StepProfileState extends State<StepProfile> {
 
                   const SizedBox(height: 16),
 
-                  // Country Dropdown
                   CustomDropdown(
                     label: context.l10n.country,
                     value: _formData['country'],
@@ -388,7 +335,6 @@ class _StepProfileState extends State<StepProfile> {
                     items: _countries,
                     isRequired: true,
                     onChanged: (value) {
-                      print('CustomDropdown onChanged: $value');
                       setState(() {
                         _formData['country'] = value ?? '';
                       });
@@ -398,7 +344,7 @@ class _StepProfileState extends State<StepProfile> {
                     suffixIcon: Transform.scale(
                       scale: 0.5,
                       child: SvgPicture.asset(
-                        ImageConstant.toggleIcon,
+                        ImageConstant.dropdownIcon,
                         colorFilter: ColorFilter.mode(
                           AppColors.getTextSecondary(context),
                           BlendMode.srcIn,
@@ -408,6 +354,7 @@ class _StepProfileState extends State<StepProfile> {
                   ),
 
                   const SizedBox(height: 32),
+
                 ],
               ),
             ),

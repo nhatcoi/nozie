@@ -51,28 +51,21 @@ class _StepAgeState extends State<StepAge> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           const SizedBox(height: 32),
           
-          // Title
-          Text(
-            context.l10n.chooseYourAge,
-            style: AppTypography.h3.copyWith(
-              color: AppColors.getText(context),
-              fontWeight: FontWeight.w600,
-            ),
+          Text(context.l10n.chooseYourAge, style: AppTypography.h3.copyWith(
+              color: AppColors.getText(context), fontWeight: FontWeight.w600),
           ),
+
           const SizedBox(height: 16),
           
-          // Subtitle
-          Text(
-            context.l10n.selectAgeRange,
-            style: AppTypography.bodyLRegular.copyWith(
-              color: AppColors.getTextSecondary(context),
-            ),
+          Text(context.l10n.selectAgeRange,
+            style: AppTypography.bodyLRegular.copyWith(color: AppColors.getTextSecondary(context)),
           ),
-          const SizedBox(height: 32),
 
-          // Grid
+          const SizedBox(height: 32),
+          
           LayoutBuilder(
             builder: (context, constraints) {
               final screenWidth = constraints.maxWidth;
@@ -88,11 +81,7 @@ class _StepAgeState extends State<StepAge> {
                     text: entry.value,
                     isSelected: selectedAge == entry.key,
                     onTap: () => _selectAge(entry.key),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: tagWidth * 0.15, // 15% of tag width
-                      vertical: 10,
-                    ),
-                    fontWeight: FontWeight.w800,
+                    padding: EdgeInsets.symmetric(horizontal: tagWidth * 0.15, vertical: 10)
                   ),
                 )).toList(),
               );

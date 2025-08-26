@@ -7,7 +7,7 @@ class AuthRepositoryImpl implements AuthRepository {
   final String baseUrl = 'http://localhost:8080/api/v1';
 
   @override
-  Future<void> registerUser(UserRegistration userRegistration) async {
+  Future<void> registerUser(UserReg userRegistration) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/auth/register'),
