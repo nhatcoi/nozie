@@ -4,13 +4,14 @@ import '../features/auth/register/presentation/screen/signup_flow_screen.dart';
 import '../features/auth/welcome/welcome_screen.dart';
 import '../features/setting/presentation/screens/home_screen.dart';
 import '../core/services/locale_setting.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AppRouters {
   static const String welcome = '/';
   static const String signup = '/signup';
   static const String login = '/login';
   static const String home = '/home';
-  static const String settings = '/settings';
+  static const String setting = '/setting';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final name = settings.name;
@@ -34,31 +35,27 @@ class AppRouters {
     
     if (name == home) {
       return MaterialPageRoute(
-        builder: (context) {
-          // Get locale from context
-          final locale = Localizations.localeOf(context);
-          return HomePage(
-            locale,
-            (newLocale) {
-              // Handle locale change - you might want to use a provider here
-              print('Locale changed to: ${newLocale.languageCode}');
-            },
-          );
-        },
+        builder: (_) => const Scaffold(
+          body: Center(
+            child: Text('Home'),
+          ),
+        ),
       );
     }
-    
-    if (name == settings) {
+
+    if (name == setting) {
       return MaterialPageRoute(
         builder: (context) {
-          // Get locale from context
-          final locale = Localizations.localeOf(context);
-          return HomePage(
-            locale,
-            (newLocale) {
-              // Handle locale change - you might want to use a provider here
-              print('Locale changed to: ${newLocale.languageCode}');
-            },
+          return Consumer(
+              builder: (context, ref, child) {
+                final locale = ref.watch(localeControllerProvider);
+                return SettingPage(
+                  locale,
+                      (newLocale) {
+                    ref.read(localeControllerProvider.notifier).setLocale(newLocale);
+                  },
+                );
+              }
           );
         },
       );

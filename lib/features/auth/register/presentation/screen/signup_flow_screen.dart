@@ -55,17 +55,41 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
       case SignupStep.genre:
         return true; // có thể skip
       case SignupStep.profile:
-        return profileData.isNotEmpty &&
-            profileData['fullName']?.isNotEmpty == true &&
-            profileData['phone']?.isNotEmpty == true &&
-            profileData['dob']?.isNotEmpty == true &&
-            profileData['country']?.isNotEmpty == true;
+        final fullName = (profileData['fullName'] ?? '').trim();
+        final phone = (profileData['phone'] ?? '').trim();
+        final dob = (profileData['dob'] ?? '').trim();
+        final country = (profileData['country'] ?? '').trim();
+
+        final hasAllFields =
+            fullName.isNotEmpty && phone.isNotEmpty && dob.isNotEmpty && country.isNotEmpty;
+        if (!hasAllFields) return false;
+
+        // check tiếp tục
+        final isValid =
+            ValidationUtils.validateFullName(fullName, context) == null &&
+            ValidationUtils.validatePhone(phone, context) == null &&
+            ValidationUtils.validateDOB(dob, context) == null &&
+            ValidationUtils.validateCountry(country, context) == null;
+
+        return isValid;
       case SignupStep.signup:
-        return signupData.isNotEmpty &&
-            signupData['username']?.isNotEmpty == true &&
-            signupData['email']?.isNotEmpty == true &&
-            signupData['password']?.isNotEmpty == true &&
-            signupData['confirmPassword']?.isNotEmpty == true;
+        final username = (signupData['username'] as String?)?.trim() ?? '';
+        final email = (signupData['email'] as String?)?.trim() ?? '';
+        final password = (signupData['password'] as String?)?.trim() ?? '';
+        final confirmPassword = (signupData['confirmPassword'] as String?)?.trim() ?? '';
+
+        final hasAllFields =
+            username.isNotEmpty && email.isNotEmpty && password.isNotEmpty && confirmPassword.isNotEmpty;
+
+        if (!hasAllFields) return false;
+
+        final isValid =
+            ValidationUtils.validateUsername(username, context) == null &&
+            ValidationUtils.validateEmail(email, context) == null &&
+            ValidationUtils.validatePassword(password, context) == null &&
+            ValidationUtils.validateConfirmPassword(confirmPassword, password, context) == null;
+
+        return isValid;
     }
   }
 
@@ -122,6 +146,7 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.getBackground(context),
       body: SafeArea(
         child: Column(
@@ -301,7 +326,7 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
                   ? context.l10n.signUp
                   : context.l10n.continueText,
               onPressed: isLastStep
-                  ? _handleSignUp
+                  ? (_canNextStep() ? _handleSignUp : null)
                   : (_canNextStep() ? _nextStep : null),
               backgroundColor: (_canNextStep()
                   ? AppColors.primary500

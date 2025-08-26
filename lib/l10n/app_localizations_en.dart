@@ -212,7 +212,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get western => 'Western';
 
   @override
-  String get completeYourProfile => 'Complete Your Profile';
+  String get completeYourProfile => 'Complete Profile';
 
   @override
   String get profilePrivacyNote => 'Don\'t worry, only you can see your personal data. No one else will be able to see it.';
@@ -227,13 +227,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fullName => 'Full Name';
 
   @override
-  String get enterYourFullName => 'Enter your full name';
+  String get enterYourFullName => 'Jackie Dee';
 
   @override
   String get phoneNumber => 'Phone Number';
 
   @override
-  String get enterYourPhoneNumber => 'Enter your phone number';
+  String get enterYourPhoneNumber => '(+1) 987-654-321';
 
   @override
   String get dateOfBirth => 'Date of Birth';
@@ -275,19 +275,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get username => 'Username';
 
   @override
-  String get enterYourUsername => 'Enter your username';
+  String get enterYourUsername => 'nozie123';
 
   @override
-  String get enterYourPassword => 'Enter your password';
+  String get enterYourPassword => '●●●●●●●●●●●●';
 
   @override
-  String get enterYourEmailAddress => 'Enter your email address';
+  String get enterYourEmailAddress => 'user@gmail.com';
 
   @override
   String get confirmPassword => 'Confirm Password';
 
   @override
-  String get confirmYourPassword => 'Confirm your password';
+  String get confirmYourPassword => '●●●●●●●●●●●●';
 
   @override
   String get rememberMe => 'Remember me';

@@ -18,13 +18,7 @@ class StepGender extends StatefulWidget {
 class _StepGenderState extends State<StepGender> {
   String? selectedGender;
 
-  Map<String, String> getGenderOptions(BuildContext context) {
-    return {
-      'male': context.l10n.iAmMale,
-      'female': context.l10n.iAmFemale,
-      'other': context.l10n.ratherNotToSay,
-    };
-  }
+
 
   @override
   void initState() {
@@ -69,7 +63,7 @@ class _StepGenderState extends State<StepGender> {
           // Gender
           Builder(
             builder: (context) {
-              final genderOptions = getGenderOptions(context);
+              final genderOptions = Genders.getOptions(context);
               return Column(
                 children: genderOptions.entries.map((entry) => Column(
                   children: [

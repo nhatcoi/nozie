@@ -18,26 +18,7 @@ class StepGenre extends StatefulWidget {
 class _StepGenreState extends State<StepGenre> {
   List<String> selectedGenres = [];
 
-  Map<String, String> getGenreOptions(BuildContext context) {
-    return {
-      'action': context.l10n.action,
-      'adventure': context.l10n.adventure,
-      'animation': context.l10n.animation,
-      'comedy': context.l10n.comedy,
-      'crime': context.l10n.crime,
-      'documentary': context.l10n.documentary,
-      'drama': context.l10n.drama,
-      'family': context.l10n.family,
-      'fantasy': context.l10n.fantasy,
-      'horror': context.l10n.horror,
-      'mystery': context.l10n.mystery,
-      'romance': context.l10n.romance,
-      'sci_fi': context.l10n.sciFi,
-      'thriller': context.l10n.thriller,
-      'war': context.l10n.war,
-      'western': context.l10n.western,
-    };
-  }
+
 
   @override
   void initState() {
@@ -58,7 +39,7 @@ class _StepGenreState extends State<StepGenre> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,7 +68,7 @@ class _StepGenreState extends State<StepGenre> {
 
           Builder(
             builder: (context) {
-              final genreOptions = getGenreOptions(context);
+              final genreOptions = Genres.getOptions(context);
               return Wrap(
                 spacing: 12,
                 runSpacing: 16,

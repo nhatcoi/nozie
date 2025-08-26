@@ -219,7 +219,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get western => 'Viễn Tây';
 
   @override
-  String get completeYourProfile => 'Hoàn thành hồ sơ của bạn';
+  String get completeYourProfile => 'Hoàn thành hồ sơ';
 
   @override
   String get profilePrivacyNote => 'Đừng lo lắng, chỉ bạn mới có thể xem dữ liệu cá nhân của mình. Không ai khác có thể xem được.';
@@ -240,7 +240,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get phoneNumber => 'Số điện thoại';
 
   @override
-  String get enterYourPhoneNumber => '0987-654-321';
+  String get enterYourPhoneNumber => '(+1) 987-654-321';
 
   @override
   String get dateOfBirth => 'Ngày sinh';
@@ -285,7 +285,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get enterYourUsername => 'username';
 
   @override
-  String get enterYourPassword => 'Nhập mật khẩu của bạn';
+  String get enterYourPassword => '●●●●●●●●●●●●';
 
   @override
   String get enterYourEmailAddress => 'vnhat@example.com';
@@ -294,7 +294,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get confirmPassword => 'Xác nhận mật khẩu';
 
   @override
-  String get confirmYourPassword => 'Xác nhận mật khẩu của bạn';
+  String get confirmYourPassword => '●●●●●●●●●●●●';
 
   @override
   String get rememberMe => 'Ghi nhớ tôi';

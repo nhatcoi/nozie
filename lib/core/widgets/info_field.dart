@@ -96,6 +96,7 @@ class _InfoFieldState extends State<InfoField> {
   bool _isFocused = false;
   bool _isObscured = false;
   String? _errorText;
+  late final VoidCallback _focusListener;
 
   @override
   void initState() {
@@ -104,16 +105,19 @@ class _InfoFieldState extends State<InfoField> {
         widget.controller ?? TextEditingController(text: widget.initialValue);
     _focusNode = widget.focusNode ?? FocusNode();
     _isObscured = widget.isPassword;
-
-    _focusNode.addListener(() {
+    _focusListener = () {
+      if (!mounted) return;
       setState(() {
         _isFocused = _focusNode.hasFocus;
       });
-    });
+    };
+    _focusNode.addListener(_focusListener);
   }
 
   @override
   void dispose() {
+    // Always remove listener regardless of ownership
+    _focusNode.removeListener(_focusListener);
     if (widget.controller == null) {
       _controller.dispose();
     }
