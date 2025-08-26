@@ -30,7 +30,27 @@ class AppLocalizationsVi extends AppLocalizations {
   String get otpDes => 'Chúng tôi đã gửi mã xác thực OTP đến email của bạn. Vui lòng kiểm tra email và nhập mã bên dưới nhé.';
 
   @override
+  String get createNewPassword => 'Tạo mật khẩu mới 🔐';
+
+  @override
+  String get createNewPasswordDes => 'Nhập mật khẩu mới của bạn. Nếu quên, bạn sẽ cần thực hiện lại bước quên mật khẩu.';
+
+  @override
   String get signIn => 'Đăng Nhập';
+
+  @override
+  String get confirm => 'Xác Nhận';
+
+  @override
+  String get otpDidntReceiveCode => 'Chưa có mã?';
+
+  @override
+  String get otpResendCode => 'Gửi lại mã ngay';
+
+  @override
+  String otpResendAfter(Object seconds) {
+    return 'Đợi ${seconds}s rồi gửi lại';
+  }
 
   @override
   String get loginTitle => 'Xin chào bạn 👋';

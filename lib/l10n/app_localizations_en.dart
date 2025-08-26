@@ -30,7 +30,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get otpDes => 'We have sent the OTP verification code to your email address. Check your email and enter the code below.';
 
   @override
+  String get createNewPassword => 'Create New Password 🔐';
+
+  @override
+  String get createNewPasswordDes => 'Enter your new password. If you forget it, then you have to do forgot password.';
+
+  @override
   String get signIn => 'Sign In';
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get otpDidntReceiveCode => 'Didn\'t receive the code?';
+
+  @override
+  String get otpResendCode => 'Resend Code';
+
+  @override
+  String otpResendAfter(Object seconds) {
+    return 'You can resend after ${seconds}s';
+  }
 
   @override
   String get loginTitle => 'Hello there 👋';
