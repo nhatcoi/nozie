@@ -308,7 +308,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get enterYourPassword => '●●●●●●●●●●●●';
 
   @override
-  String get enterYourEmailAddress => 'vnhat@example.com';
+  String get enterYourEmailAddress => 'example@nozie.com';
 
   @override
   String get confirmPassword => 'Xác nhận mật khẩu';

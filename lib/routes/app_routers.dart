@@ -12,6 +12,9 @@ class AppRouters {
   static const String login = '/login';
   static const String home = '/home';
   static const String setting = '/setting';
+  static const String resetPassword = '/reset-password';
+  static const String otpVerification = '/otp-verification';
+  static const String forgotPassword = '/forgotPassword';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final name = settings.name;
