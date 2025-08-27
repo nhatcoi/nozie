@@ -16,16 +16,16 @@ class HomePage extends ConsumerWidget {
     final themeMode = ref.watch(themeModeProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text(t.appTitle)),
+      appBar: AppBar(title: Text(t.app.title)),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(height: 16),
             SegmentedButton<String>(
-              segments: const [
-                ButtonSegment(value: 'vi', label: Text('Tiếng Việt')),
-                ButtonSegment(value: 'en', label: Text('English')),
+              segments: [
+                ButtonSegment(value: 'vi', label: Text(t.settings.language.vietnamese)),
+                ButtonSegment(value: 'en', label: Text(t.settings.language.english)),
               ],
               selected: {locale.languageCode},
               onSelectionChanged: (s) => onChangeLocale(Locale(s.first)),
@@ -35,16 +35,16 @@ class HomePage extends ConsumerWidget {
 
             // ---- Switch theme: System / Light / Dark ----
             SegmentedButton<ThemeMode>(
-              segments: const [
-                ButtonSegment(value: ThemeMode.system, icon: Icon(Icons.phone_iphone), label: Text('System')),
-                ButtonSegment(value: ThemeMode.light,  icon: Icon(Icons.light_mode),  label: Text('Light')),
-                ButtonSegment(value: ThemeMode.dark,   icon: Icon(Icons.dark_mode),   label: Text('Dark')),
+              segments: [
+                ButtonSegment(value: ThemeMode.system, icon: Icon(Icons.phone_iphone), label: Text(t.settings.theme.system)),
+                ButtonSegment(value: ThemeMode.light,  icon: Icon(Icons.light_mode),  label: Text(t.settings.theme.light)),
+                ButtonSegment(value: ThemeMode.dark,   icon: Icon(Icons.dark_mode),   label: Text(t.settings.theme.dark)),
               ],
               selected: {themeMode},
               onSelectionChanged: (s) => ref.read(themeModeProvider.notifier).set(s.first),
             ),
 
-            ElevatedButton(onPressed: () {}, child: Text("data"))
+            ElevatedButton(onPressed: () {}, child: Text(t.common.data))
           ],
         ),
       ),
