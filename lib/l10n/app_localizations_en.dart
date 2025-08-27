@@ -74,6 +74,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get themeDark => 'Dark';
 
   @override
+  String get fillAllFields => 'Please fill in all fields.';
+
+  @override
   String itemsCount(num count) {
     return '$count items';
   }
