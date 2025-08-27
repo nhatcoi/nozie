@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movie_fe/features/auth/forgot_password/presentation/forgot_password_new_pass_screen.dart';
 import 'package:movie_fe/features/auth/forgot_password/presentation/forgot_password_otp_screen.dart';
 import 'package:movie_fe/features/auth/forgot_password/presentation/forgot_password_screen.dart';
@@ -60,35 +59,33 @@ class AppRouters {
     
     if (name == home) {
       return MaterialPageRoute(
-        builder: (context) => Consumer(
-          builder: (context, ref, child) {
-            final locale = ref.watch(localeControllerProvider);
-            return HomePage(
-              locale,
-                  (newLocale) {
-                // Thay đổi ngôn ngữ thực sự bằng Riverpod
-                ref.read(localeControllerProvider.notifier).setLocale(newLocale);
-              },
-            );
-          },
-        ),
+        builder: (context) {
+          // Get locale from context
+          final locale = Localizations.localeOf(context);
+          return HomePage(
+            locale,
+            (newLocale) {
+              // Handle locale change - you might want to use a provider here
+              print('Locale changed to: ${newLocale.languageCode}');
+            },
+          );
+        },
       );
     }
     
     if (name == settings) {
       return MaterialPageRoute(
-        builder: (context) => Consumer(
-          builder: (context, ref, child) {
-            final locale = ref.watch(localeControllerProvider);
-            return HomePage(
-              locale,
-              (newLocale) {
-                // Thay đổi ngôn ngữ thực sự bằng Riverpod
-                ref.read(localeControllerProvider.notifier).setLocale(newLocale);
-              },
-            );
-          },
-        ),
+        builder: (context) {
+          // Get locale from context
+          final locale = Localizations.localeOf(context);
+          return HomePage(
+            locale,
+            (newLocale) {
+              // Handle locale change - you might want to use a provider here
+              print('Locale changed to: ${newLocale.languageCode}');
+            },
+          );
+        },
       );
     }
     

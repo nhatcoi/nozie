@@ -18,18 +18,7 @@ class StepAge extends StatefulWidget {
 class _StepAgeState extends State<StepAge> {
   String? selectedAge;
 
-  Map<String, String> getAgeOptions(BuildContext context) {
-    return {
-      '14-17': context.l10n.age14to17,
-      '18-24': context.l10n.age18to24,
-      '25-29': context.l10n.age25to29,
-      '30-34': context.l10n.age30to34,
-      '35-39': context.l10n.age35to39,
-      '40-44': context.l10n.age40to44,
-      '45-49': context.l10n.age45to49,
-      '50': context.l10n.age50plus,
-    };
-  }
+
 
   @override
   void initState() {
@@ -71,7 +60,7 @@ class _StepAgeState extends State<StepAge> {
               final screenWidth = constraints.maxWidth;
               final tagWidth = (screenWidth - 48) / 2;
               
-              final ageOptions = getAgeOptions(context);
+              final ageOptions = Ages.getOptions(context);
               return Wrap(
                 spacing: 16,
                 runSpacing: 16,

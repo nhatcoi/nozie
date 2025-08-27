@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:movie_fe/core/widgets/app_checkbox.dart';
 import '../../../../../../core/app_export.dart';
-import '../../../../../../core/utils/validation_utils.dart';
 
-class StepSignup extends StatefulWidget {
+class StepSignup extends ConsumerStatefulWidget {
   final Function(Map<String, dynamic>) onSignupCompleted;
   final Map<String, dynamic>? initialData;
 
@@ -13,114 +14,68 @@ class StepSignup extends StatefulWidget {
   });
 
   @override
-  State<StepSignup> createState() => _StepSignupState();
+  ConsumerState<StepSignup> createState() => _StepSignupState();
 }
 
-class _StepSignupState extends State<StepSignup> {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+class _StepSignupState extends ConsumerState<StepSignup> {
 
-  final FocusNode _usernameFocus = FocusNode();
-  final FocusNode _emailFocus = FocusNode();
-  final FocusNode _passwordFocus = FocusNode();
-  final FocusNode _confirmPasswordFocus = FocusNode();
+  // gán value
+  late final TextEditingController _username;
+  late final TextEditingController _email;
+  late final TextEditingController _password;
+  late final TextEditingController _confirmPassword;
 
-  Map<String, dynamic> _formData = {};
+  // next field sau
+  late final FocusNode _usernameFocus;
+  late final FocusNode _emailFocus;
+  late final FocusNode _passwordFocus;
+  late final FocusNode _confirmPasswordFocus;
+
   bool _rememberMe = false;
-  bool _obscurePassword = true;
-  bool _obscureConfirmPassword = true;
+
 
   @override
   void initState() {
     super.initState();
-    _initializeForm();
-    _setupFocusListeners();
+
+    _username = TextEditingController();
+    _email = TextEditingController();
+    _password = TextEditingController();
+    _confirmPassword = TextEditingController();
+
+    _usernameFocus = FocusNode();
+    _emailFocus = FocusNode();
+    _passwordFocus = FocusNode();
+    _confirmPasswordFocus = FocusNode();
+
+    // nghe thay đổi
+    _username.addListener(_onInputChanged);
+    _email.addListener(_onInputChanged);
+    _password.addListener(_onInputChanged);
+    _confirmPassword.addListener(_onInputChanged);
   }
 
-  void _initializeForm() {
-    if (widget.initialData != null) {
-      _formData = Map.from(widget.initialData!);
-      _usernameController.text = _formData['username'] ?? '';
-      _emailController.text = _formData['email'] ?? '';
-      _passwordController.text = _formData['password'] ?? '';
-      _confirmPasswordController.text = _formData['confirmPassword'] ?? '';
-      _rememberMe = _formData['rememberMe'] ?? false;
-    }
-  }
-
-  void _setupFocusListeners() {
-    // Use post-frame callback to avoid build-time validation
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _usernameController.addListener(_validateForm);
-      _emailController.addListener(_validateForm);
-      _passwordController.addListener(_validateForm);
-      _confirmPasswordController.addListener(_validateForm);
-    });
-  }
-
-  void _validateForm() {
-    final username = _usernameController.text.trim();
-    final email = _emailController.text.trim();
-    final password = _passwordController.text.trim();
-    final confirmPassword = _confirmPasswordController.text.trim();
-
-    // Update form data
-    _formData = {
-      'username': username,
-      'email': email,
-      'password': password,
-      'confirmPassword': confirmPassword,
+  void _onInputChanged() {
+    final account = {
+      'username' : _username.text,
+      'email' : _email.text,
+      'password' : _password.text,
+      'confirmPassword' : _confirmPassword.text,
       'rememberMe': _rememberMe,
     };
 
-    // Notify parent
-    widget.onSignupCompleted(_formData);
+    print("onSignupCompleted nhận dữ liệu: $account");
+
+    widget.onSignupCompleted(account); // gán vào sign up
   }
 
-  void _toggleRememberMe(bool? value) {
-    setState(() {
-      _rememberMe = value ?? false;
-    });
-    _validateForm();
-  }
-
-  void _togglePasswordVisibility() {
-    setState(() {
-      _obscurePassword = !_obscurePassword;
-    });
-  }
-
-  void _toggleConfirmPasswordVisibility() {
-    setState(() {
-      _obscureConfirmPassword = !_obscureConfirmPassword;
-    });
-  }
-
-  String? _validateUsername(String? value) {
-    return ValidationUtils.validateUsername(value, context);
-  }
-
-  String? _validateEmail(String? value) {
-    return ValidationUtils.validateEmail(value, context);
-  }
-
-  String? _validatePassword(String? value) {
-    return ValidationUtils.validatePassword(value, context);
-  }
-
-  String? _validateConfirmPassword(String? value) {
-    return ValidationUtils.validateConfirmPassword(value, _passwordController.text, context);
-  }
-
-  @override
+  @override // giải phóng data widget
   void dispose() {
-    _usernameController.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
+    _username.dispose();
+    _email.dispose();
+    _password.dispose();
+    _confirmPassword.dispose();
+
     _usernameFocus.dispose();
     _emailFocus.dispose();
     _passwordFocus.dispose();
@@ -128,14 +83,15 @@ class _StepSignupState extends State<StepSignup> {
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
+
+    return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           const SizedBox(height: 32),
 
           Text(
@@ -157,109 +113,87 @@ class _StepSignupState extends State<StepSignup> {
 
           const SizedBox(height: 32),
 
-          Expanded(
-            child: SingleChildScrollView( // scroll
-              child: Column(
+          Column(
+            children: [
+
+              InfoField(
+                label: context.l10n.username,
+                hintText: context.l10n.enterYourUsername,
+                isRequired: true,
+                keyboardType: TextInputType.text,
+                controller: _username, // nghe input
+                focusNode: _usernameFocus,
+                validator: (value) => ValidationUtils.validateUsername(value, context),
+                onSubmitted: (_) => _emailFocus.requestFocus(), // next focus
+              ),
+
+              const SizedBox(height: 24),
+
+              InfoField(
+                label: context.l10n.email,
+                hintText: context.l10n.enterYourEmailAddress,
+                isRequired: true,
+                keyboardType: TextInputType.emailAddress,
+                controller: _email,
+                focusNode: _emailFocus,
+                validator: (value) => ValidationUtils.validateEmail(value, context),
+                onSubmitted: (_) => _passwordFocus.requestFocus(),
+              ),
+
+              const SizedBox(height: 24),
+
+              InfoField(
+                label: context.l10n.password,
+                hintText: context.l10n.enterYourPassword,
+                isRequired: true,
+                isPassword: true,
+                controller: _password,
+                focusNode: _passwordFocus,
+                validator: (value) => ValidationUtils.validatePassword(value, context),
+                onSubmitted: (_) => _confirmPasswordFocus.requestFocus(),
+              ),
+
+              const SizedBox(height: 24),
+
+              InfoField(
+                label: context.l10n.confirmPassword,
+                hintText: context.l10n.confirmYourPassword,
+                isRequired: true,
+                isPassword: true,
+                controller: _confirmPassword,
+                focusNode: _confirmPasswordFocus,
+                validator: (value) => ValidationUtils.validateConfirmPassword(value, _password.text, context),
+                onSubmitted: (_) {
+                  if (_confirmPassword.text.trim() != _password.text.trim()) {
+                    _confirmPasswordFocus.requestFocus();
+                    return;
+                  }
+                  _confirmPasswordFocus.unfocus();
+                },
+              ),
+
+              const SizedBox(height: 24),
+
+              Row(
                 children: [
-
-                  InfoField(
-                    label: context.l10n.username,
-                    hintText: context.l10n.enterYourUsername,
-                    controller: _usernameController,
-                    focusNode: _usernameFocus,
-                    isRequired: true,
-                    validator: _validateUsername,
-                    keyboardType: TextInputType.text,
-                    onSubmitted: (_) => _emailFocus.requestFocus(),
+                  //
+                  AppCheckbox(
+                    value: _rememberMe,
+                    label: context.l10n.rememberMe,
+                    spacing: 16,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _rememberMe = value;
+                      });
+                      _onInputChanged();
+                    },
                   ),
 
-                  const SizedBox(height: 24),
-
-                  InfoField(
-                    label: context.l10n.email,
-                    hintText: context.l10n.enterYourEmailAddress,
-                    controller: _emailController,
-                    focusNode: _emailFocus,
-                    isRequired: true,
-                    validator: _validateEmail,
-                    keyboardType: TextInputType.emailAddress,
-                    onSubmitted: (_) => _passwordFocus.requestFocus(),
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  InfoField(
-                    label: context.l10n.password,
-                    hintText: context.l10n.enterYourPassword,
-                    controller: _passwordController,
-                    focusNode: _passwordFocus,
-                    isRequired: true,
-                    validator: _validatePassword,
-                    isPassword: true,
-                    onSubmitted: (_) => _confirmPasswordFocus.requestFocus(),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscurePassword
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: AppColors.greyscale500,
-                        size: 20,
-                      ),
-                      onPressed: _togglePasswordVisibility,
-                    ),
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  InfoField(
-                    label: context.l10n.confirmPassword,
-                    hintText: context.l10n.confirmYourPassword,
-                    controller: _confirmPasswordController,
-                    focusNode: _confirmPasswordFocus,
-                    isRequired: true,
-                    validator: _validateConfirmPassword,
-                    isPassword: true,
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscureConfirmPassword
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: AppColors.greyscale500,
-                        size: 20,
-                      ),
-                      onPressed: _toggleConfirmPasswordVisibility,
-                    ),
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: _rememberMe,
-                        onChanged: _toggleRememberMe,
-                        activeColor: AppColors.primary500,
-                        checkColor: AppColors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          context.l10n.rememberMe,
-                          style: AppTypography.bodyMRegular.copyWith(
-                            color: AppColors.getText(context),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 32),
                 ],
               ),
-            ),
+
+              const SizedBox(height: 32),
+            ],
           ),
         ],
       ),

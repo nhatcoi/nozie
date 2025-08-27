@@ -530,7 +530,7 @@ abstract class AppLocalizations {
   /// No description provided for @completeYourProfile.
   ///
   /// In en, this message translates to:
-  /// **'Complete Your Profile'**
+  /// **'Complete Profile'**
   String get completeYourProfile;
 
   /// No description provided for @profilePrivacyNote.
@@ -560,7 +560,7 @@ abstract class AppLocalizations {
   /// No description provided for @enterYourFullName.
   ///
   /// In en, this message translates to:
-  /// **'Enter your full name'**
+  /// **'Jackie Dee'**
   String get enterYourFullName;
 
   /// No description provided for @phoneNumber.
@@ -572,7 +572,7 @@ abstract class AppLocalizations {
   /// No description provided for @enterYourPhoneNumber.
   ///
   /// In en, this message translates to:
-  /// **'Enter your phone number'**
+  /// **'(+1) 987-654-321'**
   String get enterYourPhoneNumber;
 
   /// No description provided for @dateOfBirth.
@@ -656,19 +656,19 @@ abstract class AppLocalizations {
   /// No description provided for @enterYourUsername.
   ///
   /// In en, this message translates to:
-  /// **'Enter your username'**
+  /// **'nozie123'**
   String get enterYourUsername;
 
   /// No description provided for @enterYourPassword.
   ///
   /// In en, this message translates to:
-  /// **'Enter your password'**
+  /// **'●●●●●●●●●●●●'**
   String get enterYourPassword;
 
   /// No description provided for @enterYourEmailAddress.
   ///
   /// In en, this message translates to:
-  /// **'Enter your email address'**
+  /// **'user@gmail.com'**
   String get enterYourEmailAddress;
 
   /// No description provided for @confirmPassword.
@@ -680,7 +680,7 @@ abstract class AppLocalizations {
   /// No description provided for @confirmYourPassword.
   ///
   /// In en, this message translates to:
-  /// **'Confirm your password'**
+  /// **'●●●●●●●●●●●●'**
   String get confirmYourPassword;
 
   /// No description provided for @rememberMe.

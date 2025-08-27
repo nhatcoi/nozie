@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/app_export.dart';
 
-class HomePage extends ConsumerWidget {
+class SettingPage extends ConsumerWidget {
 
   final Locale locale;
   final void Function(Locale) onChangeLocale;
 
-  const HomePage(this.locale, this.onChangeLocale, {super.key});
+  const SettingPage(this.locale, this.onChangeLocale, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
