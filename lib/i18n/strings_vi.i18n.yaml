@@ -1,0 +1,228 @@
+# Main App Configuration
+app:
+  title: NoZie
+  
+# Common Actions
+common:
+  skip: Bỏ qua
+  continueText: Tiếp tục
+  confirm: Xác nhận
+  data: Dữ liệu
+  save: Lưu
+  cancel: Hủy
+  next: Tiếp theo
+  back: Quay lại
+  done: Hoàn thành
+
+# Authentication Module
+auth:
+  # General Auth Terms
+  login: Đăng nhập
+  signIn: Đăng Nhập
+  signUp: Đăng ký
+  email: Email
+  password: Mật khẩu
+  username: Tên đăng nhập
+  confirmPassword: Xác nhận mật khẩu
+  rememberMe: Ghi nhớ tôi
+  
+  # Login Screen
+  loginScreen:
+    title: "Xin chào bạn 👋"
+    description: Điền email/tên đăng nhập và mật khẩu để tiếp tục nha ✨
+    placeholder:
+      email: admin@ziet.dev
+      password: "●●●●●●●●●●●●"
+  
+  # Forgot Password Flow
+  forgotPassword:
+    title: "Quên Mật Khẩu 🔑"
+    description: Nhập email của bạn, chúng tôi sẽ gửi mã OTP để xác minh ở bước tiếp theo.
+    orContinueWith: hoặc tiếp tục với
+    
+    # OTP Screen
+    otp:
+      title: "OTP tới rồi nè 📩"
+      description: Chúng tôi đã gửi mã xác thực OTP đến email của bạn. Vui lòng kiểm tra email và nhập mã bên dưới nhé.
+      didntReceiveCode: Chưa có mã?
+      resendCode: Gửi lại mã ngay
+      resendAfter(int seconds): "Đợi ${seconds}s rồi gửi lại"
+    
+    # New Password
+    newPassword:
+      title: "Tạo mật khẩu mới 🔐"
+      description: Nhập mật khẩu mới của bạn. Nếu quên, bạn sẽ cần thực hiện lại bước quên mật khẩu.
+  
+  # Registration Flow
+  register:
+    createAccount: Tạo tài khoản
+    description: Nhập tên đăng nhập, email và mật khẩu. Nếu bạn quên, bạn sẽ phải làm quên mật khẩu.
+    placeholder:
+      username: Nhập tên đăng nhập của bạn
+      password: Nhập mật khẩu của bạn
+      email: Nhập địa chỉ email của bạn
+      confirmPassword: Xác nhận mật khẩu của bạn
+    registrationSuccessful: Đăng ký thành công!
+    
+    # Profile Steps
+    steps:
+      stepOf: "Bước {current} của {total}"
+      contentForStep: "Nội dung cho bước {step}"
+      
+      # Gender Selection
+      gender:
+        select: Chọn giới tính của bạn
+        question: Giới tính của bạn là gì?
+        description: Chọn giới tính để có nội dung phù hợp hơn
+        options:
+          male: Nam
+          female: Nữ
+          other: Khác
+          preferNotToSay: Không muốn nói
+        choices:
+          iAmMale: Tôi là nam
+          iAmFemale: Tôi là nữ
+          ratherNotToSay: Không muốn nói
+      
+      # Age Selection
+      age:
+        select: Chọn độ tuổi của bạn
+        title: Chọn độ tuổi của bạn
+        description: Chọn khoảng tuổi để có nội dung phù hợp hơn
+        ranges:
+          age14to17: "14-17"
+          age18to24: "18-24"
+          age25to29: "25-29"
+          age30to34: "30-34"
+          age35to39: "35-39"
+          age40to44: "40-44"
+          age45to49: "45-49"
+          age50plus: "50+"
+      
+      # Genre Selection
+      genres:
+        select: Chọn thể loại yêu thích
+        title: Chọn thể loại phim bạn thích
+        description: Chọn thể loại phim yêu thích để có gợi ý tốt hơn hoặc bạn có thể bỏ qua
+        list:
+          action: Hành động
+          adventure: Phiêu lưu
+          animation: Hoạt hình
+          comedy: Hài
+          crime: Tội phạm
+          documentary: Tài liệu
+          drama: Kịch tính
+          family: Gia đình
+          fantasy: Viễn tưởng
+          horror: Kinh dị
+          mystery: Bí ẩn
+          romance: Lãng mạn
+          sciFi: Khoa học viễn tưởng
+          thriller: Giật gân
+          war: Chiến tranh
+          western: Viễn Tây
+      
+      # Profile Information
+      profile:
+        title: Hoàn thành hồ sơ của bạn
+        infoTitle: Thông tin cá nhân
+        accountTitle: Thông tin tài khoản
+        privacyNote: Đừng lo lắng, chỉ bạn mới có thể xem dữ liệu cá nhân của mình. Không ai khác có thể xem được.
+        photo:
+          add: Thêm ảnh
+          tapToAdd: Nhấn để thêm ảnh đại diện
+        fields:
+          fullName:
+            label: Họ và tên
+            placeholder: Nhập họ và tên của bạn
+          phoneNumber:
+            label: Số điện thoại
+            placeholder: Nhập số điện thoại của bạn
+          dateOfBirth:
+            label: Ngày sinh
+            format: DD/MM/YYYY
+          country:
+            label: Quốc gia
+            placeholder: Nhập quốc gia của bạn
+
+# Welcome/Onboarding Module
+welcome:
+  title: "Chào mừng đến với NoZie 👋"
+  titlePrefix: "Chào mừng đến với "
+  description: Người bạn đồng hành phim của bạn. Nhận gợi ý cá nhân hóa, khám phá phim mới và theo dõi danh sách xem của bạn.
+  getStarted: Bắt đầu
+  continueWithGoogle: Tiếp tục với Google
+  iAlreadyHaveAnAccount: Tôi đã có tài khoản
+  
+  slides:
+    discover:
+      title: Khám phá phim mới
+      description: Khám phá hàng nghìn bộ phim từ các thể loại khác nhau. Tìm những viên ngọc ẩn và phim xu hướng phù hợp với sở thích của bạn.
+    
+    track:
+      title: Theo dõi danh sách xem
+      description: Lưu phim bạn muốn xem, đánh dấu những gì bạn đã xem và nhận gợi ý dựa trên sở thích của bạn.
+    
+    community:
+      title: Tham gia cộng đồng
+      description: Kết nối với những người yêu phim khác, chia sẻ đánh giá và khám phá những gì đang xu hướng trong thế giới điện ảnh.
+
+# Settings & Preferences
+settings:
+  language:
+    vietnamese: Tiếng Việt
+    english: English
+  
+  theme:
+    system: Hệ thống
+    light: Sáng
+    dark: Tối
+
+# Validation Messages
+validation:
+  general:
+    fillAllFields: Vui lòng điền đầy đủ tất cả các trường.
+    required: Trường này là bắt buộc.
+    length(int length): Độ dài phải là $length.
+    min(int length): Độ dài tối thiểu là $length.
+    max(int length): Độ dài tối đa là $length.
+    regex: Trường không hợp lệ.
+    custom:
+      password: Mật khẩu phải có ký tự, số.
+      username: Tên người dùng chỉ được chứa chữ cái thường (a-z), số (0-9), dấu gạch ngang (-) và dấu gạch dưới (_).
+
+  name:
+    required: Họ và tên là bắt buộc
+    minLength: Họ và tên phải có ít nhất 2 ký tự
+  
+  phone:
+    required: Số điện thoại là bắt buộc
+    minLength: Số điện thoại phải có ít nhất 10 chữ số
+  
+  dateOfBirth:
+    required: Ngày sinh là bắt buộc
+  
+  country:
+    required: Quốc gia là bắt buộc
+  
+  username:
+    required: Tên đăng nhập là bắt buộc
+    minLength: Tên đăng nhập phải có ít nhất 3 ký tự
+    invalidChars: Tên đăng nhập chỉ có thể chứa chữ cái, số và dấu gạch dưới
+  
+  email:
+    required: Email là bắt buộc
+    invalid: Vui lòng nhập địa chỉ email hợp lệ
+  
+  password:
+    required: Mật khẩu là bắt buộc
+    minLength: Mật khẩu phải có ít nhất 8 ký tự
+    complexity: Mật khẩu phải chứa ít nhất một chữ hoa, một chữ thường và một số
+    confirmRequired: Vui lòng xác nhận mật khẩu của bạn
+    mismatch: Mật khẩu không khớp
+
+# Utility Functions
+utils:
+  itemsCount: "{count, plural, =0{Không có mục} =1{1 mục} other{{count} mục}}"
+  helloUser: "Xin chào, {name}!"
+  counterText: ""

@@ -40,8 +40,11 @@ dependencies:
   # State management
   flutter_riverpod: ^2.4.10
   riverpod_annotation: ^2.3.4
-  intl: any
   shared_preferences: ^2.3.2
+  
+  # Internationalization with slang
+  slang: ^3.32.0
+  slang_flutter: ^3.32.0
   
   # UI dependencies
   flutter_svg: ^2.0.10+1
@@ -69,6 +72,9 @@ dev_dependencies:
   custom_lint: ^0.7.6
   riverpod_lint: ^2.6.5
   flutter_launcher_icons: ^0.13.1
+  
+  # For slang code generation
+  slang_build_runner: ^3.32.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

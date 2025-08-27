@@ -112,7 +112,7 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
         await showAppModal(
           context: context,
           title: 'Success',
-          description: context.l10n.registrationSuccessful,
+          description: context.i18n.auth.register.registrationSuccessful,
           iconPath: ImageConstant.successIcon,
           primaryButton: PrimaryButton(
             text: 'OK',
@@ -306,7 +306,7 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
           if (isGenreStep)
             Expanded(
               child: SecondaryButton(
-                text: context.l10n.skip,
+                text: context.i18n.common.skip,
                 onPressed: () {
                   setState(() {
                     if (currentStep == SignupStep.genre) {
@@ -323,8 +323,8 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
           Expanded(
             child: PrimaryButton(
               text: isLastStep
-                  ? context.l10n.signUp
-                  : context.l10n.continueText,
+                  ? context.i18n.auth.signUp
+                  : context.i18n.common.continueText,
               onPressed: isLastStep
                   ? (_canNextStep() ? _handleSignUp : null)
                   : (_canNextStep() ? _nextStep : null),

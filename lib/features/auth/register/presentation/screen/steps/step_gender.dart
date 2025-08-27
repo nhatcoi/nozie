@@ -43,7 +43,7 @@ class _StepGenderState extends State<StepGender> {
           const SizedBox(height: 32),
 
           Text(
-            context.l10n.whatIsYourGender,
+            context.i18n.auth.register.steps.gender.question,
             style: AppTypography.h3.copyWith(
               color: AppColors.getText(context),
               fontWeight: FontWeight.w600,
@@ -53,7 +53,7 @@ class _StepGenderState extends State<StepGender> {
           
 
           Text(
-            context.l10n.selectGenderForBetterContent,
+            context.i18n.auth.register.steps.gender.description,
             style: AppTypography.bodyLRegular.copyWith(
               color: AppColors.getTextSecondary(context),
             ),

@@ -76,7 +76,7 @@ class ImagePickerCustom extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    context.l10n.addPhoto,
+                    context.i18n.auth.register.steps.profile.photo.add,
                     style: AppTypography.bodySBRegular.copyWith(
                       color: AppColors.greyscale500,
                       fontSize: 12,
