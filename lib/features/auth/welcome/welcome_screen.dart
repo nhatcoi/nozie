@@ -175,7 +175,7 @@ class WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                             text: WelcomeButtonTexts.getGoogleText(context),
                             onPressed: () {
                               // TODO: Handle Google sign in
-                              Navigator.pushNamed(context, AppRouters.setting);
+                              Navigator.pushNamed(context, AppRouters.settings);
                             },
                             backgroundColor: AppColors.getSurface(context),
                             textColor: AppColors.getText(context),
@@ -200,7 +200,7 @@ class WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                           SecondaryButton(
                             text: WelcomeButtonTexts.getLoginText(context),
                             onPressed: () {
-                              Navigator.pushNamed(context, AppRouters.login);
+                              Navigator.pushNamed(context, AppRouters.signIn);
                             },
                           ),
 
