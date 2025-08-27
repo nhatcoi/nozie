@@ -47,11 +47,13 @@ class ForgotPasswordScreen extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      AppRouters.otpVerification,
-                      arguments: _emailController.text,
-                    );
+                    if (_emailController.text.isNotEmpty) {
+                      Navigator.pushNamed(
+                        context,
+                        AppRouters.otpVerification,
+                        arguments: _emailController.text,
+                      );
+                    }
                   },
                   child: Text(t.continueText, style: AppTypography.bodyLBold),
                 ),

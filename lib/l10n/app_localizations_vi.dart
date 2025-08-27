@@ -74,6 +74,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get themeDark => 'Tối';
 
   @override
+  String get fillAllFields => 'Vui lòng điền đầy đủ tất cả các trường.';
+
+  @override
   String itemsCount(num count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

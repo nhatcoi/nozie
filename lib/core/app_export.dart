@@ -11,7 +11,7 @@ export 'theme/app_gradients.dart';
 export 'theme/app_theme.dart';
 export 'theme/app_typography.dart';
 
-// Utils
+
 export 'util/image_constant.dart';
 export 'util/validation_utils.dart';
 export 'util/data.dart';

@@ -21,6 +21,7 @@
   "password": "Password",
   "themeLight": "Light",
   "themeDark": "Dark",
+  "fillAllFields": "Please fill in all fields.",
   "itemsCount": "{count} items",
   "@itemsCount": {
     "description": "Pluralized item count",

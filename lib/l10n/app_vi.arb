@@ -21,6 +21,7 @@
   "password": "Mật khẩu",
   "themeLight": "Sáng",
   "themeDark": "Tối",
+  "fillAllFields": "Vui lòng điền đầy đủ tất cả các trường.",
   "itemsCount": "{count, plural, =0{Không có mục} =1{1 mục} other{{count} mục}}",
   "@itemsCount": {
     "description": "Đếm số mục",
