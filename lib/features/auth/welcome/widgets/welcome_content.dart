@@ -63,7 +63,7 @@ class WelcomeContent extends StatelessWidget {
           ),
           children: [
             if (data.titleKey == 'welcomeToNoZie') ...[
-              TextSpan(text: context.l10n.welcomeTo),
+              TextSpan(text: context.i18n.welcome.titlePrefix),
               TextSpan(
                 text: 'NoZie 👋',
                 style: AppTypography.h3.copyWith(

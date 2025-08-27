@@ -5,7 +5,6 @@ import 'package:movie_fe/core/app_export.dart';
 import 'package:movie_fe/core/widgets/lined_text_divider.dart';
 import 'package:movie_fe/core/widgets/social_button.dart';
 import 'package:movie_fe/features/auth/login/presentation/providers/login_provider.dart';
-import 'package:movie_fe/l10n/app_localizations.dart';
 import 'package:movie_fe/core/widgets/app_checkbox.dart';
 
 import '../../../../routes/app_routers.dart';
@@ -18,8 +17,7 @@ class LoginScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var rememberMe = ref.watch(rememberMeProvider);
-    final t = AppLocalizations.of(context)!;
-    final ctx = Theme.of(context);
+    final t = context.i18n;
     final type = Theme.of(context).textTheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -43,21 +41,21 @@ class LoginScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(t.loginTitle, style: type.displaySmall),
+                Text(t.auth.loginScreen.title, style: type.displaySmall),
 
                 const SizedBox(height: 12),
 
-                Text(t.loginDescription, style: type.titleLarge),
+                Text(t.auth.loginScreen.description, style: type.titleLarge),
 
                 const SizedBox(height: 32),
 
                 Text(
-                  '${t.username} / ${t.email}',
+                  '${t.auth.username} / ${t.auth.email}',
                   style: type.labelLarge?.copyWith(fontWeight: FontWeight.w700),
                 ),
 
                 InfoField(
-                  hintText: "admin@ziet.dev",
+                  hintText: t.auth.loginScreen.placeholder.email,
                   controller: userCtl,
                   focusNode: userNode,
                   onSubmitted: (_) =>
@@ -66,7 +64,7 @@ class LoginScreen extends ConsumerWidget {
 
                 const SizedBox(height: 24),
 
-                InfoField(hintText: "●●●●●●●●●●●●", isPassword: true,
+                InfoField(hintText: t.auth.loginScreen.placeholder.password, isPassword: true,
                 controller: passCtl,
                 focusNode: passNode,
                 onSubmitted: (_) => FocusScope.of(context).unfocus()),
@@ -75,7 +73,7 @@ class LoginScreen extends ConsumerWidget {
 
                 AppCheckbox(
                   value: rememberMe,
-                  label: t.rememberMe,
+                  label: t.auth.rememberMe,
                   textStyle: type.titleMedium,
                   spacing: 16,
                   onChanged: (bool value) {
@@ -97,7 +95,7 @@ class LoginScreen extends ConsumerWidget {
                       Navigator.pushNamed(context, AppRouters.forgotPassword);
                     },
                     child: Text(
-                      t.forgotPassword,
+                      t.auth.forgotPassword.title,
                       style: type.titleLarge?.copyWith(
                         fontWeight: FontWeight.w700,
                         color: AppColors.primary500,
@@ -108,7 +106,7 @@ class LoginScreen extends ConsumerWidget {
 
                 const SizedBox(height: 32),
 
-                LinedTextDivider(text: t.orContinueWith),
+                LinedTextDivider(text: t.auth.forgotPassword.orContinueWith),
 
                 const SizedBox(height: 24),
 
@@ -156,13 +154,13 @@ class LoginScreen extends ConsumerWidget {
                 const Spacer(),
 
                 PrimaryButton(
-                  text: t.signIn,
+                  text: t.auth.signIn,
                   onPressed: () {
                     if(userCtl.text.isNotEmpty && passCtl.text.isNotEmpty) {
                       Navigator.pushNamed(context, AppRouters.home);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(t.fillAllFields))
+                        SnackBar(content: Text(t.validation.general.fillAllFields))
                       );
                     }
 

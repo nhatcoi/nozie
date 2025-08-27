@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/l10n/app_localizations.dart';
 
 class OtpCountdownWidget extends StatelessWidget {
   const OtpCountdownWidget({
@@ -14,16 +13,16 @@ class OtpCountdownWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.i18n;
     final theme = Theme.of(context).textTheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final t = AppLocalizations.of(context)!;
 
     return Column(
       children: [
         SizedBox(
           width: double.infinity,
           child: Text(
-            t.otpDidntReceiveCode,
+            t.auth.forgotPassword.otp.didntReceiveCode,
             style: theme.titleSmall,
             textAlign: TextAlign.center,
           ),
@@ -43,10 +42,10 @@ class OtpCountdownWidget extends StatelessWidget {
     BuildContext context,
     TextTheme theme,
     bool isDark,
-    AppLocalizations t,
+    dynamic t,
   ) {
-    final template = t.otpResendAfter('{seconds}');
-    final parts = template.split('{seconds}');
+    final template = t.auth.forgotPassword.otp.resendAfter(seconds: secondsLeft);
+    final parts = template.split('$secondsLeft');
 
     return RichText(
       textAlign: TextAlign.center,
@@ -71,12 +70,12 @@ class OtpCountdownWidget extends StatelessWidget {
   Widget _buildResendButton(
     BuildContext context,
     TextTheme theme,
-    AppLocalizations t,
+    dynamic t,
   ) {
     return TextButton(
       onPressed: onResendCode,
       child: Text(
-        t.otpResendCode,
+        t.auth.forgotPassword.otp.resendCode,
         textAlign: TextAlign.center,
         style: theme.titleMedium,
       ),

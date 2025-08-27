@@ -11,7 +11,7 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final t = context.l10n;
+    final t = context.i18n;
 
     final themeMode = ref.watch(themeModeProvider);
 

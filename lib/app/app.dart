@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../features/auth/welcome/welcome_screen.dart';
 import '../i18n/translations.g.dart';
@@ -33,6 +34,11 @@ class NozieApp extends ConsumerWidget {
       // i18n
       locale: locale,
       supportedLocales: AppLocale.values.map((locale) => locale.flutterLocale),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
 
       // theme
       themeMode: themeMode,

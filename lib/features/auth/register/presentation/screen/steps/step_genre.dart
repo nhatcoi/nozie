@@ -48,7 +48,7 @@ class _StepGenreState extends State<StepGenre> {
           const SizedBox(height: 32),
 
           Text(
-            context.l10n.chooseMovieGenre,
+            context.i18n.auth.register.steps.genres.title,
             style: AppTypography.h3.copyWith(
               color: AppColors.getText(context),
               fontWeight: FontWeight.w600,
@@ -58,7 +58,7 @@ class _StepGenreState extends State<StepGenre> {
           const SizedBox(height: 16),
 
           Text(
-            context.l10n.selectPreferredGenre,
+            context.i18n.auth.register.steps.genres.description,
             style: AppTypography.bodyLRegular.copyWith(
               color: AppColors.getTextSecondary(context),
             ),

@@ -95,7 +95,7 @@ class _StepSignupState extends ConsumerState<StepSignup> {
           const SizedBox(height: 32),
 
           Text(
-            context.l10n.createAnAccount,
+            context.i18n.auth.register.createAccount,
             style: AppTypography.h3.copyWith(
               color: AppColors.getText(context),
               fontWeight: FontWeight.w600,
@@ -105,7 +105,7 @@ class _StepSignupState extends ConsumerState<StepSignup> {
           const SizedBox(height: 16),
 
           Text(
-            context.l10n.signupDescription,
+            context.i18n.auth.register.description,
             style: AppTypography.bodyLRegular.copyWith(
               color: AppColors.getTextSecondary(context),
             ),
@@ -117,8 +117,8 @@ class _StepSignupState extends ConsumerState<StepSignup> {
             children: [
 
               InfoField(
-                label: context.l10n.username,
-                hintText: context.l10n.enterYourUsername,
+                label: context.i18n.auth.username,
+                hintText: context.i18n.auth.register.placeholder.username,
                 isRequired: true,
                 keyboardType: TextInputType.text,
                 controller: _username, // nghe input
@@ -130,8 +130,8 @@ class _StepSignupState extends ConsumerState<StepSignup> {
               const SizedBox(height: 24),
 
               InfoField(
-                label: context.l10n.email,
-                hintText: context.l10n.enterYourEmailAddress,
+                label: context.i18n.auth.email,
+                hintText: context.i18n.auth.register.placeholder.email,
                 isRequired: true,
                 keyboardType: TextInputType.emailAddress,
                 controller: _email,
@@ -143,8 +143,8 @@ class _StepSignupState extends ConsumerState<StepSignup> {
               const SizedBox(height: 24),
 
               InfoField(
-                label: context.l10n.password,
-                hintText: context.l10n.enterYourPassword,
+                label: context.i18n.auth.password,
+                hintText: context.i18n.auth.register.placeholder.password,
                 isRequired: true,
                 isPassword: true,
                 controller: _password,
@@ -156,8 +156,8 @@ class _StepSignupState extends ConsumerState<StepSignup> {
               const SizedBox(height: 24),
 
               InfoField(
-                label: context.l10n.confirmPassword,
-                hintText: context.l10n.confirmYourPassword,
+                label: context.i18n.auth.confirmPassword,
+                hintText: context.i18n.auth.register.placeholder.confirmPassword,
                 isRequired: true,
                 isPassword: true,
                 controller: _confirmPassword,
@@ -179,7 +179,7 @@ class _StepSignupState extends ConsumerState<StepSignup> {
                   //
                   AppCheckbox(
                     value: _rememberMe,
-                    label: context.l10n.rememberMe,
+                    label: context.i18n.auth.rememberMe,
                     spacing: 16,
                     onChanged: (bool value) {
                       setState(() {

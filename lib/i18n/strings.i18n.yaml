@@ -1,0 +1,227 @@
+# Main App Configuration
+app:
+  title: NoZie
+  
+# Common Actions
+common:
+  skip: Skip
+  continueText: Continue
+  confirm: Confirm
+  data: Data
+  save: Save
+  cancel: Cancel
+  next: Next
+  back: Back
+  done: Done
+
+# Authentication Module
+auth:
+  # General Auth Terms
+  login: Login
+  signIn: Sign In
+  signUp: Sign Up
+  email: Email
+  password: Password
+  username: Username
+  confirmPassword: Confirm Password
+  rememberMe: Remember me
+  
+  # Login Screen
+  loginScreen:
+    title: "Hello there 👋"
+    description: Please enter your username/email and password to sign in.
+    placeholder:
+      email: admin@ziet.dev
+      password: "●●●●●●●●●●●●"
+  
+  # Forgot Password Flow
+  forgotPassword:
+    title: "Forgot Password 🔑"
+    description: Enter your email address. We will send an OTP code for verification in the next step.
+    orContinueWith: or continue with
+    
+    # OTP Screen
+    otp:
+      title: "You've Got Mail 📩"
+      description: We have sent the OTP verification code to your email address. Check your email and enter the code below.
+      didntReceiveCode: "Didn't receive the code?"
+      resendCode: Resend Code
+      resendAfter(int seconds): "You can resend after ${seconds}s"
+    
+    # New Password
+    newPassword:
+      title: "Create New Password 🔐"
+      description: Enter your new password. If you forget it, then you have to do forgot password.
+  
+  # Registration Flow
+  register:
+    createAccount: Create an Account
+    description: Enter your username, email & password. If you forget it, then you have to do forgot password.
+    placeholder:
+      username: Enter your username
+      password: Enter your password
+      email: Enter your email address
+      confirmPassword: Confirm your password
+    registrationSuccessful: Registration successful!
+    
+    # Profile Steps
+    steps:
+      stepOf: "Step {current} of {total}"
+      contentForStep: "Content for step {step}"
+      
+      # Gender Selection
+      gender:
+        select: Select your gender
+        question: What is your gender?
+        description: Select gender for better content
+        options:
+          male: Male
+          female: Female
+          other: Other
+          preferNotToSay: Prefer not to say
+        choices:
+          iAmMale: I am male
+          iAmFemale: I am female
+          ratherNotToSay: Rather not to say
+      
+      # Age Selection
+      age:
+        select: Select your age
+        title: Choose your Age
+        description: Select age range for better content
+        ranges:
+          age14to17: "14-17"
+          age18to24: "18-24"
+          age25to29: "25-29"
+          age30to34: "30-34"
+          age35to39: "35-39"
+          age40to44: "40-44"
+          age45to49: "45-49"
+          age50plus: "50+"
+      
+      # Genre Selection
+      genres:
+        select: Select your favorite genres
+        title: Choose the Movie Genre You Like
+        description: Select your preferred movie genre for better recommendation or you can skip it
+        list:
+          action: Action
+          adventure: Adventure
+          animation: Animation
+          comedy: Comedy
+          crime: Crime
+          documentary: Documentary
+          drama: Drama
+          family: Family
+          fantasy: Fantasy
+          horror: Horror
+          mystery: Mystery
+          romance: Romance
+          sciFi: Sci-Fi
+          thriller: Thriller
+          war: War
+          western: Western
+      
+      # Profile Information
+      profile:
+        title: Complete Your Profile
+        infoTitle: Profile Information
+        accountTitle: Account Information
+        privacyNote: "Don't worry, only you can see your personal data. No one else will be able to see it."
+        photo:
+          add: Add Photo
+          tapToAdd: Tap to add profile picture
+        fields:
+          fullName:
+            label: Full Name
+            placeholder: Enter your full name
+          phoneNumber:
+            label: Phone Number
+            placeholder: Enter your phone number
+          dateOfBirth:
+            label: Date of Birth
+            format: DD/MM/YYYY
+          country:
+            label: Country
+            placeholder: Enter your country
+
+# Welcome/Onboarding Module
+welcome:
+  title: "Welcome to NoZie 👋"
+  titlePrefix: "Welcome to "
+  description: Your personal movie companion. Get personalized recommendations, discover new films, and track your watchlist.
+  getStarted: Get Started
+  continueWithGoogle: Continue with Google
+  iAlreadyHaveAnAccount: I Already Have an Account
+  
+  slides:
+    discover:
+      title: Discover New Movies
+      description: Explore thousands of movies from different genres. Find hidden gems and trending films that match your taste.
+    
+    track:
+      title: Track Your Watchlist
+      description: Save movies you want to watch, mark what you've seen, and get recommendations based on your preferences.
+    
+    community:
+      title: Join the Community
+      description: Connect with other movie lovers, share reviews, and discover what's trending in the film world.
+
+# Settings & Preferences
+settings:
+  language:
+    vietnamese: Tiếng Việt
+    english: English
+  
+  theme:
+    system: System
+    light: Light
+    dark: Dark
+
+# Validation Messages
+validation:
+  general:
+    fillAllFields: Please fill in all fields.
+    required: This field is required.
+    length(int length): The length must be $length.
+    min(int length): The minimum length is $length.
+    max(int length): The maximum length is $length.
+    regex: The field is invalid.
+    custom:
+      password: The password must have characters, numbers.
+      username: The username must only contain lowercase letters (a-z), numbers (0-9), hyphens (-), and underscores (_).
+
+  name:
+    required: Full name is required
+    minLength: Full name must be at least 2 characters
+  phone:
+    required: Phone number is required
+    minLength: Phone number must be at least 10 digits
+  
+  dateOfBirth:
+    required: Date of birth is required
+  
+  country:
+    required: Country is required
+  
+  username:
+    required: Username is required
+    minLength: Username must be at least 3 characters
+    invalidChars: Username can only contain letters, numbers, and underscores
+  
+  email:
+    required: Email is required
+    invalid: Please enter a valid email address
+  
+  password:
+    required: Password is required
+    minLength: Password must be at least 8 characters
+    complexity: Password must contain at least one uppercase letter, one lowercase letter, and one number
+    confirmRequired: Please confirm your password
+    mismatch: Passwords do not match
+
+# Utility Functions
+utils:
+  itemsCount: "{count} items"
+  helloUser: "Hello, {name}!"
+  counterText: ""
