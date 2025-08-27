@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_typography.dart';
-import '../util/image_constant.dart';
+import '../utils/image_constant.dart';
 
 class CustomDropdown extends StatefulWidget {
   final String? label;
