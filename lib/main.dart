@@ -17,13 +17,18 @@ Future<void> main() async {
   final sp = await SharedPreferences.getInstance();
   DioClient.init();
   
-  // Initialize slang localization
-  LocaleSettings.useDeviceLocale();
+  // Initialize slang locale BEFORE creating widget tree
+  final savedLocaleCode = sp.getString('app_locale') ?? 'vi';
+  final appLocale = AppLocale.values.firstWhere(
+    (l) => l.languageCode == savedLocaleCode,
+    orElse: () => AppLocale.vi,
+  );
+  LocaleSettings.setLocale(appLocale);
   
   runApp(
     ProviderScope(
       overrides: [
-        localeControllerProvider.overrideWith((ref) => LocaleController(sp)),
+        localeControllerProvider.overrideWith((ref) => LocaleController(sp, ref)),
       ],
       child: TranslationProvider(child: const NozieApp()),
     ),

@@ -19,15 +19,6 @@ class NozieApp extends ConsumerWidget {
     final themeMode = ref.watch(themeModeProvider);
     final locale = ref.watch(localeControllerProvider); // locale từ Riverpod
 
-    // Update slang locale when locale changes
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final appLocale = AppLocale.values.firstWhere(
-        (l) => l.languageCode == locale.languageCode,
-        orElse: () => AppLocale.en,
-      );
-      LocaleSettings.setLocale(appLocale);
-    });
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
 
