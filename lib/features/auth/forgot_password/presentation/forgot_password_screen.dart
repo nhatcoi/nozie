@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/core/theme/app_colors.dart';
 import 'package:movie_fe/routes/app_routers.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
@@ -37,6 +36,8 @@ class ForgotPasswordScreen extends StatelessWidget {
               InfoField(
                 hintText: t.auth.loginScreen.placeholder.email,
                 controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) => ValidationUtils.validateEmail(value, context),
               ),
 
               const Spacer(),

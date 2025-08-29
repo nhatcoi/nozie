@@ -27,6 +27,30 @@ class ValidationUtils {
     return null;
   }
 
+
+  static String? validateEmail2(String? value, BuildContext context) {
+    final t = context.i18n;
+
+    if (value
+        ?.trim()
+        .isEmpty ?? true) {
+      return t.validation.username.required; // fallback required chung
+    }
+
+    final input = value!.trim();
+
+    if (input.contains('@')) {
+      // check email
+      final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+      if (!emailRegex.hasMatch(input)) {
+        return t.validation.email.invalid;
+      }
+    }
+    // nếu không có @ thì mặc định là username -> chỉ required, ko check gì thêm
+
+    return null;
+  }
+
   static String? validatePassword(String? value, BuildContext context) {
     final t = context.i18n;
     if (value?.trim().isEmpty ?? true) {

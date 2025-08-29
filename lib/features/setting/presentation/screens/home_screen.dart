@@ -14,6 +14,10 @@ class HomePage extends ConsumerWidget {
     final t = context.i18n;
 
     final themeMode = ref.watch(themeModeProvider);
+    // Watch current locale from provider to ensure consistency
+    final currentLocale = ref.watch(localeControllerProvider);
+    // Watch rebuild trigger to force rebuild when locale changes
+    ref.watch(localeRebuildProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text(t.app.title)),
@@ -24,10 +28,10 @@ class HomePage extends ConsumerWidget {
             const SizedBox(height: 16),
             SegmentedButton<String>(
               segments: [
-                ButtonSegment(value: 'vi', label: Text(t.settings.language.vietnamese)),
                 ButtonSegment(value: 'en', label: Text(t.settings.language.english)),
+                ButtonSegment(value: 'vi', label: Text(t.settings.language.vietnamese)),
               ],
-              selected: {locale.languageCode},
+              selected: {currentLocale.languageCode},
               onSelectionChanged: (s) => onChangeLocale(Locale(s.first)),
             ),
 

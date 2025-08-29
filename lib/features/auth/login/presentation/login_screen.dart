@@ -58,15 +58,23 @@ class LoginScreen extends ConsumerWidget {
                   hintText: t.auth.loginScreen.placeholder.email,
                   controller: userCtl,
                   focusNode: userNode,
+                  validator: (value) => ValidationUtils.validateEmail2(value, context),
                   onSubmitted: (_) =>
                       FocusScope.of(context).requestFocus(passNode),
                 ),
 
                 const SizedBox(height: 24),
 
-                InfoField(hintText: t.auth.loginScreen.placeholder.password, isPassword: true,
+                Text(
+                  t.auth.password,
+                  style: type.labelLarge?.copyWith(fontWeight: FontWeight.w700),
+                ),
+
+                InfoField(
+                    hintText: t.auth.loginScreen.placeholder.password, isPassword: true,
                 controller: passCtl,
                 focusNode: passNode,
+                // validator: (value) => ValidationUtils.validatePassword(value, context),
                 onSubmitted: (_) => FocusScope.of(context).unfocus()),
 
                 const SizedBox(height: 24),

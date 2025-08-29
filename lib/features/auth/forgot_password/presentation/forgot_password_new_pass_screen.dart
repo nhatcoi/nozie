@@ -15,7 +15,13 @@ class ForgotPasswordNewPassScreen extends ConsumerWidget {
     var rememberMe = ref.watch(rememberMeProvider);
     final t = context.i18n;
     final ctxTheme = Theme.of(context).textTheme;
+
+    final userCtl = TextEditingController();
+    final passCtl = TextEditingController();
+    final userNode = FocusNode();
+    final passNode = FocusNode();
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(),
       body: SafeArea(
         child: Padding(
@@ -40,7 +46,12 @@ class ForgotPasswordNewPassScreen extends ConsumerWidget {
 
               const SizedBox(height: 16),
 
-              InfoField(hintText: '●●●●●●●●●●●●', isPassword: true),
+              InfoField(controller: userCtl,
+                  focusNode: userNode,
+                  hintText: '●●●●●●●●●●●●',
+                  validator: (value) => ValidationUtils.validatePassword(value, context),
+                  onSubmitted: (_) => FocusScope.of(context).requestFocus(passNode),
+                  isPassword: true),
 
               const SizedBox(height: 24),
 
