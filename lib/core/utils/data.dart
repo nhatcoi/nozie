@@ -29,48 +29,51 @@ class Countries {
 
 class Genres {
   static Map<String, String> getOptions(BuildContext context) {
+    final t = context.i18n;
     return {
-      'action': context.l10n.action,
-      'adventure': context.l10n.adventure,
-      'animation': context.l10n.animation,
-      'comedy': context.l10n.comedy,
-      'crime': context.l10n.crime,
-      'documentary': context.l10n.documentary,
-      'drama': context.l10n.drama,
-      'family': context.l10n.family,
-      'fantasy': context.l10n.fantasy,
-      'horror': context.l10n.horror,
-      'mystery': context.l10n.mystery,
-      'romance': context.l10n.romance,
-      'sci_fi': context.l10n.sciFi,
-      'thriller': context.l10n.thriller,
-      'war': context.l10n.war,
-      'western': context.l10n.western,
+      'action': t.auth.register.steps.genres.list.action,
+      'adventure': t.auth.register.steps.genres.list.adventure,
+      'animation': t.auth.register.steps.genres.list.animation,
+      'comedy': t.auth.register.steps.genres.list.comedy,
+      'crime': t.auth.register.steps.genres.list.crime,
+      'documentary': t.auth.register.steps.genres.list.documentary,
+      'drama': t.auth.register.steps.genres.list.drama,
+      'family': t.auth.register.steps.genres.list.family,
+      'fantasy': t.auth.register.steps.genres.list.fantasy,
+      'horror': t.auth.register.steps.genres.list.horror,
+      'mystery': t.auth.register.steps.genres.list.mystery,
+      'romance': t.auth.register.steps.genres.list.romance,
+      'sci_fi': t.auth.register.steps.genres.list.sciFi,
+      'thriller': t.auth.register.steps.genres.list.thriller,
+      'war': t.auth.register.steps.genres.list.war,
+      'western': t.auth.register.steps.genres.list.western,
     };
   }
 }
 
 class Genders {
   static Map<String, String> getOptions(BuildContext context) {
+    final t = context.i18n;
     return {
-      'male': context.l10n.iAmMale,
-      'female': context.l10n.iAmFemale,
-      'other': context.l10n.ratherNotToSay,
+      'male': t.auth.register.steps.gender.choices.iAmMale,
+      'female': t.auth.register.steps.gender.choices.iAmFemale,
+      'other': t.auth.register.steps.gender.choices.ratherNotToSay,
     };
   }
 }
 
 class Ages {
   static Map<String, String> getOptions(BuildContext context) {
+    final t = context.i18n;
     return {
-      '14-17': context.l10n.age14to17,
-      '18-24': context.l10n.age18to24,
-      '25-29': context.l10n.age25to29,
-      '30-34': context.l10n.age30to34,
-      '35-39': context.l10n.age35to39,
-      '40-44': context.l10n.age40to44,
-      '45-49': context.l10n.age45to49,
-      '50': context.l10n.age50plus,
+      '14-17': t.auth.register.steps.age.ranges.age14to17,
+      '18-24': t.auth.register.steps.age.ranges.age18to24,
+      '25-29': t.auth.register.steps.age.ranges.age25to29,
+      '30-34': t.auth.register.steps.age.ranges.age30to34,
+      '35-39': t.auth.register.steps.age.ranges.age35to39,
+      '40-44': t.auth.register.steps.age.ranges.age40to44,
+      '45-49': t.auth.register.steps.age.ranges.age45to49,
+      '50': t.auth.register.steps.age.ranges.age50plus,
     };
   }
 }

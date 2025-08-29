@@ -43,13 +43,13 @@ class _StepAgeState extends State<StepAge> {
 
           const SizedBox(height: 32),
           
-          Text(context.l10n.chooseYourAge, style: AppTypography.h3.copyWith(
+          Text(context.i18n.auth.register.steps.age.title, style: AppTypography.h3.copyWith(
               color: AppColors.getText(context), fontWeight: FontWeight.w600),
           ),
 
           const SizedBox(height: 16),
           
-          Text(context.l10n.selectAgeRange,
+          Text(context.i18n.auth.register.steps.age.description,
             style: AppTypography.bodyLRegular.copyWith(color: AppColors.getTextSecondary(context)),
           ),
 

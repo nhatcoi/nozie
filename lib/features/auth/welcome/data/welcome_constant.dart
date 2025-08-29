@@ -12,30 +12,32 @@ class WelcomeSlide {
   });
 
   String getTitle(BuildContext context) {
+    final t = context.i18n;
     switch (titleKey) {
       case 'welcomeToNoZie':
-        return context.l10n.welcomeToNoZie;
+        return t.welcome.title;
       case 'discoverNewMovies':
-        return context.l10n.discoverNewMovies;
+        return t.welcome.slides.discover.title;
       case 'trackYourWatchlist':
-        return context.l10n.trackYourWatchlist;
+        return t.welcome.slides.track.title;
       case 'joinTheCommunity':
-        return context.l10n.joinTheCommunity;
+        return t.welcome.slides.community.title;
       default:
         return titleKey;
     }
   }
 
   String getDescription(BuildContext context) {
+    final t = context.i18n;
     switch (descriptionKey) {
       case 'welcomeDescription':
-        return context.l10n.welcomeDescription;
+        return t.welcome.description;
       case 'discoverDescription':
-        return context.l10n.discoverDescription;
+        return t.welcome.slides.discover.description;
       case 'trackDescription':
-        return context.l10n.trackDescription;
+        return t.welcome.slides.track.description;
       case 'joinDescription':
-        return context.l10n.joinDescription;
+        return t.welcome.slides.community.description;
       default:
         return descriptionKey;
     }
@@ -117,7 +119,7 @@ class WelcomeGradientValues {
 }
 
 class WelcomeButtonTexts {
-  static String getSignUpText(BuildContext context) => context.l10n.getStarted;
-  static String getGoogleText(BuildContext context) => context.l10n.continueWithGoogle;
-  static String getLoginText(BuildContext context) => context.l10n.iAlreadyHaveAnAccount;
+  static String getSignUpText(BuildContext context) => context.i18n.welcome.getStarted;
+  static String getGoogleText(BuildContext context) => context.i18n.welcome.continueWithGoogle;
+  static String getLoginText(BuildContext context) => context.i18n.welcome.iAlreadyHaveAnAccount;
 }

@@ -111,7 +111,7 @@ class _StepProfileState extends ConsumerState<StepProfile> {
           const SizedBox(height: 32),
 
           Text(
-            context.l10n.completeYourProfile,
+            context.i18n.auth.register.steps.profile.title,
             style: AppTypography.h3.copyWith(
               color: AppColors.getText(context),
               fontWeight: FontWeight.w600,
@@ -121,7 +121,7 @@ class _StepProfileState extends ConsumerState<StepProfile> {
           const SizedBox(height: 16),
 
           Text(
-            context.l10n.profilePrivacyNote,
+            context.i18n.auth.register.steps.profile.privacyNote,
             style: AppTypography.bodyLRegular.copyWith(
               color: AppColors.getTextSecondary(context),
             ),
@@ -149,7 +149,7 @@ class _StepProfileState extends ConsumerState<StepProfile> {
                 const SizedBox(height: 16),
 
                 Text(
-                  context.l10n.tapToAddProfilePicture,
+                  context.i18n.auth.register.steps.profile.photo.tapToAdd,
                   style: AppTypography.bodySBRegular.copyWith(
                     color: AppColors.greyscale600,
                     fontSize: 12,
@@ -164,8 +164,8 @@ class _StepProfileState extends ConsumerState<StepProfile> {
           Column(
             children: [
               InfoField(
-                label: context.l10n.fullName,
-                hintText: context.l10n.enterYourFullName,
+                label: context.i18n.auth.register.steps.profile.fields.fullName.label,
+                hintText: context.i18n.auth.register.steps.profile.fields.fullName.placeholder,
                 controller: _fullName,
                 focusNode: _fullNameFocus,
                 isRequired: true,
@@ -178,8 +178,8 @@ class _StepProfileState extends ConsumerState<StepProfile> {
               const SizedBox(height: 16),
 
               InfoField(
-                label: context.l10n.phoneNumber,
-                hintText: context.l10n.enterYourPhoneNumber,
+                label: context.i18n.auth.register.steps.profile.fields.phoneNumber.label,
+                hintText: context.i18n.auth.register.steps.profile.fields.phoneNumber.placeholder,
                 controller: _phone,
                 focusNode: _phoneFocus,
                 isRequired: true,
@@ -192,8 +192,8 @@ class _StepProfileState extends ConsumerState<StepProfile> {
               const SizedBox(height: 16),
 
               InfoField(
-                label: context.l10n.dateOfBirth,
-                hintText: context.l10n.dateFormat,
+                label: context.i18n.auth.register.steps.profile.fields.dateOfBirth.label,
+                hintText: context.i18n.auth.register.steps.profile.fields.dateOfBirth.format,
                 controller: _dob,
                 focusNode: _dobFocus,
                 isRequired: true,
@@ -217,9 +217,9 @@ class _StepProfileState extends ConsumerState<StepProfile> {
               const SizedBox(height: 16),
 
               CustomDropdown(
-                label: context.l10n.country,
+                label: context.i18n.auth.register.steps.profile.fields.country.label,
                 value: _country,
-                hint: context.l10n.enterYourCountry,
+                hint: context.i18n.auth.register.steps.profile.fields.country.placeholder,
                 items: _countries,
                 isRequired: true,
                 onChanged: (value) {

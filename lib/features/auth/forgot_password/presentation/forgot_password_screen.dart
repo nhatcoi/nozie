@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/core/theme/app_colors.dart';
 import 'package:movie_fe/routes/app_routers.dart';
-
-import '../../../../l10n/app_localizations.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   const ForgotPasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context)!;
+    final t = context.i18n;
     final type = Theme.of(context).textTheme;
     final TextEditingController _emailController = TextEditingController();
     return Scaffold(
@@ -21,24 +18,26 @@ class ForgotPasswordScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(t.forgotPasswordTitle, style: type.displaySmall),
+              Text(t.auth.forgotPassword.title, style: type.displaySmall),
 
               const SizedBox(height: 12),
 
-              Text(t.forgotPasswordDes, style: type.titleLarge),
+              Text(t.auth.forgotPassword.description, style: type.titleLarge),
 
               const SizedBox(height: 32),
 
               Text(
-                t.email,
+                t.auth.email,
                 style: type.labelLarge?.copyWith(fontWeight: FontWeight.w700),
               ),
 
               const SizedBox(height: 16),
 
               InfoField(
-                hintText: "admin@ziet.dev",
+                hintText: t.auth.loginScreen.placeholder.email,
                 controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) => ValidationUtils.validateEmail(value, context),
               ),
 
               const Spacer(),
@@ -55,7 +54,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                       );
                     }
                   },
-                  child: Text(t.continueText, style: AppTypography.bodyLBold),
+                  child: Text(t.common.continueText, style: AppTypography.bodyLBold),
                 ),
               ),
             ],
