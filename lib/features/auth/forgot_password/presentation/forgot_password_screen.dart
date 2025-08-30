@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/routes/app_routers.dart';
+import 'package:movie_fe/routes/app_router.dart';
+import 'package:go_router/go_router.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   const ForgotPasswordScreen({super.key});
@@ -47,11 +48,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     if (_emailController.text.isNotEmpty) {
-                      Navigator.pushNamed(
-                        context,
-                        AppRouters.otpVerification,
-                        arguments: _emailController.text,
-                      );
+                      context.push(AppRouter.otpVerification, extra: _emailController.text);
                     }
                   },
                   child: Text(t.common.continueText, style: AppTypography.bodyLBold),

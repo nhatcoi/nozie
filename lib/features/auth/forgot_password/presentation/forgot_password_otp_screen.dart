@@ -6,7 +6,8 @@ import 'package:movie_fe/features/auth/forgot_password/presentation/providers/ot
 import 'package:movie_fe/features/auth/forgot_password/presentation/widgets/otp_input_controller.dart';
 import 'package:movie_fe/features/auth/forgot_password/presentation/widgets/otp_input_group.dart';
 import 'package:movie_fe/features/auth/forgot_password/presentation/widgets/otp_countdown_widget.dart';
-import 'package:movie_fe/routes/app_routers.dart';
+import 'package:movie_fe/routes/app_router.dart';
+import 'package:go_router/go_router.dart';
 
 class ForgotPasswordOtpScreen extends ConsumerStatefulWidget {
   const ForgotPasswordOtpScreen({
@@ -123,7 +124,7 @@ class _ForgotPasswordOtpScreenState
                   Column(
                     children: [
                       PrimaryButton(text: t.common.confirm, onPressed: () {
-                        Navigator.pushNamed(context, AppRouters.resetPassword);
+                        context.push(AppRouter.resetPassword);
                       }),
                     ],
                   ),

@@ -21,6 +21,14 @@ class ImageConstant {
   static const String dropdownIcon = '${subPathIcon}dropdown.svg';
   static const String arrowIcon = '${subPathIcon}arrow.svg';
 
+  static const String bellIcon = '${subPathIcon}bell.svg';
+  static const String profileIcon = '${subPathIcon}profile.svg';
+  static const String searchIcon = '${subPathIcon}search.svg';
+  static const String homeIcon = '${subPathIcon}home.svg';
+  static const String buyIcon = '${subPathIcon}buy.svg';
+  static const String discoverIcon = '${subPathIcon}discover.svg';
+  static const String wishlistIcon = '${subPathIcon}wishlsit.svg';
+
 
   static const String imgImageNotFound = '${_basePath}placeholder.png';
   static const String imgAvatar = '${_basePath}avatar.png';

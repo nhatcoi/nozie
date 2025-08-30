@@ -7,7 +7,8 @@ import 'package:movie_fe/core/widgets/social_button.dart';
 import 'package:movie_fe/features/auth/login/presentation/providers/login_provider.dart';
 import 'package:movie_fe/core/widgets/app_checkbox.dart';
 
-import '../../../../routes/app_routers.dart';
+import '../../../../routes/app_router.dart';
+import 'package:go_router/go_router.dart';
 
 final rememberMeProvider = StateProvider<bool>((ref) => false);
 
@@ -100,7 +101,7 @@ class LoginScreen extends ConsumerWidget {
                   alignment: Alignment.center, // căn giữa text
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, AppRouters.forgotPassword);
+                      context.push(AppRouter.forgotPassword);
                     },
                     child: Text(
                       t.auth.forgotPassword.title,
@@ -165,7 +166,7 @@ class LoginScreen extends ConsumerWidget {
                   text: t.auth.signIn,
                   onPressed: () {
                     if(userCtl.text.isNotEmpty && passCtl.text.isNotEmpty) {
-                      Navigator.pushNamed(context, AppRouters.home);
+                      context.go(AppRouter.home);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text(t.validation.general.fillAllFields))

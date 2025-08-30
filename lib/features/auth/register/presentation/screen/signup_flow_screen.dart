@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:movie_fe/core/widgets/modal.dart';
+import '../../../../../routes/app_router.dart';
 import '../../../../../core/app_export.dart';
 import '../../../../../core/common/ui_state.dart';
 import '../viewmodel/signup_viewmodel.dart';
@@ -116,7 +118,7 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
           iconPath: ImageConstant.successIcon,
           primaryButton: PrimaryButton(
             text: 'OK',
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => context.go(AppRouter.home),
           ),
         );
         break;
@@ -129,11 +131,11 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
           iconPath: ImageConstant.successIcon,
           primaryButton: PrimaryButton(
             text: 'Close',
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => context.go(AppRouter.welcome),
           ),
           secondaryButton: SecondaryButton(
             text: 'ok',
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => context.go(AppRouter.welcome),
           ),
         );
         break;
@@ -214,7 +216,7 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
             child: GestureDetector(
               onTap: () {
                 if (currentStep.isFirst) {
-                  Navigator.pop(context);
+                  context.pop();
                 } else {
                   _previousStep();
                 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:movie_fe/core/app_export.dart';
 import 'package:movie_fe/core/widgets/app_checkbox.dart';
+import '../../../../routes/app_router.dart';
 
 import '../../../../core/widgets/modal.dart';
 
@@ -90,11 +92,11 @@ class ForgotPasswordNewPassScreen extends ConsumerWidget {
                     iconPath: ImageConstant.successIcon,
                     primaryButton: PrimaryButton(
                       text: 'Close',
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () => context.go(AppRouter.signIn),
                     ),
                     secondaryButton: SecondaryButton(
                       text: 'ok',
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () => context.go(AppRouter.signIn),
                     ),
                   );
                 },
