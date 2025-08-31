@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../widgets/custom_app_bar.dart';
-import '../widgets/custom_bottom_navigation_bar.dart';
+import 'custom_top_bar.dart';
+import 'custom_bottom_nav_bar.dart';
 import '../theme/app_colors.dart';
 import '../../routes/app_router.dart';
+import 'topbar_provider.dart';
+import '../utils/navigation_utils.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class MainLayout extends ConsumerWidget {
   final Widget child;
@@ -27,78 +30,89 @@ class MainLayout extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentPath = GoRouterState.of(context).uri.toString();
-    final currentIndex = _getCurrentIndex(currentPath);
-    final currentTitle = _getCurrentTitle(currentPath);
+    final topBarState = ref.watch(topBarProvider);
+    final topBarNotifier = ref.read(topBarProvider.notifier);
+
+    _syncNavigationState(ref, currentPath, topBarNotifier, context);
 
     return Scaffold(
       backgroundColor: AppColors.getBackground(context),
       appBar: showAppBar 
-          ? CustomAppBar(
-              title: currentTitle,
-              actions: actions,
+          ? CustomTopBar(
+              title: topBarState.title,
+              actions: _buildTopBarActions(ref, topBarState, context),
               onNotificationTap: onNotificationTap,
               onSearchTap: onSearchTap,
             )
           : null,
       body: child,
       bottomNavigationBar: showBottomNav 
-          ? CustomBottomNavigationBar(
-              currentIndex: currentIndex,
-              onTap: (index) {
-                switch (index) {
-                  case 0:
-                    context.go(AppRouter.home);
-                    break;
-                  case 1:
-                    context.go(AppRouter.discover);
-                    break;
-                  case 2:
-                    context.go(AppRouter.wishlist);
-                    break;
-                  case 3:
-                    context.go(AppRouter.buy);
-                    break;
-                  case 4:
-                    context.go(AppRouter.profile);
-                    break;
-                }
-              },
+          ? CustomBottomNavBar(
+              onTap: (index) => _handleNavigation(context, index),
             )
           : null,
     );
   }
 
-  int _getCurrentIndex(String path) {
-    switch (path) {
-      case AppRouter.home:
-        return 0;
-      case AppRouter.discover:
-        return 1;
-      case AppRouter.wishlist:
-        return 2;
-      case AppRouter.buy:
-        return 3;
-      case AppRouter.profile:
-        return 4;
-      default:
-        return 0;
+  void _syncNavigationState(
+    WidgetRef ref, 
+    String currentPath, 
+    TopBarNotifier topBarNotifier,
+    BuildContext context
+  ) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      topBarNotifier.updateForRoute(currentPath, context);
+    });
+  }
+
+  void _handleNavigation(BuildContext context, int index) {
+    final route = NavigationUtils.getRouteByIndex(index);
+    if (route != null) {
+      context.push(route);
     }
   }
 
-  String _getCurrentTitle(String path) {
-    switch (path) {
-      case AppRouter.home:
-        return 'NoZie';
-      case AppRouter.discover:
-        return 'Discover';
-      case AppRouter.wishlist:
-        return 'Wishlist';
-      case AppRouter.buy:
-        return 'Buy';
-      case AppRouter.profile:
-        return 'Profile';
-      default:
-        return 'NoZie';
+
+  List<Widget> _buildTopBarActions(WidgetRef ref, TopBarState topBarState, BuildContext context) {
+    final actions = <Widget>[];
+    final topBarNotifier = ref.read(topBarProvider.notifier);
+
+    _addActionIfExists(actions, topBarState.primaryAction, topBarNotifier, 'Primary', context);
+    _addActionIfExists(actions, topBarState.secondaryAction, topBarNotifier, 'Secondary', context);
+
+    return actions;
+  }
+
+  void _addActionIfExists(
+    List<Widget> actions,
+    TopBarAction? action,
+    TopBarNotifier notifier,
+    String actionType,
+    BuildContext context,
+  ) {
+    if (action != null) {
+      actions.add(
+        IconButton(
+          icon: SvgPicture.asset(
+            notifier.getActionIconPath(action),
+            width: 24,
+            height: 24,
+            colorFilter: ColorFilter.mode(
+              AppColors.getText(context),
+              BlendMode.srcIn,
+            ),
+          ),
+          onPressed: () => _handleTopBarAction(notifier, action, actionType),
+        ),
+      );
     }
   }
+
+  void _handleTopBarAction(TopBarNotifier notifier, TopBarAction action, String actionType) {
+    // TODO: Implement action handlers
+    print('$actionType action: ${notifier.getActionLabel(action)}');
+  }
+
+
+
 }

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_typography.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class PurchaseScreen extends StatelessWidget {
+  const PurchaseScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

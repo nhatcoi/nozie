@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import '../features/auth/welcome/welcome_screen.dart';
+
 import '../i18n/translations.g.dart';
 import '../core/services/locale_setting.dart';
 import '../core/services/theme_mode_notifier.dart';

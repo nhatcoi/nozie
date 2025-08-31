@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/app_export.dart';
+import '../../../../routes/app_router.dart';
 
-class HomePage extends ConsumerWidget {
+class SettingPage extends ConsumerWidget {
 
   final Locale locale;
   final void Function(Locale) onChangeLocale;
 
-  const HomePage(this.locale, this.onChangeLocale, {super.key});
+  const SettingPage(this.locale, this.onChangeLocale, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -48,7 +50,12 @@ class HomePage extends ConsumerWidget {
               onSelectionChanged: (s) => ref.read(themeModeProvider.notifier).set(s.first),
             ),
 
-            ElevatedButton(onPressed: () {}, child: Text(t.common.data))
+            ElevatedButton(onPressed: () {}, child: Text(t.common.data)),
+
+            const SizedBox(height: 24),
+            
+            PrimaryButton(text: 'Welcome', onPressed: () => context.go(AppRouter.welcome),)
+            
           ],
         ),
       ),

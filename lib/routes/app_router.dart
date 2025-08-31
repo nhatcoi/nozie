@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movie_fe/features/auth/forgot_password/presentation/forgot_password_new_pass_screen.dart';
 import 'package:movie_fe/features/auth/forgot_password/presentation/forgot_password_otp_screen.dart';
 import 'package:movie_fe/features/auth/forgot_password/presentation/forgot_password_screen.dart';
 import 'package:movie_fe/features/auth/login/presentation/login_screen.dart';
+import 'package:movie_fe/features/wishlist/presentation/wishlist_screen.dart';
 import '../features/auth/register/presentation/screen/signup_flow_screen.dart';
-import '../features/auth/welcome/welcome_screen.dart';
 import '../features/home/presentation/screens/home_screen.dart';
 import '../features/discover/presentation/screens/discover_screen.dart';
 import '../core/layouts/main_layout.dart';
+import '../features/purchase/presentation/purchase_screen.dart';
+import '../features/setting/presentation/screens/setting_screen.dart';
+import '../core/services/locale_setting.dart';
+import '../core/utils/no_transition_page.dart';
+import '../features/welcome/welcome_screen.dart';
 
 class AppRouter {
   static const String welcome = '/';
@@ -17,7 +23,7 @@ class AppRouter {
   static const String home = '/home';
   static const String discover = '/discover';
   static const String wishlist = '/wishlist';
-  static const String buy = '/buy';
+  static const String purchase = '/purchase';
   static const String profile = '/profile';
   static const String settings = '/settings';
   static const String forgotPassword = '/forgot-password';
@@ -63,33 +69,45 @@ class AppRouter {
         routes: [
           GoRoute(
             path: home,
-            builder: (context, state) => const HomeScreen(),
+            pageBuilder: (context, state) => CustomNoTransitionPage( // bỏ hiệu ứng
+              child: const HomeScreen(),
+            ),
           ),
           GoRoute(
             path: discover,
-            builder: (context, state) => const DiscoverScreen(),
+            pageBuilder: (context, state) => CustomNoTransitionPage(
+              child: const DiscoverScreen(),
+            ),
           ),
           GoRoute(
             path: wishlist,
-            builder: (context, state) => const _PlaceholderScreen(title: 'Wishlist', icon: Icons.favorite),
+            pageBuilder: (context, state) => CustomNoTransitionPage(
+              child: const WishlistScreen(),
+            ),
           ),
           GoRoute(
-            path: buy,
-            builder: (context, state) => const _PlaceholderScreen(title: 'Buy', icon: Icons.shopping_cart),
+            path: purchase,
+            pageBuilder: (context, state) => CustomNoTransitionPage(
+              child: const PurchaseScreen(),
+            ),
           ),
           GoRoute(
             path: profile,
-            builder: (context, state) => const _PlaceholderScreen(title: 'Profile', icon: Icons.person),
+            pageBuilder: (context, state) => CustomNoTransitionPage(
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final currentLocale = ref.watch(localeControllerProvider);
+                  final localeController = ref.read(localeControllerProvider.notifier);
+                  
+                  return SettingPage(
+                    currentLocale,
+                    (locale) => localeController.setLocale(locale),
+                  );
+                },
+              ),
+            ),
           ),
         ],
-      ),
-      GoRoute(
-        path: settings,
-        builder: (context, state) => const MainLayout(
-          showAppBar: true,
-          showBottomNav: false,
-          child: _PlaceholderScreen(title: 'Settings', icon: Icons.settings),
-        ),
       ),
     ],
     errorBuilder: (context, state) => const Scaffold(
@@ -98,49 +116,4 @@ class AppRouter {
       ),
     ),
   );
-}
-
-class _PlaceholderScreen extends StatelessWidget {
-  final String title;
-  final IconData icon;
-
-  const _PlaceholderScreen({
-    required this.title,
-    required this.icon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: 80,
-              color: Colors.grey[400],
-            ),
-            const SizedBox(height: 16),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Coming Soon!',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[500],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }

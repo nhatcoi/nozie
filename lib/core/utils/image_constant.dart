@@ -25,9 +25,11 @@ class ImageConstant {
   static const String profileIcon = '${subPathIcon}profile.svg';
   static const String searchIcon = '${subPathIcon}search.svg';
   static const String homeIcon = '${subPathIcon}home.svg';
-  static const String buyIcon = '${subPathIcon}buy.svg';
+  static const String purchaseIcon = '${subPathIcon}purchase.svg';
   static const String discoverIcon = '${subPathIcon}discover.svg';
-  static const String wishlistIcon = '${subPathIcon}wishlsit.svg';
+  static const String wishlistIcon = '${subPathIcon}wishlist.svg';
+  static const String filterIcon = '${subPathIcon}filter.svg';
+  static const String moreCircleIcon = '${subPathIcon}more_circle.svg';
 
 
   static const String imgImageNotFound = '${_basePath}placeholder.png';

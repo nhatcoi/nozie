@@ -221,6 +221,14 @@ validation:
     confirmRequired: Vui lòng xác nhận mật khẩu của bạn
     mismatch: Mật khẩu không khớp
 
+# Navigation
+navigation:
+  home: Trang chủ
+  discover: Khám phá
+  wishlist: Yêu thích
+  purchase: Mua
+  profile: Hồ sơ
+
 # Utility Functions
 utils:
   itemsCount: "{count, plural, =0{Không có mục} =1{1 mục} other{{count} mục}}"
