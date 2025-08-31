@@ -4,7 +4,7 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 278 (139 per locale)
+/// Strings: 288 (144 per locale)
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -152,6 +152,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final _TranslationsWelcomeEn welcome = _TranslationsWelcomeEn._(_root);
 	late final _TranslationsSettingsEn settings = _TranslationsSettingsEn._(_root);
 	late final _TranslationsValidationEn validation = _TranslationsValidationEn._(_root);
+	late final _TranslationsNavigationEn navigation = _TranslationsNavigationEn._(_root);
 	late final _TranslationsUtilsEn utils = _TranslationsUtilsEn._(_root);
 }
 
@@ -245,6 +246,20 @@ class _TranslationsValidationEn {
 	late final _TranslationsValidationUsernameEn username = _TranslationsValidationUsernameEn._(_root);
 	late final _TranslationsValidationEmailEn email = _TranslationsValidationEmailEn._(_root);
 	late final _TranslationsValidationPasswordEn password = _TranslationsValidationPasswordEn._(_root);
+}
+
+// Path: navigation
+class _TranslationsNavigationEn {
+	_TranslationsNavigationEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get home => 'Home';
+	String get discover => 'Discover';
+	String get wishlist => 'Wishlist';
+	String get purchase => 'Purchase';
+	String get profile => 'Profile';
 }
 
 // Path: utils
@@ -759,6 +774,7 @@ class _TranslationsVi extends Translations {
 	@override late final _TranslationsWelcomeVi welcome = _TranslationsWelcomeVi._(_root);
 	@override late final _TranslationsSettingsVi settings = _TranslationsSettingsVi._(_root);
 	@override late final _TranslationsValidationVi validation = _TranslationsValidationVi._(_root);
+	@override late final _TranslationsNavigationVi navigation = _TranslationsNavigationVi._(_root);
 	@override late final _TranslationsUtilsVi utils = _TranslationsUtilsVi._(_root);
 }
 
@@ -852,6 +868,20 @@ class _TranslationsValidationVi extends _TranslationsValidationEn {
 	@override late final _TranslationsValidationUsernameVi username = _TranslationsValidationUsernameVi._(_root);
 	@override late final _TranslationsValidationEmailVi email = _TranslationsValidationEmailVi._(_root);
 	@override late final _TranslationsValidationPasswordVi password = _TranslationsValidationPasswordVi._(_root);
+}
+
+// Path: navigation
+class _TranslationsNavigationVi extends _TranslationsNavigationEn {
+	_TranslationsNavigationVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get home => 'Trang chủ';
+	@override String get discover => 'Khám phá';
+	@override String get wishlist => 'Yêu thích';
+	@override String get purchase => 'Mua';
+	@override String get profile => 'Hồ sơ';
 }
 
 // Path: utils
@@ -1476,6 +1506,11 @@ extension on Translations {
 			case 'validation.password.complexity': return 'Password must contain at least one uppercase letter, one lowercase letter, and one number';
 			case 'validation.password.confirmRequired': return 'Please confirm your password';
 			case 'validation.password.mismatch': return 'Passwords do not match';
+			case 'navigation.home': return 'Home';
+			case 'navigation.discover': return 'Discover';
+			case 'navigation.wishlist': return 'Wishlist';
+			case 'navigation.purchase': return 'Purchase';
+			case 'navigation.profile': return 'Profile';
 			case 'utils.itemsCount': return '{count} items';
 			case 'utils.helloUser': return 'Hello, {name}!';
 			case 'utils.counterText': return '';
@@ -1623,6 +1658,11 @@ extension on _TranslationsVi {
 			case 'validation.password.complexity': return 'Mật khẩu phải chứa ít nhất một chữ hoa, một chữ thường và một số';
 			case 'validation.password.confirmRequired': return 'Vui lòng xác nhận mật khẩu của bạn';
 			case 'validation.password.mismatch': return 'Mật khẩu không khớp';
+			case 'navigation.home': return 'Trang chủ';
+			case 'navigation.discover': return 'Khám phá';
+			case 'navigation.wishlist': return 'Yêu thích';
+			case 'navigation.purchase': return 'Mua';
+			case 'navigation.profile': return 'Hồ sơ';
 			case 'utils.itemsCount': return '{count, plural, =0{Không có mục} =1{1 mục} other{{count} mục}}';
 			case 'utils.helloUser': return 'Xin chào, {name}!';
 			case 'utils.counterText': return '';

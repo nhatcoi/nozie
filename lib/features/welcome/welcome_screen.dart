@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:movie_fe/routes/app_routers.dart';
+import 'package:movie_fe/routes/app_router.dart';
+import 'package:go_router/go_router.dart';
 import 'dart:async';
 import '../../../core/app_export.dart';
 import 'data/welcome_constant.dart';
@@ -173,10 +174,10 @@ class WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                         children: [
                           PrimaryButton(
                             text: WelcomeButtonTexts.getGoogleText(context),
-                            onPressed: () {
-                              // TODO: Handle Google sign in
-                              Navigator.pushNamed(context, AppRouters.settings);
-                            },
+                                                          onPressed: () {
+                                // TODO: Handle Google sign in
+                                context.go(AppRouter.home);
+                              },
                             backgroundColor: AppColors.getSurface(context),
                             textColor: AppColors.getText(context),
                             icon: SvgPicture.asset(
@@ -191,7 +192,7 @@ class WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                           PrimaryButton(
                             text: WelcomeButtonTexts.getSignUpText(context),
                             onPressed: () {
-                              Navigator.pushNamed(context, AppRouters.signup);
+                              context.push(AppRouter.signup);
                             },
                           ),
 
@@ -200,7 +201,7 @@ class WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                           SecondaryButton(
                             text: WelcomeButtonTexts.getLoginText(context),
                             onPressed: () {
-                              Navigator.pushNamed(context, AppRouters.signIn);
+                              context.push(AppRouter.signIn);
                             },
                           ),
 

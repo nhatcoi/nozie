@@ -220,6 +220,14 @@ validation:
     confirmRequired: Please confirm your password
     mismatch: Passwords do not match
 
+# Navigation
+navigation:
+  home: Home
+  discover: Discover
+  wishlist: Wishlist
+  purchase: Purchase
+  profile: Profile
+
 # Utility Functions
 utils:
   itemsCount: "{count} items"
