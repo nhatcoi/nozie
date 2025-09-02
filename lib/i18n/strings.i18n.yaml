@@ -228,6 +228,19 @@ navigation:
   purchase: Purchase
   profile: Profile
 
+# Search
+search:
+  searchMovies: Search movies, TV shows, actors...
+  popularSearches: Popular Searches
+  noResultsFound: No results found
+  tryDifferentKeywords: Try different keywords or check your spelling
+  all: All
+  movies: Movies
+  tvShows: TV Shows
+  actors: Actors
+
+
+
 # Utility Functions
 utils:
   itemsCount: "{count} items"

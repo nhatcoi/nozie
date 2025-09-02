@@ -69,7 +69,7 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
           onPressed: onSearchTap ?? () {
-            //
+            // Default search action
           },
         ),
       ),

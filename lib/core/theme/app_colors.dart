@@ -22,7 +22,13 @@ class AppColors{
   
   static Color getTextSecondary(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark 
-        ? greyscale400 
+        ? greyscale400
+        : greyscale600;
+  }
+
+  static Color getTextThird(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? greyscale300
         : greyscale600;
   }
 
@@ -31,7 +37,6 @@ class AppColors{
         ? dark2
         : white;
   }
-
 
 
   static const Color primary500 = Color(0xFFF89300);
