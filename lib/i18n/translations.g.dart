@@ -4,7 +4,7 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 288 (144 per locale)
+/// Strings: 322 (161 per locale)
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -153,6 +153,8 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final _TranslationsSettingsEn settings = _TranslationsSettingsEn._(_root);
 	late final _TranslationsValidationEn validation = _TranslationsValidationEn._(_root);
 	late final _TranslationsNavigationEn navigation = _TranslationsNavigationEn._(_root);
+	late final _TranslationsSearchEn search = _TranslationsSearchEn._(_root);
+	late final _TranslationsNotificationEn notification = _TranslationsNotificationEn._(_root);
 	late final _TranslationsUtilsEn utils = _TranslationsUtilsEn._(_root);
 }
 
@@ -260,6 +262,41 @@ class _TranslationsNavigationEn {
 	String get wishlist => 'Wishlist';
 	String get purchase => 'Purchase';
 	String get profile => 'Profile';
+}
+
+// Path: search
+class _TranslationsSearchEn {
+	_TranslationsSearchEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get searchMovies => 'Search movies, TV shows, actors...';
+	String get popularSearches => 'Popular Searches';
+	String get noResultsFound => 'No results found';
+	String get tryDifferentKeywords => 'Try different keywords or check your spelling';
+	String get all => 'All';
+	String get movies => 'Movies';
+	String get tvShows => 'TV Shows';
+	String get actors => 'Actors';
+}
+
+// Path: notification
+class _TranslationsNotificationEn {
+	_TranslationsNotificationEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get notifications => 'Notifications';
+	String get showRead => 'Show read notifications';
+	String get allMarkedAsRead => 'All notifications marked as read';
+	String get all => 'All';
+	String get movies => 'Movies';
+	String get promotions => 'Promotions';
+	String get updates => 'Updates';
+	String get noNotifications => 'No notifications';
+	String get youAreAllCaughtUp => 'You\'re all caught up!';
 }
 
 // Path: utils
@@ -775,6 +812,8 @@ class _TranslationsVi extends Translations {
 	@override late final _TranslationsSettingsVi settings = _TranslationsSettingsVi._(_root);
 	@override late final _TranslationsValidationVi validation = _TranslationsValidationVi._(_root);
 	@override late final _TranslationsNavigationVi navigation = _TranslationsNavigationVi._(_root);
+	@override late final _TranslationsSearchVi search = _TranslationsSearchVi._(_root);
+	@override late final _TranslationsNotificationVi notification = _TranslationsNotificationVi._(_root);
 	@override late final _TranslationsUtilsVi utils = _TranslationsUtilsVi._(_root);
 }
 
@@ -882,6 +921,41 @@ class _TranslationsNavigationVi extends _TranslationsNavigationEn {
 	@override String get wishlist => 'Yêu thích';
 	@override String get purchase => 'Mua';
 	@override String get profile => 'Hồ sơ';
+}
+
+// Path: search
+class _TranslationsSearchVi extends _TranslationsSearchEn {
+	_TranslationsSearchVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get searchMovies => 'Tìm kiếm phim, chương trình TV, diễn viên...';
+	@override String get popularSearches => 'Tìm kiếm phổ biến';
+	@override String get noResultsFound => 'Không tìm thấy kết quả';
+	@override String get tryDifferentKeywords => 'Thử từ khóa khác hoặc kiểm tra chính tả';
+	@override String get all => 'Tất cả';
+	@override String get movies => 'Phim';
+	@override String get tvShows => 'Chương trình TV';
+	@override String get actors => 'Diễn viên';
+}
+
+// Path: notification
+class _TranslationsNotificationVi extends _TranslationsNotificationEn {
+	_TranslationsNotificationVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get notifications => 'Thông báo';
+	@override String get showRead => 'Hiển thị thông báo đã đọc';
+	@override String get allMarkedAsRead => 'Đã đánh dấu tất cả thông báo là đã đọc';
+	@override String get all => 'Tất cả';
+	@override String get movies => 'Phim';
+	@override String get promotions => 'Khuyến mãi';
+	@override String get updates => 'Cập nhật';
+	@override String get noNotifications => 'Không có thông báo';
+	@override String get youAreAllCaughtUp => 'Bạn đã cập nhật tất cả!';
 }
 
 // Path: utils
@@ -1511,6 +1585,23 @@ extension on Translations {
 			case 'navigation.wishlist': return 'Wishlist';
 			case 'navigation.purchase': return 'Purchase';
 			case 'navigation.profile': return 'Profile';
+			case 'search.searchMovies': return 'Search movies, TV shows, actors...';
+			case 'search.popularSearches': return 'Popular Searches';
+			case 'search.noResultsFound': return 'No results found';
+			case 'search.tryDifferentKeywords': return 'Try different keywords or check your spelling';
+			case 'search.all': return 'All';
+			case 'search.movies': return 'Movies';
+			case 'search.tvShows': return 'TV Shows';
+			case 'search.actors': return 'Actors';
+			case 'notification.notifications': return 'Notifications';
+			case 'notification.showRead': return 'Show read notifications';
+			case 'notification.allMarkedAsRead': return 'All notifications marked as read';
+			case 'notification.all': return 'All';
+			case 'notification.movies': return 'Movies';
+			case 'notification.promotions': return 'Promotions';
+			case 'notification.updates': return 'Updates';
+			case 'notification.noNotifications': return 'No notifications';
+			case 'notification.youAreAllCaughtUp': return 'You\'re all caught up!';
 			case 'utils.itemsCount': return '{count} items';
 			case 'utils.helloUser': return 'Hello, {name}!';
 			case 'utils.counterText': return '';
@@ -1663,6 +1754,23 @@ extension on _TranslationsVi {
 			case 'navigation.wishlist': return 'Yêu thích';
 			case 'navigation.purchase': return 'Mua';
 			case 'navigation.profile': return 'Hồ sơ';
+			case 'search.searchMovies': return 'Tìm kiếm phim, chương trình TV, diễn viên...';
+			case 'search.popularSearches': return 'Tìm kiếm phổ biến';
+			case 'search.noResultsFound': return 'Không tìm thấy kết quả';
+			case 'search.tryDifferentKeywords': return 'Thử từ khóa khác hoặc kiểm tra chính tả';
+			case 'search.all': return 'Tất cả';
+			case 'search.movies': return 'Phim';
+			case 'search.tvShows': return 'Chương trình TV';
+			case 'search.actors': return 'Diễn viên';
+			case 'notification.notifications': return 'Thông báo';
+			case 'notification.showRead': return 'Hiển thị thông báo đã đọc';
+			case 'notification.allMarkedAsRead': return 'Đã đánh dấu tất cả thông báo là đã đọc';
+			case 'notification.all': return 'Tất cả';
+			case 'notification.movies': return 'Phim';
+			case 'notification.promotions': return 'Khuyến mãi';
+			case 'notification.updates': return 'Cập nhật';
+			case 'notification.noNotifications': return 'Không có thông báo';
+			case 'notification.youAreAllCaughtUp': return 'Bạn đã cập nhật tất cả!';
 			case 'utils.itemsCount': return '{count, plural, =0{Không có mục} =1{1 mục} other{{count} mục}}';
 			case 'utils.helloUser': return 'Xin chào, {name}!';
 			case 'utils.counterText': return '';
