@@ -42,6 +42,9 @@ class InfoField extends StatefulWidget {
   final bool showDivider;
   final Duration animationDuration;
   final Curve animationCurve;
+  final double? cursorHeight;
+  final Color? cursorColor;
+  final double? inputHeight;
 
   const InfoField({
     super.key,
@@ -84,6 +87,9 @@ class InfoField extends StatefulWidget {
     this.showDivider = true,
     this.animationDuration = const Duration(milliseconds: 200),
     this.animationCurve = Curves.easeInOut,
+    this.cursorHeight,
+    this.cursorColor,
+    this.inputHeight,
   });
 
   @override
@@ -150,14 +156,14 @@ class _InfoFieldState extends State<InfoField> {
                   color: widget.labelColor ?? AppColors.getText(context),
                   fontSize: widget.labelFontSize ?? widget.fontSize ?? 14,
                   fontWeight:
-                      widget.labelFontWeight ??
+                  widget.labelFontWeight ??
                       widget.fontWeight ??
                       FontWeight.w600,
                 ),
               ),
               if (widget.isRequired) ...[
                 const SizedBox(width: 4),
-                
+
               ],
             ],
           ),
@@ -168,14 +174,15 @@ class _InfoFieldState extends State<InfoField> {
         AnimatedContainer(
           duration: widget.animationDuration,
           curve: widget.animationCurve,
+          height: widget.inputHeight,
           decoration: BoxDecoration(
             color: widget.backgroundColor ?? Colors.transparent,
             borderRadius: BorderRadius.circular(widget.borderRadius),
             border: widget.showBorder
                 ? Border.all(
-                    color: _getBorderColor(),
-                    width: widget.borderWidth,
-                  )
+              color: _getBorderColor(),
+              width: widget.borderWidth,
+            )
                 : null,
           ),
           child: TextFormField(
@@ -189,6 +196,8 @@ class _InfoFieldState extends State<InfoField> {
             maxLines: widget.maxLines,
             maxLength: widget.maxLength,
             autofocus: widget.autofocus,
+            cursorHeight: widget.cursorHeight,
+            cursorColor: widget.cursorColor,
             onChanged: (value) {
               _validateField(value);
               widget.onChanged?.call(value);
@@ -199,7 +208,7 @@ class _InfoFieldState extends State<InfoField> {
               color: widget.textColor ?? AppColors.getText(context),
               fontSize: widget.inputFontSize ?? widget.fontSize ?? 14,
               fontWeight:
-                  widget.inputFontWeight ??
+              widget.inputFontWeight ??
                   widget.fontWeight ??
                   FontWeight.w400,
             ),
@@ -209,14 +218,14 @@ class _InfoFieldState extends State<InfoField> {
                 color: widget.hintColor ?? AppColors.getTextSecondary(context),
                 fontSize: widget.inputFontSize ?? widget.fontSize ?? 14,
                 fontWeight:
-                    widget.inputFontWeight ??
+                widget.inputFontWeight ??
                     widget.fontWeight ??
                     FontWeight.w400,
               ),
               prefixIcon: widget.prefixIcon,
               suffixIcon: _buildSuffixIcon(),
               contentPadding:
-                  widget.contentPadding ??
+              widget.contentPadding ??
                   const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
               border: InputBorder.none,
               counterText: '',

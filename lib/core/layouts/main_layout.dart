@@ -102,15 +102,31 @@ class MainLayout extends ConsumerWidget {
               BlendMode.srcIn,
             ),
           ),
-          onPressed: () => _handleTopBarAction(notifier, action, actionType),
+          onPressed: () => _handleTopBarAction(notifier, action, actionType, context),
         ),
       );
     }
   }
 
-  void _handleTopBarAction(TopBarNotifier notifier, TopBarAction action, String actionType) {
-    // TODO: Implement action handlers
-    print('$actionType action: ${notifier.getActionLabel(action)}');
+  void _handleTopBarAction(TopBarNotifier notifier, TopBarAction action, String actionType, BuildContext context) {
+    switch (action) {
+      case TopBarAction.search:
+        context.push(AppRouter.search);
+        break;
+      case TopBarAction.notification:
+        context.push(AppRouter.notification);
+        break;
+      case TopBarAction.filter:
+        // TODO: filter
+        break;
+      case TopBarAction.settings:
+        // TODO:
+        break;
+      case TopBarAction.profile:
+        // TODO:
+
+        break;
+    }
   }
 
 

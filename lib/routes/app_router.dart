@@ -15,6 +15,8 @@ import '../features/setting/presentation/screens/setting_screen.dart';
 import '../core/services/locale_setting.dart';
 import '../core/utils/no_transition_page.dart';
 import '../features/welcome/welcome_screen.dart';
+import '../features/search/presentation/screens/search_screen.dart';
+import '../features/notification/presentation/screens/notification_screen.dart';
 
 class AppRouter {
   static const String welcome = '/';
@@ -29,6 +31,8 @@ class AppRouter {
   static const String forgotPassword = '/forgot-password';
   static const String otpVerification = '/otp-verification';
   static const String resetPassword = '/reset-password';
+  static const String search = '/search';
+  static const String notification = '/notification';
 
   static final GoRouter router = GoRouter(
     initialLocation: welcome,
@@ -59,6 +63,14 @@ class AppRouter {
       GoRoute(
         path: resetPassword,
         builder: (context, state) => const ForgotPasswordNewPassScreen(),
+      ),
+      GoRoute(
+        path: search,
+        builder: (context, state) => const SearchScreen(),
+      ),
+      GoRoute(
+        path: notification,
+        builder: (context, state) => const NotificationScreen(),
       ),
       ShellRoute(
         builder: (context, state, child) => MainLayout(

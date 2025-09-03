@@ -229,6 +229,17 @@ navigation:
   purchase: Mua
   profile: Hồ sơ
 
+# Search
+search:
+  searchMovies: Tìm kiếm phim, chương trình TV, diễn viên...
+  popularSearches: Tìm kiếm phổ biến
+  noResultsFound: Không tìm thấy kết quả
+  tryDifferentKeywords: Thử từ khóa khác hoặc kiểm tra chính tả
+  all: Tất cả
+  movies: Phim
+  tvShows: Chương trình TV
+  actors: Diễn viên
+
 # Utility Functions
 utils:
   itemsCount: "{count, plural, =0{Không có mục} =1{1 mục} other{{count} mục}}"
