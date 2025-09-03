@@ -25,6 +25,7 @@ class InfoField extends StatefulWidget {
   final EdgeInsetsGeometry? contentPadding;
   final double borderRadius;
   final Color? backgroundColor;
+  final Color? focusedBackgroundColor;
   final Color? borderColor;
   final Color? focusedBorderColor;
   final Color? errorBorderColor;
@@ -70,6 +71,7 @@ class InfoField extends StatefulWidget {
     this.contentPadding,
     this.borderRadius = 12.0,
     this.backgroundColor,
+    this.focusedBackgroundColor,
     this.borderColor,
     this.focusedBorderColor,
     this.errorBorderColor,
@@ -176,7 +178,7 @@ class _InfoFieldState extends State<InfoField> {
           curve: widget.animationCurve,
           height: widget.inputHeight,
           decoration: BoxDecoration(
-            color: widget.backgroundColor ?? Colors.transparent,
+            color: _getBackgroundColor(),
             borderRadius: BorderRadius.circular(widget.borderRadius),
             border: widget.showBorder
                 ? Border.all(
@@ -261,6 +263,13 @@ class _InfoFieldState extends State<InfoField> {
       return widget.focusedBorderColor ?? AppColors.primary500;
     }
     return widget.borderColor ?? AppColors.getSurface(context);
+  }
+
+  Color _getBackgroundColor() {
+    if (_isFocused) {
+      return widget.focusedBackgroundColor ?? AppColors.getSurface(context);
+    }
+    return widget.backgroundColor ?? Colors.transparent;
   }
 
   Widget? _buildSuffixIcon() {

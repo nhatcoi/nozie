@@ -17,7 +17,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   final FocusNode _searchFocusNode = FocusNode();
   String _searchQuery = '';
   bool _isSearching = false;
-  
+  bool _submitted = false;
+
   // previousSearches state
   final List<String> _previousSearches = [
     'Inception',
@@ -92,42 +93,45 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
               const SizedBox(height: 24),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Previous Search',
-                    style: AppTypography.h5.copyWith(
-                      color: AppColors.getText(context),
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-
-                  GestureDetector(
-                    onTap: () {
-                      // TODO: xóa lịch sử
-                    },
-                    child: SvgPicture.asset(
-                      ImageConstant.closeIcon,
-                      width: 12,
-                      height: 12,
-                      colorFilter: ColorFilter.mode(
-                        AppColors.getTextSecondary(context),
-                        BlendMode.srcIn,
+              if (!_isSearching) ...[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Previous Search',
+                      style: AppTypography.h5.copyWith(
+                        color: AppColors.getText(context),
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
-                  ),
-                ],
-              ),
 
-              const SizedBox(height: 24),
+                    GestureDetector(
+                      onTap: () {
+                        // TODO: xóa lịch sử
+                      },
+                      child: SvgPicture.asset(
+                        ImageConstant.closeIcon,
+                        width: 12,
+                        height: 12,
+                        colorFilter: ColorFilter.mode(
+                          AppColors.getTextSecondary(context),
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
 
-              LinedTextDivider(),
+                const SizedBox(height: 24),
 
-              const SizedBox(height: 24),
+                LinedTextDivider(),
 
-              _buildListPreviousSearches(context, t),
+                const SizedBox(height: 24),
 
+                _buildListPreviousSearches(context, t),
+              ],
+
+              // if (_isSearching)
               // Expanded(
               //   child: _buildSearchContent(context, t),
               // ),
@@ -139,6 +143,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   }
 
   Widget _buildSearchHeader(BuildContext context, Translations t) {
+
+
     return Row(
       children: [
         GestureDetector(
@@ -162,13 +168,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               horizontal: 16,
               vertical: 14,
             ),
-            backgroundColor: AppColors.trOrange,
+
             controller: _searchController,
             focusNode: _searchFocusNode,
             showDivider: false,
             showBorder: true,
             borderRadius: 16,
-            borderColor: AppColors.primary500,
+
             fontSize: 16,
             cursorHeight: 13,
             // cursor text ngắn hơn
@@ -198,6 +204,20 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     ),
                   )
                 : null,
+
+            onSubmitted: (value) {
+              setState(() {
+                _submitted = true;
+              });
+              _searchFocusNode.unfocus();
+              _showIn(value);
+            },
+
+            backgroundColor: _submitted ? AppColors.getSurface(context) : AppColors.trOrange ,
+            focusedBackgroundColor: AppColors.trOrange,
+            borderColor:  _submitted ? null : AppColors.primary500,
+
+
           ),
         ),
 
@@ -236,12 +256,12 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 ),
               ),
 
-                             GestureDetector(
-                 onTap: () {
-                   setState(() {
-                     _previousSearches.removeAt(index);
-                   });
-                 },
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _previousSearches.removeAt(index);
+                  });
+                },
                 child: SvgPicture.asset(
                   ImageConstant.closeIcon,
                   width: 12,
@@ -251,11 +271,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     BlendMode.srcIn,
                   ),
                 ),
-              )
-
+              ),
             ],
           );
-
         },
       ),
     );
@@ -265,4 +283,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     _searchController.clear();
     _searchFocusNode.unfocus();
   }
+
+  void _showIn(String value) {}
 }
