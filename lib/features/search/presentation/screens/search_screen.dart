@@ -3,7 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_fe/core/app_export.dart';
 import 'package:movie_fe/core/widgets/lined_text_divider.dart';
+import 'package:movie_fe/features/search/presentation/screens/search_history_notifier.dart';
 import '../../../../i18n/translations.g.dart';
+
+
+
 
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
@@ -19,44 +23,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   bool _isSearching = false;
   bool _submitted = false;
 
-  // previousSearches state
-  final List<String> _previousSearches = [
-    'Inception',
-    'The Dark Knight',
-    'Interstellar',
-    'Parasite',
-    'Avengers: Endgame',
-    'Inception',
-    'The Dark Knight',
-    'Interstellar',
-    'Parasite',
-    'Avengers: Endgame',
-    'Inception',
-    'The Dark Knight',
-    'Interstellar',
-    'Parasite',
-    'Avengers: Endgame',
-    'Inception',
-    'The Dark Knight',
-    'Interstellar',
-    'Parasite',
-    'Avengers: Endgame',
-    'Inception',
-    'The Dark Knight',
-    'Interstellar',
-    'Parasite',
-    'Avengers: Endgame',
-    'Inception',
-    'The Dark Knight',
-    'Interstellar',
-    'Parasite',
-    'Avengers: Endgame',
-    'Inception',
-    'The Dark Knight',
-    'Interstellar',
-    'Parasite',
-    'Avengers: Endgame',
-  ];
+
 
   @override
   void initState() {
@@ -78,9 +45,12 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     });
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
+    final history = ref.watch(searchHistoryProvider);
 
     return Scaffold(
       backgroundColor: AppColors.getBackground(context),
@@ -107,7 +77,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
                     GestureDetector(
                       onTap: () {
-                        // TODO: xóa lịch sử
+                        ref.read(searchHistoryProvider.notifier).clear();
                       },
                       child: SvgPicture.asset(
                         ImageConstant.closeIcon,
@@ -128,7 +98,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
                 const SizedBox(height: 24),
 
-                _buildListPreviousSearches(context, t),
+                _buildListPreviousSearches(context, t, history),
               ],
 
               // if (_isSearching)
@@ -143,8 +113,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   }
 
   Widget _buildSearchHeader(BuildContext context, Translations t) {
-
-
     return Row(
       children: [
         GestureDetector(
@@ -206,18 +174,17 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 : null,
 
             onSubmitted: (value) {
+              ref.read(searchHistoryProvider.notifier).add(value);
               setState(() {
                 _submitted = true;
+                _isSearching = true;
               });
               _searchFocusNode.unfocus();
-              _showIn(value);
             },
 
             backgroundColor: _submitted ? AppColors.getSurface(context) : AppColors.trOrange ,
             focusedBackgroundColor: AppColors.trOrange,
             borderColor:  _submitted ? null : AppColors.primary500,
-
-
           ),
         ),
 
@@ -231,21 +198,26 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     );
   }
 
-  Widget _buildListPreviousSearches(BuildContext context, Translations t) {
+  Widget _buildListPreviousSearches(BuildContext context, Translations t, List<String> history) {
     return Expanded(
       child: ListView.separated(
-        itemCount: _previousSearches.length,
+        itemCount: history.length,
         separatorBuilder: (context, index) => const SizedBox(height: 16),
         // cách mục
         itemBuilder: (context, index) {
-          final oldSearch = _previousSearches[index];
+          final oldSearch = history[index];
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
                 onTap: () {
-                  /// TODO: search lại
+                  // Thêm vào history và search
+                  ref.read(searchHistoryProvider.notifier).add(oldSearch);
                   _searchController.text = oldSearch;
+                  setState(() {
+                    _submitted = true;
+                    _isSearching = true;
+                  });
                 },
                 child: Text(
                   oldSearch,
@@ -258,9 +230,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
               GestureDetector(
                 onTap: () {
-                  setState(() {
-                    _previousSearches.removeAt(index);
-                  });
+                  ref.read(searchHistoryProvider.notifier).removeAt(index);
                 },
                 child: SvgPicture.asset(
                   ImageConstant.closeIcon,
@@ -281,8 +251,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
   void _clearSearch() {
     _searchController.clear();
+    setState(() {
+      _submitted = false;
+      _isSearching = false;
+    });
     _searchFocusNode.unfocus();
   }
 
-  void _showIn(String value) {}
 }
