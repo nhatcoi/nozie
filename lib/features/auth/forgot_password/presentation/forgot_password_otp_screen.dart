@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/core/widgets/numeric_keyboard.dart';
+import 'package:movie_fe/core/widgets/inputs/numeric_keyboard.dart';
 import 'package:movie_fe/features/auth/forgot_password/presentation/providers/otp_vm.dart';
 import 'package:movie_fe/features/auth/forgot_password/presentation/widgets/otp_input_controller.dart';
 import 'package:movie_fe/features/auth/forgot_password/presentation/widgets/otp_input_group.dart';

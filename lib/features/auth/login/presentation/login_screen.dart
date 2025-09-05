@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/core/widgets/lined_text_divider.dart';
-import 'package:movie_fe/core/widgets/social_button.dart';
+import 'package:movie_fe/core/utils/custom_snackbar.dart';
+import 'package:movie_fe/core/widgets/buttons/social_button.dart';
+import 'package:movie_fe/core/widgets/layout/lined_text_divider.dart';
 import 'package:movie_fe/features/auth/login/presentation/providers/login_provider.dart';
-import 'package:movie_fe/core/widgets/app_checkbox.dart';
+import 'package:movie_fe/core/widgets/selection/app_checkbox.dart';
 
 import '../../../../routes/app_router.dart';
 import 'package:go_router/go_router.dart';
@@ -38,7 +40,7 @@ class LoginScreen extends ConsumerWidget {
         },
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 16, 24, 48),
+            padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -123,8 +125,7 @@ class LoginScreen extends ConsumerWidget {
                   children: [
                     Expanded(
                       child: SocialButton(
-                        icon: SvgPicture.asset(
-                          ImageConstant.imgGoogleIcon,
+                        icon: SvgPicture.asset(                          ImageConstant.imgGoogleIcon,
                           height: 24,
                         ),
                         onPressed: () {
@@ -160,7 +161,8 @@ class LoginScreen extends ConsumerWidget {
                   ],
                 ),
 
-                const Spacer(),
+                Gap(24),
+                Spacer(),
 
                 PrimaryButton(
                   text: t.auth.signIn,
@@ -168,8 +170,10 @@ class LoginScreen extends ConsumerWidget {
                     if(userCtl.text.isNotEmpty && passCtl.text.isNotEmpty) {
                       context.go(AppRouter.home);
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(t.validation.general.fillAllFields))
+                      CustomSnackBar.show(
+                        context,
+                        message: t.validation.general.fillAllFields,
+                        type: SnackBarType.error,
                       );
                     }
 

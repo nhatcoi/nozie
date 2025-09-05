@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:movie_fe/core/widgets/app_checkbox.dart';
+import 'package:movie_fe/core/widgets/selection/app_checkbox.dart';
 import '../../../../../../core/app_export.dart';
 
 class StepSignup extends ConsumerStatefulWidget {

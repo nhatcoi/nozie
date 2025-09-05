@@ -54,7 +54,7 @@ dependencies:
   # Routing
   go_router: ^14.2.0
 
- # add equatable
+  # add equatable
   equatable: ^2.0.7
   gap: ^3.0.1
 
@@ -84,7 +84,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "lib/assets/images/logo_app.png"
+  image_path: "lib/assets/images/app/logo_app.png"
 
 # The following section is specific to Flutter packages.
 flutter:
@@ -99,9 +99,14 @@ flutter:
   assets:
     - lib/assets/fonts/Urbanist/
     - lib/assets/images/
-    - lib/assets/images/icons/
-    - lib/assets/images/icons/profile/
+    - lib/assets/images/app/
+    - lib/assets/images/common/
     - lib/assets/images/welcome/
+    - lib/assets/images/icons/
+    - lib/assets/images/icons/auth/
+    - lib/assets/images/icons/navigation/
+    - lib/assets/images/icons/common/
+    - lib/assets/images/icons/action/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/core/widgets/app_checkbox.dart';
+import 'package:movie_fe/core/widgets/selection/app_checkbox.dart';
 import '../../../../routes/app_router.dart';
 
-import '../../../../core/widgets/modal.dart';
+import '../../../../core/widgets/feedback/modal.dart';
 
 final rememberMeProvider = StateProvider<bool>((ref) => false);
 

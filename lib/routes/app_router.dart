@@ -17,7 +17,6 @@ import '../core/services/locale_setting.dart';
 import '../core/utils/no_transition_page.dart';
 import '../features/welcome/welcome_screen.dart';
 import '../features/search/presentation/screens/search_screen.dart';
-import '../features/notification/presentation/screens/notification_screen.dart';
 
 class AppRouter {
   static const String welcome = '/';
@@ -68,10 +67,6 @@ class AppRouter {
       GoRoute(
         path: search,
         builder: (context, state) => const SearchScreen(),
-      ),
-      GoRoute(
-        path: notification,
-        builder: (context, state) => const NotificationScreen(),
       ),
       ShellRoute(
         builder: (context, state, child) => MainLayout(
