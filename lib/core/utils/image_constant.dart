@@ -31,6 +31,9 @@ class ImageConstant {
   static const String filterIcon = '${subPathIcon}filter.svg';
   static const String moreCircleIcon = '${subPathIcon}more_circle.svg';
   static const String closeIcon = '${subPathIcon}close.svg';
+  static const String categoryIcon = '${subPathIcon}category.svg';
+  static const String documentIcon = '${subPathIcon}document.svg';
+
 
 
   static const String imgImageNotFound = '${_basePath}placeholder.png';

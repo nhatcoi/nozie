@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:movie_fe/core/app_export.dart';
 import 'package:movie_fe/core/widgets/lined_text_divider.dart';
 import 'package:movie_fe/features/search/application/search_history_notifier.dart';
@@ -33,6 +34,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   void dispose() {
     _searchController.dispose();
     _searchFocusNode.dispose();
+
     super.dispose();
   }
 
@@ -111,8 +113,20 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   Widget _buildSearchHeader(BuildContext context, Translations t, SearchState searchState) {
     return Row(
       children: [
+
+        // back
         GestureDetector(
-          onTap: () => Navigator.of(context).pop(),
+          onTap: () {
+            context.pop();
+
+            // reset state nếu có result
+            final currentState = ref.read(searchStateProvider);
+            if (currentState.hasResults || currentState.hasSubmitted) {
+              Future.delayed(const Duration(milliseconds: 300), () {
+                ref.read(searchStateProvider.notifier).clear();
+              });
+            }
+          },
           child: SvgPicture.asset(
             ImageConstant.arrowIcon,
             width: 16,
@@ -155,26 +169,33 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             ),
             suffixIcon: searchState.query.isNotEmpty
                 ? GestureDetector(
-                    onTap: searchState.hasSubmitted ? _showFilterOptions : _clearSearch,
-                    child: Transform.scale(
-                      scale: 0.25,
-                      child: SvgPicture.asset(
-                        searchState.hasSubmitted
-                            ? ImageConstant.filterIcon
-                            : ImageConstant.closeIcon,
-                        colorFilter: ColorFilter.mode(
-                          AppColors.getText(context),
-                          BlendMode.srcIn,
-                        ),
-                      ),
-                    ),
-                  )
+              onTap: searchState.hasResults ? _showFilterOptions : _clearSearch,
+              child: Transform.scale(
+                scale: 0.25,
+                child: SvgPicture.asset(
+                  searchState.hasResults
+                      ? ImageConstant.filterIcon
+                      : ImageConstant.closeIcon,
+                  colorFilter: ColorFilter.mode(
+                    AppColors.getText(context),
+                    BlendMode.srcIn,
+                  ),
+                ),
+              ),
+            )
                 : null,
 
             onSubmitted: (value) {
               ref.read(searchHistoryProvider.notifier).add(value);
               ref.read(searchStateProvider.notifier).submit(value);
               _searchFocusNode.unfocus();
+
+              // Simulate search results after 1 second
+              Future.delayed(const Duration(milliseconds: 100), () {
+                if (mounted) {
+                  ref.read(searchStateProvider.notifier).setResults();
+                }
+              });
             },
 
             backgroundColor: searchState.hasSubmitted ? AppColors.getSurface(context) : AppColors.trOrange ,
@@ -184,7 +205,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         ),
 
         // GestureDetector(
-        //   onTap: () => Navigator.of(context).pop(),
+        //   onTap: () => context.pop(),
         //   child: SvgPicture.asset(
         //     ImageConstant
         //   )
@@ -277,7 +298,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               const SizedBox(height: 24),
 
               ElevatedButton(
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => context.pop(),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary500,
                   foregroundColor: Colors.white,

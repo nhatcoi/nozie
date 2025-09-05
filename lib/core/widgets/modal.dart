@@ -7,6 +7,7 @@ import '../theme/app_typography.dart';
 import '../utils/image_constant.dart';
 import 'primary_button.dart';
 import 'secondary_button.dart';
+import 'package:go_router/go_router.dart';
 
 /* doc:
 await showAppModal(
@@ -16,11 +17,11 @@ await showAppModal(
   iconPath: ImageConstant.successIcon,
   primaryButton: PrimaryButton(
       text: 'Close',
-      onPressed: () => Navigator.pop(context),
+      onPressed: () => context.pop(),
    ),
    secondaryButton: SecondaryButton(
       text: 'ok',
-      onPressed: () => Navigator.pop(context),
+      onPressed: () => context.pop(),
     ),
 );
 */
