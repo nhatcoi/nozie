@@ -155,11 +155,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             ),
             suffixIcon: searchState.query.isNotEmpty
                 ? GestureDetector(
-                    onTap: _clearSearch,
+                    onTap: searchState.hasSubmitted ? _showFilterOptions : _clearSearch,
                     child: Transform.scale(
                       scale: 0.25,
                       child: SvgPicture.asset(
-                        ImageConstant.closeIcon,
+                        searchState.hasSubmitted
+                            ? ImageConstant.filterIcon
+                            : ImageConstant.closeIcon,
                         colorFilter: ColorFilter.mode(
                           AppColors.getText(context),
                           BlendMode.srcIn,
@@ -236,6 +238,70 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           );
         },
       ),
+    );
+  }
+
+  void _showFilterOptions() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppColors.getSurface(context),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(16),
+        ),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Filter Options',
+                style: AppTypography.h4.copyWith(
+                  color: AppColors.getText(context),
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              Text(
+                'Here you can implement filter options for your search results.',
+                style: AppTypography.bodyLRegular.copyWith(
+                  color: AppColors.getTextSecondary(context),
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pop(),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary500,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    'Close',
+                    style: AppTypography.bodySBRegular.copyWith(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+            ],
+          ),
+        );
+      },
     );
   }
 
