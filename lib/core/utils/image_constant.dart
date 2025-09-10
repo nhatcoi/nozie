@@ -33,6 +33,9 @@ class ImageConstant {
   static const String closeIcon = '${subPathIcon}close.svg';
   static const String categoryIcon = '${subPathIcon}category.svg';
   static const String documentIcon = '${subPathIcon}document.svg';
+  static const String radioIcon = '${subPathIcon}radio.svg';
+  static const String radioUnIcon = '${subPathIcon}radio_un.svg';
+  static const String priceRangeIcon = '${subPathIcon}price_range.svg';
 
 
 

@@ -10,7 +10,7 @@ final searchHistoryProvider =
 class SearchHistoryNotifier extends StateNotifier<List<String>> {
   SearchHistoryNotifier() : super([]);
 
-  static const _prefKey = 'search_history';
+  static const _prefKey = 'search_history.dart';
   static const _maxItem = 20;
 
   Future<void> load() async {

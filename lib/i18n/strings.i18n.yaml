@@ -1,3 +1,5 @@
+locale: en
+
 # Main App Configuration
 app:
   title: NoZie
@@ -239,7 +241,56 @@ search:
   tvShows: TV Shows
   actors: Actors
 
+  previousSearches: Previous Searches
+  noResults: No results found
+  showIn: Show in
 
+  filter:
+    header: Filter
+    reset: Reset
+    apply: Apply
+    sections:
+      sort: Sort
+      price: Price
+      rating: Rating
+      genre: Genre
+      language: Language
+      age: Age
+    sortOptions:
+      trending: Trending
+      newReleases: New Releases
+      highestRating: Highest Rating
+      lowestRating: Lowest Rating
+      highestPrice: Highest Price
+      lowestPrice: Lowest Price
+
+    genres:
+      action: Action
+      adventure: Adventure
+      romance: Romance
+      comics: Comics
+      comedy: Comedy
+      fantasy: Fantasy
+      mystery: Mystery
+      horror: Horror
+      scienceFiction: Science Fiction
+      thriller: Thriller
+      travel: Travel
+
+    rangePrice:
+      min: 0
+      max: 30
+
+    languages:
+      english: English
+      vietnamese: Vietnamese
+      others: Others
+
+    age:
+      under12: Age 12 & Under
+      above12: 12+
+      above16: 16+
+      above18: 18+
 
 # Utility Functions
 utils:

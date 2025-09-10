@@ -57,6 +57,40 @@ class MovieSearchItem {
   });
 }
 
+class SearchResult {
+  final String id;
+  final String title;
+  final String? subtitle;
+  final String? imageUrl;
+  final SearchResultType type;
+  final double? rating;
+  final int? ratingCount;
+  final List<String> genres;
+  final String? releaseYear;
+  final Map<String, dynamic> metadata;
+
+  const SearchResult({
+    required this.id,
+    required this.title,
+    this.subtitle,
+    this.imageUrl,
+    required this.type,
+    this.rating,
+    this.ratingCount,
+    this.genres = const [],
+    this.releaseYear,
+    this.metadata = const {},
+  });
+}
+
+enum SearchResultType {
+  movie,
+  tvShow,
+  actor,
+  director,
+  genre,
+}
+
 class SearchResultsPage<T> {
   final List<T> items;
   final int page;

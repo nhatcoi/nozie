@@ -1,3 +1,5 @@
+import 'filter_section.dart';
+
 class SearchFilters {
   final SortOption sortBy;
   final double? priceMin;
@@ -16,25 +18,25 @@ class SearchFilters {
     this.language = LanguageOption.all,
     this.age = AgeOption.all,
   });
+
+  SearchFilters copyWith({
+    SortOption? sortBy,
+    double? priceMin,
+    double? priceMax,
+    double? ratingMin,
+    List<String>? genres,
+    LanguageOption? language,
+    AgeOption? age,
+  }) {
+    return SearchFilters(
+      sortBy: sortBy ?? this.sortBy,
+      priceMin: priceMin ?? this.priceMin,
+      priceMax: priceMax ?? this.priceMax,
+      ratingMin: ratingMin ?? this.ratingMin,
+      genres: genres ?? this.genres,
+      language: language ?? this.language,
+      age: age ?? this.age,
+    );
+  }
 }
 
-enum SortOption {
-  trending,
-  newReleases,
-  highestRating,
-  lowestRating,
-  highestPrice,
-  lowestPrice,
-}
-
-enum LanguageOption {
-  all,
-  english,
-  mandarin,
-  other,
-}
-
-enum AgeOption {
-  all,
-  under12,
-}

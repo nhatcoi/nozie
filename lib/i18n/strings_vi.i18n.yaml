@@ -1,3 +1,5 @@
+locale: vi
+
 # Main App Configuration
 app:
   title: NoZie
@@ -239,6 +241,58 @@ search:
   movies: Phim
   tvShows: Chương trình TV
   actors: Diễn viên
+
+  previousSearches: Tìm kiếm trước
+  noResults: Không tìm thấy kết quả
+  showIn: Kết quả
+
+  filter:
+    header: Bộ lọc
+    reset: Đặt lại
+    apply: Áp dụng
+    sections:
+      sort: Sắp xếp
+      price: Giá
+      rating: Đánh giá
+      genre: Thể loại
+      language: Ngôn ngữ
+      age: Độ tuổi
+    sortOptions:
+      trending: Xu hướng
+      newReleases: Phát hành mới
+      highestRating: Đánh giá cao nhất
+      lowestRating: Đánh giá thấp nhất
+      highestPrice: Giá cao nhất
+      lowestPrice: Giá thấp nhất
+
+    genres:
+      action: Hành động
+      adventure: Phiêu lưu
+      romance: Lãng mạn
+      comics: Truyện tranh
+      comedy: Hài
+      fantasy: Giả tưởng
+      mystery: Bí ẩn
+      horror: Kinh dị
+      scienceFiction: Khoa học viễn tưởng
+      thriller: Giật gân
+      travel: Du lịch
+
+    rangePrice:
+      min: 0
+      max: 500000
+
+    languages:
+      english: Tiếng Anh
+      vietnamese: Tiếng Việt
+      others: Khác
+
+    age:
+      under12: Dưới 12 tuổi
+      above12: 12+
+      above16: 16+
+      above18: 18+
+
 
 # Utility Functions
 utils:
