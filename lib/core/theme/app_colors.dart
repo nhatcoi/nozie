@@ -38,6 +38,18 @@ class AppColors{
         : white;
   }
 
+  static Color getAutoLayoutBg(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? dark2
+        : greyscale50;
+  }
+
+  static Color getLine(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? dark4
+        : greyscale200;
+  }
+
 
   static const Color primary500 = Color(0xFFF89300);
   static const Color primary400 = Color(0xFFF9A933);

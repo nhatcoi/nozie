@@ -49,12 +49,12 @@ class Tag extends StatelessWidget {
       curve: animationCurve,
       padding: padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: isSelected 
+        color: isSelected
             ? (selectedBackgroundColor ?? AppColors.primary500)
             : (backgroundColor ?? AppColors.getSurface(context)),
         borderRadius: BorderRadius.circular(borderRadius),
         border: showBorder ? Border.all(
-          color: isSelected 
+          color: isSelected
               ? (selectedBorderColor ?? AppColors.primary500)
               : (borderColor ?? AppColors.primary500),
           width: borderWidth,
@@ -63,7 +63,7 @@ class Tag extends StatelessWidget {
       child: AnimatedDefaultTextStyle(
         duration: animationDuration,
         style: AppTypography.bodyMRegular.copyWith(
-          color: isSelected 
+          color: isSelected
               ? (selectedTextColor ?? AppColors.getText(context))
               : (textColor ?? AppColors.primary500),
           fontSize: fontSize ?? 16,

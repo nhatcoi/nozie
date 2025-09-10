@@ -31,6 +31,26 @@ class ImageConstant {
   static const String filterIcon = '${subPathIcon}filter.svg';
   static const String moreCircleIcon = '${subPathIcon}more_circle.svg';
   static const String closeIcon = '${subPathIcon}close.svg';
+  static const String categoryIcon = '${subPathIcon}category.svg';
+  static const String documentIcon = '${subPathIcon}document.svg';
+  static const String radioIcon = '${subPathIcon}radio.svg';
+  static const String radioUnIcon = '${subPathIcon}radio_un.svg';
+  static const String priceRangeIcon = '${subPathIcon}price_range.svg';
+
+  // profile icons
+  static const String subPathProfileIcon = '${_basePath}icons/profile/';
+  static const String logoutIcon = '${subPathProfileIcon}logout.svg';
+  static const String arrowRightIcon     = '${subPathProfileIcon}arrow_right.svg';
+  static const String categoryColorIcon  = '${subPathProfileIcon}category_color.svg';
+  static const String documentColorIcon  = '${subPathProfileIcon}document_color.svg';
+  static const String editIcon           = '${subPathProfileIcon}edit.svg';
+  static const String eyeColorIcon       = '${subPathProfileIcon}eye_color.svg';
+  static const String guardIcon          = '${subPathProfileIcon}guard.svg';
+  static const String infoIcon           = '${subPathProfileIcon}info.svg';
+  static const String profileColorIcon   = '${subPathProfileIcon}profile_color.svg';
+  static const String ringColorIcon      = '${subPathProfileIcon}ring_color.svg';
+  static const String settingColorIcon   = '${subPathProfileIcon}setting_color.svg';
+
 
 
   static const String imgImageNotFound = '${_basePath}placeholder.png';

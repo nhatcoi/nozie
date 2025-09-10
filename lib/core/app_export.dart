@@ -25,6 +25,11 @@ export 'widgets/secondary_button.dart';
 export 'widgets/dropdown.dart';
 export 'widgets/image_picker.dart';
 export 'widgets/select_date.dart';
+export 'widgets/price_range_slider.dart';
+export 'widgets/auto_layout.dart';
+export 'widgets/lined_text_divider.dart';
+export 'widgets/app_checkbox.dart';
+export 'widgets/loading.dart';
 
 // Extensions
 export 'extension/context_extensions.dart';

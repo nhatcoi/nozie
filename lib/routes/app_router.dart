@@ -5,6 +5,7 @@ import 'package:movie_fe/features/auth/forgot_password/presentation/forgot_passw
 import 'package:movie_fe/features/auth/forgot_password/presentation/forgot_password_otp_screen.dart';
 import 'package:movie_fe/features/auth/forgot_password/presentation/forgot_password_screen.dart';
 import 'package:movie_fe/features/auth/login/presentation/login_screen.dart';
+import 'package:movie_fe/features/profile/presentation/profile_screen.dart';
 import 'package:movie_fe/features/wishlist/presentation/wishlist_screen.dart';
 import '../features/auth/register/presentation/screen/signup_flow_screen.dart';
 import '../features/home/presentation/screens/home_screen.dart';
@@ -100,23 +101,23 @@ class AppRouter {
           GoRoute(
             path: purchase,
             pageBuilder: (context, state) => CustomNoTransitionPage(
-              child: const PurchaseScreen(),
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final currentLocale = ref.watch(localeControllerProvider);
+                  final localeController = ref.read(localeControllerProvider.notifier);
+
+                  return SettingPage(
+                    currentLocale,
+                        (locale) => localeController.setLocale(locale),
+                  );
+                },
+              ),
             ),
           ),
           GoRoute(
             path: profile,
             pageBuilder: (context, state) => CustomNoTransitionPage(
-              child: Consumer(
-                builder: (context, ref, child) {
-                  final currentLocale = ref.watch(localeControllerProvider);
-                  final localeController = ref.read(localeControllerProvider.notifier);
-                  
-                  return SettingPage(
-                    currentLocale,
-                    (locale) => localeController.setLocale(locale),
-                  );
-                },
-              ),
+              child: ProfileScreen(),
             ),
           ),
         ],

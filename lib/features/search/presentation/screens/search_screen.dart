@@ -1,9 +1,13 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/core/widgets/lined_text_divider.dart';
-import '../../../../i18n/translations.g.dart';
+import 'package:movie_fe/features/search/application/search_history_notifier.dart';
+import 'package:movie_fe/features/search/application/search_state_notifier.dart';
+import 'package:movie_fe/features/search/presentation/widgets/search_header.dart';
+import 'package:movie_fe/features/search/presentation/widgets/search_history.dart';
+
+import '../widgets/search_body.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
@@ -15,47 +19,7 @@ class SearchScreen extends ConsumerStatefulWidget {
 class _SearchScreenState extends ConsumerState<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
-  String _searchQuery = '';
-  bool _isSearching = false;
-  
-  // previousSearches state
-  final List<String> _previousSearches = [
-    'Inception',
-    'The Dark Knight',
-    'Interstellar',
-    'Parasite',
-    'Avengers: Endgame',
-    'Inception',
-    'The Dark Knight',
-    'Interstellar',
-    'Parasite',
-    'Avengers: Endgame',
-    'Inception',
-    'The Dark Knight',
-    'Interstellar',
-    'Parasite',
-    'Avengers: Endgame',
-    'Inception',
-    'The Dark Knight',
-    'Interstellar',
-    'Parasite',
-    'Avengers: Endgame',
-    'Inception',
-    'The Dark Knight',
-    'Interstellar',
-    'Parasite',
-    'Avengers: Endgame',
-    'Inception',
-    'The Dark Knight',
-    'Interstellar',
-    'Parasite',
-    'Avengers: Endgame',
-    'Inception',
-    'The Dark Knight',
-    'Interstellar',
-    'Parasite',
-    'Avengers: Endgame',
-  ];
+  Timer? _debounceTimer;
 
   @override
   void initState() {
@@ -65,72 +29,37 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
   @override
   void dispose() {
+    _debounceTimer?.cancel();
     _searchController.dispose();
     _searchFocusNode.dispose();
     super.dispose();
   }
 
   void _onSearchChanged() {
-    setState(() {
-      _searchQuery = _searchController.text;
-      _isSearching = _searchQuery.isNotEmpty;
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 500), () {
+      ref.read(searchStateProvider.notifier).updateQuery(_searchController.text);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final t = Translations.of(context);
+    final history = ref.watch(searchHistoryProvider);
+    final searchState = ref.watch(searchStateProvider);
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.getBackground(context),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             children: [
-              _buildSearchHeader(context, t),
+              _buildSearchHeader(context, searchState),
 
               const SizedBox(height: 24),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Previous Search',
-                    style: AppTypography.h5.copyWith(
-                      color: AppColors.getText(context),
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-
-                  GestureDetector(
-                    onTap: () {
-                      // TODO: xóa lịch sử
-                    },
-                    child: SvgPicture.asset(
-                      ImageConstant.closeIcon,
-                      width: 12,
-                      height: 12,
-                      colorFilter: ColorFilter.mode(
-                        AppColors.getTextSecondary(context),
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 24),
-
-              LinedTextDivider(),
-
-              const SizedBox(height: 24),
-
-              _buildListPreviousSearches(context, t),
-
-              // Expanded(
-              //   child: _buildSearchContent(context, t),
-              // ),
+              Expanded(child: _buildSearchContent(context, searchState, history),),
             ],
           ),
         ),
@@ -138,131 +67,46 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     );
   }
 
-  Widget _buildSearchHeader(BuildContext context, Translations t) {
-    return Row(
-      children: [
-        GestureDetector(
-          onTap: () => Navigator.of(context).pop(),
-          child: SvgPicture.asset(
-            ImageConstant.arrowIcon,
-            width: 16,
-            height: 16,
-            colorFilter: ColorFilter.mode(
-              AppColors.getText(context),
-              BlendMode.srcIn,
-            ),
-          ),
-        ),
-
-        const SizedBox(width: 16),
-
-        Expanded(
-          child: InfoField(
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 14,
-            ),
-            backgroundColor: AppColors.trOrange,
-            controller: _searchController,
-            focusNode: _searchFocusNode,
-            showDivider: false,
-            showBorder: true,
-            borderRadius: 16,
-            borderColor: AppColors.primary500,
-            fontSize: 16,
-            cursorHeight: 13,
-            // cursor text ngắn hơn
-            cursorColor: AppColors.getText(context),
-            prefixIcon: Transform.scale(
-              scale: 0.35,
-              child: SvgPicture.asset(
-                ImageConstant.searchIcon,
-                colorFilter: ColorFilter.mode(
-                  AppColors.getText(context),
-                  BlendMode.srcIn, // vẽ svg
-                ),
-              ),
-            ),
-            suffixIcon: _searchQuery.isNotEmpty
-                ? GestureDetector(
-                    onTap: _clearSearch,
-                    child: Transform.scale(
-                      scale: 0.25,
-                      child: SvgPicture.asset(
-                        ImageConstant.closeIcon,
-                        colorFilter: ColorFilter.mode(
-                          AppColors.getText(context),
-                          BlendMode.srcIn,
-                        ),
-                      ),
-                    ),
-                  )
-                : null,
-          ),
-        ),
-
-        // GestureDetector(
-        //   onTap: () => Navigator.of(context).pop(),
-        //   child: SvgPicture.asset(
-        //     ImageConstant
-        //   )
-        // )
-      ],
+  Widget _buildSearchHeader(BuildContext context, SearchState searchState,) {
+    return SearchHeader(
+      searchController: _searchController,
+      searchFocusNode: _searchFocusNode,
     );
   }
 
-  Widget _buildListPreviousSearches(BuildContext context, Translations t) {
-    return Expanded(
-      child: ListView.separated(
-        itemCount: _previousSearches.length,
-        separatorBuilder: (context, index) => const SizedBox(height: 16),
-        // cách mục
-        itemBuilder: (context, index) {
-          final oldSearch = _previousSearches[index];
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  /// TODO: search lại
-                  _searchController.text = oldSearch;
-                },
-                child: Text(
-                  oldSearch,
-                  style: AppTypography.h5.copyWith(
-                    color: AppColors.getTextThird(context),
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
+  Widget _buildSearchContent(BuildContext context, SearchState searchState, List<String> history,) {
+    switch (searchState.status) {
+      case SearchStatus.idle:
+        return SearchHistory(searchController: _searchController, searchFocusNode: _searchFocusNode,);
+      case SearchStatus.loading:
+        return _buildLoadingState(context);
+      case SearchStatus.success:
+        return SearchBody();
+      case SearchStatus.error:
+        return _buildErrorState(context, searchState.error);
+    }
+  }
 
-                             GestureDetector(
-                 onTap: () {
-                   setState(() {
-                     _previousSearches.removeAt(index);
-                   });
-                 },
-                child: SvgPicture.asset(
-                  ImageConstant.closeIcon,
-                  width: 12,
-                  height: 12,
-                  colorFilter: ColorFilter.mode(
-                    AppColors.getTextSecondary(context),
-                    BlendMode.srcIn,
-                  ),
-                ),
-              )
 
-            ],
-          );
+  Widget _buildLoadingState(BuildContext context) {
+    return LoadingCustom(
+      // loading custom widget
+      assetName: ImageConstant.loadingIcon,
+      size: 60,
+      color: AppColors.primary500,
+    );
+  }
 
-        },
+  Widget _buildErrorState(BuildContext context, String? error) {
+    return Center(
+      child: Text(
+        error ?? 'An unexpected error occurred. Please try again.',
+        style: AppTypography.h5.copyWith(
+          color: AppColors.getTextThird(context),
+          fontWeight: FontWeight.w700,
+        ),
+        textAlign: TextAlign.center,
       ),
     );
-  }
-
-  void _clearSearch() {
-    _searchController.clear();
-    _searchFocusNode.unfocus();
   }
 }

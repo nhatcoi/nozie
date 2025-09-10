@@ -4,7 +4,7 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 322 (161 per locale)
+/// Strings: 382 (191 per locale)
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -146,6 +146,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final Translations _root = this; // ignore: unused_field
 
 	// Translations
+	String get locale => 'en';
 	late final _TranslationsAppEn app = _TranslationsAppEn._(_root);
 	late final _TranslationsCommonEn common = _TranslationsCommonEn._(_root);
 	late final _TranslationsAuthEn auth = _TranslationsAuthEn._(_root);
@@ -154,7 +155,6 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final _TranslationsValidationEn validation = _TranslationsValidationEn._(_root);
 	late final _TranslationsNavigationEn navigation = _TranslationsNavigationEn._(_root);
 	late final _TranslationsSearchEn search = _TranslationsSearchEn._(_root);
-	late final _TranslationsNotificationEn notification = _TranslationsNotificationEn._(_root);
 	late final _TranslationsUtilsEn utils = _TranslationsUtilsEn._(_root);
 }
 
@@ -279,24 +279,10 @@ class _TranslationsSearchEn {
 	String get movies => 'Movies';
 	String get tvShows => 'TV Shows';
 	String get actors => 'Actors';
-}
-
-// Path: notification
-class _TranslationsNotificationEn {
-	_TranslationsNotificationEn._(this._root);
-
-	final Translations _root; // ignore: unused_field
-
-	// Translations
-	String get notifications => 'Notifications';
-	String get showRead => 'Show read notifications';
-	String get allMarkedAsRead => 'All notifications marked as read';
-	String get all => 'All';
-	String get movies => 'Movies';
-	String get promotions => 'Promotions';
-	String get updates => 'Updates';
-	String get noNotifications => 'No notifications';
-	String get youAreAllCaughtUp => 'You\'re all caught up!';
+	String get previousSearches => 'Previous Searches';
+	String get noResults => 'No results found';
+	String get showIn => 'Show in';
+	late final _TranslationsSearchFilterEn filter = _TranslationsSearchFilterEn._(_root);
 }
 
 // Path: utils
@@ -481,6 +467,24 @@ class _TranslationsValidationPasswordEn {
 	String get mismatch => 'Passwords do not match';
 }
 
+// Path: search.filter
+class _TranslationsSearchFilterEn {
+	_TranslationsSearchFilterEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get header => 'Filter';
+	String get reset => 'Reset';
+	String get apply => 'Apply';
+	late final _TranslationsSearchFilterSectionsEn sections = _TranslationsSearchFilterSectionsEn._(_root);
+	late final _TranslationsSearchFilterSortOptionsEn sortOptions = _TranslationsSearchFilterSortOptionsEn._(_root);
+	late final _TranslationsSearchFilterGenresEn genres = _TranslationsSearchFilterGenresEn._(_root);
+	late final _TranslationsSearchFilterRangePriceEn rangePrice = _TranslationsSearchFilterRangePriceEn._(_root);
+	late final _TranslationsSearchFilterLanguagesEn languages = _TranslationsSearchFilterLanguagesEn._(_root);
+	late final _TranslationsSearchFilterAgeEn age = _TranslationsSearchFilterAgeEn._(_root);
+}
+
 // Path: auth.loginScreen.placeholder
 class _TranslationsAuthLoginScreenPlaceholderEn {
 	_TranslationsAuthLoginScreenPlaceholderEn._(this._root);
@@ -587,6 +591,92 @@ class _TranslationsValidationGeneralCustomEn {
 	// Translations
 	String get password => 'The password must have characters, numbers.';
 	String get username => 'The username must only contain lowercase letters (a-z), numbers (0-9), hyphens (-), and underscores (_).';
+}
+
+// Path: search.filter.sections
+class _TranslationsSearchFilterSectionsEn {
+	_TranslationsSearchFilterSectionsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get sort => 'Sort';
+	String get price => 'Price';
+	String get rating => 'Rating';
+	String get genre => 'Genre';
+	String get language => 'Language';
+	String get age => 'Age';
+}
+
+// Path: search.filter.sortOptions
+class _TranslationsSearchFilterSortOptionsEn {
+	_TranslationsSearchFilterSortOptionsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get trending => 'Trending';
+	String get newReleases => 'New Releases';
+	String get highestRating => 'Highest Rating';
+	String get lowestRating => 'Lowest Rating';
+	String get highestPrice => 'Highest Price';
+	String get lowestPrice => 'Lowest Price';
+}
+
+// Path: search.filter.genres
+class _TranslationsSearchFilterGenresEn {
+	_TranslationsSearchFilterGenresEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get action => 'Action';
+	String get adventure => 'Adventure';
+	String get romance => 'Romance';
+	String get comics => 'Comics';
+	String get comedy => 'Comedy';
+	String get fantasy => 'Fantasy';
+	String get mystery => 'Mystery';
+	String get horror => 'Horror';
+	String get scienceFiction => 'Science Fiction';
+	String get thriller => 'Thriller';
+	String get travel => 'Travel';
+}
+
+// Path: search.filter.rangePrice
+class _TranslationsSearchFilterRangePriceEn {
+	_TranslationsSearchFilterRangePriceEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get min => '0';
+	String get max => '30';
+}
+
+// Path: search.filter.languages
+class _TranslationsSearchFilterLanguagesEn {
+	_TranslationsSearchFilterLanguagesEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get english => 'English';
+	String get vietnamese => 'Vietnamese';
+	String get others => 'Others';
+}
+
+// Path: search.filter.age
+class _TranslationsSearchFilterAgeEn {
+	_TranslationsSearchFilterAgeEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get under12 => 'Age 12 & Under';
+	String get above12 => '12+';
+	String get above16 => '16+';
+	String get above18 => '18+';
 }
 
 // Path: auth.register.steps.gender
@@ -805,6 +895,7 @@ class _TranslationsVi extends Translations {
 	@override late final _TranslationsVi _root = this; // ignore: unused_field
 
 	// Translations
+	@override String get locale => 'vi';
 	@override late final _TranslationsAppVi app = _TranslationsAppVi._(_root);
 	@override late final _TranslationsCommonVi common = _TranslationsCommonVi._(_root);
 	@override late final _TranslationsAuthVi auth = _TranslationsAuthVi._(_root);
@@ -813,7 +904,6 @@ class _TranslationsVi extends Translations {
 	@override late final _TranslationsValidationVi validation = _TranslationsValidationVi._(_root);
 	@override late final _TranslationsNavigationVi navigation = _TranslationsNavigationVi._(_root);
 	@override late final _TranslationsSearchVi search = _TranslationsSearchVi._(_root);
-	@override late final _TranslationsNotificationVi notification = _TranslationsNotificationVi._(_root);
 	@override late final _TranslationsUtilsVi utils = _TranslationsUtilsVi._(_root);
 }
 
@@ -938,24 +1028,10 @@ class _TranslationsSearchVi extends _TranslationsSearchEn {
 	@override String get movies => 'Phim';
 	@override String get tvShows => 'Chương trình TV';
 	@override String get actors => 'Diễn viên';
-}
-
-// Path: notification
-class _TranslationsNotificationVi extends _TranslationsNotificationEn {
-	_TranslationsNotificationVi._(_TranslationsVi root) : this._root = root, super._(root);
-
-	@override final _TranslationsVi _root; // ignore: unused_field
-
-	// Translations
-	@override String get notifications => 'Thông báo';
-	@override String get showRead => 'Hiển thị thông báo đã đọc';
-	@override String get allMarkedAsRead => 'Đã đánh dấu tất cả thông báo là đã đọc';
-	@override String get all => 'Tất cả';
-	@override String get movies => 'Phim';
-	@override String get promotions => 'Khuyến mãi';
-	@override String get updates => 'Cập nhật';
-	@override String get noNotifications => 'Không có thông báo';
-	@override String get youAreAllCaughtUp => 'Bạn đã cập nhật tất cả!';
+	@override String get previousSearches => 'Tìm kiếm trước';
+	@override String get noResults => 'Không tìm thấy kết quả';
+	@override String get showIn => 'Kết quả';
+	@override late final _TranslationsSearchFilterVi filter = _TranslationsSearchFilterVi._(_root);
 }
 
 // Path: utils
@@ -1140,6 +1216,24 @@ class _TranslationsValidationPasswordVi extends _TranslationsValidationPasswordE
 	@override String get mismatch => 'Mật khẩu không khớp';
 }
 
+// Path: search.filter
+class _TranslationsSearchFilterVi extends _TranslationsSearchFilterEn {
+	_TranslationsSearchFilterVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get header => 'Bộ lọc';
+	@override String get reset => 'Đặt lại';
+	@override String get apply => 'Áp dụng';
+	@override late final _TranslationsSearchFilterSectionsVi sections = _TranslationsSearchFilterSectionsVi._(_root);
+	@override late final _TranslationsSearchFilterSortOptionsVi sortOptions = _TranslationsSearchFilterSortOptionsVi._(_root);
+	@override late final _TranslationsSearchFilterGenresVi genres = _TranslationsSearchFilterGenresVi._(_root);
+	@override late final _TranslationsSearchFilterRangePriceVi rangePrice = _TranslationsSearchFilterRangePriceVi._(_root);
+	@override late final _TranslationsSearchFilterLanguagesVi languages = _TranslationsSearchFilterLanguagesVi._(_root);
+	@override late final _TranslationsSearchFilterAgeVi age = _TranslationsSearchFilterAgeVi._(_root);
+}
+
 // Path: auth.loginScreen.placeholder
 class _TranslationsAuthLoginScreenPlaceholderVi extends _TranslationsAuthLoginScreenPlaceholderEn {
 	_TranslationsAuthLoginScreenPlaceholderVi._(_TranslationsVi root) : this._root = root, super._(root);
@@ -1246,6 +1340,92 @@ class _TranslationsValidationGeneralCustomVi extends _TranslationsValidationGene
 	// Translations
 	@override String get password => 'Mật khẩu phải có ký tự, số.';
 	@override String get username => 'Tên người dùng chỉ được chứa chữ cái thường (a-z), số (0-9), dấu gạch ngang (-) và dấu gạch dưới (_).';
+}
+
+// Path: search.filter.sections
+class _TranslationsSearchFilterSectionsVi extends _TranslationsSearchFilterSectionsEn {
+	_TranslationsSearchFilterSectionsVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get sort => 'Sắp xếp';
+	@override String get price => 'Giá';
+	@override String get rating => 'Đánh giá';
+	@override String get genre => 'Thể loại';
+	@override String get language => 'Ngôn ngữ';
+	@override String get age => 'Độ tuổi';
+}
+
+// Path: search.filter.sortOptions
+class _TranslationsSearchFilterSortOptionsVi extends _TranslationsSearchFilterSortOptionsEn {
+	_TranslationsSearchFilterSortOptionsVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get trending => 'Xu hướng';
+	@override String get newReleases => 'Phát hành mới';
+	@override String get highestRating => 'Đánh giá cao nhất';
+	@override String get lowestRating => 'Đánh giá thấp nhất';
+	@override String get highestPrice => 'Giá cao nhất';
+	@override String get lowestPrice => 'Giá thấp nhất';
+}
+
+// Path: search.filter.genres
+class _TranslationsSearchFilterGenresVi extends _TranslationsSearchFilterGenresEn {
+	_TranslationsSearchFilterGenresVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get action => 'Hành động';
+	@override String get adventure => 'Phiêu lưu';
+	@override String get romance => 'Lãng mạn';
+	@override String get comics => 'Truyện tranh';
+	@override String get comedy => 'Hài';
+	@override String get fantasy => 'Giả tưởng';
+	@override String get mystery => 'Bí ẩn';
+	@override String get horror => 'Kinh dị';
+	@override String get scienceFiction => 'Khoa học viễn tưởng';
+	@override String get thriller => 'Giật gân';
+	@override String get travel => 'Du lịch';
+}
+
+// Path: search.filter.rangePrice
+class _TranslationsSearchFilterRangePriceVi extends _TranslationsSearchFilterRangePriceEn {
+	_TranslationsSearchFilterRangePriceVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get min => '0';
+	@override String get max => '500000';
+}
+
+// Path: search.filter.languages
+class _TranslationsSearchFilterLanguagesVi extends _TranslationsSearchFilterLanguagesEn {
+	_TranslationsSearchFilterLanguagesVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get english => 'Tiếng Anh';
+	@override String get vietnamese => 'Tiếng Việt';
+	@override String get others => 'Khác';
+}
+
+// Path: search.filter.age
+class _TranslationsSearchFilterAgeVi extends _TranslationsSearchFilterAgeEn {
+	_TranslationsSearchFilterAgeVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get under12 => 'Dưới 12 tuổi';
+	@override String get above12 => '12+';
+	@override String get above16 => '16+';
+	@override String get above18 => '18+';
 }
 
 // Path: auth.register.steps.gender
@@ -1444,6 +1624,7 @@ class _TranslationsAuthRegisterStepsProfileFieldsCountryVi extends _Translations
 extension on Translations {
 	dynamic _flatMapFunction(String path) {
 		switch (path) {
+			case 'locale': return 'en';
 			case 'app.title': return 'NoZie';
 			case 'common.skip': return 'Skip';
 			case 'common.continueText': return 'Continue';
@@ -1593,15 +1774,44 @@ extension on Translations {
 			case 'search.movies': return 'Movies';
 			case 'search.tvShows': return 'TV Shows';
 			case 'search.actors': return 'Actors';
-			case 'notification.notifications': return 'Notifications';
-			case 'notification.showRead': return 'Show read notifications';
-			case 'notification.allMarkedAsRead': return 'All notifications marked as read';
-			case 'notification.all': return 'All';
-			case 'notification.movies': return 'Movies';
-			case 'notification.promotions': return 'Promotions';
-			case 'notification.updates': return 'Updates';
-			case 'notification.noNotifications': return 'No notifications';
-			case 'notification.youAreAllCaughtUp': return 'You\'re all caught up!';
+			case 'search.previousSearches': return 'Previous Searches';
+			case 'search.noResults': return 'No results found';
+			case 'search.showIn': return 'Show in';
+			case 'search.filter.header': return 'Filter';
+			case 'search.filter.reset': return 'Reset';
+			case 'search.filter.apply': return 'Apply';
+			case 'search.filter.sections.sort': return 'Sort';
+			case 'search.filter.sections.price': return 'Price';
+			case 'search.filter.sections.rating': return 'Rating';
+			case 'search.filter.sections.genre': return 'Genre';
+			case 'search.filter.sections.language': return 'Language';
+			case 'search.filter.sections.age': return 'Age';
+			case 'search.filter.sortOptions.trending': return 'Trending';
+			case 'search.filter.sortOptions.newReleases': return 'New Releases';
+			case 'search.filter.sortOptions.highestRating': return 'Highest Rating';
+			case 'search.filter.sortOptions.lowestRating': return 'Lowest Rating';
+			case 'search.filter.sortOptions.highestPrice': return 'Highest Price';
+			case 'search.filter.sortOptions.lowestPrice': return 'Lowest Price';
+			case 'search.filter.genres.action': return 'Action';
+			case 'search.filter.genres.adventure': return 'Adventure';
+			case 'search.filter.genres.romance': return 'Romance';
+			case 'search.filter.genres.comics': return 'Comics';
+			case 'search.filter.genres.comedy': return 'Comedy';
+			case 'search.filter.genres.fantasy': return 'Fantasy';
+			case 'search.filter.genres.mystery': return 'Mystery';
+			case 'search.filter.genres.horror': return 'Horror';
+			case 'search.filter.genres.scienceFiction': return 'Science Fiction';
+			case 'search.filter.genres.thriller': return 'Thriller';
+			case 'search.filter.genres.travel': return 'Travel';
+			case 'search.filter.rangePrice.min': return '0';
+			case 'search.filter.rangePrice.max': return '30';
+			case 'search.filter.languages.english': return 'English';
+			case 'search.filter.languages.vietnamese': return 'Vietnamese';
+			case 'search.filter.languages.others': return 'Others';
+			case 'search.filter.age.under12': return 'Age 12 & Under';
+			case 'search.filter.age.above12': return '12+';
+			case 'search.filter.age.above16': return '16+';
+			case 'search.filter.age.above18': return '18+';
 			case 'utils.itemsCount': return '{count} items';
 			case 'utils.helloUser': return 'Hello, {name}!';
 			case 'utils.counterText': return '';
@@ -1613,6 +1823,7 @@ extension on Translations {
 extension on _TranslationsVi {
 	dynamic _flatMapFunction(String path) {
 		switch (path) {
+			case 'locale': return 'vi';
 			case 'app.title': return 'NoZie';
 			case 'common.skip': return 'Bỏ qua';
 			case 'common.continueText': return 'Tiếp tục';
@@ -1762,15 +1973,44 @@ extension on _TranslationsVi {
 			case 'search.movies': return 'Phim';
 			case 'search.tvShows': return 'Chương trình TV';
 			case 'search.actors': return 'Diễn viên';
-			case 'notification.notifications': return 'Thông báo';
-			case 'notification.showRead': return 'Hiển thị thông báo đã đọc';
-			case 'notification.allMarkedAsRead': return 'Đã đánh dấu tất cả thông báo là đã đọc';
-			case 'notification.all': return 'Tất cả';
-			case 'notification.movies': return 'Phim';
-			case 'notification.promotions': return 'Khuyến mãi';
-			case 'notification.updates': return 'Cập nhật';
-			case 'notification.noNotifications': return 'Không có thông báo';
-			case 'notification.youAreAllCaughtUp': return 'Bạn đã cập nhật tất cả!';
+			case 'search.previousSearches': return 'Tìm kiếm trước';
+			case 'search.noResults': return 'Không tìm thấy kết quả';
+			case 'search.showIn': return 'Kết quả';
+			case 'search.filter.header': return 'Bộ lọc';
+			case 'search.filter.reset': return 'Đặt lại';
+			case 'search.filter.apply': return 'Áp dụng';
+			case 'search.filter.sections.sort': return 'Sắp xếp';
+			case 'search.filter.sections.price': return 'Giá';
+			case 'search.filter.sections.rating': return 'Đánh giá';
+			case 'search.filter.sections.genre': return 'Thể loại';
+			case 'search.filter.sections.language': return 'Ngôn ngữ';
+			case 'search.filter.sections.age': return 'Độ tuổi';
+			case 'search.filter.sortOptions.trending': return 'Xu hướng';
+			case 'search.filter.sortOptions.newReleases': return 'Phát hành mới';
+			case 'search.filter.sortOptions.highestRating': return 'Đánh giá cao nhất';
+			case 'search.filter.sortOptions.lowestRating': return 'Đánh giá thấp nhất';
+			case 'search.filter.sortOptions.highestPrice': return 'Giá cao nhất';
+			case 'search.filter.sortOptions.lowestPrice': return 'Giá thấp nhất';
+			case 'search.filter.genres.action': return 'Hành động';
+			case 'search.filter.genres.adventure': return 'Phiêu lưu';
+			case 'search.filter.genres.romance': return 'Lãng mạn';
+			case 'search.filter.genres.comics': return 'Truyện tranh';
+			case 'search.filter.genres.comedy': return 'Hài';
+			case 'search.filter.genres.fantasy': return 'Giả tưởng';
+			case 'search.filter.genres.mystery': return 'Bí ẩn';
+			case 'search.filter.genres.horror': return 'Kinh dị';
+			case 'search.filter.genres.scienceFiction': return 'Khoa học viễn tưởng';
+			case 'search.filter.genres.thriller': return 'Giật gân';
+			case 'search.filter.genres.travel': return 'Du lịch';
+			case 'search.filter.rangePrice.min': return '0';
+			case 'search.filter.rangePrice.max': return '500000';
+			case 'search.filter.languages.english': return 'Tiếng Anh';
+			case 'search.filter.languages.vietnamese': return 'Tiếng Việt';
+			case 'search.filter.languages.others': return 'Khác';
+			case 'search.filter.age.under12': return 'Dưới 12 tuổi';
+			case 'search.filter.age.above12': return '12+';
+			case 'search.filter.age.above16': return '16+';
+			case 'search.filter.age.above18': return '18+';
 			case 'utils.itemsCount': return '{count, plural, =0{Không có mục} =1{1 mục} other{{count} mục}}';
 			case 'utils.helloUser': return 'Xin chào, {name}!';
 			case 'utils.counterText': return '';
