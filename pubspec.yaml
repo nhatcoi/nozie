@@ -99,6 +99,7 @@ flutter:
     - lib/assets/fonts/Urbanist/
     - lib/assets/images/
     - lib/assets/images/icons/
+    - lib/assets/images/icons/profile/
     - lib/assets/images/welcome/
 
   # An image asset can refer to one or more resolution-specific "variants", see
