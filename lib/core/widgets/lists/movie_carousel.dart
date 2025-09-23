@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:movie_fe/core/enums/movie_type.dart';
 
 import '../../models/movie_item.dart';
 import '../../theme/app_colors.dart';
@@ -13,6 +14,7 @@ class MovieCarousel extends StatelessWidget {
     this.visibleCards = 2.2,
     this.spacing = 16.0,
     this.onMore,
+    this.movieCarouselType = MovieCarouselType.normal,
   });
 
   /// Tiêu đề section
@@ -30,28 +32,28 @@ class MovieCarousel extends StatelessWidget {
   /// Callback khi bấm "Xem thêm"
   final VoidCallback? onMore;
 
-  static const double _aspectRatio = 180 / 276;
+  final MovieCarouselType movieCarouselType;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final hasTitle = title != null && title!.isNotEmpty;
-
+    final aspectRatio = switch (movieCarouselType) {
+      MovieCarouselType.minimal => 160 / 80,
+      MovieCarouselType.normal => 180 / 276,
+    };
     return LayoutBuilder(
       builder: (context, constraints) {
         final screenWidth = constraints.maxWidth;
         final cardWidth = _calculateCardWidth(screenWidth);
-        final totalHeight = _calculateTotalHeight(cardWidth);
+        final totalHeight = _calculateTotalHeight(cardWidth,aspectRatio);
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (hasTitle) ...[
-              _buildHeader(theme, cardWidth),
-              const Gap(10),
-            ],
-            _buildMovieList(cardWidth, totalHeight),
+            if (hasTitle) ...[_buildHeader(theme, cardWidth), const Gap(10)],
+            _buildMovieList(cardWidth, totalHeight, aspectRatio,movieCarouselType),
           ],
         );
       },
@@ -62,14 +64,18 @@ class MovieCarousel extends StatelessWidget {
     return (screenWidth - spacing * (visibleCards - 1)) / visibleCards;
   }
 
-  double _calculateTotalHeight(double cardWidth) {
-    final posterHeight = cardWidth / _aspectRatio;
+  double _calculateTotalHeight(double cardWidth,double aspectRatio) {
+    final posterHeight = cardWidth / aspectRatio;
     const titleGap = 8.0;
     const metaGap = 6.0;
     const approxTitle2Lines = 48.0; // ~2 lines body
     const approxMetaRow = 24.0; // ~1 line meta
 
-    return posterHeight + titleGap + approxTitle2Lines + metaGap + approxMetaRow;
+    return posterHeight +
+        titleGap +
+        approxTitle2Lines +
+        metaGap +
+        approxMetaRow;
   }
 
   Widget _buildHeader(ThemeData theme, double cardWidth) {
@@ -98,8 +104,13 @@ class MovieCarousel extends StatelessWidget {
     );
   }
 
-  Widget _buildMovieList(double cardWidth, double totalHeight) {
-    final posterHeight = cardWidth / _aspectRatio;
+  Widget _buildMovieList(
+    double cardWidth,
+    double totalHeight,
+    double aspectRatio,
+    MovieCarouselType type,
+  ) {
+    final posterHeight = cardWidth / aspectRatio;
 
     return SizedBox(
       height: totalHeight,
@@ -113,6 +124,7 @@ class MovieCarousel extends StatelessWidget {
             movie: movie,
             width: cardWidth,
             height: posterHeight,
+            movieCardType: type == MovieCarouselType.minimal ? MovieCardType.titleInImg : type == MovieCarouselType.normal ? MovieCardType.horizontal : MovieCardType.vertical,
           );
         },
       ),

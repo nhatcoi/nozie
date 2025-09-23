@@ -15,6 +15,16 @@ common:
   next: Tiếp theo
   back: Quay lại
   done: Hoàn thành
+  empty: Trống
+
+notification:
+  title: Thông báo
+  empty: Chưa có thông báo nào
+  markAllAsRead: Đánh dấu tất cả là đã đọc
+  newItem: Thông báo mới
+  seeAll: Xem tất cả
+  today: Hôm nay
+  dayAgo: Ngày trước
 
 # Authentication Module
 auth:
@@ -299,3 +309,6 @@ utils:
   itemsCount: "{count, plural, =0{Không có mục} =1{1 mục} other{{count} mục}}"
   helloUser: "Xin chào, {name}!"
   counterText: ""
+
+cards:
+  showIn: Hiển thị trong

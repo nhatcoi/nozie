@@ -149,6 +149,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get locale => 'en';
 	late final _TranslationsAppEn app = _TranslationsAppEn._(_root);
 	late final _TranslationsCommonEn common = _TranslationsCommonEn._(_root);
+	late final _TranslationsNotificationEn notification = _TranslationsNotificationEn._(_root);
 	late final _TranslationsAuthEn auth = _TranslationsAuthEn._(_root);
 	late final _TranslationsWelcomeEn welcome = _TranslationsWelcomeEn._(_root);
 	late final _TranslationsSettingsEn settings = _TranslationsSettingsEn._(_root);
@@ -156,6 +157,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final _TranslationsNavigationEn navigation = _TranslationsNavigationEn._(_root);
 	late final _TranslationsSearchEn search = _TranslationsSearchEn._(_root);
 	late final _TranslationsUtilsEn utils = _TranslationsUtilsEn._(_root);
+	late final _TranslationsCardsEn cards = _TranslationsCardsEn._(_root);
 }
 
 // Path: app
@@ -184,6 +186,23 @@ class _TranslationsCommonEn {
 	String get next => 'Next';
 	String get back => 'Back';
 	String get done => 'Done';
+	String get empty => 'Empty';
+}
+
+// Path: notification
+class _TranslationsNotificationEn {
+	_TranslationsNotificationEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Notifications';
+	String get empty => 'You don\'t have any notification at this time';
+	String get markAllAsRead => 'Mark all as read';
+	String get newItem => 'New notification';
+	String get seeAll => 'See all notifications';
+	String get today => 'Today';
+	String get dayAgo => 'Days ago';
 }
 
 // Path: auth
@@ -295,6 +314,16 @@ class _TranslationsUtilsEn {
 	String get itemsCount => '{count} items';
 	String get helloUser => 'Hello, {name}!';
 	String get counterText => '';
+}
+
+// Path: cards
+class _TranslationsCardsEn {
+	_TranslationsCardsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get showIn => 'Show in';
 }
 
 // Path: auth.loginScreen
@@ -898,6 +927,7 @@ class _TranslationsVi extends Translations {
 	@override String get locale => 'vi';
 	@override late final _TranslationsAppVi app = _TranslationsAppVi._(_root);
 	@override late final _TranslationsCommonVi common = _TranslationsCommonVi._(_root);
+	@override late final _TranslationsNotificationVi notification = _TranslationsNotificationVi._(_root);
 	@override late final _TranslationsAuthVi auth = _TranslationsAuthVi._(_root);
 	@override late final _TranslationsWelcomeVi welcome = _TranslationsWelcomeVi._(_root);
 	@override late final _TranslationsSettingsVi settings = _TranslationsSettingsVi._(_root);
@@ -905,6 +935,7 @@ class _TranslationsVi extends Translations {
 	@override late final _TranslationsNavigationVi navigation = _TranslationsNavigationVi._(_root);
 	@override late final _TranslationsSearchVi search = _TranslationsSearchVi._(_root);
 	@override late final _TranslationsUtilsVi utils = _TranslationsUtilsVi._(_root);
+	@override late final _TranslationsCardsVi cards = _TranslationsCardsVi._(_root);
 }
 
 // Path: app
@@ -933,6 +964,23 @@ class _TranslationsCommonVi extends _TranslationsCommonEn {
 	@override String get next => 'Tiếp theo';
 	@override String get back => 'Quay lại';
 	@override String get done => 'Hoàn thành';
+	@override String get empty => 'Trống';
+}
+
+// Path: notification
+class _TranslationsNotificationVi extends _TranslationsNotificationEn {
+	_TranslationsNotificationVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Thông báo';
+	@override String get empty => 'Chưa có thông báo nào';
+	@override String get markAllAsRead => 'Đánh dấu tất cả là đã đọc';
+	@override String get newItem => 'Thông báo mới';
+	@override String get seeAll => 'Xem tất cả';
+	@override String get today => 'Hôm nay';
+	@override String get dayAgo => 'Ngày trước';
 }
 
 // Path: auth
@@ -1044,6 +1092,16 @@ class _TranslationsUtilsVi extends _TranslationsUtilsEn {
 	@override String get itemsCount => '{count, plural, =0{Không có mục} =1{1 mục} other{{count} mục}}';
 	@override String get helloUser => 'Xin chào, {name}!';
 	@override String get counterText => '';
+}
+
+// Path: cards
+class _TranslationsCardsVi extends _TranslationsCardsEn {
+	_TranslationsCardsVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get showIn => 'Hiển thị trong';
 }
 
 // Path: auth.loginScreen
@@ -1635,6 +1693,14 @@ extension on Translations {
 			case 'common.next': return 'Next';
 			case 'common.back': return 'Back';
 			case 'common.done': return 'Done';
+			case 'common.empty': return 'Empty';
+			case 'notification.title': return 'Notifications';
+			case 'notification.empty': return 'You don\'t have any notification at this time';
+			case 'notification.markAllAsRead': return 'Mark all as read';
+			case 'notification.newItem': return 'New notification';
+			case 'notification.seeAll': return 'See all notifications';
+			case 'notification.today': return 'Today';
+			case 'notification.dayAgo': return 'Days ago';
 			case 'auth.login': return 'Login';
 			case 'auth.signIn': return 'Sign In';
 			case 'auth.signUp': return 'Sign Up';
@@ -1815,6 +1881,7 @@ extension on Translations {
 			case 'utils.itemsCount': return '{count} items';
 			case 'utils.helloUser': return 'Hello, {name}!';
 			case 'utils.counterText': return '';
+			case 'cards.showIn': return 'Show in';
 			default: return null;
 		}
 	}
@@ -1834,6 +1901,14 @@ extension on _TranslationsVi {
 			case 'common.next': return 'Tiếp theo';
 			case 'common.back': return 'Quay lại';
 			case 'common.done': return 'Hoàn thành';
+			case 'common.empty': return 'Trống';
+			case 'notification.title': return 'Thông báo';
+			case 'notification.empty': return 'Chưa có thông báo nào';
+			case 'notification.markAllAsRead': return 'Đánh dấu tất cả là đã đọc';
+			case 'notification.newItem': return 'Thông báo mới';
+			case 'notification.seeAll': return 'Xem tất cả';
+			case 'notification.today': return 'Hôm nay';
+			case 'notification.dayAgo': return 'Ngày trước';
 			case 'auth.login': return 'Đăng nhập';
 			case 'auth.signIn': return 'Đăng Nhập';
 			case 'auth.signUp': return 'Đăng ký';
@@ -2014,6 +2089,7 @@ extension on _TranslationsVi {
 			case 'utils.itemsCount': return '{count, plural, =0{Không có mục} =1{1 mục} other{{count} mục}}';
 			case 'utils.helloUser': return 'Xin chào, {name}!';
 			case 'utils.counterText': return '';
+			case 'cards.showIn': return 'Hiển thị trong';
 			default: return null;
 		}
 	}

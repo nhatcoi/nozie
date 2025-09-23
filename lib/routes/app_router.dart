@@ -5,7 +5,9 @@ import 'package:movie_fe/features/auth/forgot_password/presentation/forgot_passw
 import 'package:movie_fe/features/auth/forgot_password/presentation/forgot_password_otp_screen.dart';
 import 'package:movie_fe/features/auth/forgot_password/presentation/forgot_password_screen.dart';
 import 'package:movie_fe/features/auth/login/presentation/login_screen.dart';
-import 'package:movie_fe/features/profile/presentation/profile_screen.dart';
+import 'package:movie_fe/features/genre/presentation/screens/explore_genre.dart';
+import 'package:movie_fe/features/genre/presentation/screens/explore_genre_details.dart';
+import 'package:movie_fe/features/notification/presentation/notification_screen.dart';
 import 'package:movie_fe/features/wishlist/presentation/wishlist_screen.dart';
 import '../features/auth/register/presentation/screen/signup_flow_screen.dart';
 import '../features/home/presentation/screens/home_screen.dart';
@@ -33,6 +35,8 @@ class AppRouter {
   static const String resetPassword = '/reset-password';
   static const String search = '/search';
   static const String notification = '/notification';
+  static const String explore = '/explore';
+  static const String movieCarouselGenre = '/movie-carousel-genre/';
 
   static final GoRouter router = GoRouter(
     initialLocation: welcome,
@@ -61,8 +65,26 @@ class AppRouter {
         },
       ),
       GoRoute(
+        path: '${movieCarouselGenre}:id',
+        builder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return ExploreGenreDetails(query: id ?? '');
+        },
+      ),
+      GoRoute(
+        path: '$explore/:name',
+        builder: (context, state) {
+          final genreName = state.pathParameters['name']!;
+          return ExploreGenre(query: genreName ?? '');
+        },
+      ),
+      GoRoute(
         path: resetPassword,
         builder: (context, state) => const ForgotPasswordNewPassScreen(),
+      ),
+      GoRoute(
+        path: notification,
+        builder: (context, state) => const NotificationScreen(),
       ),
       GoRoute(
         path: search,

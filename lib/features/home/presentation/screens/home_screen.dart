@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:movie_fe/core/app_export.dart';
+import 'package:movie_fe/core/enums/movie_type.dart';
 import 'package:movie_fe/core/models/movie_item.dart';
 import 'package:movie_fe/core/widgets/cards/movie_card.dart';
 import 'package:movie_fe/core/widgets/lists/movie_carousel.dart';
+import 'package:movie_fe/routes/app_router.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -32,9 +35,23 @@ class HomeScreen extends ConsumerWidget {
                 id: '123',
               ),
             ),
-            onMore: () {
+            onMore: () {},
+          ),
 
+          MovieCarousel(
+            title: "Explore by Genre",
+            items: List<MovieItem>.generate(
+              10,
+                  (index) => MovieItem(
+                title: "Movie $index",
+                imageUrl: ImageConstant.imgCard,
+                id: '123',
+              ),
+            ),
+            onMore: () {
+              context.push('${AppRouter.explore}/genre');
             },
+            movieCarouselType: MovieCarouselType.minimal,
           ),
         ],
       ),

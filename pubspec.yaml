@@ -57,6 +57,7 @@ dependencies:
   # add equatable
   equatable: ^2.0.7
   gap: ^3.0.1
+  intl: ^0.20.2
 
 
 dev_dependencies:
@@ -107,6 +108,7 @@ flutter:
     - lib/assets/images/icons/navigation/
     - lib/assets/images/icons/common/
     - lib/assets/images/icons/action/
+    - lib/assets/images/notifications/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

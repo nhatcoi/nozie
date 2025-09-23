@@ -11,6 +11,7 @@ class ImageConstant {
   static const String subPathIconNavigation = '${subPathIcon}navigation/';
   static const String subPathIconCommon = '${subPathIcon}common/';
   static const String subPathIconAction = '${subPathIcon}action/';
+  static const String subPathNotification = '${_basePath}notifications/';
 
   // Auth Icons
   static const String imgGoogleIcon = '${subPathIconAuth}icon_google.svg';
@@ -32,6 +33,16 @@ class ImageConstant {
   static const String scheduleIcon = '${subPathIconCommon}schedule.svg';
   static const String groupIcon = '${subPathIconCommon}Group.svg';
 
+  // Notifications
+  static const String notificationFrame = '${subPathNotification}frame.svg';
+  static const String notificationFrameDark = '${subPathNotification}frame_dark.svg';
+  static const String notificationInfo = '${subPathNotification}info.svg';
+  static const String notificationFeature = '${subPathNotification}feature.svg';
+  static const String notificationCredit = '${subPathNotification}credit.svg';
+  static const String notificationUser = '${subPathNotification}user.svg';
+  static const String notificationStorage = '${subPathNotification}storage.svg';
+  static const String notificationPurple = '${subPathNotification}tick_purple.svg';
+
   // Action Icons
   static const String arrowIcon = '${subPathIconAction}arrow.svg';
   static const String dropdownIcon = '${subPathIconAction}dropdown.svg';
@@ -40,7 +51,10 @@ class ImageConstant {
   static const String moreCircleIcon = '${subPathIconAction}more_circle.svg';
   static const String searchIcon = '${subPathIconAction}search.svg';
   static const String bellIcon = '${subPathIconAction}bell.svg';
-
+  static const String categoryIcon = '${subPathIconAction}Category.svg';
+  static const String categoryActiveIcon = '${subPathIconAction}CategoryActive.svg';
+  static const String listCategoryIcon = '${subPathIconAction}ListCate.svg';
+  static const String listCategoryActiveIcon = '${subPathIconAction}ListCateActive.svg';
 
   // Common Images
   static const String imgImageNotFound = '${subPathCommon}placeholder.png';

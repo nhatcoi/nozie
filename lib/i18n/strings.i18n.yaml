@@ -15,6 +15,17 @@ common:
   next: Next
   back: Back
   done: Done
+  empty: Empty
+
+notification:
+  title: Notifications
+  empty: You don't have any notification at this time
+  markAllAsRead: Mark all as read
+  newItem: New notification
+  seeAll: See all notifications
+  today: Today
+  dayAgo: Days ago
+
 
 # Authentication Module
 auth:
@@ -297,3 +308,6 @@ utils:
   itemsCount: "{count} items"
   helloUser: "Hello, {name}!"
   counterText: ""
+
+cards:
+  showIn: Show in

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:movie_fe/core/enums/movie_type.dart';
 
 import '../../models/movie_item.dart';
 import '../../theme/app_colors.dart';
@@ -12,11 +13,20 @@ class MovieCard extends StatelessWidget {
     required this.movie,
     this.width = 180,
     this.height = 276,
+    this.movieCardType = MovieCardType.horizontal,
+    this.onMore,
+    this.genres
   });
 
   final MovieItem movie;
   final double width;
   final double height;
+
+  final MovieCardType movieCardType;
+
+  final List<String>? genres;
+
+  final VoidCallback? onMore;
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +34,69 @@ class MovieCard extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
     final scale = width / 180;
 
-    return SizedBox(
-      width: width,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildPosterImage(),
-          const Gap(8),
-          _buildTitle(theme, scale),
-          const Gap(6),
-          _buildMetadata(theme, isDark, scale),
-        ],
+    return GestureDetector(
+      onTap: onMore,
+      child: SizedBox(
+        width: width,
+        child: movieCardType == MovieCardType.vertical
+            ? Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildPosterImage(),
+                  const Gap(12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildTitle(theme, scale),
+                        if (movie.price != null && movie.rating != null) ...[
+                          const Gap(12),
+                          _buildMetadata(theme, isDark, scale, type: movieCardType),
+                          const Gap(12),
+
+                          genres != null ? Row(
+                            spacing: 12,
+                            children: genres!.map((g) => Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: isDark ? AppColors.greyscale800 : AppColors.greyscale200,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Text(g),
+                            )).toList(),
+                          ) : Container(),
+                        ],
+                      ],
+                    ),
+                  ),
+                ],
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (movieCardType != MovieCardType.titleInImg) ...[
+                    _buildPosterImage(),
+                    const Gap(8),
+                    _buildTitle(theme, scale),
+                  ] else ...[
+                    Stack(
+                      children: [
+                        _buildPosterImage(),
+                        Positioned(
+                          bottom: 0,
+                          left: 5,
+                          child: _buildTitle2(scale),
+                        ),
+                      ],
+                    ),
+                  ],
+                  if (movie.price != null && movie.rating != null) ...[
+                    const Gap(6),
+                    _buildMetadata(theme, isDark, scale),
+                  ],
+                ],
+              ),
       ),
     );
   }
@@ -63,14 +125,34 @@ class MovieCard extends StatelessWidget {
     );
   }
 
-  Widget _buildMetadata(ThemeData theme, bool isDark, double scale) {
+  Widget _buildTitle2(double scale) {
+    return Text(
+      movie.title,
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.w700,
+        fontSize: 18 * scale,
+      ),
+    );
+  }
+
+  Widget _buildMetadata(ThemeData theme, bool isDark, double scale, { MovieCardType type = MovieCardType.horizontal}) {
     final textStyle = theme.textTheme.bodyLarge?.copyWith(
       fontWeight: FontWeight.w600,
       fontSize: 18 * scale,
       color: isDark ? AppColors.greyscale300 : AppColors.greyscale700,
     );
 
-    return Row(
+    return type == MovieCardType.horizontal ? Row(
+      children: [
+        _buildRating(textStyle, scale),
+        const Gap(12),
+        _buildPrice(textStyle),
+      ],
+    ) : Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildRating(textStyle, scale),
         const Gap(12),
@@ -88,18 +170,12 @@ class MovieCard extends StatelessWidget {
           height: 16 * scale,
         ),
         const Gap(6),
-        Text(
-          movie.rating.toString(),
-          style: textStyle,
-        ),
+        Text(movie.rating.toString(), style: textStyle),
       ],
     );
   }
 
   Widget _buildPrice(TextStyle? textStyle) {
-    return Text(
-      '\$${movie.price.toStringAsFixed(2)}',
-      style: textStyle,
-    );
+    return Text('\$${movie.price?.toStringAsFixed(2)}', style: textStyle);
   }
 }
