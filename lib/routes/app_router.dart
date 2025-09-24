@@ -8,6 +8,7 @@ import 'package:movie_fe/features/auth/login/presentation/login_screen.dart';
 import 'package:movie_fe/features/genre/presentation/screens/explore_genre.dart';
 import 'package:movie_fe/features/genre/presentation/screens/explore_genre_details.dart';
 import 'package:movie_fe/features/notification/presentation/notification_screen.dart';
+import 'package:movie_fe/features/profile/presentation/profile_screen.dart';
 import 'package:movie_fe/features/wishlist/presentation/wishlist_screen.dart';
 import '../features/auth/register/presentation/screen/signup_flow_screen.dart';
 import '../features/home/presentation/screens/home_screen.dart';

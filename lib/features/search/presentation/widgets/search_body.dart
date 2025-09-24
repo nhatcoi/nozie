@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:movie_fe/core/app_export.dart';
+import 'package:movie_fe/core/widgets/loading.dart';
 import '../../application/search_state_notifier.dart';
 import '../../entities/search_result.dart';
 

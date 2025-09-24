@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_fe/core/widgets/lined_text_divider.dart';
 import '../theme/app_colors.dart';
-import '../theme/app_typography.dart';
 
 class AutoLayout extends StatelessWidget {
   final String? title;

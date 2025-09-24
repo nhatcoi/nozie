@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movie_fe/core/app_export.dart';
+import 'package:movie_fe/core/widgets/loading.dart';
 import 'package:movie_fe/features/search/application/search_history_notifier.dart';
 import 'package:movie_fe/features/search/application/search_state_notifier.dart';
 import 'package:movie_fe/features/search/presentation/widgets/search_header.dart';

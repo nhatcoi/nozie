@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../theme/app_colors.dart';
-import '../../theme/app_typography.dart';
-
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:movie_fe/core/theme/app_colors.dart';
+import 'package:movie_fe/core/theme/app_typography.dart';
+import 'package:movie_fe/core/utils/image_constant.dart';
 class RadioBox extends StatelessWidget {
   final String title;
   final String value;
@@ -28,6 +29,7 @@ class RadioBox extends StatelessWidget {
   final Color? innerDotColor;
   final Duration animationDuration;
   final Curve animationCurve;
+  final double? iconSpacing;
 
   const RadioBox({
     super.key,
@@ -56,18 +58,18 @@ class RadioBox extends StatelessWidget {
     this.innerDotColor,
     this.animationDuration = const Duration(milliseconds: 300),
     this.animationCurve = Curves.easeInOut,
+    this.iconSpacing,
   });
 
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    
-    // Theme-aware default colors
+
     final defaultBorderColor = AppColors.primary500;
     final defaultSelectedBorderColor = AppColors.primary500;
     final defaultRadioBackgroundColor = isDarkMode ? AppColors.dark2 : AppColors.white;
     final defaultTextColor = isDarkMode ? AppColors.white : AppColors.greyscale900;
-    
+
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
@@ -88,42 +90,44 @@ class RadioBox extends StatelessWidget {
         ),
         child: Row(
           children: [
-            // Radio button visual
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeInOut,
+
+            SizedBox(
               width: radioSize,
               height: radioSize,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: isSelected
-                      ? (selectedRadioBorderColor ?? defaultSelectedBorderColor)
-                      : (radioBorderColor ?? defaultBorderColor),
-                  width: radioBorderWidth,
-                ),
-                color: defaultRadioBackgroundColor,
-              ),
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 200),
-                child: isSelected
-                    ? Center(
-                  key: const ValueKey('selected'),
-                  child: AnimatedContainer(
+              child: Stack(
+                children: [
+                  // nhấn
+                  AnimatedOpacity(
+                    opacity: isSelected ? 0.0 : 1.0,
                     duration: const Duration(milliseconds: 200),
-                    curve: Curves.easeInOut,
-                    width: innerDotSize,
-                    height: innerDotSize,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: innerDotColor ?? AppColors.primary500,
+                    child: SvgPicture.asset(
+                      ImageConstant.radioUnIcon,
+                      width: radioSize,
+                      height: radioSize,
+                      colorFilter: ColorFilter.mode(
+                        radioBorderColor ?? defaultBorderColor,
+                        BlendMode.srcIn,
+                      ),
                     ),
                   ),
-                )
-                    : const SizedBox.shrink(key: ValueKey('unselected')),
+
+                  AnimatedOpacity( // icon
+                    opacity: isSelected ? 1.0 : 0.0,
+                    duration: const Duration(milliseconds: 200),
+                    child: SvgPicture.asset(
+                      ImageConstant.radioIcon,
+                      width: radioSize,
+                      height: radioSize,
+                      colorFilter: ColorFilter.mode(
+                        selectedRadioBorderColor ?? defaultSelectedBorderColor,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: iconSpacing ?? 16),
 
             // Title
             Expanded(

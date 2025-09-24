@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movie_fe/core/app_export.dart';
+import 'package:movie_fe/core/widgets/layout/lined_text_divider.dart';
 import '../../application/search_history_notifier.dart';
 import '../../application/search_state_notifier.dart';
 
