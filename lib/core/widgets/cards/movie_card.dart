@@ -40,63 +40,65 @@ class MovieCard extends StatelessWidget {
         width: width,
         child: movieCardType == MovieCardType.vertical
             ? Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildPosterImage(),
+            const Gap(12),
+            Expanded(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildPosterImage(),
-                  const Gap(12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _buildTitle(theme, scale),
-                        if (movie.price != null && movie.rating != null) ...[
-                          const Gap(12),
-                          _buildMetadata(theme, isDark, scale, type: movieCardType),
-                          const Gap(12),
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
-                          genres != null ? Row(
-                            spacing: 12,
-                            children: genres!.map((g) => Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                              decoration: BoxDecoration(
-                                color: isDark ? AppColors.greyscale800 : AppColors.greyscale200,
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: Text(g),
-                            )).toList(),
-                          ) : Container(),
-                        ],
-                      ],
-                    ),
-                  ),
-                ],
-              )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (movieCardType != MovieCardType.titleInImg) ...[
-                    _buildPosterImage(),
-                    const Gap(8),
-                    _buildTitle(theme, scale),
-                  ] else ...[
-                    Stack(
-                      children: [
-                        _buildPosterImage(),
-                        Positioned(
-                          bottom: 0,
-                          left: 5,
-                          child: _buildTitle2(scale),
-                        ),
-                      ],
-                    ),
-                  ],
+                  _buildTitle(theme, scale),
                   if (movie.price != null && movie.rating != null) ...[
-                    const Gap(6),
-                    _buildMetadata(theme, isDark, scale),
+                    const Gap(12),
+                    _buildMetadata(theme, isDark, scale, type: movieCardType),
+                    const Gap(12),
+
+                    genres != null ? Row(
+                      spacing: 12,
+                      children: genres!.map((g) => Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: isDark ? AppColors.greyscale800 : AppColors.greyscale200,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(g),
+                      )).toList(),
+                    ) : Container(),
                   ],
                 ],
               ),
+            ),
+          ],
+        )
+            : Column(
+
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (movieCardType != MovieCardType.titleInImg) ...[
+              _buildPosterImage(),
+              const Gap(8),
+              _buildTitle(theme, scale),
+            ] else ...[
+              Stack(
+                children: [
+                  _buildPosterImage(),
+                  Positioned(
+                    bottom: 0,
+                    left: 5,
+                    child: _buildTitle2(scale),
+                  ),
+                ],
+              ),
+            ],
+            if (movie.price != null && movie.rating != null) ...[
+              const Gap(6),
+              _buildMetadata(theme, isDark, scale),
+            ],
+          ],
+        ),
       ),
     );
   }
