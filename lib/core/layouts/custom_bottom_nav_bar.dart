@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../constants/app_padding.dart';
 import '../utils/image_constant.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_typography.dart';
+import '../extension/responsive_extensions.dart';
 import 'topbar_provider.dart';
 import '../../i18n/translations.g.dart';
 
@@ -21,7 +23,7 @@ class CustomBottomNavBar extends ConsumerWidget {
     final topBarNotifier = ref.read(topBarProvider.notifier);
     
     return Container(
-      padding: const EdgeInsets.fromLTRB(21, 8, 21, 0),
+      padding: ResponsivePadding.bottomBar(context),
       decoration: BoxDecoration(
         color: AppColors.getBackground(context),
       ),
@@ -69,11 +71,11 @@ class CustomBottomNavBar extends ConsumerWidget {
 
   Widget _buildNavIcon(BuildContext context, String iconPath, bool isSelected) {
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: ResponsivePadding.icon(context),
       child: SvgPicture.asset(
         iconPath,
-        width: 22,
-        height: 22,
+        width: context.responsiveWidth(5.9), // ~22px trên màn hình 375px
+        height: context.responsiveWidth(5.9),
         colorFilter: ColorFilter.mode(
           isSelected 
               ? AppColors.primary500 

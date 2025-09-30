@@ -18,8 +18,8 @@ class HomeScreen extends ConsumerWidget {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+    return ContentWrappers.page(
+      context,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

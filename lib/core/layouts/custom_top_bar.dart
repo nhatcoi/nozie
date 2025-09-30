@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:movie_fe/core/app_export.dart';
 import '../utils/image_constant.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_typography.dart';
@@ -28,8 +29,8 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
       actionsIconTheme: const IconThemeData(
         size: 24,
       ),
-      // Tăng padding right cho actions
-      actionsPadding: const EdgeInsets.only(right: 24),
+      // Sử dụng padding đồng bộ cho actions
+      actionsPadding: ResponsivePadding.horizontal(context),
     );
   }
 
@@ -37,12 +38,12 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SvgPicture.asset(
-          ImageConstant.logoIcon,
-          width: 100,
-          height: 100,
-        ),
-        const SizedBox(width: 8),
+        // SvgPicture.asset(
+        //   ImageConstant.logoIcon,
+        //   width: 100,
+        //   height: 100,
+        // ),
+        SizedBox(width: context.responsiveWidth(2)), // Responsive spacing
         Text(
           title,
           style: AppTypography.h5.copyWith(
@@ -57,12 +58,12 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
   List<Widget> _buildActions(BuildContext context) {
     return actions ?? [
       Container(
-        margin: const EdgeInsets.all(8),
+        margin: ResponsivePadding.elementSpacing(context),
         child: IconButton(
           icon: SvgPicture.asset(
             ImageConstant.searchIcon,
-            width: 20,
-            height: 20,
+            width: context.responsiveWidth(5.3), // ~20px trên màn hình 375px
+            height: context.responsiveWidth(5.3),
             colorFilter: ColorFilter.mode(
               AppColors.getText(context),
               BlendMode.srcIn,
@@ -73,9 +74,7 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
           },
         ),
       ),
-      const SizedBox(width: 8),
-      // Thêm padding right bổ sung
-      const SizedBox(width: 8),
+      SizedBox(width: context.responsiveWidth(2.1)), // Responsive spacing
     ];
   }
 

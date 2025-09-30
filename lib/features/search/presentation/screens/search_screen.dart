@@ -51,18 +51,15 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.getBackground(context),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            children: [
-              _buildSearchHeader(context, searchState),
+      body: ContentWrapper.standard(
+        child: Column(
+          children: [
+            _buildSearchHeader(context, searchState),
 
-              const SizedBox(height: 24),
+            SizedBox(height: context.responsiveHeight(3.0)), // Responsive spacing
 
-              Expanded(child: _buildSearchContent(context, searchState, history),),
-            ],
-          ),
+            Expanded(child: _buildSearchContent(context, searchState, history),),
+          ],
         ),
       ),
     );

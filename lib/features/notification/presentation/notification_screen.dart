@@ -32,8 +32,7 @@ class NotificationScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 24,horizontal: 16),
+      body: ContentWrapper(
         child: isHaveNoti ? Padding(
           padding: EdgeInsets.symmetric(vertical: 140),
           child: Align(
