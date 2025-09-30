@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:movie_fe/core/app_export.dart';
 import 'package:movie_fe/core/models/movie_item.dart';
-import 'package:movie_fe/core/widgets/lists/grid_movie.dart';
+import 'package:movie_fe/core/widgets/cards/movie_card.dart';
 import 'package:movie_fe/core/widgets/lists/list_title_movie.dart';
 
 enum ViewMode { grid, list }
@@ -61,15 +61,27 @@ class ExploreGenreDetails extends ConsumerWidget {
               const Gap(24),
               ref.read(viewModeProvider.notifier).state == ViewMode.grid
                   ? Expanded(
-                      child: GridMovie(
-                        movies: List.generate(
-                          20,
-                          (index) => MovieItem(
-                            id: '1',
-                            title: '123',
-                            imageUrl: ImageConstant.imgCard,
-                          ),
+                      child: GridView.builder(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                          // Account for poster (276) + title area (~48) + gap (8)
+                          childAspectRatio: 180 / 350,
                         ),
+                        itemCount: 20,
+                        itemBuilder: (context, index) {
+                          final movie = MovieItem(
+                            id: 'movie_$index',
+                            title: 'Movie $index',
+                            imageUrl: ImageConstant.imgCard,
+                            rating: 4.3,
+                            price: 5.5,
+                          );
+                          return MovieCard(
+                              movie: movie
+                          );
+                        },
                       ),
                     )
                   : Expanded(
