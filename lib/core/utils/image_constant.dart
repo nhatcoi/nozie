@@ -80,6 +80,7 @@ class ImageConstant {
   // profile icons
   static const String subPathProfileIcon = '${_basePath}icons/profile/';
   static const String logoutIcon = '${subPathProfileIcon}logout.svg';
+  static const String walletColorIcon   = '${subPathProfileIcon}wallet.svg';
   static const String arrowRightIcon     = '${subPathProfileIcon}arrow_right.svg';
   static const String categoryColorIcon  = '${subPathProfileIcon}category_color.svg';
   static const String documentColorIcon  = '${subPathProfileIcon}document_color.svg';
@@ -90,6 +91,16 @@ class ImageConstant {
   static const String profileColorIcon   = '${subPathProfileIcon}profile_color.svg';
   static const String ringColorIcon      = '${subPathProfileIcon}ring_color.svg';
   static const String settingColorIcon   = '${subPathProfileIcon}setting_color.svg';
+
+  // payment icons
+  static const String subPathPaymentIcon = '${_basePath}icons/payment/';
+  static const String paypalIcon = '${subPathPaymentIcon}paypal.svg';
+  static const String googlePayIcon = '${subPathPaymentIcon}google.svg';
+  static const String appleIcon = '${subPathPaymentIcon}apple.svg';
+  static const String visaIcon = '${subPathPaymentIcon}visa.svg';
+  static const String americanExpressIcon = '${subPathPaymentIcon}american_express.svg';
+  static const String mastercardIcon = '${subPathPaymentIcon}mastercard.svg';
+
 
 
 }

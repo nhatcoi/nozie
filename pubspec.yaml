@@ -108,6 +108,8 @@ flutter:
     - lib/assets/images/icons/navigation/
     - lib/assets/images/icons/common/
     - lib/assets/images/icons/action/
+    - lib/assets/images/icons/profile/
+    - lib/assets/images/icons/payment/
     - lib/assets/images/notifications/
 
   # An image asset can refer to one or more resolution-specific "variants", see

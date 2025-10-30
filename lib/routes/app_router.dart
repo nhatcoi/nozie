@@ -20,6 +20,7 @@ import '../core/services/locale_setting.dart';
 import '../core/utils/no_transition_page.dart';
 import '../features/welcome/welcome_screen.dart';
 import '../features/search/presentation/screens/search_screen.dart';
+import '../features/profile/presentation/payment_screen.dart';
 
 class AppRouter {
   static const String welcome = '/';
@@ -36,6 +37,7 @@ class AppRouter {
   static const String resetPassword = '/reset-password';
   static const String search = '/search';
   static const String notification = '/notification';
+  static const String paymentMethods = '/payment-methods';
   static const String explore = '/explore';
   static const String movieCarouselGenre = '/movie-carousel-genre/';
 
@@ -88,6 +90,10 @@ class AppRouter {
         builder: (context, state) => const NotificationScreen(),
       ),
       GoRoute(
+        path: paymentMethods,
+        builder: (context, state) => const PaymentScreen(),
+      ),
+      GoRoute(
         path: search,
         builder: (context, state) => const SearchScreen(),
       ),
@@ -100,25 +106,25 @@ class AppRouter {
         routes: [
           GoRoute(
             path: home,
-            pageBuilder: (context, state) => CustomNoTransitionPage( // bỏ hiệu ứng
+            pageBuilder: (context, state) => TransitionPage(
               child: const HomeScreen(),
             ),
           ),
           GoRoute(
             path: discover,
-            pageBuilder: (context, state) => CustomNoTransitionPage(
+            pageBuilder: (context, state) => TransitionPage(
               child: const DiscoverScreen(),
             ),
           ),
           GoRoute(
             path: wishlist,
-            pageBuilder: (context, state) => CustomNoTransitionPage(
+            pageBuilder: (context, state) => TransitionPage(
               child: const WishlistScreen(),
             ),
           ),
           GoRoute(
             path: purchase,
-            pageBuilder: (context, state) => CustomNoTransitionPage(
+            pageBuilder: (context, state) => TransitionPage(
               child: Consumer(
                 builder: (context, ref, child) {
                   final currentLocale = ref.watch(localeControllerProvider);
@@ -134,7 +140,7 @@ class AppRouter {
           ),
           GoRoute(
             path: profile,
-            pageBuilder: (context, state) => CustomNoTransitionPage(
+            pageBuilder: (context, state) => TransitionPage(
               child: ProfileScreen(),
             ),
           ),
