@@ -1,16 +1,102 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:movie_fe/core/app_export.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+
+import 'package:movie_fe/core/app_export.dart';
+import 'package:movie_fe/features/profile/notifiers/auth_user_provider.dart';
+import 'package:movie_fe/features/profile/notifiers/language_notifier.dart';
 import 'package:movie_fe/routes/app_router.dart';
 
-
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userState = ref.watch(authUserProvider);
+    final languageState = ref.watch(languageNotifierProvider);
+
+    Widget buildHeader() {
+      return userState.when(
+        data: (profile) => Row(
+          children: [
+            CircleAvatar(
+              radius: 20,
+              backgroundImage: profile.avatarUrl.isNotEmpty
+                  ? NetworkImage(profile.avatarUrl) as ImageProvider
+                  : const AssetImage(ImageConstant.imgAvatar),
+            ),
+            const SizedBox(width: 20),
+            Expanded(
+              child: ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(
+                  profile.fullName.isNotEmpty ? profile.fullName : 'NoZie User',
+                  style: TextStyle(
+                    color: AppColors.getText(context),
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                subtitle: Text(
+                  profile.email,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: AppColors.getTextSecondary(context),
+                      ),
+                ),
+              ),
+            ),
+            IconButton(
+              onPressed: () => context.push(AppRouter.personalInfo),
+              icon: SvgPicture.asset(
+                ImageConstant.editIcon,
+                width: 14,
+                height: 14,
+                colorFilter: ColorFilter.mode(
+                  AppColors.getText(context),
+                  BlendMode.srcIn,
+                ),
+              ),
+            ),
+          ],
+        ),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, _) => Row(
+          children: [
+            const CircleAvatar(
+              radius: 20,
+              backgroundImage: AssetImage(ImageConstant.imgAvatar),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                'Unable to load profile',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: AppColors.getText(context),
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    final languageDisplay = languageState.when(
+      data: (value) {
+        final label = value.selected;
+        return Languages.suggested
+            .followedBy(Languages.others)
+            .firstWhere(
+              (item) => item.value == label,
+              orElse: () => const DropdownItem(value: 'en_us', label: 'English (US)'),
+            )
+            .label;
+      },
+      loading: () => 'Loading…',
+      error: (_, __) => 'English (US)',
+    );
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Padding(
@@ -18,53 +104,10 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
-            Row(
-              children: [
-
-                const CircleAvatar(
-                  radius: 20,
-                  backgroundImage: AssetImage(ImageConstant.imgAvatar),
-                ),
-
-                const SizedBox(width: 20),
-
-                Expanded(
-                  child: ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(
-                      'John Doe',
-                      style: TextStyle(
-                        color: AppColors.getText(context),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    subtitle: Text(
-                      '@gmail.com'
-                    ),
-                  ),
-                ),
-
-                IconButton(
-                  onPressed: () {
-
-                  },
-                  icon: SvgPicture.asset(
-                    ImageConstant.editIcon,
-                    width: 14,
-                    height: 14,
-                    colorFilter: ColorFilter.mode(
-                      AppColors.getText(context),
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            buildHeader(),
 
             _Divider(),
-            
+
             _SettingItem(
               lightBackgroundColor: const Color(0xFFE7F8EF),
               iconAsset: ImageConstant.walletColorIcon,
@@ -78,25 +121,25 @@ class ProfileScreen extends StatelessWidget {
               lightBackgroundColor: const Color(0xFFE9F0FF),
               iconAsset: ImageConstant.profileColorIcon,
               title: 'Personal Info',
-              onTap: () {},
+              onTap: () => context.push(AppRouter.personalInfo),
             ),
             _SettingItem(
               lightBackgroundColor: const Color(0xFFFFEFEF),
               iconAsset: ImageConstant.ringColorIcon,
               title: 'Notification',
-              onTap: () {},
+              onTap: () => context.push(AppRouter.notificationSettings),
             ),
             _SettingItem(
               lightBackgroundColor: const Color(0xFFF3EEFF),
               iconAsset: ImageConstant.settingColorIcon,
               title: 'Preferences',
-              onTap: () {},
+              onTap: () => context.push(AppRouter.preferences),
             ),
             _SettingItem(
               lightBackgroundColor: const Color(0xFFEAF7F1),
               iconAsset: ImageConstant.guardIcon,
               title: 'Security',
-              onTap: () {},
+              onTap: () => context.push(AppRouter.security),
             ),
             _SettingItem(
               lightBackgroundColor: const Color(0xFFFFF4E6),
@@ -106,10 +149,10 @@ class ProfileScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'English (US)',
+                    languageDisplay,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.getText(context).withOpacity(0.7),
-                        ),
+                      color: AppColors.getText(context).withOpacity(0.7),
+                    ),
                   ),
                   const SizedBox(width: 8),
                   SvgPicture.asset(
@@ -123,7 +166,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              onTap: () {},
+              onTap: () => context.push(AppRouter.language),
             ),
             Consumer(
               builder: (context, ref, _) {
@@ -150,7 +193,7 @@ class ProfileScreen extends StatelessWidget {
               lightBackgroundColor: const Color(0xFFE7F8EF),
               iconAsset: ImageConstant.documentColorIcon,
               title: 'Help Center',
-              onTap: () {},
+              onTap: () => context.push(AppRouter.helpCenter),
             ),
             _SettingItem(
               lightBackgroundColor: const Color(0xFFFFF4E6),
@@ -162,7 +205,6 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 8),
 
             _LogoutItem(onTap: () {}),
-
           ],
         ),
       ),
@@ -198,36 +240,30 @@ class _SettingItem extends StatelessWidget {
             Container(
               width: 40,
               height: 40,
-              decoration: BoxDecoration(
-                color: bg,
-                shape: BoxShape.circle,
-              ),
+              decoration: BoxDecoration(color: bg, shape: BoxShape.circle),
               alignment: Alignment.center,
-              child: SvgPicture.asset(
-                iconAsset,
-                width: 18,
-                height: 18,
-              ),
+              child: SvgPicture.asset(iconAsset, width: 18, height: 18),
             ),
             const SizedBox(width: 16),
             Expanded(
               child: Text(
                 title,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: textColor,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  color: textColor,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
-            trailing ?? SvgPicture.asset(
-              ImageConstant.arrowRightIcon,
-              width: 14,
-              height: 14,
-              colorFilter: ColorFilter.mode(
-                textColor.withOpacity(0.5),
-                BlendMode.srcIn,
-              ),
-            ),
+            trailing ??
+                SvgPicture.asset(
+                  ImageConstant.arrowRightIcon,
+                  width: 14,
+                  height: 14,
+                  colorFilter: ColorFilter.mode(
+                    textColor.withOpacity(0.5),
+                    BlendMode.srcIn,
+                  ),
+                ),
           ],
         ),
       ),
@@ -276,9 +312,9 @@ class _LogoutItem extends StatelessWidget {
           Text(
             'Logout',
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: const Color(0xFFFF4D4D),
-                  fontWeight: FontWeight.w600,
-                ),
+              color: const Color(0xFFFF4D4D),
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ],
       ),
@@ -292,7 +328,8 @@ Color _bgForTheme(BuildContext context, Color lightColor) {
   if (!isDark) return lightColor;
   final hsl = HSLColor.fromColor(lightColor);
   // Reduce lightness and saturation for better dark backgrounds
-  final darkHsl = hsl.withSaturation((hsl.saturation * 0.6).clamp(0.0, 1.0))
+  final darkHsl = hsl
+      .withSaturation((hsl.saturation * 0.6).clamp(0.0, 1.0))
       .withLightness((hsl.lightness * 0.25).clamp(0.0, 1.0));
   return darkHsl.toColor().withOpacity(0.6);
 }

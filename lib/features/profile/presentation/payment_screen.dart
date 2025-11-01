@@ -1,12 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:movie_fe/core/app_export.dart';
 
-class PaymentScreen extends StatelessWidget {
+import 'package:movie_fe/core/app_export.dart';
+import 'package:movie_fe/features/profile/models/payment_method.dart';
+import 'package:movie_fe/features/profile/notifiers/payment_notifier.dart';
+
+class PaymentScreen extends ConsumerWidget {
   const PaymentScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final paymentState = ref.watch(paymentNotifierProvider);
+    final methods = paymentState.value ?? const <PaymentMethod>[];
+    final selectedId = methods.firstWhere(
+      (method) => method.isDefault,
+      orElse: () => methods.isNotEmpty ? methods.first : const PaymentMethod(
+        id: '',
+        label: '',
+        brand: '',
+        last4: '',
+        isDefault: false,
+      ),
+    ).id;
+    final notifier = ref.read(paymentNotifierProvider.notifier);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -26,38 +44,28 @@ class PaymentScreen extends StatelessWidget {
           Expanded(
             child: ContentWrappers.page(
               context,
-              child: Column(
-                children: const [
-                  _PaymentMethodRow(
-                    iconAsset: ImageConstant.paypalIcon,
-                    title: 'PayPal',
+              child: paymentState.when(
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, _) => Center(
+                  child: Text(
+                    'Failed to load payment methods: $error',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.warning,
+                        ),
                   ),
-                  _Divider(),
-                  _PaymentMethodRow(
-                    iconAsset: ImageConstant.googlePayIcon,
-                    title: 'Google Pay',
-                  ),
-                  _Divider(),
-                  _PaymentMethodRow(
-                    iconAsset: ImageConstant.appleIcon,
-                    title: 'Apple Pay',
-                  ),
-                  _Divider(),
-                  _PaymentMethodRow(
-                    iconAsset: ImageConstant.visaIcon,
-                    title: '•••• •••• •••• 5567',
-                  ),
-                  _Divider(),
-                  _PaymentMethodRow(
-                    iconAsset: ImageConstant.americanExpressIcon,
-                    title: '•••• •••• •••• 8456',
-                  ),
-                  _Divider(),
-                  _PaymentMethodRow(
-                    iconAsset: ImageConstant.mastercardIcon,
-                    title: '•••• •••• •••• 7839',
-                  ),
-                ],
+                ),
+                data: (_) => Column(
+                  children: [
+                    for (var i = 0; i < methods.length; i++) ...[
+                      _PaymentMethodRow(
+                        method: methods[i],
+                        groupValue: selectedId,
+                        onTap: () => notifier.setDefault(methods[i].id),
+                      ),
+                      if (i != methods.length - 1) const _Divider(),
+                    ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -75,7 +83,14 @@ class PaymentScreen extends StatelessWidget {
                   text: 'Add New',
                   icon: const Icon(Icons.add, color: Colors.white, size: 18),
                   textColor: Colors.white,
-                  onPressed: () {},
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Add payment method tapped'),
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                  },
                   hasShadow: true,
                   elevation: 0,
                 ),
@@ -89,43 +104,68 @@ class PaymentScreen extends StatelessWidget {
 }
 
 class _PaymentMethodRow extends StatelessWidget {
-  final String iconAsset;
-  final String title;
-
   const _PaymentMethodRow({
-    required this.iconAsset,
-    required this.title,
+    required this.method,
+    required this.groupValue,
+    required this.onTap,
   });
+
+  final PaymentMethod method;
+  final String groupValue;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final textColor = AppColors.getText(context);
-    return Row(
-      children: [
-        SvgPicture.asset(
-          iconAsset,
-          width: 40,
-          height: 40,
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: Text(
-            title,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: textColor,
-                  fontWeight: FontWeight.w600,
-                ),
-          ),
-        ),
-        Text(
-          'Connected',
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppColors.primary500,
-                fontWeight: FontWeight.w600,
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        child: Row(
+          children: [
+            SvgPicture.asset(
+              _iconForMethod(method),
+              width: 40,
+              height: 40,
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                method.label,
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: textColor,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
+            ),
+            Radio<String>(
+              value: method.id,
+              groupValue: groupValue,
+              onChanged: (_) => onTap(),
+              activeColor: AppColors.primary500,
+            ),
+          ],
         ),
-      ],
+      ),
     );
+  }
+
+  String _iconForMethod(PaymentMethod method) {
+    switch (method.brand.toLowerCase()) {
+      case 'google pay':
+        return ImageConstant.googlePayIcon;
+      case 'apple pay':
+        return ImageConstant.appleIcon;
+      case 'visa':
+        return ImageConstant.visaIcon;
+      case 'american express':
+        return ImageConstant.americanExpressIcon;
+      case 'mastercard':
+        return ImageConstant.mastercardIcon;
+      case 'paypal':
+      default:
+        return ImageConstant.paypalIcon;
+    }
   }
 }
 

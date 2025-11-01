@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/app.dart';
 import 'core/services/locale_setting.dart';
+import 'core/services/shared_prefs_provider.dart';
 import 'core/utils/dio_client.dart';
 import 'i18n/translations.g.dart';
 
@@ -29,6 +30,7 @@ Future<void> main() async {
     ProviderScope(
       overrides: [
         localeControllerProvider.overrideWith((ref) => LocaleController(sp, ref)),
+        sharedPreferencesProvider.overrideWithValue(sp),
       ],
       child: TranslationProvider(child: const NozieApp()),
     ),

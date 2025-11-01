@@ -10,6 +10,8 @@ import 'package:movie_fe/features/genre/presentation/screens/explore_genre_detai
 import 'package:movie_fe/features/notification/presentation/notification_screen.dart';
 import 'package:movie_fe/features/profile/presentation/profile_screen.dart';
 import 'package:movie_fe/features/wishlist/presentation/wishlist_screen.dart';
+import 'package:movie_fe/features/profile/presentation/notification_screen.dart'
+    as profile_notification;
 import '../features/auth/register/presentation/screen/signup_flow_screen.dart';
 import '../features/home/presentation/screens/home_screen.dart';
 import '../features/discover/presentation/screens/discover_screen.dart';
@@ -21,6 +23,11 @@ import '../core/utils/no_transition_page.dart';
 import '../features/welcome/welcome_screen.dart';
 import '../features/search/presentation/screens/search_screen.dart';
 import '../features/profile/presentation/payment_screen.dart';
+import '../features/profile/presentation/personal_info_screen.dart';
+import '../features/profile/presentation/preferences_screen.dart';
+import '../features/profile/presentation/language_screen.dart';
+import '../features/profile/presentation/security_screen.dart';
+import '../features/profile/presentation/help_center_screen.dart';
 
 class AppRouter {
   static const String welcome = '/';
@@ -37,7 +44,13 @@ class AppRouter {
   static const String resetPassword = '/reset-password';
   static const String search = '/search';
   static const String notification = '/notification';
+  static const String notificationSettings = '/notification-settings';
   static const String paymentMethods = '/payment-methods';
+  static const String personalInfo = '/personal-info';
+  static const String preferences = '/preferences';
+  static const String language = '/language';
+  static const String security = '/security';
+  static const String helpCenter = '/help-center';
   static const String explore = '/explore';
   static const String movieCarouselGenre = '/movie-carousel-genre/';
 
@@ -52,10 +65,7 @@ class AppRouter {
         path: signup,
         builder: (context, state) => const SignupFlowScreen(),
       ),
-      GoRoute(
-        path: signIn,
-        builder: (context, state) => const LoginScreen(),
-      ),
+      GoRoute(path: signIn, builder: (context, state) => const LoginScreen()),
       GoRoute(
         path: forgotPassword,
         builder: (context, state) => const ForgotPasswordScreen(),
@@ -90,37 +100,53 @@ class AppRouter {
         builder: (context, state) => const NotificationScreen(),
       ),
       GoRoute(
+        path: notificationSettings,
+        builder: (context, state) =>
+            const profile_notification.NotificationSettingsScreen(),
+      ),
+      GoRoute(
         path: paymentMethods,
         builder: (context, state) => const PaymentScreen(),
       ),
       GoRoute(
-        path: search,
-        builder: (context, state) => const SearchScreen(),
+        path: personalInfo,
+        builder: (context, state) => const PersonalInfoScreen(),
       ),
+      GoRoute(
+        path: security,
+        builder: (context, state) => const SecurityScreen(),
+      ),
+      GoRoute(
+        path: preferences,
+        builder: (context, state) => const PreferencesScreen(),
+      ),
+      GoRoute(
+        path: language,
+        builder: (context, state) => const LanguageScreen(),
+      ),
+      GoRoute(
+        path: helpCenter,
+        builder: (context, state) => const HelpCenterScreen(),
+      ),
+      GoRoute(path: search, builder: (context, state) => const SearchScreen()),
       ShellRoute(
-        builder: (context, state, child) => MainLayout(
-          showAppBar: true,
-          showBottomNav: true,
-          child: child,
-        ),
+        builder: (context, state, child) =>
+            MainLayout(showAppBar: true, showBottomNav: true, child: child),
         routes: [
           GoRoute(
             path: home,
-            pageBuilder: (context, state) => TransitionPage(
-              child: const HomeScreen(),
-            ),
+            pageBuilder: (context, state) =>
+                TransitionPage(child: const HomeScreen()),
           ),
           GoRoute(
             path: discover,
-            pageBuilder: (context, state) => TransitionPage(
-              child: const DiscoverScreen(),
-            ),
+            pageBuilder: (context, state) =>
+                TransitionPage(child: const DiscoverScreen()),
           ),
           GoRoute(
             path: wishlist,
-            pageBuilder: (context, state) => TransitionPage(
-              child: const WishlistScreen(),
-            ),
+            pageBuilder: (context, state) =>
+                TransitionPage(child: const WishlistScreen()),
           ),
           GoRoute(
             path: purchase,
@@ -128,11 +154,13 @@ class AppRouter {
               child: Consumer(
                 builder: (context, ref, child) {
                   final currentLocale = ref.watch(localeControllerProvider);
-                  final localeController = ref.read(localeControllerProvider.notifier);
+                  final localeController = ref.read(
+                    localeControllerProvider.notifier,
+                  );
 
                   return SettingPage(
                     currentLocale,
-                        (locale) => localeController.setLocale(locale),
+                    (locale) => localeController.setLocale(locale),
                   );
                 },
               ),
@@ -140,17 +168,13 @@ class AppRouter {
           ),
           GoRoute(
             path: profile,
-            pageBuilder: (context, state) => TransitionPage(
-              child: ProfileScreen(),
-            ),
+            pageBuilder: (context, state) =>
+                TransitionPage(child: ProfileScreen()),
           ),
         ],
       ),
     ],
-    errorBuilder: (context, state) => const Scaffold(
-      body: Center(
-        child: Text('Route not found'),
-      ),
-    ),
+    errorBuilder: (context, state) =>
+        const Scaffold(body: Center(child: Text('Route not found'))),
   );
 }

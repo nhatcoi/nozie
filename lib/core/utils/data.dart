@@ -27,6 +27,28 @@ class Countries {
   ];
 }
 
+class Languages {
+  static const List<DropdownItem> suggested = [
+    DropdownItem(value: 'en_us', label: 'English (US)'),
+    DropdownItem(value: 'vi_vn', label: 'Tiếng Việt'),
+  ];
+
+  static const List<DropdownItem> others = [
+    DropdownItem(value: 'ko_kr', label: '한국어 (Korean)'),
+    DropdownItem(value: 'ja_jp', label: '日本語 (Japanese)'),
+    DropdownItem(value: 'fr_fr', label: 'Français (French)'),
+    DropdownItem(value: 'de_de', label: 'Deutsch (German)'),
+    DropdownItem(value: 'zh_cn', label: '中文 (Simplified Chinese)'),
+    DropdownItem(value: 'zh_tw', label: '中文 (Traditional Chinese)'),
+    DropdownItem(value: 'es_es', label: 'Español (Spanish)'),
+    DropdownItem(value: 'pt_br', label: 'Português (Brazilian)'),
+    DropdownItem(value: 'id_id', label: 'Bahasa Indonesia'),
+    DropdownItem(value: 'th_th', label: 'ภาษาไทย (Thai)'),
+    DropdownItem(value: 'ms_my', label: 'Bahasa Melayu'),
+    DropdownItem(value: 'hi_in', label: 'हिन्दी (Hindi)'),
+  ];
+}
+
 class Genres {
   static Map<String, String> getOptions(BuildContext context) {
     final t = context.i18n;
@@ -77,5 +99,3 @@ class Ages {
     };
   }
 }
-
-
