@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class CustomNoTransitionPage extends Page {
+class TransitionPage extends Page {
   final Widget child;
 
-  const CustomNoTransitionPage({
+  const TransitionPage({
     super.key,
     required this.child,
   });
@@ -14,7 +14,22 @@ class CustomNoTransitionPage extends Page {
       settings: this,
       pageBuilder: (context, animation, secondaryAnimation) => child,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        return child;
+        final curved = CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeInOutCubic,
+          reverseCurve: Curves.easeInOutCubic,
+        );
+
+        final fade = Tween<double>(begin: 0.0, end: 1.0).animate(curved);
+        final scale = Tween<double>(begin: 0.98, end: 1.0).animate(curved);
+
+        return FadeTransition(
+          opacity: fade,
+          child: ScaleTransition(
+            scale: scale,
+            child: child,
+          ),
+        );
       },
     );
   }

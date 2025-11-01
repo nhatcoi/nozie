@@ -4,7 +4,7 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 382 (191 per locale)
+/// Strings: 708 (354 per locale)
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -153,6 +153,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final _TranslationsAuthEn auth = _TranslationsAuthEn._(_root);
 	late final _TranslationsWelcomeEn welcome = _TranslationsWelcomeEn._(_root);
 	late final _TranslationsSettingsEn settings = _TranslationsSettingsEn._(_root);
+	late final _TranslationsProfileEn profile = _TranslationsProfileEn._(_root);
 	late final _TranslationsValidationEn validation = _TranslationsValidationEn._(_root);
 	late final _TranslationsNavigationEn navigation = _TranslationsNavigationEn._(_root);
 	late final _TranslationsSearchEn search = _TranslationsSearchEn._(_root);
@@ -187,6 +188,13 @@ class _TranslationsCommonEn {
 	String get back => 'Back';
 	String get done => 'Done';
 	String get empty => 'Empty';
+	String get yes => 'Yes';
+	String get no => 'No';
+	String get addNew => 'Add New';
+	String get clear => 'Clear';
+	String get search => 'Search';
+	String get loading => 'Loading…';
+	String get signOut => 'Sign out';
 }
 
 // Path: notification
@@ -250,6 +258,25 @@ class _TranslationsSettingsEn {
 	// Translations
 	late final _TranslationsSettingsLanguageEn language = _TranslationsSettingsLanguageEn._(_root);
 	late final _TranslationsSettingsThemeEn theme = _TranslationsSettingsThemeEn._(_root);
+}
+
+// Path: profile
+class _TranslationsProfileEn {
+	_TranslationsProfileEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	late final _TranslationsProfileHeaderEn header = _TranslationsProfileHeaderEn._(_root);
+	late final _TranslationsProfileMenuEn menu = _TranslationsProfileMenuEn._(_root);
+	late final _TranslationsProfileLanguageEn language = _TranslationsProfileLanguageEn._(_root);
+	late final _TranslationsProfileLogoutSheetEn logoutSheet = _TranslationsProfileLogoutSheetEn._(_root);
+	late final _TranslationsProfileHelpCenterEn helpCenter = _TranslationsProfileHelpCenterEn._(_root);
+	late final _TranslationsProfilePaymentEn payment = _TranslationsProfilePaymentEn._(_root);
+	late final _TranslationsProfileNotificationEn notification = _TranslationsProfileNotificationEn._(_root);
+	late final _TranslationsProfilePersonalInfoEn personalInfo = _TranslationsProfilePersonalInfoEn._(_root);
+	late final _TranslationsProfilePreferencesEn preferences = _TranslationsProfilePreferencesEn._(_root);
+	late final _TranslationsProfileSecurityEn security = _TranslationsProfileSecurityEn._(_root);
 }
 
 // Path: validation
@@ -399,6 +426,144 @@ class _TranslationsSettingsThemeEn {
 	String get system => 'System';
 	String get light => 'Light';
 	String get dark => 'Dark';
+}
+
+// Path: profile.header
+class _TranslationsProfileHeaderEn {
+	_TranslationsProfileHeaderEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get defaultName => 'NoZie User';
+	String get loadError => 'Unable to load profile';
+}
+
+// Path: profile.menu
+class _TranslationsProfileMenuEn {
+	_TranslationsProfileMenuEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get paymentMethods => 'Payment Methods';
+	String get personalInfo => 'Personal Info';
+	String get notification => 'Notification';
+	String get preferences => 'Preferences';
+	String get security => 'Security';
+	String get language => 'Language';
+	String get helpCenter => 'Help Center';
+	String get about => 'About NoZie';
+	String get darkMode => 'Dark Mode';
+	String get logout => 'Logout';
+}
+
+// Path: profile.language
+class _TranslationsProfileLanguageEn {
+	_TranslationsProfileLanguageEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Language';
+	String get sectionSuggested => 'Suggested';
+	String get sectionOthers => 'Other Languages';
+	String loadError({required Object error}) => 'Failed to load languages: ${error}';
+	String get fallback => 'English (US)';
+}
+
+// Path: profile.logoutSheet
+class _TranslationsProfileLogoutSheetEn {
+	_TranslationsProfileLogoutSheetEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Logout';
+	String get description => 'Are you sure you want to logout from NoZie? You can log in again anytime.';
+}
+
+// Path: profile.helpCenter
+class _TranslationsProfileHelpCenterEn {
+	_TranslationsProfileHelpCenterEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Help Center';
+	late final _TranslationsProfileHelpCenterTabsEn tabs = _TranslationsProfileHelpCenterTabsEn._(_root);
+	late final _TranslationsProfileHelpCenterCategoriesEn categories = _TranslationsProfileHelpCenterCategoriesEn._(_root);
+	late final _TranslationsProfileHelpCenterSearchEn search = _TranslationsProfileHelpCenterSearchEn._(_root);
+	late final _TranslationsProfileHelpCenterFilterEn filter = _TranslationsProfileHelpCenterFilterEn._(_root);
+	late final _TranslationsProfileHelpCenterFaqEn faq = _TranslationsProfileHelpCenterFaqEn._(_root);
+	late final _TranslationsProfileHelpCenterContactsEn contacts = _TranslationsProfileHelpCenterContactsEn._(_root);
+}
+
+// Path: profile.payment
+class _TranslationsProfilePaymentEn {
+	_TranslationsProfilePaymentEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Payment Methods';
+	String loadError({required Object error}) => 'Failed to load payment methods: ${error}';
+	String get addNewMessage => 'Add payment method tapped';
+}
+
+// Path: profile.notification
+class _TranslationsProfileNotificationEn {
+	_TranslationsProfileNotificationEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Notification';
+	String loadError({required Object error}) => 'Failed to load settings: ${error}';
+	String get sectionTitle => 'Notify me when...';
+	late final _TranslationsProfileNotificationTogglesEn toggles = _TranslationsProfileNotificationTogglesEn._(_root);
+}
+
+// Path: profile.personalInfo
+class _TranslationsProfilePersonalInfoEn {
+	_TranslationsProfilePersonalInfoEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Personal Info';
+	String get loadError => 'Failed to load profile. Please try again later.';
+	String get success => 'Profile updated';
+	late final _TranslationsProfilePersonalInfoFieldsEn fields = _TranslationsProfilePersonalInfoFieldsEn._(_root);
+	String get saveChanges => 'Save Changes';
+}
+
+// Path: profile.preferences
+class _TranslationsProfilePreferencesEn {
+	_TranslationsProfilePreferencesEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Preferences';
+	late final _TranslationsProfilePreferencesSectionsEn sections = _TranslationsProfilePreferencesSectionsEn._(_root);
+	late final _TranslationsProfilePreferencesTogglesEn toggles = _TranslationsProfilePreferencesTogglesEn._(_root);
+	late final _TranslationsProfilePreferencesActionsEn actions = _TranslationsProfilePreferencesActionsEn._(_root);
+	late final _TranslationsProfilePreferencesStorageLabelEn storageLabel = _TranslationsProfilePreferencesStorageLabelEn._(_root);
+}
+
+// Path: profile.security
+class _TranslationsProfileSecurityEn {
+	_TranslationsProfileSecurityEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Security';
+	String loadError({required Object error}) => 'Failed to load security settings: ${error}';
+	late final _TranslationsProfileSecurityTogglesEn toggles = _TranslationsProfileSecurityTogglesEn._(_root);
+	late final _TranslationsProfileSecurityActionsEn actions = _TranslationsProfileSecurityActionsEn._(_root);
+	late final _TranslationsProfileSecurityDeviceManagementEn deviceManagement = _TranslationsProfileSecurityDeviceManagementEn._(_root);
 }
 
 // Path: validation.general
@@ -611,6 +776,207 @@ class _TranslationsWelcomeSlidesCommunityEn {
 	String get description => 'Connect with other movie lovers, share reviews, and discover what\'s trending in the film world.';
 }
 
+// Path: profile.helpCenter.tabs
+class _TranslationsProfileHelpCenterTabsEn {
+	_TranslationsProfileHelpCenterTabsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get faq => 'FAQ';
+	String get contact => 'Contact us';
+}
+
+// Path: profile.helpCenter.categories
+class _TranslationsProfileHelpCenterCategoriesEn {
+	_TranslationsProfileHelpCenterCategoriesEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get all => 'All';
+	String get general => 'General';
+	String get account => 'Account';
+	String get service => 'Service';
+	String get movies => 'Movies';
+	String get ebook => 'Ebook';
+}
+
+// Path: profile.helpCenter.search
+class _TranslationsProfileHelpCenterSearchEn {
+	_TranslationsProfileHelpCenterSearchEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get hint => 'Search';
+	String get noResults => 'No FAQs found';
+}
+
+// Path: profile.helpCenter.filter
+class _TranslationsProfileHelpCenterFilterEn {
+	_TranslationsProfileHelpCenterFilterEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get clear => 'Clear';
+}
+
+// Path: profile.helpCenter.faq
+class _TranslationsProfileHelpCenterFaqEn {
+	_TranslationsProfileHelpCenterFaqEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	late final _TranslationsProfileHelpCenterFaqGeneralEn general = _TranslationsProfileHelpCenterFaqGeneralEn._(_root);
+	late final _TranslationsProfileHelpCenterFaqServiceEn service = _TranslationsProfileHelpCenterFaqServiceEn._(_root);
+	late final _TranslationsProfileHelpCenterFaqAccountEn account = _TranslationsProfileHelpCenterFaqAccountEn._(_root);
+	late final _TranslationsProfileHelpCenterFaqEbookEn ebook = _TranslationsProfileHelpCenterFaqEbookEn._(_root);
+	late final _TranslationsProfileHelpCenterFaqMoviesEn movies = _TranslationsProfileHelpCenterFaqMoviesEn._(_root);
+}
+
+// Path: profile.helpCenter.contacts
+class _TranslationsProfileHelpCenterContactsEn {
+	_TranslationsProfileHelpCenterContactsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	late final _TranslationsProfileHelpCenterContactsCustomerServiceEn customerService = _TranslationsProfileHelpCenterContactsCustomerServiceEn._(_root);
+	late final _TranslationsProfileHelpCenterContactsWhatsappEn whatsapp = _TranslationsProfileHelpCenterContactsWhatsappEn._(_root);
+	late final _TranslationsProfileHelpCenterContactsWebsiteEn website = _TranslationsProfileHelpCenterContactsWebsiteEn._(_root);
+	late final _TranslationsProfileHelpCenterContactsFacebookEn facebook = _TranslationsProfileHelpCenterContactsFacebookEn._(_root);
+	late final _TranslationsProfileHelpCenterContactsTwitterEn twitter = _TranslationsProfileHelpCenterContactsTwitterEn._(_root);
+	late final _TranslationsProfileHelpCenterContactsInstagramEn instagram = _TranslationsProfileHelpCenterContactsInstagramEn._(_root);
+}
+
+// Path: profile.notification.toggles
+class _TranslationsProfileNotificationTogglesEn {
+	_TranslationsProfileNotificationTogglesEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get newRecommendation => 'There is a New Recommendation';
+	String get newBookSeries => 'There\'s a New Book Series';
+	String get authorUpdates => 'There is an update from Authors';
+	String get priceDrops => 'There are Price Drops Available';
+	String get purchase => 'When I Make a Purchase';
+	String get appSystem => 'Enable App System Notifications';
+	String get tipsServices => 'New Tips & Services Available';
+	String get survey => 'Participate in Survey';
+}
+
+// Path: profile.personalInfo.fields
+class _TranslationsProfilePersonalInfoFieldsEn {
+	_TranslationsProfilePersonalInfoFieldsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	late final _TranslationsProfilePersonalInfoFieldsFullNameEn fullName = _TranslationsProfilePersonalInfoFieldsFullNameEn._(_root);
+	late final _TranslationsProfilePersonalInfoFieldsUsernameEn username = _TranslationsProfilePersonalInfoFieldsUsernameEn._(_root);
+	late final _TranslationsProfilePersonalInfoFieldsEmailEn email = _TranslationsProfilePersonalInfoFieldsEmailEn._(_root);
+	late final _TranslationsProfilePersonalInfoFieldsPhoneEn phone = _TranslationsProfilePersonalInfoFieldsPhoneEn._(_root);
+	late final _TranslationsProfilePersonalInfoFieldsDobEn dob = _TranslationsProfilePersonalInfoFieldsDobEn._(_root);
+	late final _TranslationsProfilePersonalInfoFieldsCountryEn country = _TranslationsProfilePersonalInfoFieldsCountryEn._(_root);
+}
+
+// Path: profile.preferences.sections
+class _TranslationsProfilePreferencesSectionsEn {
+	_TranslationsProfilePreferencesSectionsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get general => 'General';
+	String get playback => 'Playback';
+	String get video => 'Video';
+	String get audio => 'Audio';
+}
+
+// Path: profile.preferences.toggles
+class _TranslationsProfilePreferencesTogglesEn {
+	_TranslationsProfilePreferencesTogglesEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get wifiOnlyDownloads => 'Download Over Wi-Fi Only';
+	String get autoPlayNextEpisode => 'Auto Play Next Episode';
+	String get continueWatching => 'Continue Watching from Last Position';
+	String get subtitlesEnabled => 'Subtitles';
+	String get autoRotateScreen => 'Auto Rotate Screen';
+	String get autoDownloadAudio => 'Automatically Download Audio';
+}
+
+// Path: profile.preferences.actions
+class _TranslationsProfilePreferencesActionsEn {
+	_TranslationsProfilePreferencesActionsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	late final _TranslationsProfilePreferencesActionsClearCacheEn clearCache = _TranslationsProfilePreferencesActionsClearCacheEn._(_root);
+	late final _TranslationsProfilePreferencesActionsVideoQualityEn videoQuality = _TranslationsProfilePreferencesActionsVideoQualityEn._(_root);
+	late final _TranslationsProfilePreferencesActionsAudioPreferenceEn audioPreference = _TranslationsProfilePreferencesActionsAudioPreferenceEn._(_root);
+}
+
+// Path: profile.preferences.storageLabel
+class _TranslationsProfilePreferencesStorageLabelEn {
+	_TranslationsProfilePreferencesStorageLabelEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get empty => '0 MB stored';
+	String value({required Object amount}) => '${amount} MB stored';
+}
+
+// Path: profile.security.toggles
+class _TranslationsProfileSecurityTogglesEn {
+	_TranslationsProfileSecurityTogglesEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get rememberMe => 'Remember me';
+	String get biometricId => 'Biometric ID';
+	String get faceId => 'Face ID';
+	String get smsAuthenticator => 'SMS Authenticator';
+	String get googleAuthenticator => 'Google Authenticator';
+}
+
+// Path: profile.security.actions
+class _TranslationsProfileSecurityActionsEn {
+	_TranslationsProfileSecurityActionsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get deviceManagement => 'Device Management';
+	String get changePassword => 'Change Password';
+	String get changePasswordMessage => 'Change password tapped';
+	String signOutDevice({required Object name}) => 'Signed out ${name}';
+	String get signOutAll => 'Signed out from all devices';
+}
+
+// Path: profile.security.deviceManagement
+class _TranslationsProfileSecurityDeviceManagementEn {
+	_TranslationsProfileSecurityDeviceManagementEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Device Management';
+	String get description => 'Manage devices that have access to your account.';
+	String get signOutAll => 'Sign Out All Devices';
+	String get current => 'Current';
+	String lastActive({required Object time}) => 'Last active: ${time}';
+}
+
 // Path: validation.general.custom
 class _TranslationsValidationGeneralCustomEn {
 	_TranslationsValidationGeneralCustomEn._(this._root);
@@ -763,6 +1129,234 @@ class _TranslationsAuthRegisterStepsProfileEn {
 	late final _TranslationsAuthRegisterStepsProfileFieldsEn fields = _TranslationsAuthRegisterStepsProfileFieldsEn._(_root);
 }
 
+// Path: profile.helpCenter.faq.general
+class _TranslationsProfileHelpCenterFaqGeneralEn {
+	_TranslationsProfileHelpCenterFaqGeneralEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	late final _TranslationsProfileHelpCenterFaqGeneralWhatIsNozieEn whatIsNozie = _TranslationsProfileHelpCenterFaqGeneralWhatIsNozieEn._(_root);
+	late final _TranslationsProfileHelpCenterFaqGeneralSyncProgressEn syncProgress = _TranslationsProfileHelpCenterFaqGeneralSyncProgressEn._(_root);
+	late final _TranslationsProfileHelpCenterFaqGeneralFormatsSupportEn formatsSupport = _TranslationsProfileHelpCenterFaqGeneralFormatsSupportEn._(_root);
+}
+
+// Path: profile.helpCenter.faq.service
+class _TranslationsProfileHelpCenterFaqServiceEn {
+	_TranslationsProfileHelpCenterFaqServiceEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	late final _TranslationsProfileHelpCenterFaqServicePurchaseEbookEn purchaseEbook = _TranslationsProfileHelpCenterFaqServicePurchaseEbookEn._(_root);
+	late final _TranslationsProfileHelpCenterFaqServiceAudiobookNotPlayingEn audiobookNotPlaying = _TranslationsProfileHelpCenterFaqServiceAudiobookNotPlayingEn._(_root);
+	late final _TranslationsProfileHelpCenterFaqServiceManageNotificationsEn manageNotifications = _TranslationsProfileHelpCenterFaqServiceManageNotificationsEn._(_root);
+	late final _TranslationsProfileHelpCenterFaqServiceRequestRefundEn requestRefund = _TranslationsProfileHelpCenterFaqServiceRequestRefundEn._(_root);
+	late final _TranslationsProfileHelpCenterFaqServicePurchaseEbookIssueEn purchaseEbookIssue = _TranslationsProfileHelpCenterFaqServicePurchaseEbookIssueEn._(_root);
+	late final _TranslationsProfileHelpCenterFaqServiceDownloadEbookIssueEn downloadEbookIssue = _TranslationsProfileHelpCenterFaqServiceDownloadEbookIssueEn._(_root);
+}
+
+// Path: profile.helpCenter.faq.account
+class _TranslationsProfileHelpCenterFaqAccountEn {
+	_TranslationsProfileHelpCenterFaqAccountEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	late final _TranslationsProfileHelpCenterFaqAccountAddPaymentMethodEn addPaymentMethod = _TranslationsProfileHelpCenterFaqAccountAddPaymentMethodEn._(_root);
+	late final _TranslationsProfileHelpCenterFaqAccountResetPasswordEn resetPassword = _TranslationsProfileHelpCenterFaqAccountResetPasswordEn._(_root);
+	late final _TranslationsProfileHelpCenterFaqAccountChangeLanguageEn changeLanguage = _TranslationsProfileHelpCenterFaqAccountChangeLanguageEn._(_root);
+	late final _TranslationsProfileHelpCenterFaqAccountDeleteAccountEn deleteAccount = _TranslationsProfileHelpCenterFaqAccountDeleteAccountEn._(_root);
+	late final _TranslationsProfileHelpCenterFaqAccountAddPaymentMethodIssueEn addPaymentMethodIssue = _TranslationsProfileHelpCenterFaqAccountAddPaymentMethodIssueEn._(_root);
+}
+
+// Path: profile.helpCenter.faq.ebook
+class _TranslationsProfileHelpCenterFaqEbookEn {
+	_TranslationsProfileHelpCenterFaqEbookEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	late final _TranslationsProfileHelpCenterFaqEbookDownloadOfflineEn downloadOffline = _TranslationsProfileHelpCenterFaqEbookDownloadOfflineEn._(_root);
+}
+
+// Path: profile.helpCenter.faq.movies
+class _TranslationsProfileHelpCenterFaqMoviesEn {
+	_TranslationsProfileHelpCenterFaqMoviesEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	late final _TranslationsProfileHelpCenterFaqMoviesCloseErabookAccountEn closeErabookAccount = _TranslationsProfileHelpCenterFaqMoviesCloseErabookAccountEn._(_root);
+}
+
+// Path: profile.helpCenter.contacts.customerService
+class _TranslationsProfileHelpCenterContactsCustomerServiceEn {
+	_TranslationsProfileHelpCenterContactsCustomerServiceEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Customer Service';
+	String get subtitle => 'support@nozie.app';
+}
+
+// Path: profile.helpCenter.contacts.whatsapp
+class _TranslationsProfileHelpCenterContactsWhatsappEn {
+	_TranslationsProfileHelpCenterContactsWhatsappEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'WhatsApp';
+	String get subtitle => '+1 800 123 4567';
+}
+
+// Path: profile.helpCenter.contacts.website
+class _TranslationsProfileHelpCenterContactsWebsiteEn {
+	_TranslationsProfileHelpCenterContactsWebsiteEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Website';
+	String get subtitle => 'www.nozie.app/support';
+}
+
+// Path: profile.helpCenter.contacts.facebook
+class _TranslationsProfileHelpCenterContactsFacebookEn {
+	_TranslationsProfileHelpCenterContactsFacebookEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Facebook';
+	String get subtitle => '@NozieOfficial';
+}
+
+// Path: profile.helpCenter.contacts.twitter
+class _TranslationsProfileHelpCenterContactsTwitterEn {
+	_TranslationsProfileHelpCenterContactsTwitterEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Twitter';
+	String get subtitle => '@NozieApp';
+}
+
+// Path: profile.helpCenter.contacts.instagram
+class _TranslationsProfileHelpCenterContactsInstagramEn {
+	_TranslationsProfileHelpCenterContactsInstagramEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Instagram';
+	String get subtitle => '@nozie.app';
+}
+
+// Path: profile.personalInfo.fields.fullName
+class _TranslationsProfilePersonalInfoFieldsFullNameEn {
+	_TranslationsProfilePersonalInfoFieldsFullNameEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get label => 'Full Name';
+	String get hint => 'Enter full name';
+}
+
+// Path: profile.personalInfo.fields.username
+class _TranslationsProfilePersonalInfoFieldsUsernameEn {
+	_TranslationsProfilePersonalInfoFieldsUsernameEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get label => 'Username';
+	String get hint => 'Enter username';
+}
+
+// Path: profile.personalInfo.fields.email
+class _TranslationsProfilePersonalInfoFieldsEmailEn {
+	_TranslationsProfilePersonalInfoFieldsEmailEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get label => 'Email';
+	String get hint => 'Enter email address';
+}
+
+// Path: profile.personalInfo.fields.phone
+class _TranslationsProfilePersonalInfoFieldsPhoneEn {
+	_TranslationsProfilePersonalInfoFieldsPhoneEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get label => 'Phone Number';
+	String get hint => 'Enter phone number';
+}
+
+// Path: profile.personalInfo.fields.dob
+class _TranslationsProfilePersonalInfoFieldsDobEn {
+	_TranslationsProfilePersonalInfoFieldsDobEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get label => 'Date of Birth';
+	String get hint => 'DD/MM/YYYY';
+}
+
+// Path: profile.personalInfo.fields.country
+class _TranslationsProfilePersonalInfoFieldsCountryEn {
+	_TranslationsProfilePersonalInfoFieldsCountryEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get label => 'Country';
+	String get hint => 'Select country';
+}
+
+// Path: profile.preferences.actions.clearCache
+class _TranslationsProfilePreferencesActionsClearCacheEn {
+	_TranslationsProfilePreferencesActionsClearCacheEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Clear Cache';
+	String description({required Object size}) => 'Currently stored: ${size}. Removing cache will delete temporary files but keep your downloads and preferences.';
+	String get button => 'Clear Cache';
+	String get success => 'Cache cleared';
+}
+
+// Path: profile.preferences.actions.videoQuality
+class _TranslationsProfilePreferencesActionsVideoQualityEn {
+	_TranslationsProfilePreferencesActionsVideoQualityEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Video Quality';
+	late final _TranslationsProfilePreferencesActionsVideoQualityOptionsEn options = _TranslationsProfilePreferencesActionsVideoQualityOptionsEn._(_root);
+}
+
+// Path: profile.preferences.actions.audioPreference
+class _TranslationsProfilePreferencesActionsAudioPreferenceEn {
+	_TranslationsProfilePreferencesActionsAudioPreferenceEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Audio Language / Quality';
+	late final _TranslationsProfilePreferencesActionsAudioPreferenceOptionsEn options = _TranslationsProfilePreferencesActionsAudioPreferenceOptionsEn._(_root);
+}
+
 // Path: auth.register.steps.gender.options
 class _TranslationsAuthRegisterStepsGenderOptionsEn {
 	_TranslationsAuthRegisterStepsGenderOptionsEn._(this._root);
@@ -854,6 +1448,206 @@ class _TranslationsAuthRegisterStepsProfileFieldsEn {
 	late final _TranslationsAuthRegisterStepsProfileFieldsCountryEn country = _TranslationsAuthRegisterStepsProfileFieldsCountryEn._(_root);
 }
 
+// Path: profile.helpCenter.faq.general.whatIsNozie
+class _TranslationsProfileHelpCenterFaqGeneralWhatIsNozieEn {
+	_TranslationsProfileHelpCenterFaqGeneralWhatIsNozieEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get question => 'What is Nozie?';
+	String get answer => 'Nozie is your personal hub for discovering, reading, and listening to stories. Browse curated recommendations, organise your library, and stay synced across devices.';
+}
+
+// Path: profile.helpCenter.faq.general.syncProgress
+class _TranslationsProfileHelpCenterFaqGeneralSyncProgressEn {
+	_TranslationsProfileHelpCenterFaqGeneralSyncProgressEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get question => 'How do I sync reading progress across devices?';
+	String get answer => 'Make sure you are signed in on all devices. Progress syncs automatically when the device is online; pull to refresh in Library to force a sync.';
+}
+
+// Path: profile.helpCenter.faq.general.formatsSupport
+class _TranslationsProfileHelpCenterFaqGeneralFormatsSupportEn {
+	_TranslationsProfileHelpCenterFaqGeneralFormatsSupportEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get question => 'What formats does Nozie support?';
+	String get answer => 'Nozie supports EPUB, PDF, and MP3 audiobook files. Uploaded personal files are converted automatically for best playback.';
+}
+
+// Path: profile.helpCenter.faq.service.purchaseEbook
+class _TranslationsProfileHelpCenterFaqServicePurchaseEbookEn {
+	_TranslationsProfileHelpCenterFaqServicePurchaseEbookEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get question => 'How to purchase an Ebook?';
+	String get answer => 'Open the book detail page, tap the "Buy" button, choose a payment method, then confirm. Purchased titles instantly appear in your Library tab.';
+}
+
+// Path: profile.helpCenter.faq.service.audiobookNotPlaying
+class _TranslationsProfileHelpCenterFaqServiceAudiobookNotPlayingEn {
+	_TranslationsProfileHelpCenterFaqServiceAudiobookNotPlayingEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get question => 'Why is my audiobook not playing?';
+	String get answer => 'Ensure your device volume is up and you have a stable connection. If the issue persists, try clearing cache from Profile > Help Center and restart the app.';
+}
+
+// Path: profile.helpCenter.faq.service.manageNotifications
+class _TranslationsProfileHelpCenterFaqServiceManageNotificationsEn {
+	_TranslationsProfileHelpCenterFaqServiceManageNotificationsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get question => 'How to manage notifications?';
+	String get answer => 'Go to Profile > Notification Settings to enable or disable alerts for recommendations, purchases, promotions, and more.';
+}
+
+// Path: profile.helpCenter.faq.service.requestRefund
+class _TranslationsProfileHelpCenterFaqServiceRequestRefundEn {
+	_TranslationsProfileHelpCenterFaqServiceRequestRefundEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get question => 'How do I request a refund?';
+	String get answer => 'Contact support via Help Center > Contact Us, provide your order ID, and our team will review within 24 hours.';
+}
+
+// Path: profile.helpCenter.faq.service.purchaseEbookIssue
+class _TranslationsProfileHelpCenterFaqServicePurchaseEbookIssueEn {
+	_TranslationsProfileHelpCenterFaqServicePurchaseEbookIssueEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get question => 'Why can\'t I purchase an ebook?';
+	String get answer => 'Verify that you have a valid payment method added and a stable internet connection. If the issue persists, try signing out and back in before attempting the purchase again.';
+}
+
+// Path: profile.helpCenter.faq.service.downloadEbookIssue
+class _TranslationsProfileHelpCenterFaqServiceDownloadEbookIssueEn {
+	_TranslationsProfileHelpCenterFaqServiceDownloadEbookIssueEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get question => 'Why can\'t I download an ebook?';
+	String get answer => 'Ensure the title is purchased and you have sufficient storage space. Downloads require Wi-Fi unless you enable cellular downloads in Preferences.';
+}
+
+// Path: profile.helpCenter.faq.account.addPaymentMethod
+class _TranslationsProfileHelpCenterFaqAccountAddPaymentMethodEn {
+	_TranslationsProfileHelpCenterFaqAccountAddPaymentMethodEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get question => 'How to add a payment method?';
+	String get answer => 'Head to Profile > Payment Methods, choose "Add New", enter your card or wallet details, and save. You can manage or remove methods anytime from the same screen.';
+}
+
+// Path: profile.helpCenter.faq.account.resetPassword
+class _TranslationsProfileHelpCenterFaqAccountResetPasswordEn {
+	_TranslationsProfileHelpCenterFaqAccountResetPasswordEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get question => 'How do I reset my password?';
+	String get answer => 'Go to Login > Forgot Password, enter your email, and follow the verification steps. You can set a new password once you confirm the OTP sent to your inbox.';
+}
+
+// Path: profile.helpCenter.faq.account.changeLanguage
+class _TranslationsProfileHelpCenterFaqAccountChangeLanguageEn {
+	_TranslationsProfileHelpCenterFaqAccountChangeLanguageEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get question => 'How do I change the app language?';
+	String get answer => 'Navigate to Profile > Language to select your preferred language. Your choice syncs instantly across all sections of the app.';
+}
+
+// Path: profile.helpCenter.faq.account.deleteAccount
+class _TranslationsProfileHelpCenterFaqAccountDeleteAccountEn {
+	_TranslationsProfileHelpCenterFaqAccountDeleteAccountEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get question => 'How can I delete my account?';
+	String get answer => 'Open Settings > Security > Delete Account. Follow the instructions to confirm your identity and complete the deletion process.';
+}
+
+// Path: profile.helpCenter.faq.account.addPaymentMethodIssue
+class _TranslationsProfileHelpCenterFaqAccountAddPaymentMethodIssueEn {
+	_TranslationsProfileHelpCenterFaqAccountAddPaymentMethodIssueEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get question => 'Why can\'t I add a payment method?';
+	String get answer => 'Check that your card details are correct and supported in your region. Some prepaid cards and virtual wallets may be restricted by your bank or country.';
+}
+
+// Path: profile.helpCenter.faq.ebook.downloadOffline
+class _TranslationsProfileHelpCenterFaqEbookDownloadOfflineEn {
+	_TranslationsProfileHelpCenterFaqEbookDownloadOfflineEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get question => 'How can I download ebooks for offline reading?';
+	String get answer => 'Open any purchased title, tap the download icon, and choose the device storage location. Downloads are available offline from your Library tab.';
+}
+
+// Path: profile.helpCenter.faq.movies.closeErabookAccount
+class _TranslationsProfileHelpCenterFaqMoviesCloseErabookAccountEn {
+	_TranslationsProfileHelpCenterFaqMoviesCloseErabookAccountEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get question => 'Why can\'t I close an account on Erabook?';
+	String get answer => 'If you linked your Nozie account with Erabook, unlink the integration under Profile > Connected Services first. Afterwards, submit the closure request from the Erabook dashboard.';
+}
+
+// Path: profile.preferences.actions.videoQuality.options
+class _TranslationsProfilePreferencesActionsVideoQualityOptionsEn {
+	_TranslationsProfilePreferencesActionsVideoQualityOptionsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get auto => 'Auto';
+	String get hd => 'HD';
+	String get fullHd => 'Full HD';
+}
+
+// Path: profile.preferences.actions.audioPreference.options
+class _TranslationsProfilePreferencesActionsAudioPreferenceOptionsEn {
+	_TranslationsProfilePreferencesActionsAudioPreferenceOptionsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get systemDefault => 'System Default';
+	String get englishHigh => 'English • High Quality';
+	String get originalStandard => 'Original • Standard';
+}
+
 // Path: auth.register.steps.profile.fields.fullName
 class _TranslationsAuthRegisterStepsProfileFieldsFullNameEn {
 	_TranslationsAuthRegisterStepsProfileFieldsFullNameEn._(this._root);
@@ -931,6 +1725,7 @@ class _TranslationsVi extends Translations {
 	@override late final _TranslationsAuthVi auth = _TranslationsAuthVi._(_root);
 	@override late final _TranslationsWelcomeVi welcome = _TranslationsWelcomeVi._(_root);
 	@override late final _TranslationsSettingsVi settings = _TranslationsSettingsVi._(_root);
+	@override late final _TranslationsProfileVi profile = _TranslationsProfileVi._(_root);
 	@override late final _TranslationsValidationVi validation = _TranslationsValidationVi._(_root);
 	@override late final _TranslationsNavigationVi navigation = _TranslationsNavigationVi._(_root);
 	@override late final _TranslationsSearchVi search = _TranslationsSearchVi._(_root);
@@ -965,6 +1760,13 @@ class _TranslationsCommonVi extends _TranslationsCommonEn {
 	@override String get back => 'Quay lại';
 	@override String get done => 'Hoàn thành';
 	@override String get empty => 'Trống';
+	@override String get yes => 'Có';
+	@override String get no => 'Không';
+	@override String get addNew => 'Thêm mới';
+	@override String get clear => 'Xoá';
+	@override String get search => 'Tìm kiếm';
+	@override String get loading => 'Đang tải…';
+	@override String get signOut => 'Đăng xuất';
 }
 
 // Path: notification
@@ -1028,6 +1830,25 @@ class _TranslationsSettingsVi extends _TranslationsSettingsEn {
 	// Translations
 	@override late final _TranslationsSettingsLanguageVi language = _TranslationsSettingsLanguageVi._(_root);
 	@override late final _TranslationsSettingsThemeVi theme = _TranslationsSettingsThemeVi._(_root);
+}
+
+// Path: profile
+class _TranslationsProfileVi extends _TranslationsProfileEn {
+	_TranslationsProfileVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override late final _TranslationsProfileHeaderVi header = _TranslationsProfileHeaderVi._(_root);
+	@override late final _TranslationsProfileMenuVi menu = _TranslationsProfileMenuVi._(_root);
+	@override late final _TranslationsProfileLanguageVi language = _TranslationsProfileLanguageVi._(_root);
+	@override late final _TranslationsProfileLogoutSheetVi logoutSheet = _TranslationsProfileLogoutSheetVi._(_root);
+	@override late final _TranslationsProfileHelpCenterVi helpCenter = _TranslationsProfileHelpCenterVi._(_root);
+	@override late final _TranslationsProfilePaymentVi payment = _TranslationsProfilePaymentVi._(_root);
+	@override late final _TranslationsProfileNotificationVi notification = _TranslationsProfileNotificationVi._(_root);
+	@override late final _TranslationsProfilePersonalInfoVi personalInfo = _TranslationsProfilePersonalInfoVi._(_root);
+	@override late final _TranslationsProfilePreferencesVi preferences = _TranslationsProfilePreferencesVi._(_root);
+	@override late final _TranslationsProfileSecurityVi security = _TranslationsProfileSecurityVi._(_root);
 }
 
 // Path: validation
@@ -1177,6 +1998,144 @@ class _TranslationsSettingsThemeVi extends _TranslationsSettingsThemeEn {
 	@override String get system => 'Hệ thống';
 	@override String get light => 'Sáng';
 	@override String get dark => 'Tối';
+}
+
+// Path: profile.header
+class _TranslationsProfileHeaderVi extends _TranslationsProfileHeaderEn {
+	_TranslationsProfileHeaderVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get defaultName => 'Người dùng NoZie';
+	@override String get loadError => 'Không thể tải hồ sơ';
+}
+
+// Path: profile.menu
+class _TranslationsProfileMenuVi extends _TranslationsProfileMenuEn {
+	_TranslationsProfileMenuVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get paymentMethods => 'Phương thức thanh toán';
+	@override String get personalInfo => 'Thông tin cá nhân';
+	@override String get notification => 'Thông báo';
+	@override String get preferences => 'Tùy chỉnh';
+	@override String get security => 'Bảo mật';
+	@override String get language => 'Ngôn ngữ';
+	@override String get helpCenter => 'Trung tâm trợ giúp';
+	@override String get about => 'Giới thiệu về NoZie';
+	@override String get darkMode => 'Chế độ tối';
+	@override String get logout => 'Đăng xuất';
+}
+
+// Path: profile.language
+class _TranslationsProfileLanguageVi extends _TranslationsProfileLanguageEn {
+	_TranslationsProfileLanguageVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Ngôn ngữ';
+	@override String get sectionSuggested => 'Đề xuất';
+	@override String get sectionOthers => 'Ngôn ngữ khác';
+	@override String loadError({required Object error}) => 'Không thể tải danh sách ngôn ngữ: ${error}';
+	@override String get fallback => 'Tiếng Anh (Mỹ)';
+}
+
+// Path: profile.logoutSheet
+class _TranslationsProfileLogoutSheetVi extends _TranslationsProfileLogoutSheetEn {
+	_TranslationsProfileLogoutSheetVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Đăng xuất';
+	@override String get description => 'Bạn có chắc muốn đăng xuất khỏi NoZie? Bạn có thể đăng nhập lại bất cứ lúc nào.';
+}
+
+// Path: profile.helpCenter
+class _TranslationsProfileHelpCenterVi extends _TranslationsProfileHelpCenterEn {
+	_TranslationsProfileHelpCenterVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Trung tâm trợ giúp';
+	@override late final _TranslationsProfileHelpCenterTabsVi tabs = _TranslationsProfileHelpCenterTabsVi._(_root);
+	@override late final _TranslationsProfileHelpCenterCategoriesVi categories = _TranslationsProfileHelpCenterCategoriesVi._(_root);
+	@override late final _TranslationsProfileHelpCenterSearchVi search = _TranslationsProfileHelpCenterSearchVi._(_root);
+	@override late final _TranslationsProfileHelpCenterFilterVi filter = _TranslationsProfileHelpCenterFilterVi._(_root);
+	@override late final _TranslationsProfileHelpCenterFaqVi faq = _TranslationsProfileHelpCenterFaqVi._(_root);
+	@override late final _TranslationsProfileHelpCenterContactsVi contacts = _TranslationsProfileHelpCenterContactsVi._(_root);
+}
+
+// Path: profile.payment
+class _TranslationsProfilePaymentVi extends _TranslationsProfilePaymentEn {
+	_TranslationsProfilePaymentVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Phương thức thanh toán';
+	@override String loadError({required Object error}) => 'Không thể tải phương thức thanh toán: ${error}';
+	@override String get addNewMessage => 'Đã chạm vào thêm phương thức thanh toán';
+}
+
+// Path: profile.notification
+class _TranslationsProfileNotificationVi extends _TranslationsProfileNotificationEn {
+	_TranslationsProfileNotificationVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Thông báo';
+	@override String loadError({required Object error}) => 'Không thể tải cài đặt: ${error}';
+	@override String get sectionTitle => 'Thông báo cho tôi khi...';
+	@override late final _TranslationsProfileNotificationTogglesVi toggles = _TranslationsProfileNotificationTogglesVi._(_root);
+}
+
+// Path: profile.personalInfo
+class _TranslationsProfilePersonalInfoVi extends _TranslationsProfilePersonalInfoEn {
+	_TranslationsProfilePersonalInfoVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Thông tin cá nhân';
+	@override String get loadError => 'Không thể tải hồ sơ. Vui lòng thử lại sau.';
+	@override String get success => 'Cập nhật hồ sơ thành công';
+	@override late final _TranslationsProfilePersonalInfoFieldsVi fields = _TranslationsProfilePersonalInfoFieldsVi._(_root);
+	@override String get saveChanges => 'Lưu thay đổi';
+}
+
+// Path: profile.preferences
+class _TranslationsProfilePreferencesVi extends _TranslationsProfilePreferencesEn {
+	_TranslationsProfilePreferencesVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Tùy chỉnh';
+	@override late final _TranslationsProfilePreferencesSectionsVi sections = _TranslationsProfilePreferencesSectionsVi._(_root);
+	@override late final _TranslationsProfilePreferencesTogglesVi toggles = _TranslationsProfilePreferencesTogglesVi._(_root);
+	@override late final _TranslationsProfilePreferencesActionsVi actions = _TranslationsProfilePreferencesActionsVi._(_root);
+	@override late final _TranslationsProfilePreferencesStorageLabelVi storageLabel = _TranslationsProfilePreferencesStorageLabelVi._(_root);
+}
+
+// Path: profile.security
+class _TranslationsProfileSecurityVi extends _TranslationsProfileSecurityEn {
+	_TranslationsProfileSecurityVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Bảo mật';
+	@override String loadError({required Object error}) => 'Không thể tải cài đặt bảo mật: ${error}';
+	@override late final _TranslationsProfileSecurityTogglesVi toggles = _TranslationsProfileSecurityTogglesVi._(_root);
+	@override late final _TranslationsProfileSecurityActionsVi actions = _TranslationsProfileSecurityActionsVi._(_root);
+	@override late final _TranslationsProfileSecurityDeviceManagementVi deviceManagement = _TranslationsProfileSecurityDeviceManagementVi._(_root);
 }
 
 // Path: validation.general
@@ -1389,6 +2348,207 @@ class _TranslationsWelcomeSlidesCommunityVi extends _TranslationsWelcomeSlidesCo
 	@override String get description => 'Kết nối với những người yêu phim khác, chia sẻ đánh giá và khám phá những gì đang xu hướng trong thế giới điện ảnh.';
 }
 
+// Path: profile.helpCenter.tabs
+class _TranslationsProfileHelpCenterTabsVi extends _TranslationsProfileHelpCenterTabsEn {
+	_TranslationsProfileHelpCenterTabsVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get faq => 'FAQ';
+	@override String get contact => 'Liên hệ';
+}
+
+// Path: profile.helpCenter.categories
+class _TranslationsProfileHelpCenterCategoriesVi extends _TranslationsProfileHelpCenterCategoriesEn {
+	_TranslationsProfileHelpCenterCategoriesVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get all => 'Tất cả';
+	@override String get general => 'Chung';
+	@override String get account => 'Tài khoản';
+	@override String get service => 'Dịch vụ';
+	@override String get movies => 'Phim';
+	@override String get ebook => 'Sách điện tử';
+}
+
+// Path: profile.helpCenter.search
+class _TranslationsProfileHelpCenterSearchVi extends _TranslationsProfileHelpCenterSearchEn {
+	_TranslationsProfileHelpCenterSearchVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get hint => 'Tìm kiếm';
+	@override String get noResults => 'Không tìm thấy câu hỏi phù hợp';
+}
+
+// Path: profile.helpCenter.filter
+class _TranslationsProfileHelpCenterFilterVi extends _TranslationsProfileHelpCenterFilterEn {
+	_TranslationsProfileHelpCenterFilterVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get clear => 'Xoá';
+}
+
+// Path: profile.helpCenter.faq
+class _TranslationsProfileHelpCenterFaqVi extends _TranslationsProfileHelpCenterFaqEn {
+	_TranslationsProfileHelpCenterFaqVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override late final _TranslationsProfileHelpCenterFaqGeneralVi general = _TranslationsProfileHelpCenterFaqGeneralVi._(_root);
+	@override late final _TranslationsProfileHelpCenterFaqServiceVi service = _TranslationsProfileHelpCenterFaqServiceVi._(_root);
+	@override late final _TranslationsProfileHelpCenterFaqAccountVi account = _TranslationsProfileHelpCenterFaqAccountVi._(_root);
+	@override late final _TranslationsProfileHelpCenterFaqEbookVi ebook = _TranslationsProfileHelpCenterFaqEbookVi._(_root);
+	@override late final _TranslationsProfileHelpCenterFaqMoviesVi movies = _TranslationsProfileHelpCenterFaqMoviesVi._(_root);
+}
+
+// Path: profile.helpCenter.contacts
+class _TranslationsProfileHelpCenterContactsVi extends _TranslationsProfileHelpCenterContactsEn {
+	_TranslationsProfileHelpCenterContactsVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override late final _TranslationsProfileHelpCenterContactsCustomerServiceVi customerService = _TranslationsProfileHelpCenterContactsCustomerServiceVi._(_root);
+	@override late final _TranslationsProfileHelpCenterContactsWhatsappVi whatsapp = _TranslationsProfileHelpCenterContactsWhatsappVi._(_root);
+	@override late final _TranslationsProfileHelpCenterContactsWebsiteVi website = _TranslationsProfileHelpCenterContactsWebsiteVi._(_root);
+	@override late final _TranslationsProfileHelpCenterContactsFacebookVi facebook = _TranslationsProfileHelpCenterContactsFacebookVi._(_root);
+	@override late final _TranslationsProfileHelpCenterContactsTwitterVi twitter = _TranslationsProfileHelpCenterContactsTwitterVi._(_root);
+	@override late final _TranslationsProfileHelpCenterContactsInstagramVi instagram = _TranslationsProfileHelpCenterContactsInstagramVi._(_root);
+}
+
+// Path: profile.notification.toggles
+class _TranslationsProfileNotificationTogglesVi extends _TranslationsProfileNotificationTogglesEn {
+	_TranslationsProfileNotificationTogglesVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get newRecommendation => 'Có gợi ý mới';
+	@override String get newBookSeries => 'Có bộ sách mới';
+	@override String get authorUpdates => 'Có cập nhật từ tác giả';
+	@override String get priceDrops => 'Có khuyến mãi giảm giá';
+	@override String get purchase => 'Khi tôi thực hiện giao dịch';
+	@override String get appSystem => 'Bật thông báo hệ thống ứng dụng';
+	@override String get tipsServices => 'Có mẹo và dịch vụ mới';
+	@override String get survey => 'Tham gia khảo sát';
+}
+
+// Path: profile.personalInfo.fields
+class _TranslationsProfilePersonalInfoFieldsVi extends _TranslationsProfilePersonalInfoFieldsEn {
+	_TranslationsProfilePersonalInfoFieldsVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override late final _TranslationsProfilePersonalInfoFieldsFullNameVi fullName = _TranslationsProfilePersonalInfoFieldsFullNameVi._(_root);
+	@override late final _TranslationsProfilePersonalInfoFieldsUsernameVi username = _TranslationsProfilePersonalInfoFieldsUsernameVi._(_root);
+	@override late final _TranslationsProfilePersonalInfoFieldsEmailVi email = _TranslationsProfilePersonalInfoFieldsEmailVi._(_root);
+	@override late final _TranslationsProfilePersonalInfoFieldsPhoneVi phone = _TranslationsProfilePersonalInfoFieldsPhoneVi._(_root);
+	@override late final _TranslationsProfilePersonalInfoFieldsDobVi dob = _TranslationsProfilePersonalInfoFieldsDobVi._(_root);
+	@override late final _TranslationsProfilePersonalInfoFieldsCountryVi country = _TranslationsProfilePersonalInfoFieldsCountryVi._(_root);
+}
+
+// Path: profile.preferences.sections
+class _TranslationsProfilePreferencesSectionsVi extends _TranslationsProfilePreferencesSectionsEn {
+	_TranslationsProfilePreferencesSectionsVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get general => 'Chung';
+	@override String get playback => 'Phát lại';
+	@override String get video => 'Video';
+	@override String get audio => 'Âm thanh';
+}
+
+// Path: profile.preferences.toggles
+class _TranslationsProfilePreferencesTogglesVi extends _TranslationsProfilePreferencesTogglesEn {
+	_TranslationsProfilePreferencesTogglesVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get wifiOnlyDownloads => 'Chỉ tải qua Wi-Fi';
+	@override String get autoPlayNextEpisode => 'Tự phát tập tiếp theo';
+	@override String get continueWatching => 'Tiếp tục xem từ vị trí dở';
+	@override String get subtitlesEnabled => 'Phụ đề';
+	@override String get autoRotateScreen => 'Tự xoay màn hình';
+	@override String get autoDownloadAudio => 'Tự động tải âm thanh';
+}
+
+// Path: profile.preferences.actions
+class _TranslationsProfilePreferencesActionsVi extends _TranslationsProfilePreferencesActionsEn {
+	_TranslationsProfilePreferencesActionsVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override late final _TranslationsProfilePreferencesActionsClearCacheVi clearCache = _TranslationsProfilePreferencesActionsClearCacheVi._(_root);
+	@override late final _TranslationsProfilePreferencesActionsVideoQualityVi videoQuality = _TranslationsProfilePreferencesActionsVideoQualityVi._(_root);
+	@override late final _TranslationsProfilePreferencesActionsAudioPreferenceVi audioPreference = _TranslationsProfilePreferencesActionsAudioPreferenceVi._(_root);
+}
+
+// Path: profile.preferences.storageLabel
+class _TranslationsProfilePreferencesStorageLabelVi extends _TranslationsProfilePreferencesStorageLabelEn {
+	_TranslationsProfilePreferencesStorageLabelVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get empty => '0 MB đã lưu';
+	@override String value({required Object amount}) => '${amount} MB đã lưu';
+}
+
+// Path: profile.security.toggles
+class _TranslationsProfileSecurityTogglesVi extends _TranslationsProfileSecurityTogglesEn {
+	_TranslationsProfileSecurityTogglesVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get rememberMe => 'Ghi nhớ tôi';
+	@override String get biometricId => 'Sinh trắc học';
+	@override String get faceId => 'Face ID';
+	@override String get smsAuthenticator => 'Xác thực SMS';
+	@override String get googleAuthenticator => 'Google Authenticator';
+}
+
+// Path: profile.security.actions
+class _TranslationsProfileSecurityActionsVi extends _TranslationsProfileSecurityActionsEn {
+	_TranslationsProfileSecurityActionsVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get deviceManagement => 'Quản lý thiết bị';
+	@override String get changePassword => 'Đổi mật khẩu';
+	@override String get changePasswordMessage => 'Đã chạm vào đổi mật khẩu';
+	@override String signOutDevice({required Object name}) => 'Đã đăng xuất ${name}';
+	@override String get signOutAll => 'Đã đăng xuất khỏi tất cả thiết bị';
+}
+
+// Path: profile.security.deviceManagement
+class _TranslationsProfileSecurityDeviceManagementVi extends _TranslationsProfileSecurityDeviceManagementEn {
+	_TranslationsProfileSecurityDeviceManagementVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Quản lý thiết bị';
+	@override String get description => 'Quản lý các thiết bị được phép truy cập tài khoản của bạn.';
+	@override String get signOutAll => 'Đăng xuất tất cả thiết bị';
+	@override String get current => 'Thiết bị hiện tại';
+	@override String lastActive({required Object time}) => 'Hoạt động lần cuối: ${time}';
+}
+
 // Path: validation.general.custom
 class _TranslationsValidationGeneralCustomVi extends _TranslationsValidationGeneralCustomEn {
 	_TranslationsValidationGeneralCustomVi._(_TranslationsVi root) : this._root = root, super._(root);
@@ -1541,6 +2701,234 @@ class _TranslationsAuthRegisterStepsProfileVi extends _TranslationsAuthRegisterS
 	@override late final _TranslationsAuthRegisterStepsProfileFieldsVi fields = _TranslationsAuthRegisterStepsProfileFieldsVi._(_root);
 }
 
+// Path: profile.helpCenter.faq.general
+class _TranslationsProfileHelpCenterFaqGeneralVi extends _TranslationsProfileHelpCenterFaqGeneralEn {
+	_TranslationsProfileHelpCenterFaqGeneralVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override late final _TranslationsProfileHelpCenterFaqGeneralWhatIsNozieVi whatIsNozie = _TranslationsProfileHelpCenterFaqGeneralWhatIsNozieVi._(_root);
+	@override late final _TranslationsProfileHelpCenterFaqGeneralSyncProgressVi syncProgress = _TranslationsProfileHelpCenterFaqGeneralSyncProgressVi._(_root);
+	@override late final _TranslationsProfileHelpCenterFaqGeneralFormatsSupportVi formatsSupport = _TranslationsProfileHelpCenterFaqGeneralFormatsSupportVi._(_root);
+}
+
+// Path: profile.helpCenter.faq.service
+class _TranslationsProfileHelpCenterFaqServiceVi extends _TranslationsProfileHelpCenterFaqServiceEn {
+	_TranslationsProfileHelpCenterFaqServiceVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override late final _TranslationsProfileHelpCenterFaqServicePurchaseEbookVi purchaseEbook = _TranslationsProfileHelpCenterFaqServicePurchaseEbookVi._(_root);
+	@override late final _TranslationsProfileHelpCenterFaqServiceAudiobookNotPlayingVi audiobookNotPlaying = _TranslationsProfileHelpCenterFaqServiceAudiobookNotPlayingVi._(_root);
+	@override late final _TranslationsProfileHelpCenterFaqServiceManageNotificationsVi manageNotifications = _TranslationsProfileHelpCenterFaqServiceManageNotificationsVi._(_root);
+	@override late final _TranslationsProfileHelpCenterFaqServiceRequestRefundVi requestRefund = _TranslationsProfileHelpCenterFaqServiceRequestRefundVi._(_root);
+	@override late final _TranslationsProfileHelpCenterFaqServicePurchaseEbookIssueVi purchaseEbookIssue = _TranslationsProfileHelpCenterFaqServicePurchaseEbookIssueVi._(_root);
+	@override late final _TranslationsProfileHelpCenterFaqServiceDownloadEbookIssueVi downloadEbookIssue = _TranslationsProfileHelpCenterFaqServiceDownloadEbookIssueVi._(_root);
+}
+
+// Path: profile.helpCenter.faq.account
+class _TranslationsProfileHelpCenterFaqAccountVi extends _TranslationsProfileHelpCenterFaqAccountEn {
+	_TranslationsProfileHelpCenterFaqAccountVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override late final _TranslationsProfileHelpCenterFaqAccountAddPaymentMethodVi addPaymentMethod = _TranslationsProfileHelpCenterFaqAccountAddPaymentMethodVi._(_root);
+	@override late final _TranslationsProfileHelpCenterFaqAccountResetPasswordVi resetPassword = _TranslationsProfileHelpCenterFaqAccountResetPasswordVi._(_root);
+	@override late final _TranslationsProfileHelpCenterFaqAccountChangeLanguageVi changeLanguage = _TranslationsProfileHelpCenterFaqAccountChangeLanguageVi._(_root);
+	@override late final _TranslationsProfileHelpCenterFaqAccountDeleteAccountVi deleteAccount = _TranslationsProfileHelpCenterFaqAccountDeleteAccountVi._(_root);
+	@override late final _TranslationsProfileHelpCenterFaqAccountAddPaymentMethodIssueVi addPaymentMethodIssue = _TranslationsProfileHelpCenterFaqAccountAddPaymentMethodIssueVi._(_root);
+}
+
+// Path: profile.helpCenter.faq.ebook
+class _TranslationsProfileHelpCenterFaqEbookVi extends _TranslationsProfileHelpCenterFaqEbookEn {
+	_TranslationsProfileHelpCenterFaqEbookVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override late final _TranslationsProfileHelpCenterFaqEbookDownloadOfflineVi downloadOffline = _TranslationsProfileHelpCenterFaqEbookDownloadOfflineVi._(_root);
+}
+
+// Path: profile.helpCenter.faq.movies
+class _TranslationsProfileHelpCenterFaqMoviesVi extends _TranslationsProfileHelpCenterFaqMoviesEn {
+	_TranslationsProfileHelpCenterFaqMoviesVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override late final _TranslationsProfileHelpCenterFaqMoviesCloseErabookAccountVi closeErabookAccount = _TranslationsProfileHelpCenterFaqMoviesCloseErabookAccountVi._(_root);
+}
+
+// Path: profile.helpCenter.contacts.customerService
+class _TranslationsProfileHelpCenterContactsCustomerServiceVi extends _TranslationsProfileHelpCenterContactsCustomerServiceEn {
+	_TranslationsProfileHelpCenterContactsCustomerServiceVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Chăm sóc khách hàng';
+	@override String get subtitle => 'support@nozie.app';
+}
+
+// Path: profile.helpCenter.contacts.whatsapp
+class _TranslationsProfileHelpCenterContactsWhatsappVi extends _TranslationsProfileHelpCenterContactsWhatsappEn {
+	_TranslationsProfileHelpCenterContactsWhatsappVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'WhatsApp';
+	@override String get subtitle => '+1 800 123 4567';
+}
+
+// Path: profile.helpCenter.contacts.website
+class _TranslationsProfileHelpCenterContactsWebsiteVi extends _TranslationsProfileHelpCenterContactsWebsiteEn {
+	_TranslationsProfileHelpCenterContactsWebsiteVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Website';
+	@override String get subtitle => 'www.nozie.app/support';
+}
+
+// Path: profile.helpCenter.contacts.facebook
+class _TranslationsProfileHelpCenterContactsFacebookVi extends _TranslationsProfileHelpCenterContactsFacebookEn {
+	_TranslationsProfileHelpCenterContactsFacebookVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Facebook';
+	@override String get subtitle => '@NozieOfficial';
+}
+
+// Path: profile.helpCenter.contacts.twitter
+class _TranslationsProfileHelpCenterContactsTwitterVi extends _TranslationsProfileHelpCenterContactsTwitterEn {
+	_TranslationsProfileHelpCenterContactsTwitterVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Twitter';
+	@override String get subtitle => '@NozieApp';
+}
+
+// Path: profile.helpCenter.contacts.instagram
+class _TranslationsProfileHelpCenterContactsInstagramVi extends _TranslationsProfileHelpCenterContactsInstagramEn {
+	_TranslationsProfileHelpCenterContactsInstagramVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Instagram';
+	@override String get subtitle => '@nozie.app';
+}
+
+// Path: profile.personalInfo.fields.fullName
+class _TranslationsProfilePersonalInfoFieldsFullNameVi extends _TranslationsProfilePersonalInfoFieldsFullNameEn {
+	_TranslationsProfilePersonalInfoFieldsFullNameVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get label => 'Họ và tên';
+	@override String get hint => 'Nhập họ và tên';
+}
+
+// Path: profile.personalInfo.fields.username
+class _TranslationsProfilePersonalInfoFieldsUsernameVi extends _TranslationsProfilePersonalInfoFieldsUsernameEn {
+	_TranslationsProfilePersonalInfoFieldsUsernameVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get label => 'Tên đăng nhập';
+	@override String get hint => 'Nhập tên đăng nhập';
+}
+
+// Path: profile.personalInfo.fields.email
+class _TranslationsProfilePersonalInfoFieldsEmailVi extends _TranslationsProfilePersonalInfoFieldsEmailEn {
+	_TranslationsProfilePersonalInfoFieldsEmailVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get label => 'Email';
+	@override String get hint => 'Nhập địa chỉ email';
+}
+
+// Path: profile.personalInfo.fields.phone
+class _TranslationsProfilePersonalInfoFieldsPhoneVi extends _TranslationsProfilePersonalInfoFieldsPhoneEn {
+	_TranslationsProfilePersonalInfoFieldsPhoneVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get label => 'Số điện thoại';
+	@override String get hint => 'Nhập số điện thoại';
+}
+
+// Path: profile.personalInfo.fields.dob
+class _TranslationsProfilePersonalInfoFieldsDobVi extends _TranslationsProfilePersonalInfoFieldsDobEn {
+	_TranslationsProfilePersonalInfoFieldsDobVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get label => 'Ngày sinh';
+	@override String get hint => 'DD/MM/YYYY';
+}
+
+// Path: profile.personalInfo.fields.country
+class _TranslationsProfilePersonalInfoFieldsCountryVi extends _TranslationsProfilePersonalInfoFieldsCountryEn {
+	_TranslationsProfilePersonalInfoFieldsCountryVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get label => 'Quốc gia';
+	@override String get hint => 'Chọn quốc gia';
+}
+
+// Path: profile.preferences.actions.clearCache
+class _TranslationsProfilePreferencesActionsClearCacheVi extends _TranslationsProfilePreferencesActionsClearCacheEn {
+	_TranslationsProfilePreferencesActionsClearCacheVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Xóa bộ nhớ đệm';
+	@override String description({required Object size}) => 'Đang lưu trữ: ${size}. Xóa bộ nhớ đệm sẽ loại bỏ tệp tạm nhưng giữ lại nội dung đã tải và cài đặt của bạn.';
+	@override String get button => 'Xóa bộ nhớ đệm';
+	@override String get success => 'Đã xóa bộ nhớ đệm';
+}
+
+// Path: profile.preferences.actions.videoQuality
+class _TranslationsProfilePreferencesActionsVideoQualityVi extends _TranslationsProfilePreferencesActionsVideoQualityEn {
+	_TranslationsProfilePreferencesActionsVideoQualityVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Chất lượng video';
+	@override late final _TranslationsProfilePreferencesActionsVideoQualityOptionsVi options = _TranslationsProfilePreferencesActionsVideoQualityOptionsVi._(_root);
+}
+
+// Path: profile.preferences.actions.audioPreference
+class _TranslationsProfilePreferencesActionsAudioPreferenceVi extends _TranslationsProfilePreferencesActionsAudioPreferenceEn {
+	_TranslationsProfilePreferencesActionsAudioPreferenceVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Ngôn ngữ / Chất lượng âm thanh';
+	@override late final _TranslationsProfilePreferencesActionsAudioPreferenceOptionsVi options = _TranslationsProfilePreferencesActionsAudioPreferenceOptionsVi._(_root);
+}
+
 // Path: auth.register.steps.gender.options
 class _TranslationsAuthRegisterStepsGenderOptionsVi extends _TranslationsAuthRegisterStepsGenderOptionsEn {
 	_TranslationsAuthRegisterStepsGenderOptionsVi._(_TranslationsVi root) : this._root = root, super._(root);
@@ -1632,6 +3020,206 @@ class _TranslationsAuthRegisterStepsProfileFieldsVi extends _TranslationsAuthReg
 	@override late final _TranslationsAuthRegisterStepsProfileFieldsCountryVi country = _TranslationsAuthRegisterStepsProfileFieldsCountryVi._(_root);
 }
 
+// Path: profile.helpCenter.faq.general.whatIsNozie
+class _TranslationsProfileHelpCenterFaqGeneralWhatIsNozieVi extends _TranslationsProfileHelpCenterFaqGeneralWhatIsNozieEn {
+	_TranslationsProfileHelpCenterFaqGeneralWhatIsNozieVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get question => 'Nozie là gì?';
+	@override String get answer => 'Nozie là trung tâm cá nhân giúp bạn khám phá, đọc và nghe sách. Dễ dàng duyệt gợi ý tuyển chọn, sắp xếp thư viện và đồng bộ trên mọi thiết bị.';
+}
+
+// Path: profile.helpCenter.faq.general.syncProgress
+class _TranslationsProfileHelpCenterFaqGeneralSyncProgressVi extends _TranslationsProfileHelpCenterFaqGeneralSyncProgressEn {
+	_TranslationsProfileHelpCenterFaqGeneralSyncProgressVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get question => 'Làm sao đồng bộ tiến độ đọc trên nhiều thiết bị?';
+	@override String get answer => 'Đảm bảo bạn đã đăng nhập trên tất cả thiết bị. Tiến độ sẽ tự đồng bộ khi có kết nối; hãy kéo để làm mới trong tab Thư viện nếu muốn đồng bộ ngay.';
+}
+
+// Path: profile.helpCenter.faq.general.formatsSupport
+class _TranslationsProfileHelpCenterFaqGeneralFormatsSupportVi extends _TranslationsProfileHelpCenterFaqGeneralFormatsSupportEn {
+	_TranslationsProfileHelpCenterFaqGeneralFormatsSupportVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get question => 'Nozie hỗ trợ định dạng nào?';
+	@override String get answer => 'Nozie hỗ trợ tệp EPUB, PDF và audiobook MP3. Các tệp cá nhân tải lên sẽ được chuyển đổi tự động để phát tốt nhất.';
+}
+
+// Path: profile.helpCenter.faq.service.purchaseEbook
+class _TranslationsProfileHelpCenterFaqServicePurchaseEbookVi extends _TranslationsProfileHelpCenterFaqServicePurchaseEbookEn {
+	_TranslationsProfileHelpCenterFaqServicePurchaseEbookVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get question => 'Làm thế nào để mua ebook?';
+	@override String get answer => 'Mở trang chi tiết sách, nhấn "Mua", chọn phương thức thanh toán rồi xác nhận. Sách đã mua sẽ xuất hiện ngay trong tab Thư viện.';
+}
+
+// Path: profile.helpCenter.faq.service.audiobookNotPlaying
+class _TranslationsProfileHelpCenterFaqServiceAudiobookNotPlayingVi extends _TranslationsProfileHelpCenterFaqServiceAudiobookNotPlayingEn {
+	_TranslationsProfileHelpCenterFaqServiceAudiobookNotPlayingVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get question => 'Vì sao audiobook không phát?';
+	@override String get answer => 'Kiểm tra âm lượng thiết bị và kết nối ổn định. Nếu vẫn lỗi, hãy xóa bộ nhớ đệm tại Hồ sơ > Trung tâm trợ giúp rồi khởi động lại ứng dụng.';
+}
+
+// Path: profile.helpCenter.faq.service.manageNotifications
+class _TranslationsProfileHelpCenterFaqServiceManageNotificationsVi extends _TranslationsProfileHelpCenterFaqServiceManageNotificationsEn {
+	_TranslationsProfileHelpCenterFaqServiceManageNotificationsVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get question => 'Quản lý thông báo như thế nào?';
+	@override String get answer => 'Vào Hồ sơ > Cài đặt thông báo để bật hoặc tắt cảnh báo cho gợi ý, mua sắm, khuyến mãi và nhiều loại khác.';
+}
+
+// Path: profile.helpCenter.faq.service.requestRefund
+class _TranslationsProfileHelpCenterFaqServiceRequestRefundVi extends _TranslationsProfileHelpCenterFaqServiceRequestRefundEn {
+	_TranslationsProfileHelpCenterFaqServiceRequestRefundVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get question => 'Làm sao yêu cầu hoàn tiền?';
+	@override String get answer => 'Liên hệ hỗ trợ qua Trung tâm trợ giúp > Liên hệ, cung cấp mã đơn hàng và đội ngũ của chúng tôi sẽ phản hồi trong 24 giờ.';
+}
+
+// Path: profile.helpCenter.faq.service.purchaseEbookIssue
+class _TranslationsProfileHelpCenterFaqServicePurchaseEbookIssueVi extends _TranslationsProfileHelpCenterFaqServicePurchaseEbookIssueEn {
+	_TranslationsProfileHelpCenterFaqServicePurchaseEbookIssueVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get question => 'Tại sao tôi không thể mua ebook?';
+	@override String get answer => 'Kiểm tra bạn đã thêm phương thức thanh toán hợp lệ và có kết nối ổn định. Nếu vẫn không được, hãy đăng xuất rồi đăng nhập lại trước khi thử mua.';
+}
+
+// Path: profile.helpCenter.faq.service.downloadEbookIssue
+class _TranslationsProfileHelpCenterFaqServiceDownloadEbookIssueVi extends _TranslationsProfileHelpCenterFaqServiceDownloadEbookIssueEn {
+	_TranslationsProfileHelpCenterFaqServiceDownloadEbookIssueVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get question => 'Tại sao tôi không tải được ebook?';
+	@override String get answer => 'Đảm bảo bạn đã mua tựa sách và còn đủ dung lượng lưu trữ. Việc tải xuống cần Wi-Fi trừ khi bạn bật tải bằng dữ liệu di động trong phần Tùy chỉnh.';
+}
+
+// Path: profile.helpCenter.faq.account.addPaymentMethod
+class _TranslationsProfileHelpCenterFaqAccountAddPaymentMethodVi extends _TranslationsProfileHelpCenterFaqAccountAddPaymentMethodEn {
+	_TranslationsProfileHelpCenterFaqAccountAddPaymentMethodVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get question => 'Làm sao thêm phương thức thanh toán?';
+	@override String get answer => 'Vào Hồ sơ > Phương thức thanh toán, chọn "Thêm mới", nhập thông tin thẻ hoặc ví rồi lưu. Bạn có thể quản lý hoặc xóa bất cứ lúc nào tại đây.';
+}
+
+// Path: profile.helpCenter.faq.account.resetPassword
+class _TranslationsProfileHelpCenterFaqAccountResetPasswordVi extends _TranslationsProfileHelpCenterFaqAccountResetPasswordEn {
+	_TranslationsProfileHelpCenterFaqAccountResetPasswordVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get question => 'Làm sao đặt lại mật khẩu?';
+	@override String get answer => 'Vào Đăng nhập > Quên mật khẩu, nhập email và làm theo bước xác minh. Bạn có thể đặt mật khẩu mới sau khi xác nhận OTP gửi đến hộp thư.';
+}
+
+// Path: profile.helpCenter.faq.account.changeLanguage
+class _TranslationsProfileHelpCenterFaqAccountChangeLanguageVi extends _TranslationsProfileHelpCenterFaqAccountChangeLanguageEn {
+	_TranslationsProfileHelpCenterFaqAccountChangeLanguageVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get question => 'Làm sao đổi ngôn ngữ ứng dụng?';
+	@override String get answer => 'Chuyển đến Hồ sơ > Ngôn ngữ để chọn ngôn ngữ mong muốn. Cài đặt sẽ áp dụng tức thì trên toàn ứng dụng.';
+}
+
+// Path: profile.helpCenter.faq.account.deleteAccount
+class _TranslationsProfileHelpCenterFaqAccountDeleteAccountVi extends _TranslationsProfileHelpCenterFaqAccountDeleteAccountEn {
+	_TranslationsProfileHelpCenterFaqAccountDeleteAccountVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get question => 'Làm sao xóa tài khoản?';
+	@override String get answer => 'Mở Cài đặt > Bảo mật > Xóa tài khoản. Thực hiện các bước xác minh danh tính để hoàn tất.';
+}
+
+// Path: profile.helpCenter.faq.account.addPaymentMethodIssue
+class _TranslationsProfileHelpCenterFaqAccountAddPaymentMethodIssueVi extends _TranslationsProfileHelpCenterFaqAccountAddPaymentMethodIssueEn {
+	_TranslationsProfileHelpCenterFaqAccountAddPaymentMethodIssueVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get question => 'Tại sao tôi không thêm được phương thức thanh toán?';
+	@override String get answer => 'Hãy kiểm tra thông tin thẻ chính xác và được hỗ trợ ở khu vực của bạn. Một số thẻ trả trước hoặc ví điện tử có thể bị hạn chế bởi ngân hàng hoặc quốc gia.';
+}
+
+// Path: profile.helpCenter.faq.ebook.downloadOffline
+class _TranslationsProfileHelpCenterFaqEbookDownloadOfflineVi extends _TranslationsProfileHelpCenterFaqEbookDownloadOfflineEn {
+	_TranslationsProfileHelpCenterFaqEbookDownloadOfflineVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get question => 'Làm sao tải ebook để đọc offline?';
+	@override String get answer => 'Mở bất kỳ sách đã mua nào, nhấn biểu tượng tải xuống và chọn nơi lưu. Bản tải sẽ sẵn sàng offline trong tab Thư viện.';
+}
+
+// Path: profile.helpCenter.faq.movies.closeErabookAccount
+class _TranslationsProfileHelpCenterFaqMoviesCloseErabookAccountVi extends _TranslationsProfileHelpCenterFaqMoviesCloseErabookAccountEn {
+	_TranslationsProfileHelpCenterFaqMoviesCloseErabookAccountVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get question => 'Tại sao tôi không thể đóng tài khoản trên Erabook?';
+	@override String get answer => 'Nếu bạn đã liên kết Nozie với Erabook, hãy hủy liên kết tại Hồ sơ > Dịch vụ liên kết trước. Sau đó gửi yêu cầu đóng tài khoản từ bảng điều khiển Erabook.';
+}
+
+// Path: profile.preferences.actions.videoQuality.options
+class _TranslationsProfilePreferencesActionsVideoQualityOptionsVi extends _TranslationsProfilePreferencesActionsVideoQualityOptionsEn {
+	_TranslationsProfilePreferencesActionsVideoQualityOptionsVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get auto => 'Tự động';
+	@override String get hd => 'HD';
+	@override String get fullHd => 'Full HD';
+}
+
+// Path: profile.preferences.actions.audioPreference.options
+class _TranslationsProfilePreferencesActionsAudioPreferenceOptionsVi extends _TranslationsProfilePreferencesActionsAudioPreferenceOptionsEn {
+	_TranslationsProfilePreferencesActionsAudioPreferenceOptionsVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get systemDefault => 'Theo hệ thống';
+	@override String get englishHigh => 'Tiếng Anh • Chất lượng cao';
+	@override String get originalStandard => 'Bản gốc • Tiêu chuẩn';
+}
+
 // Path: auth.register.steps.profile.fields.fullName
 class _TranslationsAuthRegisterStepsProfileFieldsFullNameVi extends _TranslationsAuthRegisterStepsProfileFieldsFullNameEn {
 	_TranslationsAuthRegisterStepsProfileFieldsFullNameVi._(_TranslationsVi root) : this._root = root, super._(root);
@@ -1694,6 +3282,13 @@ extension on Translations {
 			case 'common.back': return 'Back';
 			case 'common.done': return 'Done';
 			case 'common.empty': return 'Empty';
+			case 'common.yes': return 'Yes';
+			case 'common.no': return 'No';
+			case 'common.addNew': return 'Add New';
+			case 'common.clear': return 'Clear';
+			case 'common.search': return 'Search';
+			case 'common.loading': return 'Loading…';
+			case 'common.signOut': return 'Sign out';
 			case 'notification.title': return 'Notifications';
 			case 'notification.empty': return 'You don\'t have any notification at this time';
 			case 'notification.markAllAsRead': return 'Mark all as read';
@@ -1803,6 +3398,153 @@ extension on Translations {
 			case 'settings.theme.system': return 'System';
 			case 'settings.theme.light': return 'Light';
 			case 'settings.theme.dark': return 'Dark';
+			case 'profile.header.defaultName': return 'NoZie User';
+			case 'profile.header.loadError': return 'Unable to load profile';
+			case 'profile.menu.paymentMethods': return 'Payment Methods';
+			case 'profile.menu.personalInfo': return 'Personal Info';
+			case 'profile.menu.notification': return 'Notification';
+			case 'profile.menu.preferences': return 'Preferences';
+			case 'profile.menu.security': return 'Security';
+			case 'profile.menu.language': return 'Language';
+			case 'profile.menu.helpCenter': return 'Help Center';
+			case 'profile.menu.about': return 'About NoZie';
+			case 'profile.menu.darkMode': return 'Dark Mode';
+			case 'profile.menu.logout': return 'Logout';
+			case 'profile.language.title': return 'Language';
+			case 'profile.language.sectionSuggested': return 'Suggested';
+			case 'profile.language.sectionOthers': return 'Other Languages';
+			case 'profile.language.loadError': return ({required Object error}) => 'Failed to load languages: ${error}';
+			case 'profile.language.fallback': return 'English (US)';
+			case 'profile.logoutSheet.title': return 'Logout';
+			case 'profile.logoutSheet.description': return 'Are you sure you want to logout from NoZie? You can log in again anytime.';
+			case 'profile.helpCenter.title': return 'Help Center';
+			case 'profile.helpCenter.tabs.faq': return 'FAQ';
+			case 'profile.helpCenter.tabs.contact': return 'Contact us';
+			case 'profile.helpCenter.categories.all': return 'All';
+			case 'profile.helpCenter.categories.general': return 'General';
+			case 'profile.helpCenter.categories.account': return 'Account';
+			case 'profile.helpCenter.categories.service': return 'Service';
+			case 'profile.helpCenter.categories.movies': return 'Movies';
+			case 'profile.helpCenter.categories.ebook': return 'Ebook';
+			case 'profile.helpCenter.search.hint': return 'Search';
+			case 'profile.helpCenter.search.noResults': return 'No FAQs found';
+			case 'profile.helpCenter.filter.clear': return 'Clear';
+			case 'profile.helpCenter.faq.general.whatIsNozie.question': return 'What is Nozie?';
+			case 'profile.helpCenter.faq.general.whatIsNozie.answer': return 'Nozie is your personal hub for discovering, reading, and listening to stories. Browse curated recommendations, organise your library, and stay synced across devices.';
+			case 'profile.helpCenter.faq.general.syncProgress.question': return 'How do I sync reading progress across devices?';
+			case 'profile.helpCenter.faq.general.syncProgress.answer': return 'Make sure you are signed in on all devices. Progress syncs automatically when the device is online; pull to refresh in Library to force a sync.';
+			case 'profile.helpCenter.faq.general.formatsSupport.question': return 'What formats does Nozie support?';
+			case 'profile.helpCenter.faq.general.formatsSupport.answer': return 'Nozie supports EPUB, PDF, and MP3 audiobook files. Uploaded personal files are converted automatically for best playback.';
+			case 'profile.helpCenter.faq.service.purchaseEbook.question': return 'How to purchase an Ebook?';
+			case 'profile.helpCenter.faq.service.purchaseEbook.answer': return 'Open the book detail page, tap the "Buy" button, choose a payment method, then confirm. Purchased titles instantly appear in your Library tab.';
+			case 'profile.helpCenter.faq.service.audiobookNotPlaying.question': return 'Why is my audiobook not playing?';
+			case 'profile.helpCenter.faq.service.audiobookNotPlaying.answer': return 'Ensure your device volume is up and you have a stable connection. If the issue persists, try clearing cache from Profile > Help Center and restart the app.';
+			case 'profile.helpCenter.faq.service.manageNotifications.question': return 'How to manage notifications?';
+			case 'profile.helpCenter.faq.service.manageNotifications.answer': return 'Go to Profile > Notification Settings to enable or disable alerts for recommendations, purchases, promotions, and more.';
+			case 'profile.helpCenter.faq.service.requestRefund.question': return 'How do I request a refund?';
+			case 'profile.helpCenter.faq.service.requestRefund.answer': return 'Contact support via Help Center > Contact Us, provide your order ID, and our team will review within 24 hours.';
+			case 'profile.helpCenter.faq.service.purchaseEbookIssue.question': return 'Why can\'t I purchase an ebook?';
+			case 'profile.helpCenter.faq.service.purchaseEbookIssue.answer': return 'Verify that you have a valid payment method added and a stable internet connection. If the issue persists, try signing out and back in before attempting the purchase again.';
+			case 'profile.helpCenter.faq.service.downloadEbookIssue.question': return 'Why can\'t I download an ebook?';
+			case 'profile.helpCenter.faq.service.downloadEbookIssue.answer': return 'Ensure the title is purchased and you have sufficient storage space. Downloads require Wi-Fi unless you enable cellular downloads in Preferences.';
+			case 'profile.helpCenter.faq.account.addPaymentMethod.question': return 'How to add a payment method?';
+			case 'profile.helpCenter.faq.account.addPaymentMethod.answer': return 'Head to Profile > Payment Methods, choose "Add New", enter your card or wallet details, and save. You can manage or remove methods anytime from the same screen.';
+			case 'profile.helpCenter.faq.account.resetPassword.question': return 'How do I reset my password?';
+			case 'profile.helpCenter.faq.account.resetPassword.answer': return 'Go to Login > Forgot Password, enter your email, and follow the verification steps. You can set a new password once you confirm the OTP sent to your inbox.';
+			case 'profile.helpCenter.faq.account.changeLanguage.question': return 'How do I change the app language?';
+			case 'profile.helpCenter.faq.account.changeLanguage.answer': return 'Navigate to Profile > Language to select your preferred language. Your choice syncs instantly across all sections of the app.';
+			case 'profile.helpCenter.faq.account.deleteAccount.question': return 'How can I delete my account?';
+			case 'profile.helpCenter.faq.account.deleteAccount.answer': return 'Open Settings > Security > Delete Account. Follow the instructions to confirm your identity and complete the deletion process.';
+			case 'profile.helpCenter.faq.account.addPaymentMethodIssue.question': return 'Why can\'t I add a payment method?';
+			case 'profile.helpCenter.faq.account.addPaymentMethodIssue.answer': return 'Check that your card details are correct and supported in your region. Some prepaid cards and virtual wallets may be restricted by your bank or country.';
+			case 'profile.helpCenter.faq.ebook.downloadOffline.question': return 'How can I download ebooks for offline reading?';
+			case 'profile.helpCenter.faq.ebook.downloadOffline.answer': return 'Open any purchased title, tap the download icon, and choose the device storage location. Downloads are available offline from your Library tab.';
+			case 'profile.helpCenter.faq.movies.closeErabookAccount.question': return 'Why can\'t I close an account on Erabook?';
+			case 'profile.helpCenter.faq.movies.closeErabookAccount.answer': return 'If you linked your Nozie account with Erabook, unlink the integration under Profile > Connected Services first. Afterwards, submit the closure request from the Erabook dashboard.';
+			case 'profile.helpCenter.contacts.customerService.title': return 'Customer Service';
+			case 'profile.helpCenter.contacts.customerService.subtitle': return 'support@nozie.app';
+			case 'profile.helpCenter.contacts.whatsapp.title': return 'WhatsApp';
+			case 'profile.helpCenter.contacts.whatsapp.subtitle': return '+1 800 123 4567';
+			case 'profile.helpCenter.contacts.website.title': return 'Website';
+			case 'profile.helpCenter.contacts.website.subtitle': return 'www.nozie.app/support';
+			case 'profile.helpCenter.contacts.facebook.title': return 'Facebook';
+			case 'profile.helpCenter.contacts.facebook.subtitle': return '@NozieOfficial';
+			case 'profile.helpCenter.contacts.twitter.title': return 'Twitter';
+			case 'profile.helpCenter.contacts.twitter.subtitle': return '@NozieApp';
+			case 'profile.helpCenter.contacts.instagram.title': return 'Instagram';
+			case 'profile.helpCenter.contacts.instagram.subtitle': return '@nozie.app';
+			case 'profile.payment.title': return 'Payment Methods';
+			case 'profile.payment.loadError': return ({required Object error}) => 'Failed to load payment methods: ${error}';
+			case 'profile.payment.addNewMessage': return 'Add payment method tapped';
+			case 'profile.notification.title': return 'Notification';
+			case 'profile.notification.loadError': return ({required Object error}) => 'Failed to load settings: ${error}';
+			case 'profile.notification.sectionTitle': return 'Notify me when...';
+			case 'profile.notification.toggles.newRecommendation': return 'There is a New Recommendation';
+			case 'profile.notification.toggles.newBookSeries': return 'There\'s a New Book Series';
+			case 'profile.notification.toggles.authorUpdates': return 'There is an update from Authors';
+			case 'profile.notification.toggles.priceDrops': return 'There are Price Drops Available';
+			case 'profile.notification.toggles.purchase': return 'When I Make a Purchase';
+			case 'profile.notification.toggles.appSystem': return 'Enable App System Notifications';
+			case 'profile.notification.toggles.tipsServices': return 'New Tips & Services Available';
+			case 'profile.notification.toggles.survey': return 'Participate in Survey';
+			case 'profile.personalInfo.title': return 'Personal Info';
+			case 'profile.personalInfo.loadError': return 'Failed to load profile. Please try again later.';
+			case 'profile.personalInfo.success': return 'Profile updated';
+			case 'profile.personalInfo.fields.fullName.label': return 'Full Name';
+			case 'profile.personalInfo.fields.fullName.hint': return 'Enter full name';
+			case 'profile.personalInfo.fields.username.label': return 'Username';
+			case 'profile.personalInfo.fields.username.hint': return 'Enter username';
+			case 'profile.personalInfo.fields.email.label': return 'Email';
+			case 'profile.personalInfo.fields.email.hint': return 'Enter email address';
+			case 'profile.personalInfo.fields.phone.label': return 'Phone Number';
+			case 'profile.personalInfo.fields.phone.hint': return 'Enter phone number';
+			case 'profile.personalInfo.fields.dob.label': return 'Date of Birth';
+			case 'profile.personalInfo.fields.dob.hint': return 'DD/MM/YYYY';
+			case 'profile.personalInfo.fields.country.label': return 'Country';
+			case 'profile.personalInfo.fields.country.hint': return 'Select country';
+			case 'profile.personalInfo.saveChanges': return 'Save Changes';
+			case 'profile.preferences.title': return 'Preferences';
+			case 'profile.preferences.sections.general': return 'General';
+			case 'profile.preferences.sections.playback': return 'Playback';
+			case 'profile.preferences.sections.video': return 'Video';
+			case 'profile.preferences.sections.audio': return 'Audio';
+			case 'profile.preferences.toggles.wifiOnlyDownloads': return 'Download Over Wi-Fi Only';
+			case 'profile.preferences.toggles.autoPlayNextEpisode': return 'Auto Play Next Episode';
+			case 'profile.preferences.toggles.continueWatching': return 'Continue Watching from Last Position';
+			case 'profile.preferences.toggles.subtitlesEnabled': return 'Subtitles';
+			case 'profile.preferences.toggles.autoRotateScreen': return 'Auto Rotate Screen';
+			case 'profile.preferences.toggles.autoDownloadAudio': return 'Automatically Download Audio';
+			case 'profile.preferences.actions.clearCache.title': return 'Clear Cache';
+			case 'profile.preferences.actions.clearCache.description': return ({required Object size}) => 'Currently stored: ${size}. Removing cache will delete temporary files but keep your downloads and preferences.';
+			case 'profile.preferences.actions.clearCache.button': return 'Clear Cache';
+			case 'profile.preferences.actions.clearCache.success': return 'Cache cleared';
+			case 'profile.preferences.actions.videoQuality.title': return 'Video Quality';
+			case 'profile.preferences.actions.videoQuality.options.auto': return 'Auto';
+			case 'profile.preferences.actions.videoQuality.options.hd': return 'HD';
+			case 'profile.preferences.actions.videoQuality.options.fullHd': return 'Full HD';
+			case 'profile.preferences.actions.audioPreference.title': return 'Audio Language / Quality';
+			case 'profile.preferences.actions.audioPreference.options.systemDefault': return 'System Default';
+			case 'profile.preferences.actions.audioPreference.options.englishHigh': return 'English • High Quality';
+			case 'profile.preferences.actions.audioPreference.options.originalStandard': return 'Original • Standard';
+			case 'profile.preferences.storageLabel.empty': return '0 MB stored';
+			case 'profile.preferences.storageLabel.value': return ({required Object amount}) => '${amount} MB stored';
+			case 'profile.security.title': return 'Security';
+			case 'profile.security.loadError': return ({required Object error}) => 'Failed to load security settings: ${error}';
+			case 'profile.security.toggles.rememberMe': return 'Remember me';
+			case 'profile.security.toggles.biometricId': return 'Biometric ID';
+			case 'profile.security.toggles.faceId': return 'Face ID';
+			case 'profile.security.toggles.smsAuthenticator': return 'SMS Authenticator';
+			case 'profile.security.toggles.googleAuthenticator': return 'Google Authenticator';
+			case 'profile.security.actions.deviceManagement': return 'Device Management';
+			case 'profile.security.actions.changePassword': return 'Change Password';
+			case 'profile.security.actions.changePasswordMessage': return 'Change password tapped';
+			case 'profile.security.actions.signOutDevice': return ({required Object name}) => 'Signed out ${name}';
+			case 'profile.security.actions.signOutAll': return 'Signed out from all devices';
+			case 'profile.security.deviceManagement.title': return 'Device Management';
+			case 'profile.security.deviceManagement.description': return 'Manage devices that have access to your account.';
+			case 'profile.security.deviceManagement.signOutAll': return 'Sign Out All Devices';
+			case 'profile.security.deviceManagement.current': return 'Current';
+			case 'profile.security.deviceManagement.lastActive': return ({required Object time}) => 'Last active: ${time}';
 			case 'validation.general.fillAllFields': return 'Please fill in all fields.';
 			case 'validation.general.required': return 'This field is required.';
 			case 'validation.general.length': return ({required Object length}) => 'The length must be ${length}.';
@@ -1902,6 +3644,13 @@ extension on _TranslationsVi {
 			case 'common.back': return 'Quay lại';
 			case 'common.done': return 'Hoàn thành';
 			case 'common.empty': return 'Trống';
+			case 'common.yes': return 'Có';
+			case 'common.no': return 'Không';
+			case 'common.addNew': return 'Thêm mới';
+			case 'common.clear': return 'Xoá';
+			case 'common.search': return 'Tìm kiếm';
+			case 'common.loading': return 'Đang tải…';
+			case 'common.signOut': return 'Đăng xuất';
 			case 'notification.title': return 'Thông báo';
 			case 'notification.empty': return 'Chưa có thông báo nào';
 			case 'notification.markAllAsRead': return 'Đánh dấu tất cả là đã đọc';
@@ -2011,6 +3760,153 @@ extension on _TranslationsVi {
 			case 'settings.theme.system': return 'Hệ thống';
 			case 'settings.theme.light': return 'Sáng';
 			case 'settings.theme.dark': return 'Tối';
+			case 'profile.header.defaultName': return 'Người dùng NoZie';
+			case 'profile.header.loadError': return 'Không thể tải hồ sơ';
+			case 'profile.menu.paymentMethods': return 'Phương thức thanh toán';
+			case 'profile.menu.personalInfo': return 'Thông tin cá nhân';
+			case 'profile.menu.notification': return 'Thông báo';
+			case 'profile.menu.preferences': return 'Tùy chỉnh';
+			case 'profile.menu.security': return 'Bảo mật';
+			case 'profile.menu.language': return 'Ngôn ngữ';
+			case 'profile.menu.helpCenter': return 'Trung tâm trợ giúp';
+			case 'profile.menu.about': return 'Giới thiệu về NoZie';
+			case 'profile.menu.darkMode': return 'Chế độ tối';
+			case 'profile.menu.logout': return 'Đăng xuất';
+			case 'profile.language.title': return 'Ngôn ngữ';
+			case 'profile.language.sectionSuggested': return 'Đề xuất';
+			case 'profile.language.sectionOthers': return 'Ngôn ngữ khác';
+			case 'profile.language.loadError': return ({required Object error}) => 'Không thể tải danh sách ngôn ngữ: ${error}';
+			case 'profile.language.fallback': return 'Tiếng Anh (Mỹ)';
+			case 'profile.logoutSheet.title': return 'Đăng xuất';
+			case 'profile.logoutSheet.description': return 'Bạn có chắc muốn đăng xuất khỏi NoZie? Bạn có thể đăng nhập lại bất cứ lúc nào.';
+			case 'profile.helpCenter.title': return 'Trung tâm trợ giúp';
+			case 'profile.helpCenter.tabs.faq': return 'FAQ';
+			case 'profile.helpCenter.tabs.contact': return 'Liên hệ';
+			case 'profile.helpCenter.categories.all': return 'Tất cả';
+			case 'profile.helpCenter.categories.general': return 'Chung';
+			case 'profile.helpCenter.categories.account': return 'Tài khoản';
+			case 'profile.helpCenter.categories.service': return 'Dịch vụ';
+			case 'profile.helpCenter.categories.movies': return 'Phim';
+			case 'profile.helpCenter.categories.ebook': return 'Sách điện tử';
+			case 'profile.helpCenter.search.hint': return 'Tìm kiếm';
+			case 'profile.helpCenter.search.noResults': return 'Không tìm thấy câu hỏi phù hợp';
+			case 'profile.helpCenter.filter.clear': return 'Xoá';
+			case 'profile.helpCenter.faq.general.whatIsNozie.question': return 'Nozie là gì?';
+			case 'profile.helpCenter.faq.general.whatIsNozie.answer': return 'Nozie là trung tâm cá nhân giúp bạn khám phá, đọc và nghe sách. Dễ dàng duyệt gợi ý tuyển chọn, sắp xếp thư viện và đồng bộ trên mọi thiết bị.';
+			case 'profile.helpCenter.faq.general.syncProgress.question': return 'Làm sao đồng bộ tiến độ đọc trên nhiều thiết bị?';
+			case 'profile.helpCenter.faq.general.syncProgress.answer': return 'Đảm bảo bạn đã đăng nhập trên tất cả thiết bị. Tiến độ sẽ tự đồng bộ khi có kết nối; hãy kéo để làm mới trong tab Thư viện nếu muốn đồng bộ ngay.';
+			case 'profile.helpCenter.faq.general.formatsSupport.question': return 'Nozie hỗ trợ định dạng nào?';
+			case 'profile.helpCenter.faq.general.formatsSupport.answer': return 'Nozie hỗ trợ tệp EPUB, PDF và audiobook MP3. Các tệp cá nhân tải lên sẽ được chuyển đổi tự động để phát tốt nhất.';
+			case 'profile.helpCenter.faq.service.purchaseEbook.question': return 'Làm thế nào để mua ebook?';
+			case 'profile.helpCenter.faq.service.purchaseEbook.answer': return 'Mở trang chi tiết sách, nhấn "Mua", chọn phương thức thanh toán rồi xác nhận. Sách đã mua sẽ xuất hiện ngay trong tab Thư viện.';
+			case 'profile.helpCenter.faq.service.audiobookNotPlaying.question': return 'Vì sao audiobook không phát?';
+			case 'profile.helpCenter.faq.service.audiobookNotPlaying.answer': return 'Kiểm tra âm lượng thiết bị và kết nối ổn định. Nếu vẫn lỗi, hãy xóa bộ nhớ đệm tại Hồ sơ > Trung tâm trợ giúp rồi khởi động lại ứng dụng.';
+			case 'profile.helpCenter.faq.service.manageNotifications.question': return 'Quản lý thông báo như thế nào?';
+			case 'profile.helpCenter.faq.service.manageNotifications.answer': return 'Vào Hồ sơ > Cài đặt thông báo để bật hoặc tắt cảnh báo cho gợi ý, mua sắm, khuyến mãi và nhiều loại khác.';
+			case 'profile.helpCenter.faq.service.requestRefund.question': return 'Làm sao yêu cầu hoàn tiền?';
+			case 'profile.helpCenter.faq.service.requestRefund.answer': return 'Liên hệ hỗ trợ qua Trung tâm trợ giúp > Liên hệ, cung cấp mã đơn hàng và đội ngũ của chúng tôi sẽ phản hồi trong 24 giờ.';
+			case 'profile.helpCenter.faq.service.purchaseEbookIssue.question': return 'Tại sao tôi không thể mua ebook?';
+			case 'profile.helpCenter.faq.service.purchaseEbookIssue.answer': return 'Kiểm tra bạn đã thêm phương thức thanh toán hợp lệ và có kết nối ổn định. Nếu vẫn không được, hãy đăng xuất rồi đăng nhập lại trước khi thử mua.';
+			case 'profile.helpCenter.faq.service.downloadEbookIssue.question': return 'Tại sao tôi không tải được ebook?';
+			case 'profile.helpCenter.faq.service.downloadEbookIssue.answer': return 'Đảm bảo bạn đã mua tựa sách và còn đủ dung lượng lưu trữ. Việc tải xuống cần Wi-Fi trừ khi bạn bật tải bằng dữ liệu di động trong phần Tùy chỉnh.';
+			case 'profile.helpCenter.faq.account.addPaymentMethod.question': return 'Làm sao thêm phương thức thanh toán?';
+			case 'profile.helpCenter.faq.account.addPaymentMethod.answer': return 'Vào Hồ sơ > Phương thức thanh toán, chọn "Thêm mới", nhập thông tin thẻ hoặc ví rồi lưu. Bạn có thể quản lý hoặc xóa bất cứ lúc nào tại đây.';
+			case 'profile.helpCenter.faq.account.resetPassword.question': return 'Làm sao đặt lại mật khẩu?';
+			case 'profile.helpCenter.faq.account.resetPassword.answer': return 'Vào Đăng nhập > Quên mật khẩu, nhập email và làm theo bước xác minh. Bạn có thể đặt mật khẩu mới sau khi xác nhận OTP gửi đến hộp thư.';
+			case 'profile.helpCenter.faq.account.changeLanguage.question': return 'Làm sao đổi ngôn ngữ ứng dụng?';
+			case 'profile.helpCenter.faq.account.changeLanguage.answer': return 'Chuyển đến Hồ sơ > Ngôn ngữ để chọn ngôn ngữ mong muốn. Cài đặt sẽ áp dụng tức thì trên toàn ứng dụng.';
+			case 'profile.helpCenter.faq.account.deleteAccount.question': return 'Làm sao xóa tài khoản?';
+			case 'profile.helpCenter.faq.account.deleteAccount.answer': return 'Mở Cài đặt > Bảo mật > Xóa tài khoản. Thực hiện các bước xác minh danh tính để hoàn tất.';
+			case 'profile.helpCenter.faq.account.addPaymentMethodIssue.question': return 'Tại sao tôi không thêm được phương thức thanh toán?';
+			case 'profile.helpCenter.faq.account.addPaymentMethodIssue.answer': return 'Hãy kiểm tra thông tin thẻ chính xác và được hỗ trợ ở khu vực của bạn. Một số thẻ trả trước hoặc ví điện tử có thể bị hạn chế bởi ngân hàng hoặc quốc gia.';
+			case 'profile.helpCenter.faq.ebook.downloadOffline.question': return 'Làm sao tải ebook để đọc offline?';
+			case 'profile.helpCenter.faq.ebook.downloadOffline.answer': return 'Mở bất kỳ sách đã mua nào, nhấn biểu tượng tải xuống và chọn nơi lưu. Bản tải sẽ sẵn sàng offline trong tab Thư viện.';
+			case 'profile.helpCenter.faq.movies.closeErabookAccount.question': return 'Tại sao tôi không thể đóng tài khoản trên Erabook?';
+			case 'profile.helpCenter.faq.movies.closeErabookAccount.answer': return 'Nếu bạn đã liên kết Nozie với Erabook, hãy hủy liên kết tại Hồ sơ > Dịch vụ liên kết trước. Sau đó gửi yêu cầu đóng tài khoản từ bảng điều khiển Erabook.';
+			case 'profile.helpCenter.contacts.customerService.title': return 'Chăm sóc khách hàng';
+			case 'profile.helpCenter.contacts.customerService.subtitle': return 'support@nozie.app';
+			case 'profile.helpCenter.contacts.whatsapp.title': return 'WhatsApp';
+			case 'profile.helpCenter.contacts.whatsapp.subtitle': return '+1 800 123 4567';
+			case 'profile.helpCenter.contacts.website.title': return 'Website';
+			case 'profile.helpCenter.contacts.website.subtitle': return 'www.nozie.app/support';
+			case 'profile.helpCenter.contacts.facebook.title': return 'Facebook';
+			case 'profile.helpCenter.contacts.facebook.subtitle': return '@NozieOfficial';
+			case 'profile.helpCenter.contacts.twitter.title': return 'Twitter';
+			case 'profile.helpCenter.contacts.twitter.subtitle': return '@NozieApp';
+			case 'profile.helpCenter.contacts.instagram.title': return 'Instagram';
+			case 'profile.helpCenter.contacts.instagram.subtitle': return '@nozie.app';
+			case 'profile.payment.title': return 'Phương thức thanh toán';
+			case 'profile.payment.loadError': return ({required Object error}) => 'Không thể tải phương thức thanh toán: ${error}';
+			case 'profile.payment.addNewMessage': return 'Đã chạm vào thêm phương thức thanh toán';
+			case 'profile.notification.title': return 'Thông báo';
+			case 'profile.notification.loadError': return ({required Object error}) => 'Không thể tải cài đặt: ${error}';
+			case 'profile.notification.sectionTitle': return 'Thông báo cho tôi khi...';
+			case 'profile.notification.toggles.newRecommendation': return 'Có gợi ý mới';
+			case 'profile.notification.toggles.newBookSeries': return 'Có bộ sách mới';
+			case 'profile.notification.toggles.authorUpdates': return 'Có cập nhật từ tác giả';
+			case 'profile.notification.toggles.priceDrops': return 'Có khuyến mãi giảm giá';
+			case 'profile.notification.toggles.purchase': return 'Khi tôi thực hiện giao dịch';
+			case 'profile.notification.toggles.appSystem': return 'Bật thông báo hệ thống ứng dụng';
+			case 'profile.notification.toggles.tipsServices': return 'Có mẹo và dịch vụ mới';
+			case 'profile.notification.toggles.survey': return 'Tham gia khảo sát';
+			case 'profile.personalInfo.title': return 'Thông tin cá nhân';
+			case 'profile.personalInfo.loadError': return 'Không thể tải hồ sơ. Vui lòng thử lại sau.';
+			case 'profile.personalInfo.success': return 'Cập nhật hồ sơ thành công';
+			case 'profile.personalInfo.fields.fullName.label': return 'Họ và tên';
+			case 'profile.personalInfo.fields.fullName.hint': return 'Nhập họ và tên';
+			case 'profile.personalInfo.fields.username.label': return 'Tên đăng nhập';
+			case 'profile.personalInfo.fields.username.hint': return 'Nhập tên đăng nhập';
+			case 'profile.personalInfo.fields.email.label': return 'Email';
+			case 'profile.personalInfo.fields.email.hint': return 'Nhập địa chỉ email';
+			case 'profile.personalInfo.fields.phone.label': return 'Số điện thoại';
+			case 'profile.personalInfo.fields.phone.hint': return 'Nhập số điện thoại';
+			case 'profile.personalInfo.fields.dob.label': return 'Ngày sinh';
+			case 'profile.personalInfo.fields.dob.hint': return 'DD/MM/YYYY';
+			case 'profile.personalInfo.fields.country.label': return 'Quốc gia';
+			case 'profile.personalInfo.fields.country.hint': return 'Chọn quốc gia';
+			case 'profile.personalInfo.saveChanges': return 'Lưu thay đổi';
+			case 'profile.preferences.title': return 'Tùy chỉnh';
+			case 'profile.preferences.sections.general': return 'Chung';
+			case 'profile.preferences.sections.playback': return 'Phát lại';
+			case 'profile.preferences.sections.video': return 'Video';
+			case 'profile.preferences.sections.audio': return 'Âm thanh';
+			case 'profile.preferences.toggles.wifiOnlyDownloads': return 'Chỉ tải qua Wi-Fi';
+			case 'profile.preferences.toggles.autoPlayNextEpisode': return 'Tự phát tập tiếp theo';
+			case 'profile.preferences.toggles.continueWatching': return 'Tiếp tục xem từ vị trí dở';
+			case 'profile.preferences.toggles.subtitlesEnabled': return 'Phụ đề';
+			case 'profile.preferences.toggles.autoRotateScreen': return 'Tự xoay màn hình';
+			case 'profile.preferences.toggles.autoDownloadAudio': return 'Tự động tải âm thanh';
+			case 'profile.preferences.actions.clearCache.title': return 'Xóa bộ nhớ đệm';
+			case 'profile.preferences.actions.clearCache.description': return ({required Object size}) => 'Đang lưu trữ: ${size}. Xóa bộ nhớ đệm sẽ loại bỏ tệp tạm nhưng giữ lại nội dung đã tải và cài đặt của bạn.';
+			case 'profile.preferences.actions.clearCache.button': return 'Xóa bộ nhớ đệm';
+			case 'profile.preferences.actions.clearCache.success': return 'Đã xóa bộ nhớ đệm';
+			case 'profile.preferences.actions.videoQuality.title': return 'Chất lượng video';
+			case 'profile.preferences.actions.videoQuality.options.auto': return 'Tự động';
+			case 'profile.preferences.actions.videoQuality.options.hd': return 'HD';
+			case 'profile.preferences.actions.videoQuality.options.fullHd': return 'Full HD';
+			case 'profile.preferences.actions.audioPreference.title': return 'Ngôn ngữ / Chất lượng âm thanh';
+			case 'profile.preferences.actions.audioPreference.options.systemDefault': return 'Theo hệ thống';
+			case 'profile.preferences.actions.audioPreference.options.englishHigh': return 'Tiếng Anh • Chất lượng cao';
+			case 'profile.preferences.actions.audioPreference.options.originalStandard': return 'Bản gốc • Tiêu chuẩn';
+			case 'profile.preferences.storageLabel.empty': return '0 MB đã lưu';
+			case 'profile.preferences.storageLabel.value': return ({required Object amount}) => '${amount} MB đã lưu';
+			case 'profile.security.title': return 'Bảo mật';
+			case 'profile.security.loadError': return ({required Object error}) => 'Không thể tải cài đặt bảo mật: ${error}';
+			case 'profile.security.toggles.rememberMe': return 'Ghi nhớ tôi';
+			case 'profile.security.toggles.biometricId': return 'Sinh trắc học';
+			case 'profile.security.toggles.faceId': return 'Face ID';
+			case 'profile.security.toggles.smsAuthenticator': return 'Xác thực SMS';
+			case 'profile.security.toggles.googleAuthenticator': return 'Google Authenticator';
+			case 'profile.security.actions.deviceManagement': return 'Quản lý thiết bị';
+			case 'profile.security.actions.changePassword': return 'Đổi mật khẩu';
+			case 'profile.security.actions.changePasswordMessage': return 'Đã chạm vào đổi mật khẩu';
+			case 'profile.security.actions.signOutDevice': return ({required Object name}) => 'Đã đăng xuất ${name}';
+			case 'profile.security.actions.signOutAll': return 'Đã đăng xuất khỏi tất cả thiết bị';
+			case 'profile.security.deviceManagement.title': return 'Quản lý thiết bị';
+			case 'profile.security.deviceManagement.description': return 'Quản lý các thiết bị được phép truy cập tài khoản của bạn.';
+			case 'profile.security.deviceManagement.signOutAll': return 'Đăng xuất tất cả thiết bị';
+			case 'profile.security.deviceManagement.current': return 'Thiết bị hiện tại';
+			case 'profile.security.deviceManagement.lastActive': return ({required Object time}) => 'Hoạt động lần cuối: ${time}';
 			case 'validation.general.fillAllFields': return 'Vui lòng điền đầy đủ tất cả các trường.';
 			case 'validation.general.required': return 'Trường này là bắt buộc.';
 			case 'validation.general.length': return ({required Object length}) => 'Độ dài phải là ${length}.';

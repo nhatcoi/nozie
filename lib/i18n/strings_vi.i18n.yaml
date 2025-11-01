@@ -16,6 +16,13 @@ common:
   back: Quay lại
   done: Hoàn thành
   empty: Trống
+  yes: Có
+  no: Không
+  addNew: Thêm mới
+  clear: Xoá
+  search: Tìm kiếm
+  loading: "Đang tải…"
+  signOut: Đăng xuất
 
 notification:
   title: Thông báo
@@ -189,6 +196,228 @@ settings:
     system: Hệ thống
     light: Sáng
     dark: Tối
+
+# Profile Module
+profile:
+  header:
+    defaultName: Người dùng NoZie
+    loadError: Không thể tải hồ sơ
+
+  menu:
+    paymentMethods: Phương thức thanh toán
+    personalInfo: Thông tin cá nhân
+    notification: Thông báo
+    preferences: Tùy chỉnh
+    security: Bảo mật
+    language: Ngôn ngữ
+    helpCenter: Trung tâm trợ giúp
+    about: Giới thiệu về NoZie
+    darkMode: Chế độ tối
+    logout: Đăng xuất
+
+  language:
+    title: Ngôn ngữ
+    sectionSuggested: Đề xuất
+    sectionOthers: Ngôn ngữ khác
+    loadError(String error): "Không thể tải danh sách ngôn ngữ: $error"
+    fallback: Tiếng Anh (Mỹ)
+
+  logoutSheet:
+    title: Đăng xuất
+    description: Bạn có chắc muốn đăng xuất khỏi NoZie? Bạn có thể đăng nhập lại bất cứ lúc nào.
+
+  helpCenter:
+    title: Trung tâm trợ giúp
+    tabs:
+      faq: FAQ
+      contact: Liên hệ
+    categories:
+      all: Tất cả
+      general: Chung
+      account: Tài khoản
+      service: Dịch vụ
+      movies: Phim
+      ebook: Sách điện tử
+    search:
+      hint: Tìm kiếm
+      noResults: Không tìm thấy câu hỏi phù hợp
+    filter:
+      clear: Xoá
+    faq:
+      general:
+        whatIsNozie:
+          question: Nozie là gì?
+          answer: Nozie là trung tâm cá nhân giúp bạn khám phá, đọc và nghe sách. Dễ dàng duyệt gợi ý tuyển chọn, sắp xếp thư viện và đồng bộ trên mọi thiết bị.
+        syncProgress:
+          question: Làm sao đồng bộ tiến độ đọc trên nhiều thiết bị?
+          answer: Đảm bảo bạn đã đăng nhập trên tất cả thiết bị. Tiến độ sẽ tự đồng bộ khi có kết nối; hãy kéo để làm mới trong tab Thư viện nếu muốn đồng bộ ngay.
+        formatsSupport:
+          question: Nozie hỗ trợ định dạng nào?
+          answer: Nozie hỗ trợ tệp EPUB, PDF và audiobook MP3. Các tệp cá nhân tải lên sẽ được chuyển đổi tự động để phát tốt nhất.
+      service:
+        purchaseEbook:
+          question: Làm thế nào để mua ebook?
+          answer: Mở trang chi tiết sách, nhấn "Mua", chọn phương thức thanh toán rồi xác nhận. Sách đã mua sẽ xuất hiện ngay trong tab Thư viện.
+        audiobookNotPlaying:
+          question: Vì sao audiobook không phát?
+          answer: Kiểm tra âm lượng thiết bị và kết nối ổn định. Nếu vẫn lỗi, hãy xóa bộ nhớ đệm tại Hồ sơ > Trung tâm trợ giúp rồi khởi động lại ứng dụng.
+        manageNotifications:
+          question: Quản lý thông báo như thế nào?
+          answer: Vào Hồ sơ > Cài đặt thông báo để bật hoặc tắt cảnh báo cho gợi ý, mua sắm, khuyến mãi và nhiều loại khác.
+        requestRefund:
+          question: Làm sao yêu cầu hoàn tiền?
+          answer: Liên hệ hỗ trợ qua Trung tâm trợ giúp > Liên hệ, cung cấp mã đơn hàng và đội ngũ của chúng tôi sẽ phản hồi trong 24 giờ.
+        purchaseEbookIssue:
+          question: "Tại sao tôi không thể mua ebook?"
+          answer: Kiểm tra bạn đã thêm phương thức thanh toán hợp lệ và có kết nối ổn định. Nếu vẫn không được, hãy đăng xuất rồi đăng nhập lại trước khi thử mua.
+        downloadEbookIssue:
+          question: "Tại sao tôi không tải được ebook?"
+          answer: Đảm bảo bạn đã mua tựa sách và còn đủ dung lượng lưu trữ. Việc tải xuống cần Wi-Fi trừ khi bạn bật tải bằng dữ liệu di động trong phần Tùy chỉnh.
+      account:
+        addPaymentMethod:
+          question: Làm sao thêm phương thức thanh toán?
+          answer: Vào Hồ sơ > Phương thức thanh toán, chọn "Thêm mới", nhập thông tin thẻ hoặc ví rồi lưu. Bạn có thể quản lý hoặc xóa bất cứ lúc nào tại đây.
+        resetPassword:
+          question: Làm sao đặt lại mật khẩu?
+          answer: Vào Đăng nhập > Quên mật khẩu, nhập email và làm theo bước xác minh. Bạn có thể đặt mật khẩu mới sau khi xác nhận OTP gửi đến hộp thư.
+        changeLanguage:
+          question: Làm sao đổi ngôn ngữ ứng dụng?
+          answer: Chuyển đến Hồ sơ > Ngôn ngữ để chọn ngôn ngữ mong muốn. Cài đặt sẽ áp dụng tức thì trên toàn ứng dụng.
+        deleteAccount:
+          question: Làm sao xóa tài khoản?
+          answer: Mở Cài đặt > Bảo mật > Xóa tài khoản. Thực hiện các bước xác minh danh tính để hoàn tất.
+        addPaymentMethodIssue:
+          question: "Tại sao tôi không thêm được phương thức thanh toán?"
+          answer: Hãy kiểm tra thông tin thẻ chính xác và được hỗ trợ ở khu vực của bạn. Một số thẻ trả trước hoặc ví điện tử có thể bị hạn chế bởi ngân hàng hoặc quốc gia.
+      ebook:
+        downloadOffline:
+          question: Làm sao tải ebook để đọc offline?
+          answer: Mở bất kỳ sách đã mua nào, nhấn biểu tượng tải xuống và chọn nơi lưu. Bản tải sẽ sẵn sàng offline trong tab Thư viện.
+      movies:
+        closeErabookAccount:
+          question: "Tại sao tôi không thể đóng tài khoản trên Erabook?"
+          answer: Nếu bạn đã liên kết Nozie với Erabook, hãy hủy liên kết tại Hồ sơ > Dịch vụ liên kết trước. Sau đó gửi yêu cầu đóng tài khoản từ bảng điều khiển Erabook.
+    contacts:
+      customerService:
+        title: Chăm sóc khách hàng
+        subtitle: "support@nozie.app"
+      whatsapp:
+        title: WhatsApp
+        subtitle: "+1 800 123 4567"
+      website:
+        title: Website
+        subtitle: "www.nozie.app/support"
+      facebook:
+        title: Facebook
+        subtitle: "@NozieOfficial"
+      twitter:
+        title: Twitter
+        subtitle: "@NozieApp"
+      instagram:
+        title: Instagram
+        subtitle: "@nozie.app"
+
+  payment:
+    title: Phương thức thanh toán
+    loadError(String error): "Không thể tải phương thức thanh toán: $error"
+    addNewMessage: "Đã chạm vào thêm phương thức thanh toán"
+
+  notification:
+    title: Thông báo
+    loadError(String error): "Không thể tải cài đặt: $error"
+    sectionTitle: Thông báo cho tôi khi...
+    toggles:
+      newRecommendation: Có gợi ý mới
+      newBookSeries: Có bộ sách mới
+      authorUpdates: Có cập nhật từ tác giả
+      priceDrops: Có khuyến mãi giảm giá
+      purchase: Khi tôi thực hiện giao dịch
+      appSystem: Bật thông báo hệ thống ứng dụng
+      tipsServices: Có mẹo và dịch vụ mới
+      survey: Tham gia khảo sát
+
+  personalInfo:
+    title: Thông tin cá nhân
+    loadError: Không thể tải hồ sơ. Vui lòng thử lại sau.
+    success: Cập nhật hồ sơ thành công
+    fields:
+      fullName:
+        label: Họ và tên
+        hint: Nhập họ và tên
+      username:
+        label: Tên đăng nhập
+        hint: Nhập tên đăng nhập
+      email:
+        label: Email
+        hint: Nhập địa chỉ email
+      phone:
+        label: Số điện thoại
+        hint: Nhập số điện thoại
+      dob:
+        label: Ngày sinh
+        hint: DD/MM/YYYY
+      country:
+        label: Quốc gia
+        hint: Chọn quốc gia
+    saveChanges: Lưu thay đổi
+
+  preferences:
+    title: Tùy chỉnh
+    sections:
+      general: Chung
+      playback: Phát lại
+      video: Video
+      audio: Âm thanh
+    toggles:
+      wifiOnlyDownloads: Chỉ tải qua Wi-Fi
+      autoPlayNextEpisode: Tự phát tập tiếp theo
+      continueWatching: Tiếp tục xem từ vị trí dở
+      subtitlesEnabled: Phụ đề
+      autoRotateScreen: Tự xoay màn hình
+      autoDownloadAudio: Tự động tải âm thanh
+    actions:
+      clearCache:
+        title: Xóa bộ nhớ đệm
+        description(String size): "Đang lưu trữ: $size. Xóa bộ nhớ đệm sẽ loại bỏ tệp tạm nhưng giữ lại nội dung đã tải và cài đặt của bạn."
+        button: Xóa bộ nhớ đệm
+        success: Đã xóa bộ nhớ đệm
+      videoQuality:
+        title: Chất lượng video
+        options:
+          auto: Tự động
+          hd: HD
+          fullHd: Full HD
+      audioPreference:
+        title: Ngôn ngữ / Chất lượng âm thanh
+        options:
+          systemDefault: Theo hệ thống
+          englishHigh: Tiếng Anh • Chất lượng cao
+          originalStandard: Bản gốc • Tiêu chuẩn
+    storageLabel:
+      empty: 0 MB đã lưu
+      value(String amount): $amount MB đã lưu
+
+  security:
+    title: Bảo mật
+    loadError(String error): "Không thể tải cài đặt bảo mật: $error"
+    toggles:
+      rememberMe: Ghi nhớ tôi
+      biometricId: Sinh trắc học
+      faceId: Face ID
+      smsAuthenticator: Xác thực SMS
+      googleAuthenticator: Google Authenticator
+    actions:
+      deviceManagement: Quản lý thiết bị
+      changePassword: Đổi mật khẩu
+      changePasswordMessage: Đã chạm vào đổi mật khẩu
+      signOutDevice(String name): Đã đăng xuất $name
+      signOutAll: Đã đăng xuất khỏi tất cả thiết bị
+    deviceManagement:
+      title: Quản lý thiết bị
+      description: Quản lý các thiết bị được phép truy cập tài khoản của bạn.
+      signOutAll: Đăng xuất tất cả thiết bị
+      current: Thiết bị hiện tại
+      lastActive(String time): "Hoạt động lần cuối: $time"
 
 # Validation Messages
 validation:

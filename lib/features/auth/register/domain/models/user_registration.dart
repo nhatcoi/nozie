@@ -28,8 +28,8 @@ class UserReg {
       gender: json['gender'],
       age: json['age'],
       genres: List<String>.from(json['genres'] ?? []),
-      profile: UserProfile.fromJson(json['profile']),
-      account: UserAccount.fromJson(json['account']),
+      profile: UserProfile.fromJson(json['profile'] ?? const <String, dynamic>{}),
+      account: UserAccount.fromJson(json['account'] ?? const <String, dynamic>{}),
     );
   }
 }
@@ -97,4 +97,5 @@ class UserAccount {
     );
   }
 }
+
 
