@@ -30,6 +30,10 @@ class ProfileNotifier extends StateNotifier<AsyncValue<UserProfile>> {
       state = AsyncValue.error(error, stack);
     }
   }
+
+  void setProfile(UserProfile profile) {
+    state = AsyncValue.data(profile);
+  }
 }
 
 final profileNotifierProvider =

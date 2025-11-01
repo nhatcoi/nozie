@@ -15,6 +15,7 @@ class SecurityScreen extends ConsumerWidget {
     final notifier = ref.read(securityNotifierProvider.notifier);
 
     final isProcessing = securityState.isLoading;
+    final t = context.i18n;
 
     void openDeviceManagement() {
       showModalBottomSheet<void>(
@@ -42,7 +43,10 @@ class SecurityScreen extends ConsumerWidget {
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Signed out ${session.name}'),
+                        content: Text(
+                          t.profile.security.actions
+                              .signOutDevice(name: session.name),
+                        ),
                         behavior: SnackBarBehavior.floating,
                       ),
                     );
@@ -55,8 +59,10 @@ class SecurityScreen extends ConsumerWidget {
                   }
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Signed out from all devices'),
+                      SnackBar(
+                        content: Text(
+                          t.profile.security.actions.signOutAll,
+                        ),
                         behavior: SnackBarBehavior.floating,
                       ),
                     );
@@ -76,7 +82,7 @@ class SecurityScreen extends ConsumerWidget {
           onPressed: () => Navigator.of(context).maybePop(),
         ),
         title: Text(
-          'Security',
+          t.profile.security.title,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
         ),
         centerTitle: false,
@@ -87,7 +93,7 @@ class SecurityScreen extends ConsumerWidget {
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, _) => Center(
             child: Text(
-              'Failed to load security settings: $error',
+              t.profile.security.loadError(error: error.toString()),
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.warning,
                   ),
@@ -97,7 +103,7 @@ class SecurityScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _SecurityToggle(
-                title: 'Remember me',
+                title: t.profile.security.toggles.rememberMe,
                 value: settings.rememberMe,
                 onChanged: isProcessing
                     ? null
@@ -105,7 +111,7 @@ class SecurityScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 20),
               _SecurityToggle(
-                title: 'Biometric ID',
+                title: t.profile.security.toggles.biometricId,
                 value: settings.biometricId,
                 onChanged: isProcessing
                     ? null
@@ -113,7 +119,7 @@ class SecurityScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 20),
               _SecurityToggle(
-                title: 'Face ID',
+                title: t.profile.security.toggles.faceId,
                 value: settings.faceId,
                 onChanged: isProcessing
                     ? null
@@ -121,7 +127,7 @@ class SecurityScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 20),
               _SecurityToggle(
-                title: 'SMS Authenticator',
+                title: t.profile.security.toggles.smsAuthenticator,
                 value: settings.smsAuthenticator,
                 onChanged: isProcessing
                     ? null
@@ -129,7 +135,7 @@ class SecurityScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 20),
               _SecurityToggle(
-                title: 'Google Authenticator',
+                title: t.profile.security.toggles.googleAuthenticator,
                 value: settings.googleAuthenticator,
                 onChanged: isProcessing
                     ? null
@@ -137,16 +143,16 @@ class SecurityScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 20),
               _SecurityNavigationTile(
-                title: 'Device Management',
+                title: t.profile.security.actions.deviceManagement,
                 onTap: openDeviceManagement,
               ),
               const SizedBox(height: 32),
               SecondaryButton(
-                text: 'Change Password',
+                text: t.profile.security.actions.changePassword,
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Change password tapped'),
+                    SnackBar(
+                      content: Text(t.profile.security.actions.changePasswordMessage),
                       behavior: SnackBarBehavior.floating,
                     ),
                   );
@@ -253,6 +259,7 @@ class _DeviceManagementSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final textColor = AppColors.getText(context);
     final secondary = AppColors.getTextSecondary(context);
+    final t = context.i18n;
 
     return Padding(
       padding: EdgeInsets.only(
@@ -280,7 +287,7 @@ class _DeviceManagementSheet extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  'Device Management',
+                  t.profile.security.deviceManagement.title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                         color: textColor,
@@ -295,7 +302,7 @@ class _DeviceManagementSheet extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Manage devices that have access to your account.',
+            t.profile.security.deviceManagement.description,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: secondary,
                 ),
@@ -314,7 +321,7 @@ class _DeviceManagementSheet extends StatelessWidget {
           ),
           const SizedBox(height: 28),
           SecondaryButton(
-            text: 'Sign Out All Devices',
+            text: t.profile.security.deviceManagement.signOutAll,
             onPressed: onSignOutAll,
             hasShadow: false,
           ),
@@ -337,6 +344,7 @@ class _DeviceSessionRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final textColor = AppColors.getText(context);
     final secondary = AppColors.getTextSecondary(context);
+    final t = context.i18n;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -379,7 +387,7 @@ class _DeviceSessionRow extends StatelessWidget {
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: Text(
-                        'Current',
+                        t.profile.security.deviceManagement.current,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: AppColors.primary500,
                               fontWeight: FontWeight.w600,
@@ -404,7 +412,8 @@ class _DeviceSessionRow extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'Last active: ${session.lastActive}',
+                t.profile.security.deviceManagement
+                    .lastActive(time: session.lastActive),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: secondary.withOpacity(0.9),
                     ),
@@ -418,7 +427,7 @@ class _DeviceSessionRow extends StatelessWidget {
                   minimumSize: const Size(0, 0),
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
-                child: const Text('Sign out'),
+                child: Text(t.common.signOut),
               ),
             ],
           ),

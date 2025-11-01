@@ -13,6 +13,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
     final settingsState = ref.watch(notificationNotifierProvider);
     final settings = settingsState.value ?? NotificationSettings.defaults;
     final isUpdating = settingsState.isLoading;
+    final t = context.i18n;
 
     return Scaffold(
       appBar: AppBar(
@@ -21,7 +22,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
           onPressed: () => Navigator.of(context).maybePop(),
         ),
         title: Text(
-          'Notification',
+          t.profile.notification.title,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w700,
               ),
@@ -34,7 +35,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, _) => Center(
             child: Text(
-              'Failed to load settings: $error',
+              t.profile.notification.loadError(error: error.toString()),
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.warning,
                   ),
@@ -43,12 +44,12 @@ class NotificationSettingsScreen extends ConsumerWidget {
           data: (_) => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const _SectionTitle('Notify me when...'),
+              _SectionTitle(t.profile.notification.sectionTitle),
               const SizedBox(height: 12),
               _SettingGroup(
                 children: [
                   _ToggleTile(
-                    title: 'There is a New Recommendation',
+                    title: t.profile.notification.toggles.newRecommendation,
                     value: settings.newRecommendation,
                     enabled: !isUpdating,
                     onChanged: (value) => ref
@@ -56,7 +57,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
                         .toggle(newRecommendation: value),
                   ),
                   _ToggleTile(
-                    title: "There's a New Book Series",
+                    title: t.profile.notification.toggles.newBookSeries,
                     value: settings.newBookSeries,
                     enabled: !isUpdating,
                     onChanged: (value) => ref
@@ -64,7 +65,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
                         .toggle(newBookSeries: value),
                   ),
                   _ToggleTile(
-                    title: 'There is an update from Authors',
+                    title: t.profile.notification.toggles.authorUpdates,
                     value: settings.authorUpdates,
                     enabled: !isUpdating,
                     onChanged: (value) => ref
@@ -72,7 +73,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
                         .toggle(authorUpdates: value),
                   ),
                   _ToggleTile(
-                    title: 'There are Price Drops Available',
+                    title: t.profile.notification.toggles.priceDrops,
                     value: settings.priceDrops,
                     enabled: !isUpdating,
                     onChanged: (value) => ref
@@ -80,7 +81,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
                         .toggle(priceDrops: value),
                   ),
                   _ToggleTile(
-                    title: 'When I Make a Purchase',
+                    title: t.profile.notification.toggles.purchase,
                     value: settings.purchase,
                     enabled: !isUpdating,
                     onChanged: (value) => ref
@@ -88,7 +89,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
                         .toggle(purchase: value),
                   ),
                   _ToggleTile(
-                    title: 'Enable App System Notifications',
+                    title: t.profile.notification.toggles.appSystem,
                     value: settings.appSystem,
                     enabled: !isUpdating,
                     onChanged: (value) => ref
@@ -96,7 +97,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
                         .toggle(appSystem: value),
                   ),
                   _ToggleTile(
-                    title: 'New Tips & Services Available',
+                    title: t.profile.notification.toggles.tipsServices,
                     value: settings.tipsServices,
                     enabled: !isUpdating,
                     onChanged: (value) => ref
@@ -104,7 +105,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
                         .toggle(tipsServices: value),
                   ),
                   _ToggleTile(
-                    title: 'Participate in Survey',
+                    title: t.profile.notification.toggles.survey,
                     value: settings.survey,
                     enabled: !isUpdating,
                     onChanged: (value) => ref

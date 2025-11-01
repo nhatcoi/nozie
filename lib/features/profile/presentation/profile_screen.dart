@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:movie_fe/core/app_export.dart';
 import 'package:movie_fe/core/widgets/layout/lined_text_divider.dart';
+import 'package:movie_fe/features/auth/shared/providers/firebase_auth_provider.dart';
 import 'package:movie_fe/features/profile/models/language_settings.dart';
 import 'package:movie_fe/features/profile/models/user_profile.dart';
 import 'package:movie_fe/features/profile/notifiers/auth_user_provider.dart';
@@ -18,10 +19,12 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userState = ref.watch(authUserProvider);
     final languageState = ref.watch(languageNotifierProvider);
-    final languageLabel = _languageLabel(languageState);
+    final t = context.i18n;
+    final languageLabel = _languageLabel(context, languageState);
 
     void _showLogoutConfirmation() {
       final router = GoRouter.of(context);
+      final auth = ref.read(firebaseAuthProvider);
 
       showModalBottomSheet<void>(
         context: context,
@@ -33,9 +36,12 @@ class ProfileScreen extends ConsumerWidget {
         ),
         builder: (sheetContext) => _LogoutBottomSheet(
           onCancel: () => Navigator.of(sheetContext).maybePop(),
-          onConfirm: () {
+          onConfirm: () async {
             Navigator.of(sheetContext).maybePop();
-            router.go(AppRouter.welcome);
+            await auth.signOut();
+            if (context.mounted) {
+              router.go(AppRouter.welcome);
+            }
           },
         ),
       );
@@ -53,38 +59,38 @@ class ProfileScreen extends ConsumerWidget {
             _SettingItem(
               lightBackgroundColor: const Color(0xFFE7F8EF),
               iconAsset: ImageConstant.walletColorIcon,
-              title: 'Payment Methods',
+              title: t.profile.menu.paymentMethods,
               onTap: () => context.push(AppRouter.paymentMethods),
             ),
             const LinedTextDivider(),
             _SettingItem(
               lightBackgroundColor: const Color(0xFFE9F0FF),
               iconAsset: ImageConstant.profileColorIcon,
-              title: 'Personal Info',
+              title: t.profile.menu.personalInfo,
               onTap: () => context.push(AppRouter.personalInfo),
             ),
             _SettingItem(
               lightBackgroundColor: const Color(0xFFFFEFEF),
               iconAsset: ImageConstant.ringColorIcon,
-              title: 'Notification',
+              title: t.profile.menu.notification,
               onTap: () => context.push(AppRouter.notificationSettings),
             ),
             _SettingItem(
               lightBackgroundColor: const Color(0xFFF3EEFF),
               iconAsset: ImageConstant.settingColorIcon,
-              title: 'Preferences',
+              title: t.profile.menu.preferences,
               onTap: () => context.push(AppRouter.preferences),
             ),
             _SettingItem(
               lightBackgroundColor: const Color(0xFFEAF7F1),
               iconAsset: ImageConstant.guardIcon,
-              title: 'Security',
+              title: t.profile.menu.security,
               onTap: () => context.push(AppRouter.security),
             ),
             _SettingItem(
               lightBackgroundColor: const Color(0xFFFFF4E6),
               iconAsset: ImageConstant.categoryColorIcon,
-              title: 'Language',
+              title: t.profile.menu.language,
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -113,13 +119,13 @@ class ProfileScreen extends ConsumerWidget {
             _SettingItem(
               lightBackgroundColor: const Color(0xFFE7F8EF),
               iconAsset: ImageConstant.documentColorIcon,
-              title: 'Help Center',
+              title: t.profile.menu.helpCenter,
               onTap: () => context.push(AppRouter.helpCenter),
             ),
             _SettingItem(
               lightBackgroundColor: const Color(0xFFFFF4E6),
               iconAsset: ImageConstant.infoIcon,
-              title: 'About NoZie',
+              title: t.profile.menu.about,
               onTap: () {},
             ),
             const SizedBox(height: 8),
@@ -142,6 +148,7 @@ class _ProfileHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final textColor = AppColors.getText(context);
     final secondaryText = AppColors.getTextSecondary(context);
+    final t = context.i18n;
 
     return userState.when(
       data: (profile) => Row(
@@ -157,7 +164,9 @@ class _ProfileHeader extends StatelessWidget {
             child: ListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(
-                profile.fullName.isNotEmpty ? profile.fullName : 'NoZie User',
+                profile.fullName.isNotEmpty
+                    ? profile.fullName
+                    : t.profile.header.defaultName,
                 style: TextStyle(
                   color: textColor,
                   fontSize: 18,
@@ -196,7 +205,7 @@ class _ProfileHeader extends StatelessWidget {
           const SizedBox(width: 16),
           Expanded(
             child: Text(
-              'Unable to load profile',
+              t.profile.header.loadError,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: textColor,
                     fontWeight: FontWeight.w600,
@@ -274,6 +283,7 @@ class _LogoutItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.i18n;
     return InkWell(
       onTap: onTap,
       child: Row(
@@ -294,7 +304,7 @@ class _LogoutItem extends StatelessWidget {
           ),
           const SizedBox(width: 16),
           Text(
-            'Logout',
+            t.profile.menu.logout,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               color: const Color(0xFFFF4D4D),
               fontWeight: FontWeight.w600,
@@ -314,11 +324,12 @@ class _DarkModeSetting extends ConsumerWidget {
     final mode = ref.watch(themeModeProvider);
     final notifier = ref.read(themeModeProvider.notifier);
     final isDark = mode == ThemeMode.dark;
+    final t = context.i18n;
 
     return _SettingItem(
       lightBackgroundColor: const Color(0xFFE9F0FF),
       iconAsset: ImageConstant.eyeColorIcon,
-      title: 'Dark Mode',
+      title: t.profile.menu.darkMode,
       trailing: Switch.adaptive(
         value: isDark,
         onChanged: (val) => notifier.set(val ? ThemeMode.dark : ThemeMode.light),
@@ -341,6 +352,7 @@ class _LogoutBottomSheet extends StatelessWidget {
     final textColor = AppColors.getText(context);
     final secondaryText = AppColors.getTextSecondary(context);
     final bottomInset = MediaQuery.of(context).viewPadding.bottom;
+    final t = context.i18n;
 
     return SafeArea(
       top: false,
@@ -381,12 +393,12 @@ class _LogoutBottomSheet extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'Logout',
+              t.profile.logoutSheet.title,
               style: AppTypography.h6.copyWith(color: textColor),
             ),
             const SizedBox(height: 6),
             Text(
-              'Are you sure you want to logout from NoZie? You can log in again anytime.',
+              t.profile.logoutSheet.description,
               style: AppTypography.bodyMMedium.copyWith(color: secondaryText),
             ),
             const SizedBox(height: 24),
@@ -394,7 +406,7 @@ class _LogoutBottomSheet extends StatelessWidget {
               children: [
                 Expanded(
                   child: SecondaryButton(
-                    text: 'Cancel',
+                    text: t.common.cancel,
                     onPressed: onCancel,
                     backgroundColor: AppColors.getSurface(context),
                     textColor: textColor,
@@ -403,7 +415,7 @@ class _LogoutBottomSheet extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: PrimaryButton(
-                    text: 'Yes',
+                    text: t.common.yes,
                     onPressed: onConfirm,
                   ),
                 ),
@@ -416,7 +428,7 @@ class _LogoutBottomSheet extends StatelessWidget {
   }
 }
 
-String _languageLabel(AsyncValue<LanguageSettings> state) {
+String _languageLabel(BuildContext context, AsyncValue<LanguageSettings> state) {
   return state.when(
     data: (value) {
       final label = value.selected;
@@ -424,12 +436,15 @@ String _languageLabel(AsyncValue<LanguageSettings> state) {
           .followedBy(Languages.others)
           .firstWhere(
             (item) => item.value == label,
-            orElse: () => const DropdownItem(value: 'en_us', label: 'English (US)'),
+            orElse: () => DropdownItem(
+              value: 'en_us',
+              label: context.i18n.profile.language.fallback,
+            ),
           )
           .label;
     },
-    loading: () => 'Loading…',
-    error: (_, __) => 'English (US)',
+    loading: () => context.i18n.common.loading,
+    error: (_, __) => context.i18n.profile.language.fallback,
   );
 }
 

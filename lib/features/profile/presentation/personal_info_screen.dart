@@ -99,6 +99,7 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
     final profileState = ref.watch(profileNotifierProvider);
     final isSaving = profileState.isLoading;
     final currentProfile = profileState.value;
+    final t = context.i18n;
 
     return Scaffold(
       appBar: AppBar(
@@ -107,7 +108,7 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
           onPressed: () => Navigator.of(context).maybePop(),
         ),
         title: Text(
-          'Personal Info',
+          t.profile.personalInfo.title,
           style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
         ),
         centerTitle: false,
@@ -149,8 +150,8 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
 
             const SizedBox(height: 24),
             InfoField(
-              label: 'Full Name',
-              hintText: 'Enter full name',
+              label: t.profile.personalInfo.fields.fullName.label,
+              hintText: t.profile.personalInfo.fields.fullName.hint,
               controller: _fullName,
               focusNode: _fullNameFocus,
               onSubmitted: (_) => _usernameFocus.requestFocus(),
@@ -161,8 +162,8 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
             ),
             const SizedBox(height: 16),
             InfoField(
-              label: 'Username',
-              hintText: 'Enter username',
+              label: t.profile.personalInfo.fields.username.label,
+              hintText: t.profile.personalInfo.fields.username.hint,
               controller: _username,
               focusNode: _usernameFocus,
               onSubmitted: (_) => _emailFocus.requestFocus(),
@@ -173,8 +174,8 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
             ),
             const SizedBox(height: 16),
             InfoField(
-              label: 'Email',
-              hintText: 'Enter email address',
+              label: t.profile.personalInfo.fields.email.label,
+              hintText: t.profile.personalInfo.fields.email.hint,
               controller: _email,
               focusNode: _emailFocus,
               keyboardType: TextInputType.emailAddress,
@@ -186,8 +187,8 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
             ),
             const SizedBox(height: 16),
             InfoField(
-              label: 'Phone Number',
-              hintText: 'Enter phone number',
+              label: t.profile.personalInfo.fields.phone.label,
+              hintText: t.profile.personalInfo.fields.phone.hint,
               controller: _phone,
               focusNode: _phoneFocus,
               keyboardType: TextInputType.phone,
@@ -199,8 +200,8 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
             ),
             const SizedBox(height: 16),
             InfoField(
-              label: 'Date of Birth',
-              hintText: 'DD/MM/YYYY',
+              label: t.profile.personalInfo.fields.dob.label,
+              hintText: t.profile.personalInfo.fields.dob.hint,
               controller: _dob,
               focusNode: _dobFocus,
               isReadOnly: true,
@@ -220,18 +221,18 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
             ),
             const SizedBox(height: 16),
             CustomDropdown(
-              label: 'Country',
+              label: t.profile.personalInfo.fields.country.label,
               value: _country,
               items: Countries.list,
               onChanged: (value) => setState(() => _country = value),
               validator: (value) =>
                   ValidationUtils.validateCountry(value, context),
 
-              hint: 'Select country',
+              hint: t.profile.personalInfo.fields.country.hint,
             ),
             const SizedBox(height: 32),
             PrimaryButton(
-              text: 'Save Changes',
+              text: t.profile.personalInfo.saveChanges,
               isLoading: isSaving,
               onPressed: () {
                 if (isSaving) return;
@@ -253,8 +254,8 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
                 ref.read(profileNotifierProvider.notifier).update(updated).then((_) {
                   if (!mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Profile updated'),
+                    SnackBar(
+                      content: Text(t.profile.personalInfo.success),
                       behavior: SnackBarBehavior.floating,
                       duration: Duration(seconds: 2),
                     ),
@@ -265,7 +266,7 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
             ),
             const SizedBox(height: 16),
             SecondaryButton(
-              text: 'Cancel',
+              text: t.common.cancel,
               onPressed: () => Navigator.of(context).maybePop(),
             ),
             const SizedBox(height: 24),
@@ -273,7 +274,7 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Text(
-                  'Failed to load profile. Please try again later.',
+                  t.profile.personalInfo.loadError,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AppColors.warning,
                       ),

@@ -24,6 +24,7 @@ class PaymentScreen extends ConsumerWidget {
       ),
     ).id;
     final notifier = ref.read(paymentNotifierProvider.notifier);
+    final t = context.i18n;
 
     return Scaffold(
       appBar: AppBar(
@@ -32,7 +33,7 @@ class PaymentScreen extends ConsumerWidget {
           onPressed: () => Navigator.of(context).maybePop(),
         ),
         title: Text(
-          'Payment Methods',
+          t.profile.payment.title,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w700,
               ),
@@ -48,7 +49,7 @@ class PaymentScreen extends ConsumerWidget {
                 loading: () => const Center(child: CircularProgressIndicator()),
                 error: (error, _) => Center(
                   child: Text(
-                    'Failed to load payment methods: $error',
+                    t.profile.payment.loadError(error: error.toString()),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: AppColors.warning,
                         ),
@@ -80,13 +81,13 @@ class PaymentScreen extends ConsumerWidget {
               Padding(
                 padding: ResponsivePadding.content(context).copyWith(top: 26, bottom: 26),
                 child: PrimaryButton(
-                  text: 'Add New',
+                  text: t.common.addNew,
                   icon: const Icon(Icons.add, color: Colors.white, size: 18),
                   textColor: Colors.white,
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Add payment method tapped'),
+                      SnackBar(
+                        content: Text(t.profile.payment.addNewMessage),
                         behavior: SnackBarBehavior.floating,
                       ),
                     );

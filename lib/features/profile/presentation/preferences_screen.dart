@@ -13,6 +13,7 @@ class PreferencesScreen extends ConsumerWidget {
     final preferencesState = ref.watch(preferencesNotifierProvider);
     final prefs = preferencesState.value ?? Preferences.defaults;
     final notifier = ref.read(preferencesNotifierProvider.notifier);
+    final t = context.i18n;
 
     if (preferencesState.isLoading && preferencesState.value == null) {
       return const Scaffold(
@@ -28,6 +29,7 @@ class PreferencesScreen extends ConsumerWidget {
           borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
         builder: (sheetContext) {
+          final sizeLabel = _cacheLabel(context, prefs.cacheSizeMb);
           return Padding(
             padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
             child: Column(
@@ -35,7 +37,7 @@ class PreferencesScreen extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Clear Cache',
+                  t.profile.preferences.actions.clearCache.title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                         color: AppColors.getText(context),
@@ -43,20 +45,21 @@ class PreferencesScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Currently stored: ${_cacheLabel(prefs.cacheSizeMb)}. Removing cache will delete temporary files but keep your downloads and preferences.',
+                  t.profile.preferences.actions.clearCache
+                      .description(size: sizeLabel),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AppColors.getTextSecondary(context),
                       ),
                 ),
                 const SizedBox(height: 24),
                 PrimaryButton(
-                  text: 'Clear Cache',
+                  text: t.profile.preferences.actions.clearCache.button,
                   onPressed: () {
                     Navigator.of(sheetContext).pop();
                     notifier.updateFields(cacheSizeMb: 0);
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Cache cleared'),
+                      SnackBar(
+                        content: Text(t.profile.preferences.actions.clearCache.success),
                         behavior: SnackBarBehavior.floating,
                         duration: Duration(seconds: 2),
                       ),
@@ -66,7 +69,7 @@ class PreferencesScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 12),
                 SecondaryButton(
-                  text: 'Cancel',
+                  text: t.common.cancel,
                   onPressed: () => Navigator.of(sheetContext).pop(),
                 ),
               ],
@@ -78,7 +81,7 @@ class PreferencesScreen extends ConsumerWidget {
 
     void showOptionsSheet({
       required String title,
-      required List<String> options,
+      required Map<String, String> options,
       required String selected,
       required ValueChanged<String> onSelect,
     }) {
@@ -103,9 +106,9 @@ class PreferencesScreen extends ConsumerWidget {
                       ),
                 ),
                 const SizedBox(height: 16),
-                ...options.map(
+                ...options.entries.map(
                   (option) => RadioListTile<String>(
-                    value: option,
+                    value: option.key,
                     groupValue: selected,
                     onChanged: (value) {
                       if (value == null) return;
@@ -113,7 +116,7 @@ class PreferencesScreen extends ConsumerWidget {
                       Navigator.of(sheetContext).pop();
                     },
                     activeColor: AppColors.primary500,
-                    title: Text(option),
+                    title: Text(option.value),
                     contentPadding: EdgeInsets.zero,
                   ),
                 ),
@@ -121,7 +124,7 @@ class PreferencesScreen extends ConsumerWidget {
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: () => Navigator.of(sheetContext).pop(),
-                    child: const Text('Cancel'),
+                    child: Text(t.common.cancel),
                   ),
                 ),
               ],
@@ -138,7 +141,7 @@ class PreferencesScreen extends ConsumerWidget {
           onPressed: () => Navigator.of(context).maybePop(),
         ),
         title: Text(
-          'Preferences',
+          t.profile.preferences.title,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
         ),
         centerTitle: false,
@@ -146,69 +149,76 @@ class PreferencesScreen extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         children: [
-          const _SectionLabel(title: 'General'),
+          _SectionLabel(title: t.profile.preferences.sections.general),
           _ToggleTile(
-            title: 'Download Over Wi-Fi Only',
+            title: t.profile.preferences.toggles.wifiOnlyDownloads,
             value: prefs.wifiOnlyDownloads,
             onChanged: (value) => notifier.updateFields(wifiOnlyDownloads: value),
           ),
           _ActionTile(
-            title: 'Clear Cache',
-            value: _cacheLabel(prefs.cacheSizeMb),
+            title: t.profile.preferences.actions.clearCache.title,
+            value: _cacheLabel(context, prefs.cacheSizeMb),
             onPressed: showClearCacheSheet,
           ),
           const SizedBox(height: 24),
-          const _SectionLabel(title: 'Playback'),
+          _SectionLabel(title: t.profile.preferences.sections.playback),
           _ToggleTile(
-            title: 'Auto Play Next Episode',
+            title: t.profile.preferences.toggles.autoPlayNextEpisode,
             value: prefs.autoPlayNextEpisode,
             onChanged: (value) => notifier.updateFields(autoPlayNextEpisode: value),
           ),
           _ToggleTile(
-            title: 'Continue Watching from Last Position',
+            title: t.profile.preferences.toggles.continueWatching,
             value: prefs.continueWatching,
             onChanged: (value) => notifier.updateFields(continueWatching: value),
           ),
           _ToggleTile(
-            title: 'Subtitles',
+            title: t.profile.preferences.toggles.subtitlesEnabled,
             value: prefs.subtitlesEnabled,
             onChanged: (value) => notifier.updateFields(subtitlesEnabled: value),
           ),
           const SizedBox(height: 24),
-          const _SectionLabel(title: 'Video'),
+          _SectionLabel(title: t.profile.preferences.sections.video),
           _ActionTile(
-            title: 'Video Quality',
-            value: prefs.videoQuality,
+            title: t.profile.preferences.actions.videoQuality.title,
+            value: _localizedVideoQuality(context, prefs.videoQuality),
             onPressed: () => showOptionsSheet(
-              title: 'Video Quality',
-              options: const ['Auto', 'HD', 'Full HD'],
+              title: t.profile.preferences.actions.videoQuality.title,
+              options: {
+                'Auto': t.profile.preferences.actions.videoQuality.options.auto,
+                'HD': t.profile.preferences.actions.videoQuality.options.hd,
+                'Full HD': t.profile.preferences.actions.videoQuality.options.fullHd,
+              },
               selected: prefs.videoQuality,
               onSelect: (value) => notifier.updateFields(videoQuality: value),
             ),
           ),
           _ToggleTile(
-            title: 'Auto Rotate Screen',
+            title: t.profile.preferences.toggles.autoRotateScreen,
             value: prefs.autoRotateScreen,
             onChanged: (value) => notifier.updateFields(autoRotateScreen: value),
           ),
           const SizedBox(height: 24),
-          const _SectionLabel(title: 'Audio'),
+          _SectionLabel(title: t.profile.preferences.sections.audio),
           _ActionTile(
-            title: 'Audio Language / Quality',
-            value: prefs.audioPreference,
+            title: t.profile.preferences.actions.audioPreference.title,
+            value: _localizedAudioPreference(context, prefs.audioPreference),
             onPressed: () => showOptionsSheet(
-              title: 'Audio Language / Quality',
-              options: const [
-                'System Default',
-                'English • High Quality',
-                'Original • Standard',
-              ],
+              title: t.profile.preferences.actions.audioPreference.title,
+              options: {
+                'System Default':
+                    t.profile.preferences.actions.audioPreference.options.systemDefault,
+                'English • High Quality':
+                    t.profile.preferences.actions.audioPreference.options.englishHigh,
+                'Original • Standard':
+                    t.profile.preferences.actions.audioPreference.options.originalStandard,
+              },
               selected: prefs.audioPreference,
               onSelect: (value) => notifier.updateFields(audioPreference: value),
             ),
           ),
           _ToggleTile(
-            title: 'Automatically Download Audio',
+            title: t.profile.preferences.toggles.autoDownloadAudio,
             value: prefs.autoDownloadAudio,
             onChanged: (value) => notifier.updateFields(autoDownloadAudio: value),
           ),
@@ -218,9 +228,38 @@ class PreferencesScreen extends ConsumerWidget {
   }
 }
 
-String _cacheLabel(double value) {
-  if (value <= 0) return '0 MB stored';
-  return '${value.toStringAsFixed(0)} MB stored';
+String _cacheLabel(BuildContext context, double value) {
+  final t = context.i18n.profile.preferences.storageLabel;
+  if (value <= 0) return t.empty;
+  return t.value(amount: value.toStringAsFixed(0));
+}
+
+String _localizedVideoQuality(BuildContext context, String value) {
+  final options = context.i18n.profile.preferences.actions.videoQuality.options;
+  switch (value.toLowerCase()) {
+    case 'auto':
+      return options.auto;
+    case 'hd':
+      return options.hd;
+    case 'full hd':
+      return options.fullHd;
+    default:
+      return value;
+  }
+}
+
+String _localizedAudioPreference(BuildContext context, String value) {
+  final options = context.i18n.profile.preferences.actions.audioPreference.options;
+  switch (value.toLowerCase()) {
+    case 'system default':
+      return options.systemDefault;
+    case 'english • high quality':
+      return options.englishHigh;
+    case 'original • standard':
+      return options.originalStandard;
+    default:
+      return value;
+  }
 }
 
 class _SectionLabel extends StatelessWidget {
