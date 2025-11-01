@@ -4,6 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:movie_fe/core/app_export.dart';
+import 'package:movie_fe/core/widgets/layout/lined_text_divider.dart';
+import 'package:movie_fe/features/profile/models/language_settings.dart';
+import 'package:movie_fe/features/profile/models/user_profile.dart';
 import 'package:movie_fe/features/profile/notifiers/auth_user_provider.dart';
 import 'package:movie_fe/features/profile/notifiers/language_notifier.dart';
 import 'package:movie_fe/routes/app_router.dart';
@@ -15,87 +18,28 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userState = ref.watch(authUserProvider);
     final languageState = ref.watch(languageNotifierProvider);
+    final languageLabel = _languageLabel(languageState);
 
-    Widget buildHeader() {
-      return userState.when(
-        data: (profile) => Row(
-          children: [
-            CircleAvatar(
-              radius: 20,
-              backgroundImage: profile.avatarUrl.isNotEmpty
-                  ? NetworkImage(profile.avatarUrl) as ImageProvider
-                  : const AssetImage(ImageConstant.imgAvatar),
-            ),
-            const SizedBox(width: 20),
-            Expanded(
-              child: ListTile(
-                contentPadding: EdgeInsets.zero,
-                title: Text(
-                  profile.fullName.isNotEmpty ? profile.fullName : 'NoZie User',
-                  style: TextStyle(
-                    color: AppColors.getText(context),
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                subtitle: Text(
-                  profile.email,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.getTextSecondary(context),
-                      ),
-                ),
-              ),
-            ),
-            IconButton(
-              onPressed: () => context.push(AppRouter.personalInfo),
-              icon: SvgPicture.asset(
-                ImageConstant.editIcon,
-                width: 14,
-                height: 14,
-                colorFilter: ColorFilter.mode(
-                  AppColors.getText(context),
-                  BlendMode.srcIn,
-                ),
-              ),
-            ),
-          ],
+    void _showLogoutConfirmation() {
+      final router = GoRouter.of(context);
+
+      showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        useRootNavigator: true,
+        backgroundColor: AppColors.getModalBackground(context),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(36)),
         ),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, _) => Row(
-          children: [
-            const CircleAvatar(
-              radius: 20,
-              backgroundImage: AssetImage(ImageConstant.imgAvatar),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Text(
-                'Unable to load profile',
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppColors.getText(context),
-                      fontWeight: FontWeight.w600,
-                    ),
-              ),
-            ),
-          ],
+        builder: (sheetContext) => _LogoutBottomSheet(
+          onCancel: () => Navigator.of(sheetContext).maybePop(),
+          onConfirm: () {
+            Navigator.of(sheetContext).maybePop();
+            router.go(AppRouter.welcome);
+          },
         ),
       );
     }
-
-    final languageDisplay = languageState.when(
-      data: (value) {
-        final label = value.selected;
-        return Languages.suggested
-            .followedBy(Languages.others)
-            .firstWhere(
-              (item) => item.value == label,
-              orElse: () => const DropdownItem(value: 'en_us', label: 'English (US)'),
-            )
-            .label;
-      },
-      loading: () => 'Loading…',
-      error: (_, __) => 'English (US)',
-    );
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
@@ -104,19 +48,15 @@ class ProfileScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            buildHeader(),
-
-            _Divider(),
-
+            _ProfileHeader(userState: userState),
+            const LinedTextDivider(),
             _SettingItem(
               lightBackgroundColor: const Color(0xFFE7F8EF),
               iconAsset: ImageConstant.walletColorIcon,
               title: 'Payment Methods',
               onTap: () => context.push(AppRouter.paymentMethods),
             ),
-
-            _Divider(),
-
+            const LinedTextDivider(),
             _SettingItem(
               lightBackgroundColor: const Color(0xFFE9F0FF),
               iconAsset: ImageConstant.profileColorIcon,
@@ -149,10 +89,10 @@ class ProfileScreen extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    languageDisplay,
+                    languageLabel,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.getText(context).withOpacity(0.7),
-                    ),
+                          color: AppColors.getText(context).withOpacity(0.7),
+                        ),
                   ),
                   const SizedBox(width: 8),
                   SvgPicture.asset(
@@ -168,27 +108,8 @@ class ProfileScreen extends ConsumerWidget {
               ),
               onTap: () => context.push(AppRouter.language),
             ),
-            Consumer(
-              builder: (context, ref, _) {
-                final mode = ref.watch(themeModeProvider);
-                final isDark = mode == ThemeMode.dark;
-                return _SettingItem(
-                  lightBackgroundColor: const Color(0xFFE9F0FF),
-                  iconAsset: ImageConstant.eyeColorIcon,
-                  title: 'Dark Mode',
-                  trailing: Switch.adaptive(
-                    value: isDark,
-                    onChanged: (val) {
-                      final notifier = ref.read(themeModeProvider.notifier);
-                      notifier.set(val ? ThemeMode.dark : ThemeMode.light);
-                    },
-                  ),
-                );
-              },
-            ),
-
+            const _DarkModeSetting(),
             const SizedBox(height: 16),
-
             _SettingItem(
               lightBackgroundColor: const Color(0xFFE7F8EF),
               iconAsset: ImageConstant.documentColorIcon,
@@ -201,12 +122,88 @@ class ProfileScreen extends ConsumerWidget {
               title: 'About NoZie',
               onTap: () {},
             ),
-
             const SizedBox(height: 8),
-
-            _LogoutItem(onTap: () {}),
+            _LogoutItem(onTap: _showLogoutConfirmation),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ProfileHeader extends StatelessWidget {
+  const _ProfileHeader({
+    required this.userState,
+  });
+
+  final AsyncValue<UserProfile> userState;
+
+  @override
+  Widget build(BuildContext context) {
+    final textColor = AppColors.getText(context);
+    final secondaryText = AppColors.getTextSecondary(context);
+
+    return userState.when(
+      data: (profile) => Row(
+        children: [
+          CircleAvatar(
+            radius: 20,
+            backgroundImage: profile.avatarUrl.isNotEmpty
+                ? NetworkImage(profile.avatarUrl) as ImageProvider
+                : const AssetImage(ImageConstant.imgAvatar),
+          ),
+          const SizedBox(width: 20),
+          Expanded(
+            child: ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text(
+                profile.fullName.isNotEmpty ? profile.fullName : 'NoZie User',
+                style: TextStyle(
+                  color: textColor,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              subtitle: Text(
+                profile.email,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: secondaryText,
+                    ),
+              ),
+            ),
+          ),
+          IconButton(
+            onPressed: () => context.push(AppRouter.personalInfo),
+            icon: SvgPicture.asset(
+              ImageConstant.editIcon,
+              width: 14,
+              height: 14,
+              colorFilter: ColorFilter.mode(
+                textColor,
+                BlendMode.srcIn,
+              ),
+            ),
+          ),
+        ],
+      ),
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, _) => Row(
+        children: [
+          const CircleAvatar(
+            radius: 20,
+            backgroundImage: AssetImage(ImageConstant.imgAvatar),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Text(
+              'Unable to load profile',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: textColor,
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -271,19 +268,6 @@ class _SettingItem extends StatelessWidget {
   }
 }
 
-class _Divider extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Divider(
-        height: 1,
-        color: AppColors.getText(context).withOpacity(0.08),
-      ),
-    );
-  }
-}
-
 class _LogoutItem extends StatelessWidget {
   final VoidCallback? onTap;
   const _LogoutItem({this.onTap});
@@ -320,6 +304,133 @@ class _LogoutItem extends StatelessWidget {
       ),
     );
   }
+}
+
+class _DarkModeSetting extends ConsumerWidget {
+  const _DarkModeSetting();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final mode = ref.watch(themeModeProvider);
+    final notifier = ref.read(themeModeProvider.notifier);
+    final isDark = mode == ThemeMode.dark;
+
+    return _SettingItem(
+      lightBackgroundColor: const Color(0xFFE9F0FF),
+      iconAsset: ImageConstant.eyeColorIcon,
+      title: 'Dark Mode',
+      trailing: Switch.adaptive(
+        value: isDark,
+        onChanged: (val) => notifier.set(val ? ThemeMode.dark : ThemeMode.light),
+      ),
+    );
+  }
+}
+
+class _LogoutBottomSheet extends StatelessWidget {
+  const _LogoutBottomSheet({
+    required this.onCancel,
+    required this.onConfirm,
+  });
+
+  final VoidCallback onCancel;
+  final VoidCallback onConfirm;
+
+  @override
+  Widget build(BuildContext context) {
+    final textColor = AppColors.getText(context);
+    final secondaryText = AppColors.getTextSecondary(context);
+    final bottomInset = MediaQuery.of(context).viewPadding.bottom;
+
+    return SafeArea(
+      top: false,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(24, 16, 24, 0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Align(
+              child: Container(
+                width: 44,
+                height: 4,
+                margin: const EdgeInsets.only(bottom: 18),
+                decoration: BoxDecoration(
+                  color: AppColors.getText(context).withOpacity(0.12),
+                  borderRadius: BorderRadius.circular(100),
+                ),
+              ),
+            ),
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: AppColors.trRed.withOpacity(0.5),
+                shape: BoxShape.circle,
+              ),
+              alignment: Alignment.center,
+              child: SvgPicture.asset(
+                ImageConstant.logoutIcon,
+                width: 20,
+                height: 20,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.warning,
+                  BlendMode.srcIn,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Logout',
+              style: AppTypography.h6.copyWith(color: textColor),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              'Are you sure you want to logout from NoZie? You can log in again anytime.',
+              style: AppTypography.bodyMMedium.copyWith(color: secondaryText),
+            ),
+            const SizedBox(height: 24),
+            Row(
+              children: [
+                Expanded(
+                  child: SecondaryButton(
+                    text: 'Cancel',
+                    onPressed: onCancel,
+                    backgroundColor: AppColors.getSurface(context),
+                    textColor: textColor,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: PrimaryButton(
+                    text: 'Yes',
+                    onPressed: onConfirm,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+String _languageLabel(AsyncValue<LanguageSettings> state) {
+  return state.when(
+    data: (value) {
+      final label = value.selected;
+      return Languages.suggested
+          .followedBy(Languages.others)
+          .firstWhere(
+            (item) => item.value == label,
+            orElse: () => const DropdownItem(value: 'en_us', label: 'English (US)'),
+          )
+          .label;
+    },
+    loading: () => 'Loading…',
+    error: (_, __) => 'English (US)',
+  );
 }
 
 // Util: generate dark-mode friendly background from a light pastel

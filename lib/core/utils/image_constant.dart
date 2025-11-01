@@ -6,7 +6,7 @@ class ImageConstant {
   static const String subPathWelcome = '${_basePath}welcome/';
   static const String subPathCommon = '${_basePath}common/';
   static const String subPathApp = '${_basePath}app/';
-  static const String subPathIcon    = '${_basePath}icons/';
+  static const String subPathIcon = '${_basePath}icons/';
   static const String subPathIconAuth = '${subPathIcon}auth/';
   static const String subPathIconNavigation = '${subPathIcon}navigation/';
   static const String subPathIconCommon = '${subPathIcon}common/';
@@ -35,13 +35,15 @@ class ImageConstant {
 
   // Notifications
   static const String notificationFrame = '${subPathNotification}frame.svg';
-  static const String notificationFrameDark = '${subPathNotification}frame_dark.svg';
+  static const String notificationFrameDark =
+      '${subPathNotification}frame_dark.svg';
   static const String notificationInfo = '${subPathNotification}info.svg';
   static const String notificationFeature = '${subPathNotification}feature.svg';
   static const String notificationCredit = '${subPathNotification}credit.svg';
   static const String notificationUser = '${subPathNotification}user.svg';
   static const String notificationStorage = '${subPathNotification}storage.svg';
-  static const String notificationPurple = '${subPathNotification}tick_purple.svg';
+  static const String notificationPurple =
+      '${subPathNotification}tick_purple.svg';
 
   // Action Icons
   static const String arrowIcon = '${subPathIconAction}arrow.svg';
@@ -52,9 +54,11 @@ class ImageConstant {
   static const String searchIcon = '${subPathIconAction}search.svg';
   static const String bellIcon = '${subPathIconAction}bell.svg';
   static const String categoryIcon = '${subPathIconAction}Category.svg';
-  static const String categoryActiveIcon = '${subPathIconAction}CategoryActive.svg';
+  static const String categoryActiveIcon =
+      '${subPathIconAction}CategoryActive.svg';
   static const String listCategoryIcon = '${subPathIconAction}ListCate.svg';
-  static const String listCategoryActiveIcon = '${subPathIconAction}ListCateActive.svg';
+  static const String listCategoryActiveIcon =
+      '${subPathIconAction}ListCateActive.svg';
 
   // Common Images
   static const String imgImageNotFound = '${subPathCommon}placeholder.png';
@@ -63,14 +67,14 @@ class ImageConstant {
 
   // App Images
   static const String imgLogoApp = '${subPathApp}logo_app.png';
-  static const String imgWelcomeTransparent = '${subPathApp}welcome-transparent.png';
+  static const String imgWelcomeTransparent =
+      '${subPathApp}welcome-transparent.png';
 
   // Welcome Images
   static const String imgBackground1 = '${subPathWelcome}background-1.png';
   static const String imgBackground2 = '${subPathWelcome}background-2.png';
   static const String imgBackground3 = '${subPathWelcome}background-3.png';
   static const String imgBackground4 = '${subPathWelcome}background-4.png';
-
 
   static const String documentIcon = '${subPathIcon}document.svg';
   static const String radioIcon = '${subPathIcon}radio.svg';
@@ -80,17 +84,21 @@ class ImageConstant {
   // profile icons
   static const String subPathProfileIcon = '${_basePath}icons/profile/';
   static const String logoutIcon = '${subPathProfileIcon}logout.svg';
-  static const String walletColorIcon   = '${subPathProfileIcon}wallet.svg';
-  static const String arrowRightIcon     = '${subPathProfileIcon}arrow_right.svg';
-  static const String categoryColorIcon  = '${subPathProfileIcon}category_color.svg';
-  static const String documentColorIcon  = '${subPathProfileIcon}document_color.svg';
-  static const String editIcon           = '${subPathProfileIcon}edit.svg';
-  static const String eyeColorIcon       = '${subPathProfileIcon}eye_color.svg';
-  static const String guardIcon          = '${subPathProfileIcon}guard.svg';
-  static const String infoIcon           = '${subPathProfileIcon}info.svg';
-  static const String profileColorIcon   = '${subPathProfileIcon}profile_color.svg';
-  static const String ringColorIcon      = '${subPathProfileIcon}ring_color.svg';
-  static const String settingColorIcon   = '${subPathProfileIcon}setting_color.svg';
+  static const String walletColorIcon = '${subPathProfileIcon}wallet.svg';
+  static const String arrowRightIcon = '${subPathProfileIcon}arrow_right.svg';
+  static const String categoryColorIcon =
+      '${subPathProfileIcon}category_color.svg';
+  static const String documentColorIcon =
+      '${subPathProfileIcon}document_color.svg';
+  static const String editIcon = '${subPathProfileIcon}edit.svg';
+  static const String eyeColorIcon = '${subPathProfileIcon}eye_color.svg';
+  static const String guardIcon = '${subPathProfileIcon}guard.svg';
+  static const String infoIcon = '${subPathProfileIcon}info.svg';
+  static const String profileColorIcon =
+      '${subPathProfileIcon}profile_color.svg';
+  static const String ringColorIcon = '${subPathProfileIcon}ring_color.svg';
+  static const String settingColorIcon =
+      '${subPathProfileIcon}setting_color.svg';
 
   // payment icons
   static const String subPathPaymentIcon = '${_basePath}icons/payment/';
@@ -98,9 +106,24 @@ class ImageConstant {
   static const String googlePayIcon = '${subPathPaymentIcon}google.svg';
   static const String appleIcon = '${subPathPaymentIcon}apple.svg';
   static const String visaIcon = '${subPathPaymentIcon}visa.svg';
-  static const String americanExpressIcon = '${subPathPaymentIcon}american_express.svg';
+  static const String americanExpressIcon =
+      '${subPathPaymentIcon}american_express.svg';
   static const String mastercardIcon = '${subPathPaymentIcon}mastercard.svg';
 
+  // contact icons
+  static const String subPathContactIcon = '${_basePath}icons/contact/';
+  static const String emailIcon = '${subPathContactIcon}chat.svg';
+  static const String phoneIcon = '${subPathContactIcon}facebook.svg';
+  static const String whatsappIcon = '${subPathContactIcon}instagram.svg';
+  static const String telegramIcon = '${subPathContactIcon}support.svg';
+  static const String facebookIcon = '${subPathContactIcon}twitter.svg';
+  static const String instagramIcon = '${subPathContactIcon}website.svg';
 
-
+  static const String contactSupportIcon = '${subPathContactIcon}support.svg';
+  static const String contactChatIcon = '${subPathContactIcon}chat.svg';
+  static const String contactWebsiteIcon = '${subPathContactIcon}website.svg';
+  static const String contactFacebookIcon = '${subPathContactIcon}facebook.svg';
+  static const String contactTwitterIcon = '${subPathContactIcon}twitter.svg';
+  static const String contactInstagramIcon =
+      '${subPathContactIcon}instagram.svg';
 }
