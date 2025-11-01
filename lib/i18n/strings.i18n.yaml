@@ -16,6 +16,13 @@ common:
   back: Back
   done: Done
   empty: Empty
+  yes: Yes
+  no: No
+  addNew: Add New
+  clear: Clear
+  search: Search
+  loading: "Loading…"
+  signOut: Sign out
 
 notification:
   title: Notifications
@@ -190,6 +197,228 @@ settings:
     system: System
     light: Light
     dark: Dark
+
+# Profile Module
+profile:
+  header:
+    defaultName: NoZie User
+    loadError: Unable to load profile
+
+  menu:
+    paymentMethods: Payment Methods
+    personalInfo: Personal Info
+    notification: Notification
+    preferences: Preferences
+    security: Security
+    language: Language
+    helpCenter: Help Center
+    about: About NoZie
+    darkMode: Dark Mode
+    logout: Logout
+
+  language:
+    title: Language
+    sectionSuggested: Suggested
+    sectionOthers: Other Languages
+    loadError(String error): "Failed to load languages: $error"
+    fallback: English (US)
+
+  logoutSheet:
+    title: Logout
+    description: Are you sure you want to logout from NoZie? You can log in again anytime.
+
+  helpCenter:
+    title: Help Center
+    tabs:
+      faq: FAQ
+      contact: Contact us
+    categories:
+      all: All
+      general: General
+      account: Account
+      service: Service
+      movies: Movies
+      ebook: Ebook
+    search:
+      hint: Search
+      noResults: No FAQs found
+    filter:
+      clear: Clear
+    faq:
+      general:
+        whatIsNozie:
+          question: What is Nozie?
+          answer: Nozie is your personal hub for discovering, reading, and listening to stories. Browse curated recommendations, organise your library, and stay synced across devices.
+        syncProgress:
+          question: How do I sync reading progress across devices?
+          answer: Make sure you are signed in on all devices. Progress syncs automatically when the device is online; pull to refresh in Library to force a sync.
+        formatsSupport:
+          question: What formats does Nozie support?
+          answer: Nozie supports EPUB, PDF, and MP3 audiobook files. Uploaded personal files are converted automatically for best playback.
+      service:
+        purchaseEbook:
+          question: How to purchase an Ebook?
+          answer: Open the book detail page, tap the "Buy" button, choose a payment method, then confirm. Purchased titles instantly appear in your Library tab.
+        audiobookNotPlaying:
+          question: Why is my audiobook not playing?
+          answer: Ensure your device volume is up and you have a stable connection. If the issue persists, try clearing cache from Profile > Help Center and restart the app.
+        manageNotifications:
+          question: How to manage notifications?
+          answer: Go to Profile > Notification Settings to enable or disable alerts for recommendations, purchases, promotions, and more.
+        requestRefund:
+          question: How do I request a refund?
+          answer: Contact support via Help Center > Contact Us, provide your order ID, and our team will review within 24 hours.
+        purchaseEbookIssue:
+          question: "Why can't I purchase an ebook?"
+          answer: Verify that you have a valid payment method added and a stable internet connection. If the issue persists, try signing out and back in before attempting the purchase again.
+        downloadEbookIssue:
+          question: "Why can't I download an ebook?"
+          answer: Ensure the title is purchased and you have sufficient storage space. Downloads require Wi-Fi unless you enable cellular downloads in Preferences.
+      account:
+        addPaymentMethod:
+          question: How to add a payment method?
+          answer: Head to Profile > Payment Methods, choose "Add New", enter your card or wallet details, and save. You can manage or remove methods anytime from the same screen.
+        resetPassword:
+          question: How do I reset my password?
+          answer: Go to Login > Forgot Password, enter your email, and follow the verification steps. You can set a new password once you confirm the OTP sent to your inbox.
+        changeLanguage:
+          question: How do I change the app language?
+          answer: Navigate to Profile > Language to select your preferred language. Your choice syncs instantly across all sections of the app.
+        deleteAccount:
+          question: How can I delete my account?
+          answer: Open Settings > Security > Delete Account. Follow the instructions to confirm your identity and complete the deletion process.
+        addPaymentMethodIssue:
+          question: "Why can't I add a payment method?"
+          answer: Check that your card details are correct and supported in your region. Some prepaid cards and virtual wallets may be restricted by your bank or country.
+      ebook:
+        downloadOffline:
+          question: How can I download ebooks for offline reading?
+          answer: Open any purchased title, tap the download icon, and choose the device storage location. Downloads are available offline from your Library tab.
+      movies:
+        closeErabookAccount:
+          question: "Why can't I close an account on Erabook?"
+          answer: If you linked your Nozie account with Erabook, unlink the integration under Profile > Connected Services first. Afterwards, submit the closure request from the Erabook dashboard.
+    contacts:
+      customerService:
+        title: Customer Service
+        subtitle: "support@nozie.app"
+      whatsapp:
+        title: WhatsApp
+        subtitle: "+1 800 123 4567"
+      website:
+        title: Website
+        subtitle: "www.nozie.app/support"
+      facebook:
+        title: Facebook
+        subtitle: "@NozieOfficial"
+      twitter:
+        title: Twitter
+        subtitle: "@NozieApp"
+      instagram:
+        title: Instagram
+        subtitle: "@nozie.app"
+
+  payment:
+    title: Payment Methods
+    loadError(String error): "Failed to load payment methods: $error"
+    addNewMessage: "Add payment method tapped"
+
+  notification:
+    title: Notification
+    loadError(String error): "Failed to load settings: $error"
+    sectionTitle: Notify me when...
+    toggles:
+      newRecommendation: There is a New Recommendation
+      newBookSeries: There's a New Book Series
+      authorUpdates: There is an update from Authors
+      priceDrops: There are Price Drops Available
+      purchase: When I Make a Purchase
+      appSystem: Enable App System Notifications
+      tipsServices: New Tips & Services Available
+      survey: Participate in Survey
+
+  personalInfo:
+    title: Personal Info
+    loadError: Failed to load profile. Please try again later.
+    success: Profile updated
+    fields:
+      fullName:
+        label: Full Name
+        hint: Enter full name
+      username:
+        label: Username
+        hint: Enter username
+      email:
+        label: Email
+        hint: Enter email address
+      phone:
+        label: Phone Number
+        hint: Enter phone number
+      dob:
+        label: Date of Birth
+        hint: DD/MM/YYYY
+      country:
+        label: Country
+        hint: Select country
+    saveChanges: Save Changes
+
+  preferences:
+    title: Preferences
+    sections:
+      general: General
+      playback: Playback
+      video: Video
+      audio: Audio
+    toggles:
+      wifiOnlyDownloads: Download Over Wi-Fi Only
+      autoPlayNextEpisode: Auto Play Next Episode
+      continueWatching: Continue Watching from Last Position
+      subtitlesEnabled: Subtitles
+      autoRotateScreen: Auto Rotate Screen
+      autoDownloadAudio: Automatically Download Audio
+    actions:
+      clearCache:
+        title: Clear Cache
+        description(String size): "Currently stored: $size. Removing cache will delete temporary files but keep your downloads and preferences."
+        button: Clear Cache
+        success: Cache cleared
+      videoQuality:
+        title: Video Quality
+        options:
+          auto: Auto
+          hd: HD
+          fullHd: Full HD
+      audioPreference:
+        title: Audio Language / Quality
+        options:
+          systemDefault: System Default
+          englishHigh: English • High Quality
+          originalStandard: Original • Standard
+    storageLabel:
+      empty: 0 MB stored
+      value(String amount): $amount MB stored
+
+  security:
+    title: Security
+    loadError(String error): "Failed to load security settings: $error"
+    toggles:
+      rememberMe: Remember me
+      biometricId: Biometric ID
+      faceId: Face ID
+      smsAuthenticator: SMS Authenticator
+      googleAuthenticator: Google Authenticator
+    actions:
+      deviceManagement: Device Management
+      changePassword: Change Password
+      changePasswordMessage: Change password tapped
+      signOutDevice(String name): Signed out $name
+      signOutAll: Signed out from all devices
+    deviceManagement:
+      title: Device Management
+      description: Manage devices that have access to your account.
+      signOutAll: Sign Out All Devices
+      current: Current
+      lastActive(String time): "Last active: $time"
 
 # Validation Messages
 validation:
