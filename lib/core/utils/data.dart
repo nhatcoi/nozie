@@ -51,145 +51,137 @@ class Languages {
 }
 
 class HelpCenterData {
-  static const List<FaqItem> faqs = [
-    FaqItem(
-      category: 'General',
-      question: 'What is Nozie?',
-      answer:
-          'Nozie is your personal hub for discovering, reading, and listening to stories. Browse curated recommendations, organise your library, and stay synced across devices.',
-    ),
-    FaqItem(
-      category: 'Service',
-      question: 'How to purchase an Ebook?',
-      answer:
-          'Open the book detail page, tap the “Buy” button, choose a payment method, then confirm. Purchased titles instantly appear in your Library tab.',
-    ),
-    FaqItem(
-      category: 'Account',
-      question: 'How to add a payment method?',
-      answer:
-          'Head to Profile > Payment Methods, choose “Add New”, enter your card or wallet details, and save. You can manage or remove methods anytime from the same screen.',
-    ),
-    FaqItem(
-      category: 'Account',
-      question: 'How do I reset my password?',
-      answer:
-          'Go to Login > Forgot Password, enter your email, and follow the verification steps. You can set a new password once you confirm the OTP sent to your inbox.',
-    ),
-    FaqItem(
-      category: 'Ebook',
-      question: 'How can I download ebooks for offline reading?',
-      answer:
-          'Open any purchased title, tap the download icon, and choose the device storage location. Downloads are available offline from your Library tab.',
-    ),
-    FaqItem(
-      category: 'Account',
-      question: 'How do I change the app language?',
-      answer:
-          'Navigate to Profile > Language to select your preferred language. Your choice syncs instantly across all sections of the app.',
-    ),
-    FaqItem(
-      category: 'Service',
-      question: 'Why is my audiobook not playing?',
-      answer:
-          'Ensure your device volume is up and you have a stable connection. If the issue persists, try clearing cache from Profile > Help Center and restart the app.',
-    ),
-    FaqItem(
-      category: 'Service',
-      question: 'How to manage notifications?',
-      answer:
-          'Go to Profile > Notification Settings to enable or disable alerts for recommendations, purchases, promotions, and more.',
-    ),
-    FaqItem(
-      category: 'Service',
-      question: 'How do I request a refund?',
-      answer:
-          'Contact support via Help Center > Contact Us, provide your order ID, and our team will review within 24 hours.',
-    ),
-    FaqItem(
-      category: 'Account',
-      question: 'How can I delete my account?',
-      answer:
-          'Open Settings > Security > Delete Account. Follow the instructions to confirm your identity and complete the deletion process.',
-    ),
-    FaqItem(
-      category: 'General',
-      question: 'How do I sync reading progress across devices?',
-      answer:
-          'Make sure you are signed in on all devices. Progress syncs automatically when the device is online; pull to refresh in Library to force a sync.',
-    ),
-    FaqItem(
-      category: 'General',
-      question: 'What formats does Nozie support?',
-      answer:
-          'Nozie supports EPUB, PDF, and MP3 audiobook files. Uploaded personal files are converted automatically for best playback.',
-    ),
-    FaqItem(
-      category: 'Ebook',
-      question: "Why can't I purchase an ebook?",
-      answer:
-          'Verify that you have a valid payment method added and a stable internet connection. If the issue persists, try signing out and back in before attempting the purchase again.',
-    ),
-    FaqItem(
-      category: 'Ebook',
-      question: "Why can't I download an ebook?",
-      answer:
-          'Ensure the title is purchased and you have sufficient storage space. Downloads require Wi-Fi unless you enable cellular downloads in Preferences.',
-    ),
-    FaqItem(
-      category: 'Account',
-      question: "Why can't I add a payment method?",
-      answer:
-          'Check that your card details are correct and supported in your region. Some prepaid cards and virtual wallets may be restricted by your bank or country.',
-    ),
-    FaqItem(
-      category: 'Movies',
-      question: "Why can't I close an account on Erabook?",
-      answer:
-          'If you linked your Nozie account with Erabook, unlink the integration under Profile > Connected Services first. Afterwards, submit the closure request from the Erabook dashboard.',
-    ),
-  ];
+  static List<FaqItem> faqs(BuildContext context) {
+    final faq = context.i18n.profile.helpCenter.faq;
+    return [
+      FaqItem(
+        category: HelpCenterCategory.general,
+        question: faq.general.whatIsNozie.question,
+        answer: faq.general.whatIsNozie.answer,
+      ),
+      FaqItem(
+        category: HelpCenterCategory.service,
+        question: faq.service.purchaseEbook.question,
+        answer: faq.service.purchaseEbook.answer,
+      ),
+      FaqItem(
+        category: HelpCenterCategory.account,
+        question: faq.account.addPaymentMethod.question,
+        answer: faq.account.addPaymentMethod.answer,
+      ),
+      FaqItem(
+        category: HelpCenterCategory.account,
+        question: faq.account.resetPassword.question,
+        answer: faq.account.resetPassword.answer,
+      ),
+      FaqItem(
+        category: HelpCenterCategory.ebook,
+        question: faq.ebook.downloadOffline.question,
+        answer: faq.ebook.downloadOffline.answer,
+      ),
+      FaqItem(
+        category: HelpCenterCategory.account,
+        question: faq.account.changeLanguage.question,
+        answer: faq.account.changeLanguage.answer,
+      ),
+      FaqItem(
+        category: HelpCenterCategory.service,
+        question: faq.service.audiobookNotPlaying.question,
+        answer: faq.service.audiobookNotPlaying.answer,
+      ),
+      FaqItem(
+        category: HelpCenterCategory.service,
+        question: faq.service.manageNotifications.question,
+        answer: faq.service.manageNotifications.answer,
+      ),
+      FaqItem(
+        category: HelpCenterCategory.service,
+        question: faq.service.requestRefund.question,
+        answer: faq.service.requestRefund.answer,
+      ),
+      FaqItem(
+        category: HelpCenterCategory.account,
+        question: faq.account.deleteAccount.question,
+        answer: faq.account.deleteAccount.answer,
+      ),
+      FaqItem(
+        category: HelpCenterCategory.general,
+        question: faq.general.syncProgress.question,
+        answer: faq.general.syncProgress.answer,
+      ),
+      FaqItem(
+        category: HelpCenterCategory.general,
+        question: faq.general.formatsSupport.question,
+        answer: faq.general.formatsSupport.answer,
+      ),
+      FaqItem(
+        category: HelpCenterCategory.service,
+        question: faq.service.purchaseEbookIssue.question,
+        answer: faq.service.purchaseEbookIssue.answer,
+      ),
+      FaqItem(
+        category: HelpCenterCategory.service,
+        question: faq.service.downloadEbookIssue.question,
+        answer: faq.service.downloadEbookIssue.answer,
+      ),
+      FaqItem(
+        category: HelpCenterCategory.account,
+        question: faq.account.addPaymentMethodIssue.question,
+        answer: faq.account.addPaymentMethodIssue.answer,
+      ),
+      FaqItem(
+        category: HelpCenterCategory.movies,
+        question: faq.movies.closeErabookAccount.question,
+        answer: faq.movies.closeErabookAccount.answer,
+      ),
+    ];
+  }
 
-  static const List<ContactOption> contacts = [
-    ContactOption(
-      title: 'Customer Service',
-      subtitle: 'support@nozie.app',
-      iconAsset: ImageConstant.contactSupportIcon,
-    ),
-    ContactOption(
-      title: 'WhatsApp',
-      subtitle: '+1 800 123 4567',
-      iconAsset: ImageConstant.contactChatIcon,
-    ),
-    ContactOption(
-      title: 'Website',
-      subtitle: 'www.nozie.app/support',
-      iconAsset: ImageConstant.contactWebsiteIcon,
-    ),
-    ContactOption(
-      title: 'Facebook',
-      subtitle: '@NozieOfficial',
-      iconAsset: ImageConstant.contactFacebookIcon,
-    ),
-    ContactOption(
-      title: 'Twitter',
-      subtitle: '@NozieApp',
-      iconAsset: ImageConstant.contactTwitterIcon,
-    ),
-    ContactOption(
-      title: 'Instagram',
-      subtitle: '@nozie.app',
-      iconAsset: ImageConstant.contactInstagramIcon,
-    ),
-  ];
+  static List<ContactOption> contacts(BuildContext context) {
+    final contacts = context.i18n.profile.helpCenter.contacts;
+    return [
+      ContactOption(
+        title: contacts.customerService.title,
+        subtitle: contacts.customerService.subtitle,
+        iconAsset: ImageConstant.contactSupportIcon,
+      ),
+      ContactOption(
+        title: contacts.whatsapp.title,
+        subtitle: contacts.whatsapp.subtitle,
+        iconAsset: ImageConstant.contactChatIcon,
+      ),
+      ContactOption(
+        title: contacts.website.title,
+        subtitle: contacts.website.subtitle,
+        iconAsset: ImageConstant.contactWebsiteIcon,
+      ),
+      ContactOption(
+        title: contacts.facebook.title,
+        subtitle: contacts.facebook.subtitle,
+        iconAsset: ImageConstant.contactFacebookIcon,
+      ),
+      ContactOption(
+        title: contacts.twitter.title,
+        subtitle: contacts.twitter.subtitle,
+        iconAsset: ImageConstant.contactTwitterIcon,
+      ),
+      ContactOption(
+        title: contacts.instagram.title,
+        subtitle: contacts.instagram.subtitle,
+        iconAsset: ImageConstant.contactInstagramIcon,
+      ),
+    ];
+  }
 }
 
+enum HelpCenterCategory { general, account, service, movies, ebook }
+
 class FaqItem {
-  final String category;
+  final HelpCenterCategory category;
   final String question;
   final String answer;
 
-  const FaqItem({
+  FaqItem({
     required this.category,
     required this.question,
     required this.answer,
@@ -201,7 +193,7 @@ class ContactOption {
   final String subtitle;
   final String iconAsset;
 
-  const ContactOption({
+  ContactOption({
     required this.title,
     required this.subtitle,
     required this.iconAsset,

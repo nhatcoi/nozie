@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_fe/core/app_export.dart';
+import 'package:movie_fe/i18n/translations.g.dart';
 
 import '../../../core/utils/data.dart';
 import 'help_center/widgets/faq.dart';
@@ -14,10 +15,8 @@ class HelpCenterScreen extends StatefulWidget {
 }
 
 class _HelpCenterScreenState extends State<HelpCenterScreen> {
-  static const _tabs = ['FAQ', 'Contact us'];
-  static const _categories = ['All', 'General', 'Account', 'Service', 'Movies'];
-
-  final List<FaqItem> _faqs = HelpCenterData.faqs;
+  static const _tabKeys = ['faq', 'contact'];
+  static const _categoryKeys = ['all', 'general', 'account', 'service', 'movies'];
 
   int _activeTab = 0;
   int _activeCategory = 0;
@@ -36,6 +35,11 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final t = context.i18n;
+    final tabs = _tabKeys.map((key) => _tabLabel(t, key)).toList();
+    final categories = _categoryKeys.map((key) => _categoryLabel(t, key)).toList();
+    final faqs = HelpCenterData.faqs(context);
+    final contacts = HelpCenterData.contacts(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +48,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
           onPressed: () => Navigator.of(context).maybePop(),
         ),
         title: Text(
-          'Help Center',
+          t.profile.helpCenter.title,
           style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
         ),
         centerTitle: false,
@@ -55,25 +59,34 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             HelpCenterTabs(
-              tabs: _tabs,
+              tabs: tabs,
               activeIndex: _activeTab,
               onTabSelected: (index) => setState(() => _activeTab = index),
             ),
             const SizedBox(height: 24),
             if (_activeTab == 0)
-              ..._buildFaqSection()
+              ..._buildFaqSection(
+                context: context,
+                categories: categories,
+                faqs: faqs,
+              )
             else
-              HelpCenterContactSection(options: HelpCenterData.contacts),
+              HelpCenterContactSection(options: contacts),
           ],
         ),
       ),
     );
   }
 
-  List<Widget> _buildFaqSection() {
+  List<Widget> _buildFaqSection({
+    required BuildContext context,
+    required List<String> categories,
+    required List<FaqItem> faqs,
+  }) {
+    final t = context.i18n;
     return [
       HelpCenterCategoryTags(
-        categories: _categories,
+        categories: categories,
         activeIndex: _activeCategory,
         onSelected: (index) => setState(() {
           _activeCategory = index;
@@ -87,6 +100,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
       HelpCenterSearchBar(
         controller: _searchController,
         focusNode: _searchFocusNode,
+        hintText: t.common.search,
         onQueryChanged: (value) {
           setState(() {
             final trimmed = value.trim();
@@ -101,7 +115,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
         const SizedBox(height: 16),
         HelpCenterSuggestionList(
           query: _searchController.text.trim(),
-          faqs: _faqs,
+          faqs: faqs,
           onSelected: (faq) {
             _searchController
               ..text = faq.question
@@ -113,7 +127,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
               _activeFilter = faq.question;
               _expandedFaqs
                 ..clear()
-                ..add(_faqs.indexOf(faq));
+                ..add(faqs.indexOf(faq));
             });
           },
         ),
@@ -123,6 +137,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
         if (_activeFilter.isNotEmpty) ...[
           HelpCenterFilterBanner(
             label: _activeFilter,
+            clearLabel: t.profile.helpCenter.filter.clear,
             onClear: () {
               setState(() {
                 _activeFilter = '';
@@ -135,16 +150,20 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
         ],
         const SizedBox(height: 24),
       ],
-      ..._buildFaqList(),
+      ..._buildFaqList(context, faqs),
     ];
   }
 
-  List<Widget> _buildFaqList() {
-    Iterable<FaqItem> items = _faqs;
+  List<Widget> _buildFaqList(BuildContext context, List<FaqItem> faqs) {
+    final t = context.i18n;
+    Iterable<FaqItem> items = faqs;
 
-    final selectedCategory = _categories[_activeCategory];
-    if (selectedCategory != 'All') {
-      items = items.where((faq) => faq.category == selectedCategory);
+    final selectedCategoryKey = _categoryKeys[_activeCategory];
+    if (selectedCategoryKey != 'all') {
+      final category = _categoryFromKey(selectedCategoryKey);
+      if (category != null) {
+        items = items.where((faq) => faq.category == category);
+      }
     }
 
     if (_activeFilter.isNotEmpty) {
@@ -159,7 +178,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 24),
             child: Text(
-              'No FAQs found',
+              t.profile.helpCenter.search.noResults,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: AppColors.getTextSecondary(context),
               ),
@@ -171,15 +190,15 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
 
     return [
       for (var i = 0; i < itemList.length; i++) ...[
-        _buildFaqTile(itemList[i]),
+        _buildFaqTile(faqs, itemList[i]),
         if (i != itemList.length - 1) const SizedBox(height: 16),
       ],
       const SizedBox(height: 24),
     ];
   }
 
-  Widget _buildFaqTile(FaqItem faq) {
-    final originalIndex = _faqs.indexOf(faq);
+  Widget _buildFaqTile(List<FaqItem> faqs, FaqItem faq) {
+    final originalIndex = faqs.indexOf(faq);
     return HelpCenterFaqTile(
       faq: faq,
       isExpanded: _expandedFaqs.contains(originalIndex),
@@ -193,5 +212,50 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
         });
       },
     );
+  }
+}
+
+String _tabLabel(Translations t, String key) {
+  switch (key) {
+    case 'faq':
+      return t.profile.helpCenter.tabs.faq;
+    case 'contact':
+      return t.profile.helpCenter.tabs.contact;
+  }
+  return key;
+}
+
+String _categoryLabel(Translations t, String key) {
+  switch (key) {
+    case 'all':
+      return t.profile.helpCenter.categories.all;
+    case 'general':
+      return t.profile.helpCenter.categories.general;
+    case 'account':
+      return t.profile.helpCenter.categories.account;
+    case 'service':
+      return t.profile.helpCenter.categories.service;
+    case 'movies':
+      return t.profile.helpCenter.categories.movies;
+    case 'ebook':
+      return t.profile.helpCenter.categories.ebook;
+  }
+  return key;
+}
+
+HelpCenterCategory? _categoryFromKey(String key) {
+  switch (key) {
+    case 'general':
+      return HelpCenterCategory.general;
+    case 'account':
+      return HelpCenterCategory.account;
+    case 'service':
+      return HelpCenterCategory.service;
+    case 'movies':
+      return HelpCenterCategory.movies;
+    case 'ebook':
+      return HelpCenterCategory.ebook;
+    default:
+      return null;
   }
 }

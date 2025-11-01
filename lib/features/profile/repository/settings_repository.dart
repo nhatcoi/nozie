@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,7 +15,9 @@ import '../models/security_settings.dart';
 import '../models/user_profile.dart';
 
 class SettingsRepository {
-  SettingsRepository(this._prefs);
+  SettingsRepository(this._prefs, {FirebaseAuth? auth, FirebaseFirestore? firestore})
+      : _auth = auth ?? FirebaseAuth.instance,
+        _firestore = firestore ?? FirebaseFirestore.instance;
 
   static const _keyProfile = 'profile:user_profile';
   static const _keyNotification = 'profile:notification';
@@ -23,6 +27,8 @@ class SettingsRepository {
   static const _keyPayments = 'profile:payments';
 
   final SharedPreferences _prefs;
+  final FirebaseAuth _auth;
+  final FirebaseFirestore _firestore;
 
   Future<UserProfile> fetchProfile() async {
     final jsonString = _prefs.getString(_keyProfile);
@@ -46,6 +52,7 @@ class SettingsRepository {
   Future<UserProfile> updateProfile(UserProfile profile) async {
     await _prefs.setString(_keyProfile, jsonEncode(profile.toJson()));
     _log('Profile updated', profile.toJson());
+    await _syncProfileToFirestore(profile);
     return profile;
   }
 
@@ -169,6 +176,31 @@ class SettingsRepository {
 
   void _log(String message, Map<String, dynamic> payload) {
     debugPrint('[SettingsRepository] $message: $payload');
+  }
+
+  Future<void> _syncProfileToFirestore(UserProfile profile) async {
+    try {
+      final user = _auth.currentUser;
+      if (user == null) return;
+
+      final data = {
+        'displayName': profile.fullName,
+        'username': profile.username,
+        'email': profile.email,
+        'phone': profile.phone,
+        'dateOfBirth': profile.dateOfBirth,
+        'country': profile.country,
+        'avatarUrl': profile.avatarUrl,
+        'updatedAt': FieldValue.serverTimestamp(),
+      };
+
+      await _firestore
+          .collection('users')
+          .doc(user.uid)
+          .set(data, SetOptions(merge: true));
+    } catch (error) {
+      debugPrint('[SettingsRepository] Failed to sync to Firestore: $error');
+    }
   }
 }
 

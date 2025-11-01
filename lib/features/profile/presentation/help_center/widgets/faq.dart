@@ -49,6 +49,7 @@ class HelpCenterSearchBar extends StatefulWidget {
   final FocusNode focusNode;
   final ValueChanged<String>? onQueryChanged;
   final VoidCallback? onFilter;
+  final String? hintText;
 
   const HelpCenterSearchBar({
     super.key,
@@ -56,6 +57,7 @@ class HelpCenterSearchBar extends StatefulWidget {
     required this.focusNode,
     this.onQueryChanged,
     this.onFilter,
+    this.hintText,
   });
 
   @override
@@ -137,7 +139,7 @@ class _HelpCenterSearchBarState extends State<HelpCenterSearchBar> {
               controller: widget.controller,
               focusNode: widget.focusNode,
               decoration: InputDecoration(
-                hintText: 'Search',
+                hintText: widget.hintText ?? context.i18n.common.search,
                 border: InputBorder.none,
                 hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: textColor.withOpacity(0.4),
@@ -255,11 +257,13 @@ class HelpCenterSuggestionList extends StatelessWidget {
 class HelpCenterFilterBanner extends StatelessWidget {
   final String label;
   final VoidCallback onClear;
+  final String? clearLabel;
 
   const HelpCenterFilterBanner({
     super.key,
     required this.label,
     required this.onClear,
+    this.clearLabel,
   });
 
   @override
@@ -282,7 +286,10 @@ class HelpCenterFilterBanner extends StatelessWidget {
               ),
             ),
           ),
-          TextButton(onPressed: onClear, child: const Text('Clear')),
+          TextButton(
+            onPressed: onClear,
+            child: Text(clearLabel ?? context.i18n.common.clear),
+          ),
         ],
       ),
     );

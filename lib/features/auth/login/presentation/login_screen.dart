@@ -3,11 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:movie_fe/core/app_export.dart';
+import 'package:movie_fe/core/common/ui_state.dart';
 import 'package:movie_fe/core/utils/custom_snackbar.dart';
 import 'package:movie_fe/core/widgets/buttons/social_button.dart';
 import 'package:movie_fe/core/widgets/layout/lined_text_divider.dart';
 import 'package:movie_fe/features/auth/login/presentation/providers/login_provider.dart';
 import 'package:movie_fe/core/widgets/selection/app_checkbox.dart';
+import 'package:movie_fe/features/auth/login/presentation/notifier/login_notifier.dart';
 
 import '../../../../routes/app_router.dart';
 import 'package:go_router/go_router.dart';
@@ -28,6 +30,57 @@ class LoginScreen extends ConsumerWidget {
     final passCtl = ref.watch(passwordControllerProvider);
     final userNode = ref.watch(userFocusProvider);
     final passNode = ref.watch(passFocusProvider);
+
+    final loginState = ref.watch(loginNotifierProvider);
+    final loginNotifier = ref.read(loginNotifierProvider.notifier);
+
+    Future<void> _handleEmailSignIn() async {
+      final email = userCtl.text.trim();
+      final password = passCtl.text.trim();
+
+      final emailError = ValidationUtils.validateEmail(email, context);
+      if (emailError != null) {
+        CustomSnackBar.show(
+          context,
+          message: emailError,
+          type: SnackBarType.error,
+        );
+        return;
+      }
+
+      if (password.isEmpty) {
+        CustomSnackBar.show(
+          context,
+          message: t.validation.password.required,
+          type: SnackBarType.error,
+        );
+        return;
+      }
+
+      await loginNotifier.signIn(email: email, password: password);
+    }
+
+    Future<void> _handleGoogleSignIn() async {
+      await loginNotifier.signInWithGoogle();
+    }
+
+    ref.listen<UIState<bool>>(loginNotifierProvider, (previous, next) {
+      if (next is Success<bool>) {
+        if (context.mounted) {
+          context.go(AppRouter.home);
+        }
+        loginNotifier.reset();
+      } else if (next is Error<bool>) {
+        if (context.mounted) {
+          CustomSnackBar.show(
+            context,
+            message: next.message,
+            type: SnackBarType.error,
+          );
+        }
+        loginNotifier.reset();
+      }
+    });
 
 
     return Scaffold(
@@ -53,7 +106,7 @@ class LoginScreen extends ConsumerWidget {
                 const SizedBox(height: 32),
 
                 Text(
-                  '${t.auth.username} / ${t.auth.email}',
+                  t.auth.email,
                   style: type.labelLarge?.copyWith(fontWeight: FontWeight.w700),
                 ),
 
@@ -61,7 +114,7 @@ class LoginScreen extends ConsumerWidget {
                   hintText: t.auth.loginScreen.placeholder.email,
                   controller: userCtl,
                   focusNode: userNode,
-                  validator: (value) => ValidationUtils.validateEmail2(value, context),
+                  validator: (value) => ValidationUtils.validateEmail(value, context),
                   onSubmitted: (_) =>
                       FocusScope.of(context).requestFocus(passNode),
                 ),
@@ -125,11 +178,13 @@ class LoginScreen extends ConsumerWidget {
                   children: [
                     Expanded(
                       child: SocialButton(
-                        icon: SvgPicture.asset(                          ImageConstant.imgGoogleIcon,
+                        icon: SvgPicture.asset(
+                          ImageConstant.imgGoogleIcon,
                           height: 24,
                         ),
                         onPressed: () {
-                          // TODO: Google login
+                          if (loginState is Loading<bool>) return;
+                          _handleGoogleSignIn();
                         },
                       ),
                     ),
@@ -166,18 +221,12 @@ class LoginScreen extends ConsumerWidget {
 
                 PrimaryButton(
                   text: t.auth.signIn,
-                  onPressed: () {
-                    if(userCtl.text.isNotEmpty && passCtl.text.isNotEmpty) {
-                      context.go(AppRouter.home);
-                    } else {
-                      CustomSnackBar.show(
-                        context,
-                        message: t.validation.general.fillAllFields,
-                        type: SnackBarType.error,
-                      );
-                    }
-
-                  },
+                  isLoading: loginState is Loading<bool>,
+                  onPressed: loginState is Loading<bool>
+                      ? null
+                      : () {
+                          _handleEmailSignIn();
+                        },
                 ),
               ],
             ),
