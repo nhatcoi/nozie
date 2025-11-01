@@ -15,6 +15,7 @@ class LanguageScreen extends ConsumerWidget {
     final secondaryColor = AppColors.getTextSecondary(context);
     final languageState = ref.watch(languageNotifierProvider);
     final selected = languageState.value?.selected ?? LanguageSettings.defaults.selected;
+    final t = context.i18n;
 
     return Scaffold(
       appBar: AppBar(
@@ -23,7 +24,7 @@ class LanguageScreen extends ConsumerWidget {
           onPressed: () => Navigator.of(context).maybePop(),
         ),
         title: Text(
-          'Language',
+          t.profile.language.title,
           style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
         ),
         centerTitle: false,
@@ -34,7 +35,7 @@ class LanguageScreen extends ConsumerWidget {
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, _) => Center(
             child: Text(
-              'Failed to load languages: $error',
+              t.profile.language.loadError(error: error.toString()),
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.warning,
                   ),
@@ -44,7 +45,7 @@ class LanguageScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _LanguageSection(
-                title: 'Suggested',
+                title: t.profile.language.sectionSuggested,
                 items: Languages.suggested,
                 selectedValue: selected,
                 onSelected: (value) =>
@@ -52,7 +53,7 @@ class LanguageScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 24),
               _LanguageSection(
-                title: 'Language',
+                title: t.profile.language.sectionOthers,
                 items: Languages.others,
                 selectedValue: selected,
                 onSelected: (value) =>
