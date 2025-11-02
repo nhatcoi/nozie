@@ -125,6 +125,7 @@ class MovieCarousel extends StatelessWidget {
             width: cardWidth,
             height: posterHeight,
             movieCardType: type == MovieCarouselType.minimal ? MovieCardType.titleInImg : type == MovieCarouselType.normal ? MovieCardType.horizontal : MovieCardType.vertical,
+            enableNavigation: true,
           );
         },
       ),

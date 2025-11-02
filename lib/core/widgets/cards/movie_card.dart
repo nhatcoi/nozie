@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:movie_fe/core/enums/movie_type.dart';
 
 import '../../models/movie_item.dart';
 import '../../theme/app_colors.dart';
 import '../../utils/image_constant.dart';
+import '../../../routes/app_router.dart';
 
 class MovieCard extends StatelessWidget {
   const MovieCard({
@@ -15,7 +17,8 @@ class MovieCard extends StatelessWidget {
     this.height = 276,
     this.movieCardType = MovieCardType.horizontal,
     this.onMore,
-    this.genres
+    this.genres,
+    this.enableNavigation = true,
   });
 
   final MovieItem movie;
@@ -27,6 +30,8 @@ class MovieCard extends StatelessWidget {
   final List<String>? genres;
 
   final VoidCallback? onMore;
+  
+  final bool enableNavigation;
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +39,16 @@ class MovieCard extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
     final scale = width / 180;
 
+    void _handleTap(BuildContext context) {
+      if (onMore != null) {
+        onMore!();
+      } else if (enableNavigation) {
+        context.push('${AppRouter.movie}/${movie.id}');
+      }
+    }
+
     return GestureDetector(
-      onTap: onMore,
+      onTap: () => _handleTap(context),
       child: SizedBox(
         width: width,
         child: movieCardType == MovieCardType.vertical
