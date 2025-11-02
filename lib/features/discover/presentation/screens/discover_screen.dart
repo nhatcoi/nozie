@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/app_export.dart';
 import '../../../../core/constants/app_padding.dart';
+import '../../../../routes/app_router.dart';
+import '../../../../features/search/application/search_state_notifier.dart';
 import '../../../../core/widgets/lists/movie_carousel.dart';
 import '../../application/notifiers/discover_notifier.dart';
 import '../../domain/enums/discover_section_type.dart';
@@ -63,7 +66,7 @@ class _DiscoverSection extends ConsumerWidget {
       data: (items) => MovieCarousel(
         title: sectionType.title,
         items: items,
-        onMore: () {},
+        onMore: () => _handleMoreTap(context, ref, sectionType),
       ),
       loading: () => _LoadingSection(title: sectionType.title),
       error: (error, stack) => _ErrorSection(
@@ -74,6 +77,19 @@ class _DiscoverSection extends ConsumerWidget {
         },
       ),
     );
+  }
+
+  void _handleMoreTap(
+    BuildContext context,
+    WidgetRef ref,
+    DiscoverSectionType sectionType,
+  ) {
+    final filters = sectionType.filters;
+    final query = sectionType.searchQuery;
+
+    ref.read(searchStateProvider.notifier).searchWithFilters(query, filters);
+
+    context.push(AppRouter.search);
   }
 }
 

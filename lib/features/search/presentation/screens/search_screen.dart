@@ -26,6 +26,12 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   void initState() {
     super.initState();
     _searchController.addListener(_onSearchChanged);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final searchState = ref.read(searchStateProvider);
+      if (searchState.query.isNotEmpty && _searchController.text != searchState.query) {
+        _searchController.text = searchState.query;
+      }
+    });
   }
 
   @override
