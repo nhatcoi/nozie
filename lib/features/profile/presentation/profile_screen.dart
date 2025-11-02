@@ -10,6 +10,7 @@ import 'package:movie_fe/features/profile/models/language_settings.dart';
 import 'package:movie_fe/features/profile/models/user_profile.dart';
 import 'package:movie_fe/features/profile/notifiers/auth_user_provider.dart';
 import 'package:movie_fe/features/profile/notifiers/language_notifier.dart';
+import 'package:movie_fe/features/profile/services/logout_service.dart';
 import 'package:movie_fe/routes/app_router.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -39,6 +40,7 @@ class ProfileScreen extends ConsumerWidget {
           onConfirm: () async {
             Navigator.of(sheetContext).maybePop();
             await auth.signOut();
+            await LogoutService.logout(ref);
             if (context.mounted) {
               router.go(AppRouter.welcome);
             }

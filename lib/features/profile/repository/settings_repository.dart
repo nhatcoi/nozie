@@ -174,6 +174,20 @@ class SettingsRepository {
     return updated;
   }
 
+  Future<void> clearUserData() async {
+    try {
+      await _prefs.remove(_keyProfile);
+      await _prefs.remove(_keyNotification);
+      await _prefs.remove(_keyPreferences);
+      await _prefs.remove(_keySecurity);
+      await _prefs.remove(_keyLanguage);
+      await _prefs.remove(_keyPayments);
+      _log('User data cleared', {});
+    } catch (error) {
+      debugPrint('[SettingsRepository] Failed to clear user data: $error');
+    }
+  }
+
   void _log(String message, Map<String, dynamic> payload) {
     debugPrint('[SettingsRepository] $message: $payload');
   }

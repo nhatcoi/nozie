@@ -148,6 +148,16 @@ class SearchStateNotifier extends StateNotifier<SearchState> {
     }
   }
 
+  Future<void> searchWithFilters(String query, SearchFilters filters) async {
+    state = state.copyWith(
+      query: query,
+      filters: filters,
+      isSearching: false,
+      hasSubmitted: true,
+    );
+    await performSearch(query);
+  }
+
 
   Future<void> loadMoreResults() async {
     if (!state.hasMoreResults || state.isLoadingMore) return;

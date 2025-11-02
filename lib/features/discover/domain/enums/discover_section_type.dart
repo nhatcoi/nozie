@@ -1,0 +1,59 @@
+import '../../../../features/search/entities/search_filter.dart';
+import '../../../../features/search/entities/filter_section.dart';
+
+enum DiscoverSectionType {
+  topCharts,
+  topSelling,
+  topFree,
+  topNewReleases,
+}
+
+extension DiscoverSectionTypeExtension on DiscoverSectionType {
+  String get title {
+    switch (this) {
+      case DiscoverSectionType.topCharts:
+        return 'Top Charts';
+      case DiscoverSectionType.topSelling:
+        return 'Top Selling';
+      case DiscoverSectionType.topFree:
+        return 'Top Free';
+      case DiscoverSectionType.topNewReleases:
+        return 'Top New Releases';
+    }
+  }
+
+  String get searchQuery {
+    switch (this) {
+      case DiscoverSectionType.topCharts:
+        return 'trending';
+      case DiscoverSectionType.topSelling:
+        return 'best selling';
+      case DiscoverSectionType.topFree:
+        return 'free';
+      case DiscoverSectionType.topNewReleases:
+        return 'new releases';
+    }
+  }
+
+  SearchFilters get filters {
+    switch (this) {
+      case DiscoverSectionType.topCharts:
+        return const SearchFilters(
+          sortBy: SortOption.trending,
+        );
+      case DiscoverSectionType.topSelling:
+        return const SearchFilters(
+          sortBy: SortOption.highestRating,
+        );
+      case DiscoverSectionType.topFree:
+        return const SearchFilters(
+          priceMax: 0.0,
+        );
+      case DiscoverSectionType.topNewReleases:
+        return const SearchFilters(
+          sortBy: SortOption.newReleases,
+        );
+    }
+  }
+}
+
