@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -6,6 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movie_fe/core/common/ui_state.dart';
 import 'package:movie_fe/features/auth/shared/providers/auth_repository_provider.dart';
 import 'package:movie_fe/features/auth/shared/providers/firebase_auth_provider.dart';
+import 'package:movie_fe/features/auth/shared/providers/storage_service_provider.dart';
+import 'package:movie_fe/features/auth/shared/services/storage_service.dart';
 import 'package:movie_fe/features/auth/register/domain/models/user_registration.dart';
 import 'package:movie_fe/features/auth/register/domain/repositories/auth_repository.dart';
 import 'package:movie_fe/features/profile/models/user_profile.dart'
@@ -49,6 +53,30 @@ class SignupNotifier extends StateNotifier<UIState<UserReg>> {
         rememberMe: accountData['rememberMe'] ?? false,
       );
 
+      // Upload avatar before creating user (if avatar exists)
+      String? avatarUrl;
+      final avatarPath = profileData['avatarPath'];
+      if (avatarPath != null && avatarPath.isNotEmpty) {
+        try {
+          final avatarFile = File(avatarPath);
+          if (await avatarFile.exists()) {
+            debugPrint('[SignupNotifier] Uploading avatar before user creation');
+            // Upload to temp location, will move to user location after user creation
+            final storageService = _ref.read(storageServiceProvider);
+            // Create temporary ID for signup
+            final tempId = DateTime.now().millisecondsSinceEpoch.toString();
+            avatarUrl = await storageService.uploadAvatarForSignup(
+              avatarFile,
+              tempId,
+            );
+            debugPrint('[SignupNotifier] Avatar uploaded: $avatarUrl');
+          }
+        } catch (error) {
+          debugPrint('[SignupNotifier] Failed to upload avatar: $error');
+          // Continue without avatar if upload fails
+        }
+      }
+
       final userRegistration = UserReg(
         gender: gender,
         age: age,
@@ -57,7 +85,11 @@ class SignupNotifier extends StateNotifier<UIState<UserReg>> {
         account: userAccount,
       );
 
-      await _repository.register(userRegistration);
+      // Pass avatarUrl to repository
+      await _repository.register(
+        userRegistration,
+        avatarUrl: avatarUrl,
+      );
 
       await _syncUserProfile();
 
