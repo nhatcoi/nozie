@@ -20,6 +20,9 @@ class AppPadding {
   /// Top padding cho topbar
   static const double topBarTopPercent = 1.0;
 
+  /// Top padding cho bottom bar
+  static const double bottomBarTopPercent = 0.2;
+
   /// Bottom padding cho bottom bar
   static const double bottomBarBottomPercent = 0.0;
 
@@ -88,7 +91,7 @@ class ResponsivePadding {
   static EdgeInsets bottomBar(BuildContext context) {
     return context.responsivePadding(
       leftPercent: AppPadding.horizontalPercent,
-      topPercent: AppPadding.verticalPercent,
+      topPercent: AppPadding.bottomBarTopPercent,
       rightPercent: AppPadding.horizontalPercent,
       bottomPercent: AppPadding.bottomBarBottomPercent,
     );

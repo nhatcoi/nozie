@@ -126,4 +126,11 @@ class ImageConstant {
   static const String contactTwitterIcon = '${subPathContactIcon}twitter.svg';
   static const String contactInstagramIcon =
       '${subPathContactIcon}instagram.svg';
+
+  // wishlist item
+  // paper-negative, send, info-square (path: images/icons/...)
+  static const String paperNegativeIcon = '${subPathIcon}paper-negative.svg';
+  static const String sendIcon = '${subPathIcon}send.svg';
+  static const String infoSquareIcon = '${subPathIcon}info-square.svg';
+  
 }
