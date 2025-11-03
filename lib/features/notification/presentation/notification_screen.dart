@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/core/enums/status_type.dart';
 import 'package:movie_fe/features/notification/presentation/widgets/notification_card.dart';
-import 'package:movie_fe/features/notification/presentation/widgets/notification_icon.dart';
+import 'package:movie_fe/features/notification/providers/notification_providers.dart';
+import 'package:movie_fe/routes/app_router.dart';
 
 class NotificationScreen extends ConsumerWidget {
   const NotificationScreen({super.key});
@@ -14,49 +15,148 @@ class NotificationScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final t = context.i18n;
     final theme = Theme.of(context);
-
     final isDark = theme.brightness == Brightness.dark;
-    final data = "";
-    final isHaveNoti = data.isNotEmpty;
+    final notificationsAsync = ref.watch(notificationsProvider);
+    final notificationRepo = ref.read(notificationRepositoryProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(t.notification.title,style: theme.textTheme.headlineLarge),
+        title: Text(
+          t.notification.title,
+          style: theme.textTheme.headlineLarge,
+        ),
         centerTitle: false,
         actions: [
+          if (notificationsAsync.value?.isNotEmpty ?? false)
+            TextButton(
+              onPressed: () async {
+                try {
+                  await notificationRepo.markAllAsRead();
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Failed to mark all as read: $e'),
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                  }
+                }
+              },
+              child: Text(
+                'Mark all read',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: AppColors.primary500,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              // Navigator.of(context).pop();
+              context.push(AppRouter.notificationSettings);
             },
           ),
         ],
       ),
       body: ContentWrapper(
-        child: isHaveNoti ? Padding(
-          padding: EdgeInsets.symmetric(vertical: 140),
-          child: Align(
-            alignment: Alignment.center,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SvgPicture.asset(isDark ? ImageConstant.notificationFrameDark : ImageConstant.notificationFrame),
-                Gap(60),
-                Text(t.common.empty,style: theme.textTheme.headlineLarge),
-                Gap(12),
-                Text(t.notification.empty,style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w400,
-                )),
-              ],
-            ),
+        child: notificationsAsync.when(
+          data: (notifications) {
+            if (notifications.isEmpty) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 140),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SvgPicture.asset(
+                        isDark
+                            ? ImageConstant.notificationFrameDark
+                            : ImageConstant.notificationFrame,
+                      ),
+                      const Gap(60),
+                      Text(
+                        t.common.empty,
+                        style: theme.textTheme.headlineLarge,
+                      ),
+                      const Gap(12),
+                      Text(
+                        t.notification.empty,
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+
+            return ListView.separated(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              itemCount: notifications.length,
+              separatorBuilder: (context, index) => const Gap(16),
+              itemBuilder: (context, index) {
+                final notification = notifications[index];
+                return NotificationCard(
+                  notification: notification,
+                  onTap: () async {
+                    try {
+                      await notificationRepo.markAsRead(notification.id);
+                    } catch (e) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error: ${e.toString()}'),
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+                      }
+                    }
+                  },
+                );
+              },
+            );
+          },
+          loading: () => const Center(
+            child: CircularProgressIndicator(),
           ),
-        ) : SingleChildScrollView(
-          child: Column(
-            spacing: 24,
-            children: [
-                NotificationCard(type: StatusType.update, title: 'hihi', time: DateTime.now(), description: 'haha',)
-            ],
+          error: (error, stack) => Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    size: 64,
+                    color: AppColors.warning,
+                  ),
+                  const Gap(16),
+                  Text(
+                    'Error loading notifications',
+                    style: theme.textTheme.titleLarge,
+                  ),
+                  const Gap(8),
+                  Text(
+                    error.toString(),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: AppColors.getTextSecondary(context),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const Gap(16),
+                  ElevatedButton(
+                    onPressed: () {
+                      ref.invalidate(notificationsProvider);
+                    },
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),

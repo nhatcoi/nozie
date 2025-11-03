@@ -31,6 +31,8 @@ import 'package:movie_fe/features/wishlist/presentation/wishlist_screen.dart';
 import 'package:movie_fe/features/movie/presentation/screens/movie_detail_screen.dart';
 import 'package:movie_fe/features/movie/presentation/screens/video_player_screen.dart';
 import 'package:movie_fe/features/movie/presentation/screens/movie_info_screen.dart';
+import 'package:movie_fe/features/movie/presentation/screens/ratings_detail_screen.dart';
+import 'package:movie_fe/features/purchase/presentation/widgets/checkout_screen.dart';
 import 'package:movie_fe/core/models/movie.dart';
 import '../core/layouts/main_layout.dart';
 import '../core/services/locale_setting.dart';
@@ -64,6 +66,8 @@ class AppRouter {
   static const movie = '/movie';
   static const videoPlayer = '/video-player';
   static const movieInfo = '/movie-info';
+  static const ratings = '/ratings';
+  static const checkout = '/checkout';
 
   static const _publicPaths = {
     welcome,
@@ -165,6 +169,36 @@ class AppRouter {
         }
 
         return MovieInfoScreen(movie: movie);
+      }),
+      GoRoute(path: '$ratings/:id', builder: (context, state) {
+        final id = state.pathParameters['id']!;
+        final extra = state.extra;
+        String? title;
+        if (extra is Map) {
+          title = extra['title'] as String?;
+        } else if (extra is String) {
+          title = extra;
+        }
+        return RatingsDetailScreen(movieId: id, movieTitle: title ?? id);
+      }),
+      GoRoute(path: checkout, builder: (_, state) {
+        final extra = state.extra;
+        Movie? movie;
+        if (extra is Map) {
+          movie = extra['movie'] as Movie?;
+        } else if (extra is Movie) {
+          movie = extra;
+        }
+        
+        if (movie == null) {
+          return Scaffold(
+            body: Center(
+              child: Text('Movie not found'),
+            ),
+          );
+        }
+        
+        return CheckoutScreen(movie: movie);
       }),
       GoRoute(path: resetPassword, builder: (_, __) => const ForgotPasswordNewPassScreen()),
       GoRoute(path: notification, builder: (_, __) => const NotificationScreen()),

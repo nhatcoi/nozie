@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../../../core/utils/data/format_utils.dart';
 import '../../../../core/app_export.dart';
 import '../../../../core/models/movie_item.dart';
 import '../../../../core/utils/data/price_utils.dart';
@@ -48,7 +50,18 @@ class MovieHeroSection extends StatelessWidget {
       children: [
         _buildHeroInfo(context, theme, textColor, secondaryText),
         const Gap(24),
-        _buildMetrics(context, theme, textColor, secondaryText),
+        StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+          stream: FirebaseFirestore.instance
+              .collection('ratings')
+              .doc(movie.id)
+              .snapshots(),
+          builder: (context, snap) {
+            final data = snap.data?.data();
+            final avg = (data?['averageRating'] as num?)?.toDouble() ?? (movie.rating ?? 0.0);
+            final total = (data?['totalReviews'] as num?)?.toInt() ?? (ratingCount ?? 0);
+            return _buildMetrics(context, theme, textColor, secondaryText, avg, total);
+          },
+        ),
         const Gap(16),
         _buildBuyButton(context, theme),
         const Gap(32),
@@ -134,9 +147,11 @@ class MovieHeroSection extends StatelessWidget {
     ThemeData theme,
     Color textColor,
     Color secondaryText,
+    double avgRating,
+    int totalReviews,
   ) {
-    final ratingVal = (movie.rating ?? 0.0).toStringAsFixed(1);
-    final ratingCountShort = FormatUtils.formatCountShort(ratingCount);
+    final ratingVal = avgRating.toStringAsFixed(1);
+    final ratingCountShort = FormatUtils.formatCount(totalReviews);
     final ratingCaption = ratingCountShort == '—' ? 'ratings' : '$ratingCountShort reviews';
     final duration = FormatUtils.formatDuration(durationText);
     final quality = (qualityText == null || qualityText!.isEmpty) ? 'FHD' : qualityText!;

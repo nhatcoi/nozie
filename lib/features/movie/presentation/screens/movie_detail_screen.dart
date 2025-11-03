@@ -294,18 +294,17 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                           return;
                         }
                         
-                        // TODO: Thêm các phương thức thanh toán sau (payment methods)
-                        // Hiện tại chỉ thêm vào purchased list trực tiếp
-                        await purchaseRepo.addToPurchase(movie.id);
-                        
+                        // Navigate to checkout screen
                         if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Movie added to purchased library'),
-                              behavior: SnackBarBehavior.floating,
-                              duration: Duration(seconds: 2),
-                            ),
+                          final result = await context.push(
+                            AppRouter.checkout,
+                            extra: {'movie': movie},
                           );
+                          
+                          if (result == true && context.mounted) {
+                            // Purchase successful, refresh
+                            ref.invalidate(isPurchasedProvider(movie.id));
+                          }
                         }
                       } catch (e) {
                         if (context.mounted) {
@@ -330,10 +329,12 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
               ),
               Gap(32),
               MovieRatingSection(
+                movieId: movie.id,
                 rating: movie.rating ?? 0.0,
                 reviewCount: movie.ratingCount ?? 0,
+                canRate: ((movie.priceValue ?? 0.0) == 0.0) || (ref.read(isPurchasedProvider(movie.id)).value ?? false),
                 onViewAllPressed: () {
-                  // TODO: Navigate to full reviews page
+                  context.push('${AppRouter.ratings}/${movie.id}', extra: {'title': movie.title});
                 },
               ),
               if (movie.franchiseId != null) ...[

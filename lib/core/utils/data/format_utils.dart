@@ -10,6 +10,18 @@ class FormatUtils {
     return count.toString();
   }
 
+  static String formatCount(int count) {
+    if (count >= 1000000) {
+      final v = (count / 1000000).toStringAsFixed(1);
+      return _trimTrailingZero(v) + 'M';
+    }
+    if (count >= 1000) {
+      final v = (count / 1000).toStringAsFixed(1);
+      return _trimTrailingZero(v) + 'k';
+    }
+    return count.toString();
+  }
+
   static String formatDuration(String? raw) {
     if (raw == null || raw.trim().isEmpty) return '—';
     final s = raw.toLowerCase();
@@ -71,6 +83,21 @@ class FormatUtils {
       s = s.replaceAll(RegExp(r"\.0$"), '');
     }
     return s;
+  }
+
+  static String timeAgo(DateTime dateTime) {
+    final now = DateTime.now();
+    final diff = now.difference(dateTime);
+    if (diff.inSeconds < 60) return 'just now';
+    if (diff.inMinutes < 60) return '${diff.inMinutes} minutes ago';
+    if (diff.inHours < 24) return '${diff.inHours} hours ago';
+    if (diff.inDays < 7) return '${diff.inDays} days ago';
+    final weeks = diff.inDays ~/ 7;
+    if (weeks < 5) return '$weeks weeks ago';
+    final months = diff.inDays ~/ 30;
+    if (months < 12) return '$months months ago';
+    final years = diff.inDays ~/ 365;
+    return '$years years ago';
   }
 }
 

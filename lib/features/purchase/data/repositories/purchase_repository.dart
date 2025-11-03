@@ -5,17 +5,22 @@ import '../../../../core/models/movie_item.dart';
 import '../../../../core/models/movie.dart';
 import '../../../../core/repositories/movie_repository.dart';
 import '../../models/purchase_item.dart';
+import '../../../notification/models/notification_item.dart';
+import '../../../notification/repositories/notification_repository.dart';
+import '../../../notification/providers/notification_providers.dart';
 
 final purchaseRepositoryProvider = Provider((ref) => PurchaseRepository(
   ref.watch(firestoreProvider),
   FirebaseAuth.instance,
+  ref.watch(notificationRepositoryProvider),
 ));
 
 class PurchaseRepository {
-  PurchaseRepository(this._db, this._auth);
+  PurchaseRepository(this._db, this._auth, this._notificationRepo);
   
   final FirebaseFirestore _db;
   final FirebaseAuth _auth;
+  final NotificationRepository _notificationRepo;
 
   String? get _userId => _auth.currentUser?.uid;
 
@@ -83,6 +88,7 @@ class PurchaseRepository {
       throw Exception('User not authenticated');
     }
 
+    // Add to purchases
     await _db
         .collection('users')
         .doc(userId)
@@ -94,6 +100,29 @@ class PurchaseRepository {
       'isDownloaded': true,
       'isFinished': false,
     });
+
+    // Get movie details for notification
+    final movieDoc = await _db.collection('movies').doc(movieId).get();
+    if (movieDoc.exists) {
+      final movie = Movie.fromDoc(movieDoc);
+      
+      // Create purchase notification
+      final notification = NotificationItem(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        type: NotificationType.purchase,
+        title: 'Purchase Successful! 🎬',
+        description: 'You now own "${movie.title}"',
+        createdAt: DateTime.now(),
+        deepLink: 'movie:$movieId',
+        metadata: {
+          'movieId': movieId,
+          'movieTitle': movie.title,
+          'movieImageUrl': movie.imageUrl,
+        },
+      );
+
+      await _notificationRepo.createNotification(notification);
+    }
   }
 
   /// Xóa movie khỏi purchased list (nếu cần)

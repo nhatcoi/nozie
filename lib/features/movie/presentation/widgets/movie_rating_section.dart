@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../../../core/utils/data/format_utils.dart';
 import '../../../../core/app_export.dart';
+import '../../services/ratings_service.dart';
 
 class MovieRatingSection extends ConsumerStatefulWidget {
   const MovieRatingSection({
     super.key,
+    required this.movieId,
     required this.rating,
     required this.reviewCount,
     this.onViewAllPressed,
+    this.canRate = true,
   });
 
+  final String movieId;
   final double rating;
   final int reviewCount;
   final VoidCallback? onViewAllPressed;
+  final bool canRate;
 
   @override
   ConsumerState<MovieRatingSection> createState() => _MovieRatingSectionState();
@@ -50,38 +57,58 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
           ],
         ),
         const Gap(24),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.rating.toStringAsFixed(1),
-                    style: theme.textTheme.headlineLarge?.copyWith(
-                      color: textColor,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 48,
-                    ),
+        StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+          stream: FirebaseFirestore.instance
+              .collection('ratings')
+              .doc(widget.movieId)
+              .snapshots(),
+          builder: (context, snap) {
+            final data = snap.data?.data();
+            final avg = (data?['averageRating'] as num?)?.toDouble() ?? (widget.rating);
+            final total = (data?['totalReviews'] as num?)?.toInt() ?? (widget.reviewCount);
+            final stars = (data?['starsCount'] as Map?)?.map((k, v) => MapEntry(k.toString(), (v as num).toInt())) ?? {};
+
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        avg.toStringAsFixed(1),
+                        style: theme.textTheme.headlineLarge?.copyWith(
+                          color: textColor,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 48,
+                        ),
+                      ),
+                      const Gap(8),
+                      _buildStarRating(avg),
+                      const Gap(12),
+                      Text(
+                        '(${FormatUtils.formatCount(total)} reviews)',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: secondaryText,
+                        ),
+                      ),
+                    ],
                   ),
-                  const Gap(8),
-                  _buildStarRating(widget.rating),
-                  const Gap(12),
-                  Text(
-                    '(${widget.reviewCount} reviews)',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: secondaryText,
-                    ),
+                ),
+                const Gap(24),
+                Expanded(
+                  child: _buildRatingDistribution(
+                    context,
+                    theme,
+                    textColor,
+                    secondaryText,
+                    total,
+                    stars,
                   ),
-                ],
-              ),
-            ),
-            const Gap(24),
-            Expanded(
-              child: _buildRatingDistribution(context, theme, textColor, secondaryText),
-            ),
-          ],
+                ),
+              ],
+            );
+          },
         ),
         const Gap(32),
         _buildRateSection(context, theme, textColor, secondaryText),
@@ -139,13 +166,14 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
     ThemeData theme,
     Color textColor,
     Color secondaryText,
+    int totalReviews,
+    Map<String, int> stars,
   ) {
-    final percentages = [0.65, 0.20, 0.10, 0.03, 0.02];
-
     return Column(
       children: List.generate(5, (index) {
-        final stars = 5 - index;
-        final percentage = percentages[index];
+        final star = 5 - index;
+        final count = stars[star.toString()] ?? 0;
+        final pct = totalReviews == 0 ? 0.0 : (count / totalReviews);
         return Padding(
           padding: const EdgeInsets.only(bottom: 12),
           child: Row(
@@ -153,7 +181,7 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
               SizedBox(
                 width: 30,
                 child: Text(
-                  '$stars',
+                  '$star',
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: secondaryText,
                     fontWeight: FontWeight.w600,
@@ -165,7 +193,7 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(4),
                   child: LinearProgressIndicator(
-                    value: percentage,
+                    value: pct,
                     backgroundColor: AppColors.getSurface(context),
                     valueColor: AlwaysStoppedAnimation<Color>(
                       AppColors.primary500,
@@ -196,9 +224,9 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
           children: [
             Center(
               child: Text(
-                'Rate this Film',
+                widget.canRate ? 'Rate this Film' : 'Purchase required to rate',
                 style: theme.textTheme.titleMedium?.copyWith(
-                  color: textColor,
+                  color: widget.canRate ? textColor : secondaryText,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -209,20 +237,24 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
               children: List.generate(5, (index) {
                 final starNumber = index + 1;
                 return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedStars = starNumber;
-                    });
-                  },
+                  onTap: widget.canRate
+                      ? () {
+                          setState(() {
+                            selectedStars = starNumber;
+                          });
+                        }
+                      : null,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4),
                     child: Icon(
                       starNumber <= selectedStars
                           ? Icons.star
                           : Icons.star_border,
-                      color: starNumber <= selectedStars
-                          ? AppColors.primary500
-                          : secondaryText.withOpacity(0.5),
+                      color: widget.canRate
+                          ? (starNumber <= selectedStars
+                              ? AppColors.primary500
+                              : secondaryText.withOpacity(0.5))
+                          : secondaryText.withOpacity(0.3),
                       size: 32,
                     ),
                   ),
@@ -230,10 +262,9 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
               }),
             ),
             const Gap(24),
-            SizedBox(
-              width: double.infinity,
+            Center(
               child: OutlinedButton(
-                onPressed: selectedStars > 0
+                onPressed: widget.canRate && selectedStars > 0
                     ? () {
                         _showReviewDialog(context, theme, textColor, secondaryText, selectedStars);
                       }
@@ -241,15 +272,15 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.primary500,
                   side: BorderSide(color: AppColors.primary500, width: 2),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(100),
                   ),
                 ),
                 child: Text(
                   'Write a Review',
                   style: theme.textTheme.bodyLarge?.copyWith(
-                    color: AppColors.primary500,
+                    color: widget.canRate ? AppColors.primary500 : secondaryText,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -269,6 +300,7 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
     int initialStars,
   ) {
     int selectedStars = initialStars;
+    final controller = TextEditingController();
 
     showDialog(
       context: context,
@@ -322,6 +354,21 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
                     );
                   }),
                 ),
+                const Gap(16),
+                TextField(
+                  controller: controller,
+                  maxLines: 4,
+                  decoration: InputDecoration(
+                    hintText: 'Write your review...',
+                    hintStyle: theme.textTheme.bodyMedium?.copyWith(color: secondaryText),
+                    filled: true,
+                    fillColor: AppColors.getSurface(context),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
                 const Gap(24),
               ],
             ),
@@ -335,14 +382,33 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
               ),
               PrimaryButton(
                 text: 'Submit',
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Review submitted: $selectedStars stars'),
-                      behavior: SnackBarBehavior.floating,
-                    ),
-                  );
+                onPressed: () async {
+                  try {
+                    final svc = RatingsService();
+                    await svc.submitReview(
+                      movieId: widget.movieId,
+                      rating: selectedStars,
+                      comment: controller.text.trim().isEmpty ? null : controller.text.trim(),
+                    );
+                    if (context.mounted) {
+                      Navigator.of(context).pop();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Review submitted'),
+                          behavior: SnackBarBehavior.floating,
+                        ),
+                      );
+                    }
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Error: ${e.toString()}'),
+                          behavior: SnackBarBehavior.floating,
+                        ),
+                      );
+                    }
+                  }
                 },
               ),
             ],

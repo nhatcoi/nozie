@@ -335,7 +335,7 @@ profile:
     sectionTitle: Thông báo cho tôi khi...
     toggles:
       newRecommendation: Có gợi ý mới
-      newBookSeries: Có bộ sách mới
+      newBookSeries: Có phim mới
       authorUpdates: Có cập nhật từ tác giả
       priceDrops: Có khuyến mãi giảm giá
       purchase: Khi tôi thực hiện giao dịch
