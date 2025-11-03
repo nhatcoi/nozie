@@ -124,22 +124,29 @@ auth:
         title: Chọn thể loại phim bạn thích
         description: Chọn thể loại phim yêu thích để có gợi ý tốt hơn hoặc bạn có thể bỏ qua
         list:
-          action: Hành động
-          adventure: Phiêu lưu
-          animation: Hoạt hình
-          comedy: Hài
-          crime: Tội phạm
-          documentary: Tài liệu
-          drama: Kịch tính
-          family: Gia đình
-          fantasy: Viễn tưởng
-          horror: Kinh dị
-          mystery: Bí ẩn
-          romance: Lãng mạn
-          sciFi: Khoa học viễn tưởng
-          thriller: Giật gân
-          war: Chiến tranh
-          western: Viễn Tây
+          amNhac: Âm Nhạc
+          biAn: Bí ẩn
+          chienTranh: Chiến Tranh
+          chinhKich: Chính kịch
+          coTrang: Cổ Trang
+          giaDinh: Gia Đình
+          haiHuoc: Hài Hước
+          hanhDong: Hành Động
+          hinhSu: Hình Sự
+          hocDuong: Học Đường
+          khoaHoc: Khoa Học
+          kinhDi: Kinh Dị
+          kinhDien: Kinh Điển
+          phieuLuu: Phiêu Lưu
+          phim18: Phim 18+
+          shortDrama: Short Drama
+          taiLieu: Tài Liệu
+          tamLy: Tâm Lý
+          thanThoai: Thần Thoại
+          theThao: Thể Thao
+          tinhCam: Tình Cảm
+          vienTuong: Viễn Tưởng
+          voThuat: Võ Thuật
       
       # Profile Information
       profile:

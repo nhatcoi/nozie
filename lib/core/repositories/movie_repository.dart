@@ -15,12 +15,38 @@ class MovieRepository {
       .snapshots()
       .map((s) => s.docs.map((doc) => MovieItem.fromMovie(Movie.fromDoc(doc))).toList());
 
-  Stream<List<MovieItem>> streamByGenre(String genre) => _db
+  Stream<List<MovieItem>> streamByGenre(String slugOrName) => _db
       .collection('movies')
-      .where('category', arrayContains: genre)
-      .orderBy('year', descending: true)
+      .orderBy('view', descending: true)
       .snapshots()
-      .map((s) => s.docs.map((doc) => MovieItem.fromMovie(Movie.fromDoc(doc))).toList());
+      .map((s) {
+        final docs = s.docs;
+        final filtered = <MovieItem>[];
+        for (final doc in docs) {
+          final data = doc.data();
+          bool match = false;
+          final slugs = (data['categorySlugs'] as List?)?.map((e) => e.toString()).toList() ?? const [];
+          if (slugs.contains(slugOrName)) {
+            match = true;
+          } else {
+            final cats = (data['category'] as List?) ?? const [];
+            for (final c in cats) {
+              if (c is Map) {
+                final slug = c['slug']?.toString();
+                final name = c['name']?.toString();
+                if (slug == slugOrName || name == slugOrName) {
+                  match = true;
+                  break;
+                }
+              }
+            }
+          }
+          if (match) {
+            filtered.add(MovieItem.fromMovie(Movie.fromDoc(doc)));
+          }
+        }
+        return filtered;
+      });
 
   Stream<MovieItem?> streamById(String id) => _db
       .collection('movies')

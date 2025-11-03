@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import '../../../../core/app_export.dart';
 import '../../../../core/models/movie_item.dart';
-import '../../../../core/utils/price_utils.dart';
-import '../../../../core/utils/format_utils.dart';
-import '../../../../core/utils/text_utils.dart';
+import '../../../../core/utils/data/price_utils.dart';
+import '../../../../core/utils/data/format_utils.dart';
+import '../../../../core/utils/data/text_utils.dart';
 import '../../../../core/widgets/image_utils.dart';
 
 class MovieHeroSection extends StatelessWidget {

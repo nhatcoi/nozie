@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:movie_fe/core/app_export.dart';
 import 'package:movie_fe/core/models/movie_item.dart';
 import 'package:movie_fe/core/widgets/image_utils.dart';
 import '../../repositories/wishlist_repository.dart';
+import '../../../../routes/app_router.dart';
+import '../../../../core/repositories/movie_repository.dart';
 
 enum WishlistAction {
   remove,
@@ -206,13 +209,31 @@ class _WishlistItemState extends ConsumerState<WishlistItem> {
         }
         break;
       case WishlistAction.about:
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('About movie - coming soon'),
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
+        try {
+          final movieRepo = ref.read(movieRepoProvider);
+          final movie = await movieRepo.getMovieDetail(widget.movie.id);
+          if (movie != null && context.mounted) {
+            context.push(
+              '${AppRouter.movieInfo}/${movie.id}',
+              extra: {'movie': movie},
+            );
+          } else if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Movie not found'),
+                behavior: SnackBarBehavior.floating,
+              ),
+            );
+          }
+        } catch (e) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Error: ${e.toString()}'),
+                behavior: SnackBarBehavior.floating,
+              ),
+            );
+          }
         }
         break;
     }
@@ -224,7 +245,11 @@ class _WishlistItemState extends ConsumerState<WishlistItem> {
     final textColor = AppColors.getText(context);
     final secondaryText = AppColors.getTextSecondary(context);
 
-    return Row(
+    return InkWell(
+      onTap: () {
+        context.push('${AppRouter.movie}/${widget.movie.id}');
+      },
+      child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ClipRRect(
@@ -298,6 +323,7 @@ class _WishlistItemState extends ConsumerState<WishlistItem> {
           onPressed: () => _showActionMenu(context, ref),
         ),
       ],
+      ),
     );
   }
 }

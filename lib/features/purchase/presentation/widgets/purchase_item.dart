@@ -255,13 +255,31 @@ class _PurchaseItemWidgetState extends ConsumerState<PurchaseItemWidget> {
         }
         break;
       case PurchaseAction.aboutEbook:
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('About ebook - coming soon'),
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
+        try {
+          final movieRepo = ref.read(movieRepoProvider);
+          final movie = await movieRepo.getMovieDetail(widget.item.id);
+          if (movie != null && context.mounted) {
+            context.push(
+              '${AppRouter.movieInfo}/${movie.id}',
+              extra: {'movie': movie},
+            );
+          } else if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Movie not found'),
+                behavior: SnackBarBehavior.floating,
+              ),
+            );
+          }
+        } catch (e) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Error: ${e.toString()}'),
+                behavior: SnackBarBehavior.floating,
+              ),
+            );
+          }
         }
         break;
     }
@@ -273,7 +291,11 @@ class _PurchaseItemWidgetState extends ConsumerState<PurchaseItemWidget> {
     final textColor = AppColors.getText(context);
     final secondaryText = AppColors.getTextSecondary(context);
 
-    return Row(
+    return InkWell(
+      onTap: () {
+        context.push('${AppRouter.movie}/${widget.item.id}');
+      },
+      child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ClipRRect(
@@ -367,12 +389,18 @@ class _PurchaseItemWidgetState extends ConsumerState<PurchaseItemWidget> {
           ],
         ),
       ],
+      ),
     );
   }
 
   String? _getVideoUrl(dynamic movie) {
     if (movie.trailerUrl != null && movie.trailerUrl!.isNotEmpty) {
-      return movie.trailerUrl;
+      final t = movie.trailerUrl!;
+      final isDirectStream = t.contains('.m3u8') || t.contains('.mp4');
+      final isYouTube = t.contains('youtube.com') || t.contains('youtu.be');
+      if (isDirectStream && !isYouTube) {
+        return t;
+      }
     }
     
     if (movie.episodes != null && movie.episodes!.isNotEmpty) {
@@ -384,7 +412,9 @@ class _PurchaseItemWidgetState extends ConsumerState<PurchaseItemWidget> {
         final serverData = firstEpisode['server_data'] as List;
         if (serverData.isNotEmpty) {
           final firstVideo = serverData.first;
-          if (firstVideo['link_m3u8'] != null) {
+          if (firstVideo['link_m3u8'] != null &&
+              (firstVideo['link_m3u8'].toString().contains('.m3u8') ||
+               firstVideo['link_m3u8'].toString().contains('.mp4'))) {
             return firstVideo['link_m3u8'].toString();
           }
           if (firstVideo['link_embed'] != null) {

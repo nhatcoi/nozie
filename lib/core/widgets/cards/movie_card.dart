@@ -117,8 +117,8 @@ class MovieCard extends StatelessWidget {
                 children: [
                   _buildPosterImage(),
                   Positioned(
-                    bottom: 0,
-                    left: 5,
+                    bottom: 6,
+                    left: 8,
                     child: _buildTitle2(scale),
                   ),
                 ],

@@ -4,7 +4,7 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 708 (354 per locale)
+/// Strings: 722 (361 per locale)
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -1406,22 +1406,29 @@ class _TranslationsAuthRegisterStepsGenresListEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get action => 'Action';
-	String get adventure => 'Adventure';
-	String get animation => 'Animation';
-	String get comedy => 'Comedy';
-	String get crime => 'Crime';
-	String get documentary => 'Documentary';
-	String get drama => 'Drama';
-	String get family => 'Family';
-	String get fantasy => 'Fantasy';
-	String get horror => 'Horror';
-	String get mystery => 'Mystery';
-	String get romance => 'Romance';
-	String get sciFi => 'Sci-Fi';
-	String get thriller => 'Thriller';
-	String get war => 'War';
-	String get western => 'Western';
+	String get amNhac => 'Music';
+	String get biAn => 'Mystery';
+	String get chienTranh => 'War';
+	String get chinhKich => 'Drama';
+	String get coTrang => 'Historical';
+	String get giaDinh => 'Family';
+	String get haiHuoc => 'Comedy';
+	String get hanhDong => 'Action';
+	String get hinhSu => 'Crime';
+	String get hocDuong => 'School';
+	String get khoaHoc => 'Science';
+	String get kinhDi => 'Horror';
+	String get kinhDien => 'Classic';
+	String get phieuLuu => 'Adventure';
+	String get phim18 => 'Adult 18+';
+	String get shortDrama => 'Short Drama';
+	String get taiLieu => 'Documentary';
+	String get tamLy => 'Psychological';
+	String get thanThoai => 'Mythology';
+	String get theThao => 'Sport';
+	String get tinhCam => 'Romance';
+	String get vienTuong => 'Sci-Fi';
+	String get voThuat => 'Martial Arts';
 }
 
 // Path: auth.register.steps.profile.photo
@@ -2978,22 +2985,29 @@ class _TranslationsAuthRegisterStepsGenresListVi extends _TranslationsAuthRegist
 	@override final _TranslationsVi _root; // ignore: unused_field
 
 	// Translations
-	@override String get action => 'Hành động';
-	@override String get adventure => 'Phiêu lưu';
-	@override String get animation => 'Hoạt hình';
-	@override String get comedy => 'Hài';
-	@override String get crime => 'Tội phạm';
-	@override String get documentary => 'Tài liệu';
-	@override String get drama => 'Kịch tính';
-	@override String get family => 'Gia đình';
-	@override String get fantasy => 'Viễn tưởng';
-	@override String get horror => 'Kinh dị';
-	@override String get mystery => 'Bí ẩn';
-	@override String get romance => 'Lãng mạn';
-	@override String get sciFi => 'Khoa học viễn tưởng';
-	@override String get thriller => 'Giật gân';
-	@override String get war => 'Chiến tranh';
-	@override String get western => 'Viễn Tây';
+	@override String get amNhac => 'Âm Nhạc';
+	@override String get biAn => 'Bí ẩn';
+	@override String get chienTranh => 'Chiến Tranh';
+	@override String get chinhKich => 'Chính kịch';
+	@override String get coTrang => 'Cổ Trang';
+	@override String get giaDinh => 'Gia Đình';
+	@override String get haiHuoc => 'Hài Hước';
+	@override String get hanhDong => 'Hành Động';
+	@override String get hinhSu => 'Hình Sự';
+	@override String get hocDuong => 'Học Đường';
+	@override String get khoaHoc => 'Khoa Học';
+	@override String get kinhDi => 'Kinh Dị';
+	@override String get kinhDien => 'Kinh Điển';
+	@override String get phieuLuu => 'Phiêu Lưu';
+	@override String get phim18 => 'Phim 18+';
+	@override String get shortDrama => 'Short Drama';
+	@override String get taiLieu => 'Tài Liệu';
+	@override String get tamLy => 'Tâm Lý';
+	@override String get thanThoai => 'Thần Thoại';
+	@override String get theThao => 'Thể Thao';
+	@override String get tinhCam => 'Tình Cảm';
+	@override String get vienTuong => 'Viễn Tưởng';
+	@override String get voThuat => 'Võ Thuật';
 }
 
 // Path: auth.register.steps.profile.photo
@@ -3351,22 +3365,29 @@ extension on Translations {
 			case 'auth.register.steps.genres.select': return 'Select your favorite genres';
 			case 'auth.register.steps.genres.title': return 'Choose the Movie Genre You Like';
 			case 'auth.register.steps.genres.description': return 'Select your preferred movie genre for better recommendation or you can skip it';
-			case 'auth.register.steps.genres.list.action': return 'Action';
-			case 'auth.register.steps.genres.list.adventure': return 'Adventure';
-			case 'auth.register.steps.genres.list.animation': return 'Animation';
-			case 'auth.register.steps.genres.list.comedy': return 'Comedy';
-			case 'auth.register.steps.genres.list.crime': return 'Crime';
-			case 'auth.register.steps.genres.list.documentary': return 'Documentary';
-			case 'auth.register.steps.genres.list.drama': return 'Drama';
-			case 'auth.register.steps.genres.list.family': return 'Family';
-			case 'auth.register.steps.genres.list.fantasy': return 'Fantasy';
-			case 'auth.register.steps.genres.list.horror': return 'Horror';
-			case 'auth.register.steps.genres.list.mystery': return 'Mystery';
-			case 'auth.register.steps.genres.list.romance': return 'Romance';
-			case 'auth.register.steps.genres.list.sciFi': return 'Sci-Fi';
-			case 'auth.register.steps.genres.list.thriller': return 'Thriller';
-			case 'auth.register.steps.genres.list.war': return 'War';
-			case 'auth.register.steps.genres.list.western': return 'Western';
+			case 'auth.register.steps.genres.list.amNhac': return 'Music';
+			case 'auth.register.steps.genres.list.biAn': return 'Mystery';
+			case 'auth.register.steps.genres.list.chienTranh': return 'War';
+			case 'auth.register.steps.genres.list.chinhKich': return 'Drama';
+			case 'auth.register.steps.genres.list.coTrang': return 'Historical';
+			case 'auth.register.steps.genres.list.giaDinh': return 'Family';
+			case 'auth.register.steps.genres.list.haiHuoc': return 'Comedy';
+			case 'auth.register.steps.genres.list.hanhDong': return 'Action';
+			case 'auth.register.steps.genres.list.hinhSu': return 'Crime';
+			case 'auth.register.steps.genres.list.hocDuong': return 'School';
+			case 'auth.register.steps.genres.list.khoaHoc': return 'Science';
+			case 'auth.register.steps.genres.list.kinhDi': return 'Horror';
+			case 'auth.register.steps.genres.list.kinhDien': return 'Classic';
+			case 'auth.register.steps.genres.list.phieuLuu': return 'Adventure';
+			case 'auth.register.steps.genres.list.phim18': return 'Adult 18+';
+			case 'auth.register.steps.genres.list.shortDrama': return 'Short Drama';
+			case 'auth.register.steps.genres.list.taiLieu': return 'Documentary';
+			case 'auth.register.steps.genres.list.tamLy': return 'Psychological';
+			case 'auth.register.steps.genres.list.thanThoai': return 'Mythology';
+			case 'auth.register.steps.genres.list.theThao': return 'Sport';
+			case 'auth.register.steps.genres.list.tinhCam': return 'Romance';
+			case 'auth.register.steps.genres.list.vienTuong': return 'Sci-Fi';
+			case 'auth.register.steps.genres.list.voThuat': return 'Martial Arts';
 			case 'auth.register.steps.profile.title': return 'Complete Your Profile';
 			case 'auth.register.steps.profile.infoTitle': return 'Profile Information';
 			case 'auth.register.steps.profile.accountTitle': return 'Account Information';
@@ -3713,22 +3734,29 @@ extension on _TranslationsVi {
 			case 'auth.register.steps.genres.select': return 'Chọn thể loại yêu thích';
 			case 'auth.register.steps.genres.title': return 'Chọn thể loại phim bạn thích';
 			case 'auth.register.steps.genres.description': return 'Chọn thể loại phim yêu thích để có gợi ý tốt hơn hoặc bạn có thể bỏ qua';
-			case 'auth.register.steps.genres.list.action': return 'Hành động';
-			case 'auth.register.steps.genres.list.adventure': return 'Phiêu lưu';
-			case 'auth.register.steps.genres.list.animation': return 'Hoạt hình';
-			case 'auth.register.steps.genres.list.comedy': return 'Hài';
-			case 'auth.register.steps.genres.list.crime': return 'Tội phạm';
-			case 'auth.register.steps.genres.list.documentary': return 'Tài liệu';
-			case 'auth.register.steps.genres.list.drama': return 'Kịch tính';
-			case 'auth.register.steps.genres.list.family': return 'Gia đình';
-			case 'auth.register.steps.genres.list.fantasy': return 'Viễn tưởng';
-			case 'auth.register.steps.genres.list.horror': return 'Kinh dị';
-			case 'auth.register.steps.genres.list.mystery': return 'Bí ẩn';
-			case 'auth.register.steps.genres.list.romance': return 'Lãng mạn';
-			case 'auth.register.steps.genres.list.sciFi': return 'Khoa học viễn tưởng';
-			case 'auth.register.steps.genres.list.thriller': return 'Giật gân';
-			case 'auth.register.steps.genres.list.war': return 'Chiến tranh';
-			case 'auth.register.steps.genres.list.western': return 'Viễn Tây';
+			case 'auth.register.steps.genres.list.amNhac': return 'Âm Nhạc';
+			case 'auth.register.steps.genres.list.biAn': return 'Bí ẩn';
+			case 'auth.register.steps.genres.list.chienTranh': return 'Chiến Tranh';
+			case 'auth.register.steps.genres.list.chinhKich': return 'Chính kịch';
+			case 'auth.register.steps.genres.list.coTrang': return 'Cổ Trang';
+			case 'auth.register.steps.genres.list.giaDinh': return 'Gia Đình';
+			case 'auth.register.steps.genres.list.haiHuoc': return 'Hài Hước';
+			case 'auth.register.steps.genres.list.hanhDong': return 'Hành Động';
+			case 'auth.register.steps.genres.list.hinhSu': return 'Hình Sự';
+			case 'auth.register.steps.genres.list.hocDuong': return 'Học Đường';
+			case 'auth.register.steps.genres.list.khoaHoc': return 'Khoa Học';
+			case 'auth.register.steps.genres.list.kinhDi': return 'Kinh Dị';
+			case 'auth.register.steps.genres.list.kinhDien': return 'Kinh Điển';
+			case 'auth.register.steps.genres.list.phieuLuu': return 'Phiêu Lưu';
+			case 'auth.register.steps.genres.list.phim18': return 'Phim 18+';
+			case 'auth.register.steps.genres.list.shortDrama': return 'Short Drama';
+			case 'auth.register.steps.genres.list.taiLieu': return 'Tài Liệu';
+			case 'auth.register.steps.genres.list.tamLy': return 'Tâm Lý';
+			case 'auth.register.steps.genres.list.thanThoai': return 'Thần Thoại';
+			case 'auth.register.steps.genres.list.theThao': return 'Thể Thao';
+			case 'auth.register.steps.genres.list.tinhCam': return 'Tình Cảm';
+			case 'auth.register.steps.genres.list.vienTuong': return 'Viễn Tưởng';
+			case 'auth.register.steps.genres.list.voThuat': return 'Võ Thuật';
 			case 'auth.register.steps.profile.title': return 'Hoàn thành hồ sơ của bạn';
 			case 'auth.register.steps.profile.infoTitle': return 'Thông tin cá nhân';
 			case 'auth.register.steps.profile.accountTitle': return 'Thông tin tài khoản';

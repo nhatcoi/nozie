@@ -125,22 +125,29 @@ auth:
         title: Choose the Movie Genre You Like
         description: Select your preferred movie genre for better recommendation or you can skip it
         list:
-          action: Action
-          adventure: Adventure
-          animation: Animation
-          comedy: Comedy
-          crime: Crime
-          documentary: Documentary
-          drama: Drama
-          family: Family
-          fantasy: Fantasy
-          horror: Horror
-          mystery: Mystery
-          romance: Romance
-          sciFi: Sci-Fi
-          thriller: Thriller
-          war: War
-          western: Western
+          amNhac: Music
+          biAn: Mystery
+          chienTranh: War
+          chinhKich: Drama
+          coTrang: Historical
+          giaDinh: Family
+          haiHuoc: Comedy
+          hanhDong: Action
+          hinhSu: Crime
+          hocDuong: School
+          khoaHoc: Science
+          kinhDi: Horror
+          kinhDien: Classic
+          phieuLuu: Adventure
+          phim18: Adult 18+
+          shortDrama: Short Drama
+          taiLieu: Documentary
+          tamLy: Psychological
+          thanThoai: Mythology
+          theThao: Sport
+          tinhCam: Romance
+          vienTuong: Sci-Fi
+          voThuat: Martial Arts
       
       # Profile Information
       profile:

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:movie_fe/core/enums/movie_type.dart';
 import 'package:movie_fe/core/models/movie_item.dart';
 import 'package:movie_fe/core/utils/data/image_constant.dart';
+import 'package:movie_fe/core/utils/data/genres.dart';
 import 'package:movie_fe/core/widgets/cards/movie_card.dart';
 import 'package:movie_fe/routes/app_router.dart';
 
@@ -30,27 +31,35 @@ class ExploreGenre extends ConsumerWidget {
 
             final cardHeight = cardWidth / aspectRatio;
 
+            final genres = GenresVi.all;
             return GridView.builder(
-              itemCount: 20,
+              itemCount: genres.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: crossAxisCount,
                 crossAxisSpacing: spacing,
                 mainAxisSpacing: spacing,
                 childAspectRatio: aspectRatio,
               ),
-              itemBuilder: (context, i) => MovieCard(
-                width: cardWidth,
-                height: cardHeight,
-                movie: MovieItem(
-                  id: '1',
-                  title: '123',
-                  imageUrl: ImageConstant.imgCard,
-                ),
-                movieCardType: MovieCardType.titleInImg,
-                onMore: (){
-                  context.push('${AppRouter.movieCarouselGenre}1');
-                },
-              ),
+              itemBuilder: (context, i) {
+                final g = genres[i];
+                final name = g['name'] ?? '';
+                final slug = g['slug'] ?? name;
+                final img = g['imageUrl'] ?? ImageConstant.imgCard;
+                return MovieCard(
+                  width: cardWidth,
+                  height: cardHeight,
+                  movie: MovieItem(
+                    id: slug,
+                    title: name,
+                    imageUrl: img,
+                  ),
+                  movieCardType: MovieCardType.titleInImg,
+                  onMore: (){
+                    context.push('${AppRouter.movieCarouselGenre}$slug');
+                  },
+                  enableNavigation: false,
+                );
+              },
             );
           },
         ),
