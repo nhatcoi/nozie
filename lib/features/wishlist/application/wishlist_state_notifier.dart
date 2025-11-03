@@ -1,71 +1,50 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../repositories/wishlist_repository.dart';
 import '../../../../core/models/movie_item.dart';
+import '../repositories/wishlist_repository.dart';
 
 final wishlistStateProvider =
     StateNotifierProvider<WishlistStateNotifier, WishlistState>(
-  (ref) => WishlistStateNotifier(),
+  (ref) => WishlistStateNotifier(ref),
 );
-
-enum WishlistStatus { idle, loading, success, error }
 
 class WishlistState {
   final List<MovieItem> items;
-  final WishlistStatus status;
-  final String? error;
+  final Set<String> removedIds;
 
   const WishlistState({
     this.items = const [],
-    this.status = WishlistStatus.idle,
-    this.error,
+    this.removedIds = const {},
   });
 
   WishlistState copyWith({
     List<MovieItem>? items,
-    WishlistStatus? status,
-    String? error,
+    Set<String>? removedIds,
   }) {
     return WishlistState(
       items: items ?? this.items,
-      status: status ?? this.status,
-      error: error ?? this.error,
+      removedIds: removedIds ?? this.removedIds,
     );
   }
 }
 
 class WishlistStateNotifier extends StateNotifier<WishlistState> {
-  WishlistStateNotifier() : super(const WishlistState()) {
-    loadWishlist();
+  WishlistStateNotifier(this._ref) : super(const WishlistState()) {
+    _ref.listen(wishlistProvider, (previous, next) {
+      next.whenData((items) {
+        state = state.copyWith(
+          items: items.where((item) => !state.removedIds.contains(item.id)).toList(),
+        );
+      });
+    });
   }
 
-  final WishlistRepository _repository = WishlistRepository();
+  final Ref _ref;
 
-  Future<void> loadWishlist() async {
-    state = state.copyWith(status: WishlistStatus.loading);
-
-    try {
-      final items = await _repository.getWishlist();
-      state = state.copyWith(
-        items: items,
-        status: WishlistStatus.success,
-        error: null,
-      );
-    } catch (e) {
-      state = state.copyWith(
-        status: WishlistStatus.error,
-        error: e.toString(),
-      );
-    }
-  }
-
-  Future<void> removeFromWishlist(String itemId) async {
-    try {
-      await _repository.removeFromWishlist(itemId);
-      final updatedItems = state.items.where((item) => item.id != itemId).toList();
-      state = state.copyWith(items: updatedItems);
-    } catch (e) {
-      state = state.copyWith(error: e.toString());
-    }
+  void removeFromWishlist(String itemId) {
+    state = state.copyWith(
+      removedIds: {...state.removedIds, itemId},
+      items: state.items.where((item) => item.id != itemId).toList(),
+    );
   }
 }
 

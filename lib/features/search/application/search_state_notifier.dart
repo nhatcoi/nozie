@@ -1,11 +1,12 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../entities/search_result.dart';
 import '../entities/search_filter.dart';
 import '../repositories/search_repository.dart';
 
 final searchStateProvider = StateNotifierProvider<SearchStateNotifier, SearchState>(
-      (ref) => SearchStateNotifier(),
+      (ref) => SearchStateNotifier(ref),
 );
 
 enum SearchStatus { idle, loading, success, error }
@@ -77,10 +78,12 @@ class SearchState {
 }
 
 class SearchStateNotifier extends StateNotifier<SearchState> {
-  SearchStateNotifier() : super(const SearchState());
+  SearchStateNotifier(this._ref) : super(const SearchState());
   
+  final Ref _ref;
   Timer? _debounceTimer;
-  final SearchRepository _repository = SearchRepository();
+  
+  SearchRepository get _repository => _ref.read(searchRepositoryProvider);
 
   void updateQuery(String query) {
     _debounceTimer?.cancel();
@@ -92,7 +95,6 @@ class SearchStateNotifier extends StateNotifier<SearchState> {
       error: null,
     );
 
-    //
     if (query.isNotEmpty) {
       _debounceTimer = Timer(const Duration(milliseconds: 300), () {
         _fetchSuggestions(query);
@@ -103,9 +105,6 @@ class SearchStateNotifier extends StateNotifier<SearchState> {
   }
 
   Future<void> performSearch(String query) async {
-    if (query.trim().isEmpty) return;
-
-    // loading
     state = state.copyWith(
       query: query,
       isSearching: true,
@@ -137,15 +136,7 @@ class SearchStateNotifier extends StateNotifier<SearchState> {
 
   void updateFilters(SearchFilters filters) {
     state = state.copyWith(filters: filters);
-    // print('[SearchState] updateFilters => '
-    //     'sort:${filters.sortBy.name}, '
-    //     'priceMin:${filters.priceMin}, priceMax:${filters.priceMax}, '
-    //     'ratingMin:${filters.ratingMin}, '
-    //     'genres:${filters.genres}, '
-    //     'language:${filters.language.name}, age:${filters.age.name}, ');
-    if (state.query.isNotEmpty) {
-      performSearch(state.query);
-    }
+    performSearch(state.query);
   }
 
   Future<void> searchWithFilters(String query, SearchFilters filters) async {
@@ -168,7 +159,7 @@ class SearchStateNotifier extends StateNotifier<SearchState> {
       final results = await _repository.search(
         state.query, 
         filters: state.filters, 
-        page: state.currentPage + 1
+        page: state.currentPage + 1,
       );
       
       state = state.copyWith(
@@ -186,7 +177,6 @@ class SearchStateNotifier extends StateNotifier<SearchState> {
   }
 
 
-  // view mode
   void toggleShowInMode() {
     final newMode = state.showInMode == ShowInMode.category 
         ? ShowInMode.document 
@@ -198,7 +188,6 @@ class SearchStateNotifier extends StateNotifier<SearchState> {
     state = state.copyWith(showInMode: mode);
   }
 
-  // gợi ý search
   Future<void> _fetchSuggestions(String query) async {
     try {
       final suggestions = await _repository.getSuggestions(query);

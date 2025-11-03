@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import '../../../../core/app_export.dart';
 import '../../../../core/models/movie_item.dart';
+import '../../../../core/utils/price_utils.dart';
+import '../../../../core/widgets/image_utils.dart';
 
 class MovieHeroSection extends StatelessWidget {
   const MovieHeroSection({
@@ -13,6 +15,7 @@ class MovieHeroSection extends StatelessWidget {
     required this.description,
     required this.onBuyPressed,
     required this.onViewMorePressed,
+    this.isPurchased = false,
   });
 
   final MovieItem movie;
@@ -22,6 +25,7 @@ class MovieHeroSection extends StatelessWidget {
   final String description;
   final VoidCallback? onBuyPressed;
   final VoidCallback? onViewMorePressed;
+  final bool isPurchased;
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +56,8 @@ class MovieHeroSection extends StatelessWidget {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(16),
-          child: Image.asset(
-            movie.imageUrl,
+          child: NetworkOrAssetImage(
+            imageUrl: movie.imageUrl,
             width: 120,
             height: 180,
             fit: BoxFit.cover,
@@ -116,10 +120,17 @@ class MovieHeroSection extends StatelessWidget {
   }
 
   Widget _buildBuyButton(BuildContext context, ThemeData theme) {
+    final isFree = PriceUtils.isFree(movie);
+    final shouldShowWatchNow = isFree || isPurchased;
+    
+    final buttonText = shouldShowWatchNow 
+        ? 'Watch now' 
+        : PriceUtils.formatPriceForButton(movie);
+    
     return SizedBox(
       width: double.infinity,
       child: PrimaryButton(
-        text: 'Buy USD \$${movie.price?.toStringAsFixed(2)}',
+        text: buttonText,
         onPressed: onBuyPressed,
       ),
     );

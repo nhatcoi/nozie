@@ -85,7 +85,7 @@ class _SearchHeaderState extends ConsumerState<SearchHeader>{
                 ),
               ),
             ),
-            suffixIcon: searchState.query.isNotEmpty
+            suffixIcon: (searchState.query.isNotEmpty || searchState.hasSubmitted)
                 ? GestureDetector(
               onTap: searchState.hasResults
                   ? _showFilterOptions
@@ -132,9 +132,9 @@ class _SearchHeaderState extends ConsumerState<SearchHeader>{
   void _handleSubmit(String query) {
     if (query.trim().isNotEmpty) {
       ref.read(searchHistoryProvider.notifier).add(query);
-      ref.read(searchStateProvider.notifier).performSearch(query);
-      widget.searchFocusNode.unfocus();
     }
+    ref.read(searchStateProvider.notifier).performSearch(query);
+    widget.searchFocusNode.unfocus();
   }
 
   void _clearSearch() {

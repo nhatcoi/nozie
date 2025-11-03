@@ -11,7 +11,13 @@ class ListTitleMovie extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (movies.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    
     return ListView.separated(
+      shrinkWrap: false,
+      physics: const AlwaysScrollableScrollPhysics(),
       itemBuilder: (BuildContext context, int index) => MovieCard(
         movie: movies[index],
         movieCardType: MovieCardType.vertical,

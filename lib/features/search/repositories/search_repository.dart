@@ -1,61 +1,233 @@
-import '../../../../core/data/movie_data_store.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/models/movie_item.dart';
+import '../../../../core/models/movie.dart';
+import '../../../../core/utils/firebase_query.dart';
 import '../entities/search_result.dart';
 import '../entities/search_filter.dart';
 import '../entities/filter_section.dart';
+import '../mappers/search_mapper.dart';
+import '../services/search_query_builder.dart';
+import '../services/search_logger.dart';
+
+final firestoreProvider = Provider((_) => FirebaseFirestore.instance);
+
+final searchRepositoryProvider = Provider((ref) => SearchRepository(
+  ref.watch(firestoreProvider),
+));
 
 class SearchRepository {
-  final _dataStore = MovieDataStore();
+  final FirebaseFirestore _db;
+
+  SearchRepository(this._db);
+
 
   Future<SearchResultsPage<SearchResult>> search(
     String query, {
     SearchFilters filters = const SearchFilters(),
     int page = 1,
+    DocumentSnapshot? startAfter,
   }) async {
     try {
       await Future.delayed(const Duration(milliseconds: 500));
       
-      List<Map<String, dynamic>> movies;
+      const pageSize = 10;
+      var firestoreQuery = FirebaseQuery.collection('movies', firestore: _db);
+      firestoreQuery = SearchQueryBuilder.buildFirestoreQuery(firestoreQuery, filters);
       
-      if (query.isEmpty || query.toLowerCase() == 'trending' || query.toLowerCase() == 'popular') {
-        movies = _dataStore.getTrending(limit: 20);
+      if (query.isNotEmpty && 
+          query.toLowerCase() != 'trending' && 
+          query.toLowerCase() != 'popular') {
+        var snapshot = await firestoreQuery.limit(100).get();
+        var allMoviesData = snapshot.docs.map((doc) => Movie.fromDoc(doc)).toList();
+        var allMovies = allMoviesData.map((m) => MovieItem.fromMovie(m)).toList();
+        
+        final lowerQuery = query.toLowerCase();
+        allMovies = allMovies.where((m) => 
+          m.title.toLowerCase().contains(lowerQuery) ||
+          (m.id.toLowerCase().contains(lowerQuery))
+        ).toList();
+        
+        final startIndex = (page - 1) * pageSize;
+        final endIndex = startIndex + pageSize;
+        final paginatedMovies = allMovies.skip(startIndex).take(pageSize).toList();
+        final paginatedMoviesData = paginatedMovies.map((m) {
+          return allMoviesData.firstWhere((md) => md.id == m.id);
+        }).toList();
+        
+        final hasNext = endIndex < allMovies.length;
+        
+        SearchLogger.logMovies(paginatedMovies, page, filters, paginatedMoviesData);
+        
+        final results = paginatedMovies.map((m) => SearchMapper.movieItemToSearchResult(m)).toList();
+        
+        return SearchResultsPage<SearchResult>(
+          items: results,
+          page: page,
+          pageSize: pageSize,
+          total: allMovies.length,
+          hasNext: hasNext,
+        );
       } else {
-        movies = _dataStore.search(query);
+        final hasPriceFilter = filters.priceMin != null || filters.priceMax != null;
+        final needsManualSort = hasPriceFilter && 
+            filters.sortBy != SortOption.highestPrice && 
+            filters.sortBy != SortOption.lowestPrice;
+        
+        if (needsManualSort) {
+          var snapshot = await firestoreQuery.limit(pageSize * 10).get();
+          var docs = snapshot.docs;
+          var allMoviesData = docs.map((doc) => Movie.fromDoc(doc)).toList();
+          var allMovies = allMoviesData.map((m) => MovieItem.fromMovie(m)).toList();
+          
+          final moviesWithData = allMovies.map((m) {
+            final movieData = allMoviesData.firstWhere((md) => md.id == m.id);
+            return (item: m, data: movieData);
+          }).toList();
+          
+          moviesWithData.sort((a, b) {
+            if (filters.sortBy == SortOption.trending) {
+              final aView = a.data.view ?? 0;
+              final bView = b.data.view ?? 0;
+              return bView.compareTo(aView);
+            } else if (filters.sortBy == SortOption.newReleases) {
+              if (a.data.status == 'upcoming' && b.data.status != 'upcoming') return 1;
+              if (b.data.status == 'upcoming' && a.data.status != 'upcoming') return -1;
+              
+              final yearCompare = (b.data.year ?? 0).compareTo(a.data.year ?? 0);
+              if (yearCompare != 0) return yearCompare;
+              final aView = a.data.view ?? 0;
+              final bView = b.data.view ?? 0;
+              return bView.compareTo(aView);
+            } else if (filters.sortBy == SortOption.highestRating) {
+              final aRating = a.item.rating ?? 0.0;
+              final bRating = b.item.rating ?? 0.0;
+              return bRating.compareTo(aRating);
+            } else if (filters.sortBy == SortOption.lowestRating) {
+              final aRating = a.item.rating ?? 0.0;
+              final bRating = b.item.rating ?? 0.0;
+              return aRating.compareTo(bRating);
+            }
+            return 0;
+          });
+          
+          final startIndex = (page - 1) * pageSize;
+          final paginated = moviesWithData.skip(startIndex).take(pageSize).toList();
+          final hasNext = startIndex + pageSize < moviesWithData.length;
+          
+          final movies = paginated.map((e) => e.item).toList();
+          final moviesData = paginated.map((e) => e.data).toList();
+          
+          SearchLogger.logMovies(movies, page, filters, moviesData);
+          
+          final results = movies.map((m) => SearchMapper.movieItemToSearchResult(m)).toList();
+          
+          return SearchResultsPage<SearchResult>(
+            items: results,
+            page: page,
+            pageSize: pageSize,
+            total: moviesWithData.length,
+            hasNext: hasNext,
+          );
+        } else {
+          final isNewReleases = filters.sortBy == SortOption.newReleases;
+          
+          if (isNewReleases) {
+            var snapshot = await firestoreQuery.limit(pageSize * 10).get();
+            var docs = snapshot.docs;
+            var allMoviesData = docs.map((doc) => Movie.fromDoc(doc)).toList();
+            
+            final filteredMoviesData = allMoviesData.where((m) => 
+              m.status != 'upcoming' && m.year != null
+            ).toList();
+            
+            var allMovies = filteredMoviesData.map((m) => MovieItem.fromMovie(m)).toList();
+            
+            final moviesWithData = allMovies.map((m) {
+              final movieData = filteredMoviesData.firstWhere((md) => md.id == m.id);
+              return (item: m, data: movieData);
+            }).toList();
+            
+            moviesWithData.sort((a, b) {
+              final yearCompare = (b.data.year ?? 0).compareTo(a.data.year ?? 0);
+              if (yearCompare != 0) return yearCompare;
+              final aView = a.data.view ?? 0;
+              final bView = b.data.view ?? 0;
+              return bView.compareTo(aView);
+            });
+            
+            final startIndex = (page - 1) * pageSize;
+            final paginated = moviesWithData.skip(startIndex).take(pageSize).toList();
+            final hasNext = startIndex + pageSize < moviesWithData.length;
+            
+            final movies = paginated.map((e) => e.item).toList();
+            final moviesData = paginated.map((e) => e.data).toList();
+            
+            SearchLogger.logMovies(movies, page, filters, moviesData);
+            
+            final results = movies.map((m) => SearchMapper.movieItemToSearchResult(m)).toList();
+            
+            return SearchResultsPage<SearchResult>(
+              items: results,
+              page: page,
+              pageSize: pageSize,
+              total: moviesWithData.length,
+              hasNext: hasNext,
+            );
+          }
+          
+          if (page > 1 && startAfter != null) {
+            firestoreQuery = firestoreQuery.startAfter([startAfter]);
+          }
+          
+          var snapshot = await firestoreQuery.limit(pageSize + 1).get();
+          var docs = snapshot.docs;
+          var moviesData = docs.map((doc) => Movie.fromDoc(doc)).toList();
+          var movies = moviesData.map((m) => MovieItem.fromMovie(m)).toList();
+          
+          final hasNext = movies.length > pageSize;
+          DocumentSnapshot? lastDoc;
+          if (hasNext) {
+            lastDoc = docs[pageSize - 1];
+            movies = movies.take(pageSize).toList();
+            moviesData = moviesData.take(pageSize).toList();
+          } else if (movies.isNotEmpty) {
+            lastDoc = docs.last;
+          }
+          
+          SearchLogger.logMovies(movies, page, filters, moviesData);
+          
+          final results = movies.map((m) => SearchMapper.movieItemToSearchResult(m)).toList();
+        
+          return SearchResultsPage<SearchResult>(
+            items: results,
+            page: page,
+            pageSize: pageSize,
+            total: hasNext ? page * pageSize + 1 : page * pageSize,
+            hasNext: hasNext,
+            lastDoc: lastDoc,
+          );
+        }
       }
-      
-      // Apply filters
-      movies = _applyFilters(movies, filters);
-      
-      // Pagination
-      final startIndex = (page - 1) * 20;
-      final endIndex = startIndex + 20;
-      final paginatedMovies = movies.skip(startIndex).take(20).toList();
-      
-      final results = paginatedMovies.map((movie) => _toSearchResult(movie)).toList();
-      
-      return SearchResultsPage<SearchResult>(
-        items: results,
-        page: page,
-        pageSize: 20,
-        total: movies.length,
-      );
     } catch (e) {
       throw Exception('Failed to search: $e');
     }
   }
 
+
   Future<List<String>> getSuggestions(String query) async {
     try {
       await Future.delayed(const Duration(milliseconds: 200));
-      
       if (query.isEmpty) return [];
       
-      final allMovies = _dataStore.getAll();
+      final snapshot = await FirebaseQuery.collection('movies', firestore: _db)
+          .orderBy('year', descending: true)
+          .get();
+      
+      final allMovies = snapshot.docs.map((doc) => Movie.fromDoc(doc)).toList();
       final suggestions = allMovies
-          .where((movie) {
-            final title = (movie['title'] as String).toLowerCase();
-            return title.contains(query.toLowerCase());
-          })
-          .map((movie) => movie['title'] as String)
+          .where((movie) => movie.name.toLowerCase().contains(query.toLowerCase()))
+          .map((movie) => movie.name)
           .toSet()
           .toList();
       
@@ -68,8 +240,14 @@ class SearchRepository {
   Future<List<SearchResult>> getTrendingMovies() async {
     try {
       await Future.delayed(const Duration(milliseconds: 300));
-      final movies = _dataStore.getTrending(limit: 8);
-      return movies.map((movie) => _toSearchResult(movie)).toList();
+      final snapshot = await FirebaseQuery.collection('movies', firestore: _db)
+          .orderBy('view', descending: true)
+          .limit(8)
+          .get();
+      final movies = snapshot.docs
+          .map((doc) => MovieItem.fromMovie(Movie.fromDoc(doc)))
+          .toList();
+      return movies.map((m) => SearchMapper.movieItemToSearchResult(m)).toList();
     } catch (e) {
       throw Exception('Failed to get trending movies: $e');
     }
@@ -78,137 +256,17 @@ class SearchRepository {
   Future<List<SearchResult>> getPopularMovies() async {
     try {
       await Future.delayed(const Duration(milliseconds: 300));
-      final movies = _dataStore.getTopCharts(limit: 8);
-      return movies.map((movie) => _toSearchResult(movie)).toList();
+      final snapshot = await FirebaseQuery.collection('movies', firestore: _db)
+          .orderBy('view', descending: true)
+          .limit(8)
+          .get();
+      final movies = snapshot.docs
+          .map((doc) => MovieItem.fromMovie(Movie.fromDoc(doc)))
+          .toList();
+      return movies.map((m) => SearchMapper.movieItemToSearchResult(m)).toList();
     } catch (e) {
       throw Exception('Failed to get popular movies: $e');
     }
   }
 
-  List<Map<String, dynamic>> _applyFilters(
-    List<Map<String, dynamic>> movies,
-    SearchFilters filters,
-  ) {
-    var filtered = List<Map<String, dynamic>>.from(movies);
-    
-    // Filter by price
-    if (filters.priceMin != null || filters.priceMax != null) {
-      filtered = filtered.where((movie) {
-        final price = movie['price'] as double?;
-        if (price == null) return filters.priceMax == 0.0;
-        if (filters.priceMin != null && price < filters.priceMin!) return false;
-        if (filters.priceMax != null && price > filters.priceMax!) return false;
-        return true;
-      }).toList();
-    }
-    
-    // Filter by rating
-    if (filters.ratingMin != null) {
-      filtered = filtered.where((movie) {
-        final rating = movie['rating'] as double;
-        return rating >= filters.ratingMin!;
-      }).toList();
-    }
-    
-    // Filter by genres
-    if (filters.genres.isNotEmpty) {
-      filtered = filtered.where((movie) {
-        final movieGenres = (movie['genres'] as List<dynamic>)
-            .map((g) => g.toString().toLowerCase())
-            .toList();
-        return filters.genres.any((genre) => movieGenres.contains(genre.toLowerCase()));
-      }).toList();
-    }
-    
-    // Sort
-    switch (filters.sortBy) {
-      case SortOption.trending:
-        filtered.sort((a, b) {
-          final aTrending = (a['isTrending'] as bool) ? 1 : 0;
-          final bTrending = (b['isTrending'] as bool) ? 1 : 0;
-          if (aTrending != bTrending) return bTrending.compareTo(aTrending);
-          return (b['rating'] as double).compareTo(a['rating'] as double);
-        });
-        break;
-      case SortOption.highestRating:
-        filtered.sort((a, b) => (b['rating'] as double).compareTo(a['rating'] as double));
-        break;
-      case SortOption.lowestRating:
-        filtered.sort((a, b) => (a['rating'] as double).compareTo(b['rating'] as double));
-        break;
-      case SortOption.lowestPrice:
-        filtered.sort((a, b) {
-          final aPrice = a['price'] as double? ?? double.infinity;
-          final bPrice = b['price'] as double? ?? double.infinity;
-          return aPrice.compareTo(bPrice);
-        });
-        break;
-      case SortOption.highestPrice:
-        filtered.sort((a, b) {
-          final aPrice = a['price'] as double? ?? 0.0;
-          final bPrice = b['price'] as double? ?? 0.0;
-          return bPrice.compareTo(aPrice);
-        });
-        break;
-      case SortOption.newReleases:
-        filtered.sort((a, b) {
-          final aNew = (a['isNew'] as bool) ? 1 : 0;
-          final bNew = (b['isNew'] as bool) ? 1 : 0;
-          if (aNew != bNew) return bNew.compareTo(aNew);
-          try {
-            final aDate = DateTime.parse(_extractDate(a['releaseDate'] as String));
-            final bDate = DateTime.parse(_extractDate(b['releaseDate'] as String));
-            return bDate.compareTo(aDate);
-          } catch (e) {
-            return 0;
-          }
-        });
-        break;
-    }
-    
-    return filtered;
-  }
-
-  SearchResult _toSearchResult(Map<String, dynamic> movie) {
-    final releaseDate = movie['releaseDate'] as String;
-    final releaseYear = releaseDate.split(',').last.trim();
-    
-    return SearchResult(
-      id: movie['id'] as String,
-      title: movie['title'] as String,
-      subtitle: movie['subtitle'] as String?,
-      imageUrl: movie['imageUrl'] as String,
-      type: SearchResultType.movie,
-      rating: movie['rating'] as double,
-      ratingCount: movie['ratingCount'] as int,
-      genres: List<String>.from(movie['genres'] as List),
-      releaseYear: releaseYear,
-      metadata: {
-        'popularity': (movie['views'] as String).replaceAll('M+', '').replaceAll('K+', ''),
-        'vote_average': movie['rating'] as double,
-        'vote_count': movie['ratingCount'] as int,
-      },
-    );
-  }
-
-  String _extractDate(String dateString) {
-    final parts = dateString.split(',');
-    if (parts.length == 2) {
-      final monthDay = parts[0].trim().split(' ');
-      final month = _monthToNumber(monthDay[0]);
-      final day = monthDay[1];
-      final year = parts[1].trim();
-      return '$year-$month-$day';
-    }
-    return '2023-01-01';
-  }
-
-  String _monthToNumber(String month) {
-    const months = {
-      'January': '01', 'February': '02', 'March': '03', 'April': '04',
-      'May': '05', 'June': '06', 'July': '07', 'August': '08',
-      'September': '09', 'October': '10', 'November': '11', 'December': '12',
-    };
-    return months[month] ?? '01';
-  }
 }

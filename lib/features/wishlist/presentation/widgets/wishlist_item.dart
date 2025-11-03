@@ -5,7 +5,8 @@ import 'package:gap/gap.dart';
 
 import 'package:movie_fe/core/app_export.dart';
 import 'package:movie_fe/core/models/movie_item.dart';
-import '../../application/wishlist_state_notifier.dart';
+import 'package:movie_fe/core/widgets/image_utils.dart';
+import '../../repositories/wishlist_repository.dart';
 
 enum WishlistAction {
   remove,
@@ -49,7 +50,7 @@ class _WishlistItemState extends ConsumerState<WishlistItem> {
     showMenu<WishlistAction>(
       context: context,
       useRootNavigator: true,
-      color: Colors.white,
+      color: AppColors.getModalBackground(context),
       position: RelativeRect.fromLTRB(
         menuLeft,
         menuTop,
@@ -167,17 +168,31 @@ class _WishlistItemState extends ConsumerState<WishlistItem> {
     BuildContext context,
     WidgetRef ref,
     WishlistAction action,
-  ) {
+  ) async {
     switch (action) {
       case WishlistAction.remove:
-        ref.read(wishlistStateProvider.notifier).removeFromWishlist(widget.movie.id);
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Removed from wishlist'),
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
+        try {
+          final repo = ref.read(wishlistRepositoryProvider);
+          await repo.removeFromWishlist(widget.movie.id);
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Removed from wishlist'),
+                behavior: SnackBarBehavior.floating,
+                duration: Duration(seconds: 2),
+              ),
+            );
+          }
+        } catch (e) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Error: ${e.toString()}'),
+                behavior: SnackBarBehavior.floating,
+                duration: const Duration(seconds: 2),
+              ),
+            );
+          }
         }
         break;
       case WishlistAction.share:
@@ -214,8 +229,8 @@ class _WishlistItemState extends ConsumerState<WishlistItem> {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(12),
-          child: Image.asset(
-            widget.movie.imageUrl,
+          child: NetworkOrAssetImage(
+            imageUrl: widget.movie.imageUrl,
             width: 80,
             height: 120,
             fit: BoxFit.cover,
@@ -251,7 +266,7 @@ class _WishlistItemState extends ConsumerState<WishlistItem> {
                     ),
                     const Gap(6),
                     Text(
-                      widget.movie.rating.toString(),
+                      widget.movie.rating?.toStringAsFixed(1) ?? '0.0',
                       style: theme.textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.w600,
                         color: secondaryText,

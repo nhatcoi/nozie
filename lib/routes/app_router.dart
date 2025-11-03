@@ -29,6 +29,8 @@ import 'package:movie_fe/features/setting/presentation/screens/setting_screen.da
 import 'package:movie_fe/features/welcome/welcome_screen.dart';
 import 'package:movie_fe/features/wishlist/presentation/wishlist_screen.dart';
 import 'package:movie_fe/features/movie/presentation/screens/movie_detail_screen.dart';
+import 'package:movie_fe/features/movie/presentation/screens/video_player_screen.dart';
+import 'package:movie_fe/core/models/movie.dart';
 import '../core/layouts/main_layout.dart';
 import '../core/services/locale_setting.dart';
 import '../core/utils/no_transition_page.dart';
@@ -59,6 +61,7 @@ class AppRouter {
   static const explore = '/explore';
   static const movieCarouselGenre = '/movie-carousel-genre/';
   static const movie = '/movie';
+  static const videoPlayer = '/video-player';
 
   static const _publicPaths = {
     welcome,
@@ -114,6 +117,32 @@ class AppRouter {
       GoRoute(path: '$movie/:id', builder: (_, state) {
         final id = state.pathParameters['id']!;
         return MovieDetailScreen(movieId: id);
+      }),
+      GoRoute(path: '$videoPlayer/:id', builder: (_, state) {
+        final id = state.pathParameters['id']!;
+        final extra = state.extra;
+        Movie? movie;
+        String? videoUrl;
+        
+        if (extra is Map) {
+          movie = extra['movie'] as Movie?;
+          videoUrl = extra['videoUrl'] as String?;
+        } else if (extra is Movie) {
+          movie = extra;
+        }
+        
+        if (movie == null) {
+          return Scaffold(
+            body: Center(
+              child: Text('Movie not found: $id'),
+            ),
+          );
+        }
+        
+        return VideoPlayerScreen(
+          movie: movie,
+          videoUrl: videoUrl,
+        );
       }),
       GoRoute(path: resetPassword, builder: (_, __) => const ForgotPasswordNewPassScreen()),
       GoRoute(path: notification, builder: (_, __) => const NotificationScreen()),

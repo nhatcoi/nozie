@@ -137,46 +137,114 @@ class _SearchBodyState extends ConsumerState<SearchBody> {
     // Grid view (2 columns) of MovieCard
     final items = searchState.results
         .map(
-          (result) => MovieItem(
-            id: result.id,
-            title: result.title,
-            imageUrl: ImageConstant.imgCard,
-            rating: result.rating,
-            price: 5.5,
-          ),
+          (result) {
+            final priceData = result.metadata['priceData'] as Map<String, dynamic>?;
+            final priceValue = (result.metadata['price'] as num?)?.toDouble();
+            return MovieItem(
+              id: result.id,
+              title: result.title,
+              imageUrl: result.imageUrl ?? ImageConstant.imgCard,
+              rating: result.rating,
+              price: priceValue,
+              priceData: priceData,
+            );
+          },
         )
         .toList();
 
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-        childAspectRatio: 180 / 370,
-      ),
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        final movie = items[index];
-        return MovieCard(movie: movie);
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        if (notification is ScrollUpdateNotification) {
+          final metrics = notification.metrics;
+          // Load more when scrolled to 80% of the list
+          if (metrics.pixels >= metrics.maxScrollExtent * 0.8 && metrics.maxScrollExtent > 0) {
+            if (searchState.hasMoreResults && !searchState.isLoadingMore) {
+              ref.read(searchStateProvider.notifier).loadMoreResults();
+            }
+          }
+        }
+        return false;
       },
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          childAspectRatio: 180 / 370,
+        ),
+        itemCount: items.length + (searchState.isLoadingMore ? 2 : 0),
+        itemBuilder: (context, index) {
+          if (index >= items.length) {
+            // Loading indicator
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          final movie = items[index];
+          return MovieCard(movie: movie);
+        },
+      ),
     );
   }
 
   Widget _buildDocumentView(BuildContext context, SearchState searchState) {
-    // List view using ListTitleMovie
+    // List view using ListTitleMovie with infinite scroll
     final movieItems = searchState.results
         .map(
-          (result) => MovieItem(
-            id: result.id,
-            title: result.title,
-            imageUrl: ImageConstant.imgCard,
-            rating: result.rating,
-            price: 5.5,
-          ),
+          (result) {
+            final priceData = result.metadata['priceData'] as Map<String, dynamic>?;
+            final priceValue = (result.metadata['price'] as num?)?.toDouble();
+            return MovieItem(
+              id: result.id,
+              title: result.title,
+              imageUrl: result.imageUrl ?? ImageConstant.imgCard,
+              rating: result.rating,
+              price: priceValue,
+              priceData: priceData,
+            );
+          },
         )
         .toList();
 
-    return ListTitleMovie(movies: movieItems);
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        if (notification is ScrollUpdateNotification) {
+          final metrics = notification.metrics;
+          // Load more when scrolled to 80% of the list
+          if (metrics.pixels >= metrics.maxScrollExtent * 0.8 && metrics.maxScrollExtent > 0) {
+            if (searchState.hasMoreResults && !searchState.isLoadingMore) {
+              ref.read(searchStateProvider.notifier).loadMoreResults();
+            }
+          }
+        }
+        return false;
+      },
+      child: ListView.separated(
+        itemCount: movieItems.length + (searchState.isLoadingMore ? 1 : 0),
+        itemBuilder: (context, index) {
+          if (index >= movieItems.length) {
+            // Loading indicator
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          final movie = movieItems[index];
+          return MovieCard(
+            movie: movie,
+            movieCardType: MovieCardType.vertical,
+            width: 120,
+            height: 184,
+          );
+        },
+        separatorBuilder: (context, index) => const SizedBox(height: 24),
+      ),
+    );
   }
 
   // Widget _buildLoadMoreButton(BuildContext context, SearchState searchState) {

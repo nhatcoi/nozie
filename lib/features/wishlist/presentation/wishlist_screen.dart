@@ -4,8 +4,8 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:movie_fe/core/app_export.dart';
 import 'package:movie_fe/core/constants/app_padding.dart';
-import 'package:movie_fe/core/widgets/loading.dart';
 import '../application/wishlist_state_notifier.dart';
+import '../repositories/wishlist_repository.dart';
 import 'widgets/wishlist_item.dart';
 
 class WishlistScreen extends ConsumerWidget {
@@ -13,84 +13,85 @@ class WishlistScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final wishlistAsync = ref.watch(wishlistProvider);
     final wishlistState = ref.watch(wishlistStateProvider);
 
     return Scaffold(
-      body: _buildBody(context, ref, wishlistState),
+      body: wishlistAsync.when(
+        data: (items) {
+          final filteredItems = items.where((item) => !wishlistState.removedIds.contains(item.id)).toList();
+          if (filteredItems.isEmpty) {
+            return _buildEmpty(context);
+          }
+          return _buildList(context, ref, filteredItems);
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) => _buildError(context, ref, error),
+      ),
     );
   }
 
-  Widget _buildBody(
-    BuildContext context,
-    WidgetRef ref,
-    WishlistState state,
-  ) {
-    if (state.status == WishlistStatus.loading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-
-    if (state.status == WishlistStatus.error) {
-      return Center(
+  Widget _buildEmpty(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: ResponsivePadding.content(context),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Error: ${state.error}',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: AppColors.warning,
-                  ),
+            SvgPicture.asset(
+              ImageConstant.wishlistIcon,
+              width: 64,
+              height: 64,
+              colorFilter: ColorFilter.mode(
+                AppColors.getTextSecondary(context),
+                BlendMode.srcIn,
+              ),
             ),
             const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                ref.read(wishlistStateProvider.notifier).loadWishlist();
-              },
-              child: const Text('Retry'),
+            Text(
+              'Your wishlist is empty',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: AppColors.getText(context),
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Add movies you want to watch later',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.getTextSecondary(context),
+                  ),
             ),
           ],
         ),
-      );
-    }
+      ),
+    );
+  }
 
-    if (state.items.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: ResponsivePadding.content(context),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset(
-                ImageConstant.wishlistIcon,
-                width: 64,
-                height: 64,
-                colorFilter: ColorFilter.mode(
-                  AppColors.getTextSecondary(context),
-                  BlendMode.srcIn,
+  Widget _buildError(BuildContext context, WidgetRef ref, Object error) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Error: $error',
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: AppColors.warning,
                 ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Your wishlist is empty',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppColors.getText(context),
-                      fontWeight: FontWeight.w600,
-                    ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Add movies you want to watch later',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.getTextSecondary(context),
-                    ),
-              ),
-            ],
           ),
-        ),
-      );
-    }
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () {
+              ref.invalidate(wishlistProvider);
+            },
+            child: const Text('Retry'),
+          ),
+        ],
+      ),
+    );
+  }
 
+  Widget _buildList(BuildContext context, WidgetRef ref, List items) {
     return Padding(
       padding: context.responsivePadding(
         horizontalPercent: AppPadding.contentHorizontalPercent,
@@ -99,10 +100,10 @@ class WishlistScreen extends ConsumerWidget {
       ),
       child: ListView.separated(
         itemBuilder: (context, index) => WishlistItem(
-          movie: state.items[index],
+          movie: items[index],
         ),
         separatorBuilder: (context, index) => const SizedBox(height: 18),
-        itemCount: state.items.length,
+        itemCount: items.length,
       ),
     );
   }

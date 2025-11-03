@@ -58,7 +58,7 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${widget.rating}',
+                    widget.rating.toStringAsFixed(1),
                     style: theme.textTheme.headlineLarge?.copyWith(
                       color: textColor,
                       fontWeight: FontWeight.w700,
