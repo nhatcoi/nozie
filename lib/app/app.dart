@@ -7,6 +7,7 @@ import '../i18n/translations.g.dart';
 import '../core/services/locale_setting.dart';
 import '../core/services/theme_mode_notifier.dart';
 import '../core/theme/app_theme.dart';
+import '../core/widgets/orientation_lock_widget.dart';
 import '../routes/app_router.dart';
 
 
@@ -19,25 +20,27 @@ class NozieApp extends ConsumerWidget {
     final themeMode = ref.watch(themeModeProvider);
     final locale = ref.watch(localeControllerProvider); // locale từ Riverpod
 
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
+    return OrientationLockWidget(
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
 
-      // i18n
-      locale: locale,
-      supportedLocales: AppLocale.values.map((locale) => locale.flutterLocale),
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
+        // i18n
+        locale: locale,
+        supportedLocales: AppLocale.values.map((locale) => locale.flutterLocale),
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
 
-      // theme
-      themeMode: themeMode,
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
+        // theme
+        themeMode: themeMode,
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
 
-      // routing with go_router
-      routerConfig: AppRouter.router,
+        // routing with go_router
+        routerConfig: AppRouter.router,
+      ),
     );
   }
 }

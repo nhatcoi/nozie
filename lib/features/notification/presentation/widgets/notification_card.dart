@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_fe/core/enums/status_type.dart';
 import 'package:movie_fe/core/theme/app_colors.dart';
-import 'package:movie_fe/core/utils/date_util.dart';
+import 'package:movie_fe/core/utils/data/date_util.dart';
 import 'package:movie_fe/features/notification/presentation/widgets/notification_icon.dart';
 import 'package:intl/intl.dart';
 

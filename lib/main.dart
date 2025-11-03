@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'app/app.dart';
 import 'core/services/locale_setting.dart';
 import 'core/services/shared_prefs_provider.dart';
-import 'core/utils/dio_client.dart';
+import 'core/utils/api/dio_client.dart';
 import 'firebase_options.dart';
 import 'i18n/translations.g.dart';
 

@@ -6,7 +6,7 @@ import 'custom_bottom_nav_bar.dart';
 import '../theme/app_colors.dart';
 import '../../routes/app_router.dart';
 import 'topbar_provider.dart';
-import '../utils/navigation_utils.dart';
+import '../../routes/navigation_utils.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class MainLayout extends ConsumerWidget {

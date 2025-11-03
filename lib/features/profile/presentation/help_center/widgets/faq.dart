@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/core/utils/data.dart';
+import 'package:movie_fe/core/utils/data/data.dart';
 
 class HelpCenterCategoryTags extends StatelessWidget {
   final List<String> categories;

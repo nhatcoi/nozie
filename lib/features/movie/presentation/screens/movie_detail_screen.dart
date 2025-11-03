@@ -15,8 +15,9 @@ import '../widgets/movie_hero_section.dart';
 import '../widgets/movie_rating_section.dart';
 import '../widgets/movie_series_section.dart';
 import '../widgets/movie_similar_section.dart';
+import '../widgets/movie_info_panel.dart';
 
-// Separate widget to prevent rebuild loop
+
 class _WishlistButton extends ConsumerWidget {
   const _WishlistButton({required this.movieId});
 
@@ -256,6 +257,10 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                     metadata: movie.metadata,
                     description: movie.description,
                     isPurchased: isPurchased,
+                    ratingCount: movie.ratingCount,
+                    durationText: (movie.time ?? '').isEmpty ? null : movie.time,
+                    qualityText: '1080p',
+                    viewsText: (movie.view == null) ? null : movie.viewsString,
                     onBuyPressed: () async {
                       if (shouldWatchNow) {
                         if (context.mounted) {
@@ -315,7 +320,10 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                       }
                     },
                     onViewMorePressed: () {
-                      // TODO: Navigate to full description
+                      context.push(
+                        '${AppRouter.movieInfo}/${movie.id}',
+                        extra: {'movie': movie},
+                      );
                     },
                   );
                 },
@@ -499,8 +507,14 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
   }
 
   String? _getVideoUrl(Movie movie) {
+    // Prefer direct stream in trailer only if it's a real media URL (not YouTube)
     if (movie.trailerUrl != null && movie.trailerUrl!.isNotEmpty) {
-      return movie.trailerUrl;
+      final t = movie.trailerUrl!;
+      final isDirectStream = t.contains('.m3u8') || t.contains('.mp4');
+      final isYouTube = t.contains('youtube.com') || t.contains('youtu.be');
+      if (isDirectStream && !isYouTube) {
+        return t;
+      }
     }
     
     if (movie.episodes != null && movie.episodes!.isNotEmpty) {
@@ -512,7 +526,9 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
         final serverData = firstEpisode['server_data'] as List;
         if (serverData.isNotEmpty) {
           final firstVideo = serverData.first;
-          if (firstVideo['link_m3u8'] != null) {
+          if (firstVideo['link_m3u8'] != null &&
+              (firstVideo['link_m3u8'].toString().contains('.m3u8') ||
+               firstVideo['link_m3u8'].toString().contains('.mp4'))) {
             return firstVideo['link_m3u8'].toString();
           }
           if (firstVideo['link_embed'] != null) {

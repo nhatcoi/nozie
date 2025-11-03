@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import '../../i18n/translations.g.dart';
 import '../../routes/app_router.dart';
-import '../utils/image_constant.dart';
+import '../utils/data/image_constant.dart';
 
 enum TopBarAction {
   notification,

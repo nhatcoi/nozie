@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_typography.dart';
-import '../../utils/image_constant.dart';
+import '../../utils/data/image_constant.dart';
 import '../buttons/primary_button.dart';
 import '../buttons/secondary_button.dart';
 

@@ -3,6 +3,8 @@ import 'package:gap/gap.dart';
 import '../../../../core/app_export.dart';
 import '../../../../core/models/movie_item.dart';
 import '../../../../core/utils/price_utils.dart';
+import '../../../../core/utils/format_utils.dart';
+import '../../../../core/utils/text_utils.dart';
 import '../../../../core/widgets/image_utils.dart';
 
 class MovieHeroSection extends StatelessWidget {
@@ -16,6 +18,10 @@ class MovieHeroSection extends StatelessWidget {
     required this.onBuyPressed,
     required this.onViewMorePressed,
     this.isPurchased = false,
+    this.ratingCount,
+    this.durationText,
+    this.qualityText,
+    this.viewsText,
   });
 
   final MovieItem movie;
@@ -26,6 +32,10 @@ class MovieHeroSection extends StatelessWidget {
   final VoidCallback? onBuyPressed;
   final VoidCallback? onViewMorePressed;
   final bool isPurchased;
+  final int? ratingCount;
+  final String? durationText; // e.g., "2h 10m"
+  final String? qualityText;  // e.g., "1080p"
+  final String? viewsText;    // e.g., "50M+ views"
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +48,8 @@ class MovieHeroSection extends StatelessWidget {
       children: [
         _buildHeroInfo(context, theme, textColor, secondaryText),
         const Gap(24),
+        _buildMetrics(context, theme, textColor, secondaryText),
+        const Gap(16),
         _buildBuyButton(context, theme),
         const Gap(32),
         _buildAboutSection(context, theme, textColor, secondaryText),
@@ -106,18 +118,77 @@ class MovieHeroSection extends StatelessWidget {
                 }).toList(),
               ),
               const Gap(16),
-              Text(
-                metadata,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: secondaryText,
-                ),
-              ),
+              
             ],
           ),
+        ),
+
+        
+
+      ],
+    );
+  }
+
+  Widget _buildMetrics(
+    BuildContext context,
+    ThemeData theme,
+    Color textColor,
+    Color secondaryText,
+  ) {
+    final ratingVal = (movie.rating ?? 0.0).toStringAsFixed(1);
+    final ratingCountShort = FormatUtils.formatCountShort(ratingCount);
+    final ratingCaption = ratingCountShort == '—' ? 'ratings' : '$ratingCountShort reviews';
+    final duration = FormatUtils.formatDuration(durationText);
+    final quality = (qualityText == null || qualityText!.isEmpty) ? 'FHD' : qualityText!;
+    final watchedShort = FormatUtils.formatWatched(viewsText);
+
+    Widget metric(String value, String caption) {
+      return Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              value,
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: textColor,
+                fontWeight: FontWeight.w700,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              caption,
+              style: theme.textTheme.bodySmall?.copyWith(color: secondaryText),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            metric(ratingVal, ratingCaption),
+            const SizedBox(width: 12),
+            metric(duration, 'duration'),
+            const SizedBox(width: 12),
+            metric(quality, 'quality'),
+            const SizedBox(width: 12),
+            metric(watchedShort, 'watched'),
+          ],
         ),
       ],
     );
   }
+
+  
 
   Widget _buildBuyButton(BuildContext context, ThemeData theme) {
     final isFree = PriceUtils.isFree(movie);
@@ -179,11 +250,13 @@ class MovieHeroSection extends StatelessWidget {
           ],
         ),
         const Gap(12),
-        Text(
-          description,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: secondaryText,
-            height: 1.5,
+        RichText(
+          text: TextSpan(
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: secondaryText,
+              height: 1.5,
+            ),
+            children: TextUtils.buildDescriptionSpans(description, theme, secondaryText),
           ),
           maxLines: 4,
           overflow: TextOverflow.ellipsis,

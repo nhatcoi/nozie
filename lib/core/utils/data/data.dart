@@ -1,6 +1,6 @@
-import '../widgets/inputs/dropdown.dart';
+import '../../widgets/inputs/dropdown.dart';
 import 'package:flutter/material.dart';
-import '../extension/context_extensions.dart';
+import '../../extension/context_extensions.dart';
 import 'image_constant.dart';
 
 class Countries {

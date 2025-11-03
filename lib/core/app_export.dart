@@ -12,9 +12,9 @@ export 'theme/app_theme.dart';
 export 'theme/app_typography.dart';
 
 
-export 'utils/image_constant.dart';
-export 'utils/validation_utils.dart';
-export 'utils/data.dart';
+export 'utils/data/image_constant.dart';
+export 'utils/data/validation_utils.dart';
+export 'utils/data/data.dart';
 
 // Widgets
 export 'widgets/inputs/info_field.dart';

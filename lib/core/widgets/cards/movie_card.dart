@@ -6,8 +6,8 @@ import 'package:movie_fe/core/enums/movie_type.dart';
 
 import '../../models/movie_item.dart';
 import '../../theme/app_colors.dart';
-import '../../utils/image_constant.dart';
-import '../../utils/price_utils.dart';
+import '../../utils/data/image_constant.dart';
+import '../../utils/data/price_utils.dart';
 import '../../../routes/app_router.dart';
 import '../image_utils.dart';
 

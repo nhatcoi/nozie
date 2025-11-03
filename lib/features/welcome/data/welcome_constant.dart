@@ -1,4 +1,4 @@
-import '../../../../core/utils/image_constant.dart';
+import '../../../core/utils/data/image_constant.dart';
 import '../../../../core/extension/context_extensions.dart';
 import 'package:flutter/material.dart';
 

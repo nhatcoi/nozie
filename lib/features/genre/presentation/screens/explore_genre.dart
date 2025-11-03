@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movie_fe/core/enums/movie_type.dart';
 import 'package:movie_fe/core/models/movie_item.dart';
-import 'package:movie_fe/core/utils/image_constant.dart';
+import 'package:movie_fe/core/utils/data/image_constant.dart';
 import 'package:movie_fe/core/widgets/cards/movie_card.dart';
 import 'package:movie_fe/routes/app_router.dart';
 

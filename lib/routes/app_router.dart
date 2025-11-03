@@ -30,10 +30,11 @@ import 'package:movie_fe/features/welcome/welcome_screen.dart';
 import 'package:movie_fe/features/wishlist/presentation/wishlist_screen.dart';
 import 'package:movie_fe/features/movie/presentation/screens/movie_detail_screen.dart';
 import 'package:movie_fe/features/movie/presentation/screens/video_player_screen.dart';
+import 'package:movie_fe/features/movie/presentation/screens/movie_info_screen.dart';
 import 'package:movie_fe/core/models/movie.dart';
 import '../core/layouts/main_layout.dart';
 import '../core/services/locale_setting.dart';
-import '../core/utils/no_transition_page.dart';
+import 'transition_page.dart';
 import 'auth_guard.dart';
 
 class AppRouter {
@@ -62,6 +63,7 @@ class AppRouter {
   static const movieCarouselGenre = '/movie-carousel-genre/';
   static const movie = '/movie';
   static const videoPlayer = '/video-player';
+  static const movieInfo = '/movie-info';
 
   static const _publicPaths = {
     welcome,
@@ -143,6 +145,26 @@ class AppRouter {
           movie: movie,
           videoUrl: videoUrl,
         );
+      }),
+      GoRoute(path: '$movieInfo/:id', builder: (_, state) {
+        final id = state.pathParameters['id']!;
+        final extra = state.extra;
+        Movie? movie;
+        if (extra is Map) {
+          movie = extra['movie'] as Movie?;
+        } else if (extra is Movie) {
+          movie = extra;
+        }
+
+        if (movie == null) {
+          return Scaffold(
+            body: Center(
+              child: Text('Movie not found: $id'),
+            ),
+          );
+        }
+
+        return MovieInfoScreen(movie: movie);
       }),
       GoRoute(path: resetPassword, builder: (_, __) => const ForgotPasswordNewPassScreen()),
       GoRoute(path: notification, builder: (_, __) => const NotificationScreen()),

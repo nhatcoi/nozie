@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_fe/core/enums/status_type.dart';
 import 'package:movie_fe/core/theme/app_colors.dart';
 import 'package:movie_fe/core/theme/app_gradients.dart';
-import 'package:movie_fe/core/utils/image_constant.dart';
+import 'package:movie_fe/core/utils/data/image_constant.dart';
 
 class StatusStyle {
   final Color color;

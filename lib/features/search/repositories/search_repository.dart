@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/models/movie_item.dart';
 import '../../../../core/models/movie.dart';
-import '../../../../core/utils/firebase_query.dart';
+import '../../../core/utils/api/firebase_query.dart';
 import '../entities/search_result.dart';
 import '../entities/search_filter.dart';
 import '../entities/filter_section.dart';
