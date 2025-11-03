@@ -166,7 +166,7 @@ class MovieCard extends StatelessWidget {
       style: TextStyle(
         color: Colors.white,
         fontWeight: FontWeight.w700,
-        fontSize: 18 * scale,
+        fontSize: 9 * scale,
       ),
     );
   }

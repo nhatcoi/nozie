@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -108,7 +109,7 @@ class _AutoSlideMovies extends StatefulWidget {
 }
 
 class _AutoSlideMoviesState extends State<_AutoSlideMovies> {
-  final PageController _controller = PageController(viewportFraction: 0.9);
+  final PageController _controller = PageController(viewportFraction: 0.8);
   int _index = 0;
   Timer? _timer;
 
@@ -116,18 +117,21 @@ class _AutoSlideMoviesState extends State<_AutoSlideMovies> {
   void initState() {
     super.initState();
     _start();
+    _controller.addListener(() {
+      if (mounted) setState(() {});
+    });
   }
 
   void _start() {
     _timer?.cancel();
     if (widget.items.length <= 1) return;
-    _timer = Timer.periodic(const Duration(seconds: 3), (_) {
+    _timer = Timer.periodic(const Duration(seconds: 5), (_) {
       if (!mounted || !_controller.hasClients) return;
       _index = (_index + 1) % widget.items.length;
       _controller.animateToPage(
         _index,
-        duration: const Duration(milliseconds: 400),
-        curve: Curves.easeInOut,
+        duration: const Duration(milliseconds: 700),
+        curve: Curves.easeInOutCubic,
       );
     });
   }
@@ -142,50 +146,53 @@ class _AutoSlideMoviesState extends State<_AutoSlideMovies> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final cardWidth = screenWidth * 0.9;
-    final aspect = 180 / 276; // MovieCarousel normal
-    final cardHeight = cardWidth / aspect;
+    final cardWidth = screenWidth * 0.8;
+    final aspect = 160 / 80; // title-in-image card aspect
+    final posterHeight = cardWidth / aspect;
+    final totalHeight = posterHeight; // no extra metadata below to avoid overflow
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: cardHeight,
+          height: totalHeight,
           child: PageView.builder(
             controller: _controller,
             onPageChanged: (i) => setState(() => _index = i),
             itemCount: widget.items.length,
             itemBuilder: (context, i) {
               final m = widget.items[i];
+              final compact = MovieItem(id: m.id, title: m.title, imageUrl: m.imageUrl);
+              final currentPage = _controller.hasClients ? (_controller.page ?? _index.toDouble()) : _index.toDouble();
+              final delta = (i - currentPage).abs().clamp(0.0, 1.0);
+              final scale = 0.9 + (0.2 * (1 - delta));
+              final dimOpacity = 0.4 * delta; // center bright, sides darker
               return Padding(
                 padding: const EdgeInsets.only(right: 12),
-                child: MovieCard(
-                  movie: m,
-                  width: cardWidth,
-                  height: cardHeight,
-                  movieCardType: MovieCardType.horizontal,
+                child: Transform.scale(
+                  scale: scale,
+                  alignment: Alignment.center,
+                  child: Stack(
+                    children: [
+                      MovieCard(
+                        movie: compact,
+                        width: cardWidth,
+                        height: posterHeight,
+                        movieCardType: MovieCardType.titleInImg,
+                      ),
+                      Positioned.fill(
+                        child: IgnorePointer(
+                          child: Container(color: Colors.black.withOpacity(dimOpacity)),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
           ),
         ),
         const Gap(8),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(widget.items.length, (i) {
-            final active = i == _index;
-            return AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              margin: const EdgeInsets.symmetric(horizontal: 3),
-              width: active ? 16 : 8,
-              height: 8,
-              decoration: BoxDecoration(
-                color: active ? AppColors.primary500 : AppColors.getLine(context),
-                borderRadius: BorderRadius.circular(8),
-              ),
-            );
-          }),
-        ),
       ],
     );
   }
