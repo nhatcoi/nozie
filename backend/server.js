@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const nodemailer = require('nodemailer');
 const admin = require('firebase-admin');
 const cors = require('cors');
 const fs = require('fs');
@@ -64,6 +65,169 @@ if (!admin.apps.length) {
 app.use(cors());
 app.use('/webhook', express.raw({ type: 'application/json' }));
 app.use(express.json());
+
+// --- OTP Email Helpers ---
+const otpTransporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.OTP_EMAIL_USER || 'vnhat.dev@gmail.com',
+    pass: process.env.OTP_EMAIL_APP_PASSWORD || '',
+  },
+  logger: true,
+  debug: true,
+});
+
+otpTransporter.verify((error, success) => {
+  if (error) {
+    console.error('❌ SMTP transporter verify failed:', error.message);
+  } else {
+    console.log('✅ SMTP transporter is ready to send emails');
+  }
+});
+
+function generateOtp() {
+  return Math.floor(1000 + Math.random() * 9000).toString(); // 4 digits
+}
+
+async function sendOtpEmail(to, code) {
+  const mailOptions = {
+    from: `Nozie App <${process.env.OTP_EMAIL_USER || 'vnhat.dev@gmail.com'}>`,
+    to,
+    subject: 'Your password reset code',
+    text: `Your OTP code is ${code}. It expires in 10 minutes.`,
+    html: `<p>Your OTP code is <b>${code}</b>. It expires in 10 minutes.</p>`,
+  };
+  try {
+    const info = await otpTransporter.sendMail(mailOptions);
+    console.log('📧 OTP email sent:', info.messageId);
+  } catch (err) {
+    console.error('❌ Failed to send OTP email:', err.message);
+    throw err;
+  }
+}
+
+async function findUserByEmail(email) {
+  try {
+    const cleaned = String(email).trim();
+    return await admin.auth().getUserByEmail(cleaned);
+  } catch (e) {
+    console.warn('getUserByEmail failed:', {
+      email,
+      message: e?.message,
+      code: e?.code,
+      project: admin.app().options?.projectId,
+    });
+    return null;
+  }
+}
+
+// POST /auth/forgot-password/send-otp { email }
+app.post('/auth/forgot-password/send-otp', async (req, res) => {
+  try {
+    const { email: rawEmail } = req.body || {};
+    const email = typeof rawEmail === 'string' ? rawEmail.trim().toLowerCase() : rawEmail;
+    if (!email) return res.status(400).json({ error: 'Email is required' });
+
+    console.log('[send-otp] request for email:', email, 'project:', admin.app().options?.projectId);
+
+    const code = generateOtp();
+    const now = admin.firestore.Timestamp.now();
+    const expiresAt = admin.firestore.Timestamp.fromMillis(now.toMillis() + 10 * 60 * 1000);
+
+    const docRef = db.collection('password_resets_email').doc(email);
+    await docRef.set(
+      {
+        email,
+        code,
+        attempts: 0,
+        maxAttempts: 5,
+        createdAt: now,
+        expiresAt,
+        verified: false,
+      },
+      { merge: true }
+    );
+
+    console.log('[send-otp] stored code for email:', email, 'expiresAt:', expiresAt.toDate());
+    await sendOtpEmail(email, code);
+    res.json({ ok: true });
+  } catch (error) {
+    console.error('send-otp error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// POST /auth/forgot-password/verify-otp { email, code }
+app.post('/auth/forgot-password/verify-otp', async (req, res) => {
+  try {
+    const { email: rawEmail, code } = req.body || {};
+    const email = typeof rawEmail === 'string' ? rawEmail.trim().toLowerCase() : rawEmail;
+    if (!email || !code) return res.status(400).json({ error: 'Email and code are required' });
+
+    console.log('[verify-otp] email:', email, 'code:', code);
+    const docRef = db.collection('password_resets_email').doc(email);
+    const snap = await docRef.get();
+    if (!snap.exists) return res.status(400).json({ error: 'No reset request' });
+
+    const data = snap.data();
+    const nowMs = Date.now();
+    if (data.expiresAt && data.expiresAt.toMillis() < nowMs) {
+      return res.status(400).json({ error: 'Code expired' });
+    }
+    if (data.attempts >= (data.maxAttempts || 5)) {
+      return res.status(429).json({ error: 'Too many attempts' });
+    }
+    const attempts = (data.attempts || 0) + 1;
+    const ok = data.code === code;
+
+    if (!ok) {
+      await docRef.set({ attempts }, { merge: true });
+      return res.status(400).json({ error: 'Invalid code' });
+    }
+
+    const resetToken = require('crypto').randomBytes(24).toString('hex');
+    await docRef.set({ verified: true, resetToken, verifiedAt: admin.firestore.FieldValue.serverTimestamp() }, { merge: true });
+    res.json({ ok: true, resetToken });
+  } catch (error) {
+    console.error('verify-otp error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// POST /auth/forgot-password/reset { email, resetToken, newPassword }
+app.post('/auth/forgot-password/reset', async (req, res) => {
+  try {
+    const { email: rawEmail, resetToken, newPassword } = req.body || {};
+    const email = typeof rawEmail === 'string' ? rawEmail.trim().toLowerCase() : rawEmail;
+    if (!email || !resetToken || !newPassword) {
+      return res.status(400).json({ error: 'email, resetToken, newPassword are required' });
+    }
+
+    const docRef = db.collection('password_resets_email').doc(email);
+    const snap = await docRef.get();
+    if (!snap.exists) return res.status(400).json({ error: 'No reset request' });
+    const data = snap.data();
+    if (!data.verified || data.resetToken !== resetToken) {
+      return res.status(400).json({ error: 'Invalid resetToken' });
+    }
+    const nowMs = Date.now();
+    if (data.expiresAt && data.expiresAt.toMillis() < nowMs) {
+      return res.status(400).json({ error: 'Token expired' });
+    }
+
+    const user = await findUserByEmail(email); // may be null if not exists; we still return ok
+    if (user) {
+      await admin.auth().updateUser(user.uid, { password: newPassword });
+    }
+    await docRef.delete();
+    res.json({ ok: true });
+  } catch (error) {
+    console.error('reset error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 app.post('/create-payment', async (req, res) => {
   try {
