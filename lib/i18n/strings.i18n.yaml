@@ -49,6 +49,8 @@ auth:
   username: Username
   confirmPassword: Confirm Password
   rememberMe: Remember me
+  errors:
+    invalidCredentials: Incorrect username or password
   
   # Login Screen
   loginScreen:

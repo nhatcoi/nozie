@@ -48,6 +48,8 @@ auth:
   username: Tên đăng nhập
   confirmPassword: Xác nhận mật khẩu
   rememberMe: Ghi nhớ tôi
+  errors:
+    invalidCredentials: Sai tên đăng nhập hoặc mật khẩu
   
   # Login Screen
   loginScreen:

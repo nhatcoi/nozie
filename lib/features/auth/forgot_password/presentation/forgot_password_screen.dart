@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_fe/core/app_export.dart';
+import 'package:movie_fe/features/auth/forgot_password/data/forgot_password_repository_impl.dart';
 import 'package:movie_fe/routes/app_router.dart';
 import 'package:go_router/go_router.dart';
 
@@ -46,10 +47,16 @@ class ForgotPasswordScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    if (_emailController.text.isNotEmpty) {
-                      context.push(AppRouter.otpVerification, extra: _emailController.text);
-                    }
+                  onPressed: () async {
+                    final email = _emailController.text.trim();
+                    if (email.isEmpty) return;
+
+                    try {
+                      final repo = ForgotPasswordRepositoryImpl();
+                      await repo.resendOtp(email: email);
+                    } catch (_) {}
+                    if (!context.mounted) return;
+                    context.push(AppRouter.otpVerification, extra: email);
                   },
                   child: Text(t.common.continueText, style: AppTypography.bodyLBold),
                 ),

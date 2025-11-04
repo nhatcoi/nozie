@@ -228,7 +228,16 @@ class AppRouter {
         }
         return MovieTypeScreen(type: type);
       }),
-      GoRoute(path: resetPassword, builder: (_, __) => const ForgotPasswordNewPassScreen()),
+      GoRoute(path: resetPassword, builder: (_, state) {
+        final extra = state.extra;
+        String? email;
+        String? resetToken;
+        if (extra is Map) {
+          email = extra['email'] as String?;
+          resetToken = extra['resetToken'] as String?;
+        }
+        return ForgotPasswordNewPassScreen(email: email, resetToken: resetToken);
+      }),
       GoRoute(path: notification, builder: (_, __) => const NotificationScreen()),
       GoRoute(
         path: notificationSettings,

@@ -4,7 +4,7 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 868 (434 per locale)
+/// Strings: 870 (435 per locale)
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -238,6 +238,7 @@ class _TranslationsAuthEn {
 	String get username => 'Username';
 	String get confirmPassword => 'Confirm Password';
 	String get rememberMe => 'Remember me';
+	late final _TranslationsAuthErrorsEn errors = _TranslationsAuthErrorsEn._(_root);
 	late final _TranslationsAuthLoginScreenEn loginScreen = _TranslationsAuthLoginScreenEn._(_root);
 	late final _TranslationsAuthForgotPasswordEn forgotPassword = _TranslationsAuthForgotPasswordEn._(_root);
 	late final _TranslationsAuthRegisterEn register = _TranslationsAuthRegisterEn._(_root);
@@ -431,6 +432,16 @@ class _TranslationsWishlistEn {
 	late final _TranslationsWishlistCommonEn common = _TranslationsWishlistCommonEn._(_root);
 	late final _TranslationsWishlistItemEn item = _TranslationsWishlistItemEn._(_root);
 	late final _TranslationsWishlistEmptyEn empty = _TranslationsWishlistEmptyEn._(_root);
+}
+
+// Path: auth.errors
+class _TranslationsAuthErrorsEn {
+	_TranslationsAuthErrorsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get invalidCredentials => 'Incorrect username or password';
 }
 
 // Path: auth.loginScreen
@@ -848,7 +859,7 @@ class _TranslationsGenreExploreEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get title => 'Genre: {name}';
+	String get title => 'Genre:';
 	String get empty => 'No movies found for';
 	String get loadFailed => 'Failed to load movies';
 }
@@ -900,7 +911,7 @@ class _TranslationsPurchaseNotificationsEn {
 
 	// Translations
 	String get successTitle => 'Purchase Successful! 🎬';
-	String get successDescription => 'You now own "{name}"';
+	String get successDescription => 'You now own';
 }
 
 // Path: wishlist.common
@@ -2170,6 +2181,7 @@ class _TranslationsAuthVi extends _TranslationsAuthEn {
 	@override String get username => 'Tên đăng nhập';
 	@override String get confirmPassword => 'Xác nhận mật khẩu';
 	@override String get rememberMe => 'Ghi nhớ tôi';
+	@override late final _TranslationsAuthErrorsVi errors = _TranslationsAuthErrorsVi._(_root);
 	@override late final _TranslationsAuthLoginScreenVi loginScreen = _TranslationsAuthLoginScreenVi._(_root);
 	@override late final _TranslationsAuthForgotPasswordVi forgotPassword = _TranslationsAuthForgotPasswordVi._(_root);
 	@override late final _TranslationsAuthRegisterVi register = _TranslationsAuthRegisterVi._(_root);
@@ -2363,6 +2375,16 @@ class _TranslationsWishlistVi extends _TranslationsWishlistEn {
 	@override late final _TranslationsWishlistCommonVi common = _TranslationsWishlistCommonVi._(_root);
 	@override late final _TranslationsWishlistItemVi item = _TranslationsWishlistItemVi._(_root);
 	@override late final _TranslationsWishlistEmptyVi empty = _TranslationsWishlistEmptyVi._(_root);
+}
+
+// Path: auth.errors
+class _TranslationsAuthErrorsVi extends _TranslationsAuthErrorsEn {
+	_TranslationsAuthErrorsVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get invalidCredentials => 'Sai tên đăng nhập hoặc mật khẩu';
 }
 
 // Path: auth.loginScreen
@@ -2780,7 +2802,7 @@ class _TranslationsGenreExploreVi extends _TranslationsGenreExploreEn {
 	@override final _TranslationsVi _root; // ignore: unused_field
 
 	// Translations
-	@override String get title => 'Thể loại: {name}';
+	@override String get title => 'Thể loại:';
 	@override String get empty => 'Không tìm thấy phim cho';
 	@override String get loadFailed => 'Không tải được danh sách phim';
 }
@@ -2832,7 +2854,7 @@ class _TranslationsPurchaseNotificationsVi extends _TranslationsPurchaseNotifica
 
 	// Translations
 	@override String get successTitle => 'Mua hàng thành công! 🎬';
-	@override String get successDescription => 'Bạn đã sở hữu "{name}"';
+	@override String get successDescription => 'Bạn đã sở hữu';
 }
 
 // Path: wishlist.common
@@ -4028,6 +4050,7 @@ extension on Translations {
 			case 'auth.username': return 'Username';
 			case 'auth.confirmPassword': return 'Confirm Password';
 			case 'auth.rememberMe': return 'Remember me';
+			case 'auth.errors.invalidCredentials': return 'Incorrect username or password';
 			case 'auth.loginScreen.title': return 'Hello there 👋';
 			case 'auth.loginScreen.description': return 'Please enter your username/email and password to sign in.';
 			case 'auth.loginScreen.placeholder.email': return 'admin@ziet.dev';
@@ -4385,7 +4408,7 @@ extension on Translations {
 			case 'home.sections.yourWishlist': return 'Your Wishlist';
 			case 'home.sections.recentlyWatched': return 'Recently Watched';
 			case 'home.sections.exploreByGenre': return 'Explore by Genre';
-			case 'genre.explore.title': return 'Genre: {name}';
+			case 'genre.explore.title': return 'Genre:';
 			case 'genre.explore.empty': return 'No movies found for';
 			case 'genre.explore.loadFailed': return 'Failed to load movies';
 			case 'purchase.common.free': return 'Free';
@@ -4413,7 +4436,7 @@ extension on Translations {
 			case 'purchase.item.menu.aboutMovie': return 'About Movie';
 			case 'purchase.item.snackbar.viewSeriesComing': return 'View series - coming soon';
 			case 'purchase.notifications.successTitle': return 'Purchase Successful! 🎬';
-			case 'purchase.notifications.successDescription': return 'You now own "{name}"';
+			case 'purchase.notifications.successDescription': return 'You now own';
 			case 'wishlist.common.retry': return 'Retry';
 			case 'wishlist.common.errorPrefix': return 'Error:';
 			case 'wishlist.common.movieNotFound': return 'Movie not found';
@@ -4470,6 +4493,7 @@ extension on _TranslationsVi {
 			case 'auth.username': return 'Tên đăng nhập';
 			case 'auth.confirmPassword': return 'Xác nhận mật khẩu';
 			case 'auth.rememberMe': return 'Ghi nhớ tôi';
+			case 'auth.errors.invalidCredentials': return 'Sai tên đăng nhập hoặc mật khẩu';
 			case 'auth.loginScreen.title': return 'Xin chào bạn 👋';
 			case 'auth.loginScreen.description': return 'Điền email/tên đăng nhập và mật khẩu để tiếp tục nha ✨';
 			case 'auth.loginScreen.placeholder.email': return 'admin@ziet.dev';
@@ -4827,7 +4851,7 @@ extension on _TranslationsVi {
 			case 'home.sections.yourWishlist': return 'Danh sách yêu thích';
 			case 'home.sections.recentlyWatched': return 'Xem gần đây';
 			case 'home.sections.exploreByGenre': return 'Khám phá theo thể loại';
-			case 'genre.explore.title': return 'Thể loại: {name}';
+			case 'genre.explore.title': return 'Thể loại:';
 			case 'genre.explore.empty': return 'Không tìm thấy phim cho';
 			case 'genre.explore.loadFailed': return 'Không tải được danh sách phim';
 			case 'purchase.common.free': return 'Miễn phí';
@@ -4855,7 +4879,7 @@ extension on _TranslationsVi {
 			case 'purchase.item.menu.aboutMovie': return 'Về phim';
 			case 'purchase.item.snackbar.viewSeriesComing': return 'Tính năng xem series - sắp ra mắt';
 			case 'purchase.notifications.successTitle': return 'Mua hàng thành công! 🎬';
-			case 'purchase.notifications.successDescription': return 'Bạn đã sở hữu "{name}"';
+			case 'purchase.notifications.successDescription': return 'Bạn đã sở hữu';
 			case 'wishlist.common.retry': return 'Thử lại';
 			case 'wishlist.common.errorPrefix': return 'Lỗi:';
 			case 'wishlist.common.movieNotFound': return 'Không tìm thấy phim';
