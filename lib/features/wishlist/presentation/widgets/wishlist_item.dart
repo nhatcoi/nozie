@@ -88,7 +88,7 @@ class _WishlistItemState extends ConsumerState<WishlistItem> {
                 const Gap(12),
                 Expanded(
                   child: Text(
-                    'Remove from Wishlist',
+                    context.i18n.wishlist.item.menu.removeFromWishlist,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: textColor,
@@ -118,7 +118,7 @@ class _WishlistItemState extends ConsumerState<WishlistItem> {
                 const Gap(12),
                 Expanded(
                   child: Text(
-                    'Share',
+                    context.i18n.wishlist.item.menu.share,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: textColor,
@@ -148,7 +148,7 @@ class _WishlistItemState extends ConsumerState<WishlistItem> {
                 const Gap(12),
                 Expanded(
                   child: Text(
-                    'About Movie',
+                    context.i18n.wishlist.item.menu.aboutMovie,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: textColor,
@@ -178,33 +178,28 @@ class _WishlistItemState extends ConsumerState<WishlistItem> {
           final repo = ref.read(wishlistRepositoryProvider);
           await repo.removeFromWishlist(widget.movie.id);
           if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Removed from wishlist'),
-                behavior: SnackBarBehavior.floating,
-                duration: Duration(seconds: 2),
-              ),
+            ToastNotification.showSuccess(
+              context,
+              message: context.i18n.wishlist.item.snackbar.removed,
+              duration: const Duration(seconds: 2),
             );
           }
         } catch (e) {
           if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Error: ${e.toString()}'),
-                behavior: SnackBarBehavior.floating,
-                duration: const Duration(seconds: 2),
-              ),
+            ToastNotification.showError(
+              context,
+              message: '${context.i18n.wishlist.common.errorPrefix} ${e.toString()}',
+              duration: const Duration(seconds: 2),
             );
           }
         }
         break;
       case WishlistAction.share:
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Share functionality coming soon'),
-              behavior: SnackBarBehavior.floating,
-            ),
+          ToastNotification.showInfo(
+            context,
+            message: context.i18n.wishlist.item.snackbar.shareComing,
+            duration: const Duration(seconds: 2),
           );
         }
         break;
@@ -218,20 +213,18 @@ class _WishlistItemState extends ConsumerState<WishlistItem> {
               extra: {'movie': movie},
             );
           } else if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Movie not found'),
-                behavior: SnackBarBehavior.floating,
-              ),
+            ToastNotification.showError(
+              context,
+              message: context.i18n.wishlist.common.movieNotFound,
+              duration: const Duration(seconds: 2),
             );
           }
         } catch (e) {
           if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Error: ${e.toString()}'),
-                behavior: SnackBarBehavior.floating,
-              ),
+            ToastNotification.showError(
+              context,
+              message: '${context.i18n.wishlist.common.errorPrefix} ${e.toString()}',
+              duration: const Duration(seconds: 2),
             );
           }
         }

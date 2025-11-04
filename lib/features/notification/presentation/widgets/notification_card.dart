@@ -92,7 +92,7 @@ class NotificationCard extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          "New",
+                          context.i18n.notification.newItem,
                           style: TextStyle(
                             color: AppColors.white,
                             fontSize: 10,

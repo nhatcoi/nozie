@@ -21,6 +21,8 @@ class MovieCard extends StatelessWidget {
     this.onMore,
     this.genres,
     this.enableNavigation = true,
+    this.titleFontSize,
+    this.overlayOpacity,
   });
 
   final MovieItem movie;
@@ -34,6 +36,12 @@ class MovieCard extends StatelessWidget {
   final VoidCallback? onMore;
   
   final bool enableNavigation;
+  
+  /// Custom fontSize for title when using titleInImg type. If null, uses default (9 * scale)
+  final double? titleFontSize;
+
+  /// Optional overlay opacity for title-in-image cards to improve text contrast
+  final double? overlayOpacity;
 
   @override
   Widget build(BuildContext context) {
@@ -116,10 +124,16 @@ class MovieCard extends StatelessWidget {
               Stack(
                 children: [
                   _buildPosterImage(),
+                  if (overlayOpacity != null)
+                    Positioned.fill(
+                      child: Container(
+                        color: Colors.black.withOpacity(overlayOpacity!.clamp(0.0, 1.0)),
+                      ),
+                    ),
                   Positioned(
                     bottom: 6,
                     left: 8,
-                    child: _buildTitle2(scale),
+                    child: _buildTitle2(scale, titleFontSize),
                   ),
                 ],
               ),
@@ -158,7 +172,8 @@ class MovieCard extends StatelessWidget {
     );
   }
 
-  Widget _buildTitle2(double scale) {
+  Widget _buildTitle2(double scale, double? customFontSize) {
+    final fontSize = customFontSize ?? (9 * scale);
     return Text(
       movie.title,
       maxLines: 2,
@@ -166,7 +181,7 @@ class MovieCard extends StatelessWidget {
       style: TextStyle(
         color: Colors.white,
         fontWeight: FontWeight.w700,
-        fontSize: 9 * scale,
+        fontSize: fontSize,
       ),
     );
   }

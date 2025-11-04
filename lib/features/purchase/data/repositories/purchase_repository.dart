@@ -5,8 +5,10 @@ import '../../../../core/models/movie_item.dart';
 import '../../../../core/models/movie.dart';
 import '../../../../core/repositories/movie_repository.dart';
 import '../../models/purchase_item.dart';
+import '../../models/transaction_item.dart';
 import '../../../notification/models/notification_item.dart';
 import '../../../notification/repositories/notification_repository.dart';
+import '../../../../i18n/translations.g.dart';
 import '../../../notification/providers/notification_providers.dart';
 
 final purchaseRepositoryProvider = Provider((ref) => PurchaseRepository(
@@ -110,8 +112,8 @@ class PurchaseRepository {
       final notification = NotificationItem(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         type: NotificationType.purchase,
-        title: 'Purchase Successful! 🎬',
-        description: 'You now own "${movie.title}"',
+        title: t.purchase.notifications.successTitle,
+        description: '${t.purchase.notifications.successDescription} "${movie.title}"',
         createdAt: DateTime.now(),
         deepLink: 'movie:$movieId',
         metadata: {
@@ -169,6 +171,55 @@ class PurchaseRepository {
 
     return snapshot.count ?? 0;
   }
+
+  /// Lấy thông tin purchase của một movie
+  Future<Map<String, dynamic>?> getPurchaseInfo(String movieId) async {
+    final userId = _userId;
+    if (userId == null) return null;
+
+    try {
+      final doc = await _db
+          .collection('users')
+          .doc(userId)
+          .collection('purchases')
+          .doc(movieId)
+          .get();
+
+      if (!doc.exists) return null;
+      return doc.data();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Stream transactions của một movie
+  Stream<List<TransactionItem>> streamTransactions(String movieId) {
+    final userId = _userId;
+    if (userId == null) {
+      return Stream.value([]);
+    }
+
+    return _db
+        .collection('users')
+        .doc(userId)
+        .collection('transactions')
+        .where('movieId', isEqualTo: movieId)
+        .snapshots()
+        .map((snapshot) {
+      final transactions = snapshot.docs
+          .map((doc) => TransactionItem.fromFirestore(doc.id, doc.data()))
+          .toList();
+      
+      // Sort by createdAt descending in memory (không cần Firestore index)
+      transactions.sort((a, b) {
+        final aTime = a.createdAt ?? DateTime(1970);
+        final bTime = b.createdAt ?? DateTime(1970);
+        return bTime.compareTo(aTime);
+      });
+      
+      return transactions;
+    });
+  }
 }
 
 // Providers
@@ -206,6 +257,22 @@ final isPurchasedProvider = StreamProvider.autoDispose.family<bool, String>(
         .doc(movieId)
         .snapshots()
         .map((doc) => doc.exists);
+  },
+);
+
+// Provider để lấy transactions của một movie
+final movieTransactionsProvider = StreamProvider.autoDispose.family<List<TransactionItem>, String>(
+  (ref, movieId) {
+    final repo = ref.watch(purchaseRepositoryProvider);
+    return repo.streamTransactions(movieId);
+  },
+);
+
+// Provider để lấy purchase info
+final purchaseInfoProvider = FutureProvider.autoDispose.family<Map<String, dynamic>?, String>(
+  (ref, movieId) async {
+    final repo = ref.watch(purchaseRepositoryProvider);
+    return repo.getPurchaseInfo(movieId);
   },
 );
 

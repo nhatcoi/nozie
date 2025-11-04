@@ -109,9 +109,24 @@ class MainLayout extends ConsumerWidget {
   }
 
   void _handleTopBarAction(TopBarNotifier notifier, TopBarAction action, String actionType, BuildContext context) {
+    final currentPath = GoRouterState.of(context).uri.toString();
+    
     switch (action) {
       case TopBarAction.search:
-        context.push(AppRouter.search);
+        // Check if we're on wishlist or purchase page, then search only in that collection
+        if (currentPath == AppRouter.wishlist) {
+          context.push(
+            AppRouter.search,
+            extra: {'searchSource': 'wishlist'},
+          );
+        } else if (currentPath == AppRouter.purchase) {
+          context.push(
+            AppRouter.search,
+            extra: {'searchSource': 'purchase'},
+          );
+        } else {
+          context.push(AppRouter.search);
+        }
         break;
       case TopBarAction.notification:
         context.push(AppRouter.notification);

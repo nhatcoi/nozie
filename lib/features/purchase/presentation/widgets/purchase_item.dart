@@ -13,8 +13,8 @@ import '../../application/purchase_state_notifier.dart';
 enum PurchaseAction {
   removeDownload,
   viewSeries,
-  markAsFinished,
   aboutEbook,
+  viewDetails,
 }
 
 class PurchaseItemWidget extends ConsumerStatefulWidget {
@@ -85,7 +85,7 @@ class _PurchaseItemWidgetState extends ConsumerState<PurchaseItemWidget> {
                 const Gap(12),
                 Expanded(
                   child: Text(
-                    'Watch now',
+                    context.i18n.purchase.item.menu.watchNow,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: textColor,
@@ -115,7 +115,7 @@ class _PurchaseItemWidgetState extends ConsumerState<PurchaseItemWidget> {
                 const Gap(12),
                 Expanded(
                   child: Text(
-                    'View Series',
+                    context.i18n.purchase.item.menu.viewSeries,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: textColor,
@@ -126,15 +126,16 @@ class _PurchaseItemWidgetState extends ConsumerState<PurchaseItemWidget> {
             ),
           ),
         ),
+
         PopupMenuItem<PurchaseAction>(
-          value: PurchaseAction.markAsFinished,
+          value: PurchaseAction.viewDetails,
           padding: EdgeInsets.zero,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Row(
               children: [
                 SvgPicture.asset(
-                  ImageConstant.imgCheckedIcon,
+                  ImageConstant.infoSquareIcon,
                   width: 20,
                   height: 20,
                   colorFilter: ColorFilter.mode(
@@ -145,7 +146,7 @@ class _PurchaseItemWidgetState extends ConsumerState<PurchaseItemWidget> {
                 const Gap(12),
                 Expanded(
                   child: Text(
-                    'Mark as Finished',
+                    context.i18n.purchase.item.menu.purchaseDetails,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: textColor,
@@ -175,7 +176,7 @@ class _PurchaseItemWidgetState extends ConsumerState<PurchaseItemWidget> {
                 const Gap(12),
                 Expanded(
                   child: Text(
-                    'About Movie',
+                    context.i18n.purchase.item.menu.aboutMovie,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: textColor,
@@ -216,8 +217,8 @@ class _PurchaseItemWidgetState extends ConsumerState<PurchaseItemWidget> {
             );
           } else if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Movie not found'),
+              SnackBar(
+                content: Text(context.i18n.purchase.common.movieNotFound),
                 behavior: SnackBarBehavior.floating,
               ),
             );
@@ -226,7 +227,7 @@ class _PurchaseItemWidgetState extends ConsumerState<PurchaseItemWidget> {
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Error: ${e.toString()}'),
+                content: Text('${context.i18n.purchase.common.errorPrefix} ${e.toString()}'),
                 behavior: SnackBarBehavior.floating,
               ),
             );
@@ -236,21 +237,18 @@ class _PurchaseItemWidgetState extends ConsumerState<PurchaseItemWidget> {
       case PurchaseAction.viewSeries:
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('View series - coming soon'),
+            SnackBar(
+              content: Text(context.i18n.purchase.item.snackbar.viewSeriesComing),
               behavior: SnackBarBehavior.floating,
             ),
           );
         }
         break;
-      case PurchaseAction.markAsFinished:
-        ref.read(purchaseStateProvider.notifier).markAsFinished(widget.item.id);
+
+      case PurchaseAction.viewDetails:
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Marked as finished'),
-              behavior: SnackBarBehavior.floating,
-            ),
+          context.push(
+            '${AppRouter.purchaseDetail}/${widget.item.id}',
           );
         }
         break;
@@ -265,8 +263,8 @@ class _PurchaseItemWidgetState extends ConsumerState<PurchaseItemWidget> {
             );
           } else if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Movie not found'),
+              SnackBar(
+                content: Text(context.i18n.purchase.common.movieNotFound),
                 behavior: SnackBarBehavior.floating,
               ),
             );
@@ -275,7 +273,7 @@ class _PurchaseItemWidgetState extends ConsumerState<PurchaseItemWidget> {
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Error: ${e.toString()}'),
+                content: Text('${context.i18n.purchase.common.errorPrefix} ${e.toString()}'),
                 behavior: SnackBarBehavior.floating,
               ),
             );
@@ -293,7 +291,7 @@ class _PurchaseItemWidgetState extends ConsumerState<PurchaseItemWidget> {
 
     return InkWell(
       onTap: () {
-        context.push('${AppRouter.movie}/${widget.item.id}');
+        context.push('${AppRouter.purchaseDetail}/${widget.item.id}');
       },
       child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -348,7 +346,7 @@ class _PurchaseItemWidgetState extends ConsumerState<PurchaseItemWidget> {
               ],
               const Gap(8),
               Text(
-                'Purchased',
+                context.i18n.purchase.common.purchased,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: secondaryText,
                 ),
@@ -356,37 +354,14 @@ class _PurchaseItemWidgetState extends ConsumerState<PurchaseItemWidget> {
             ],
           ),
         ),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon: widget.item.isFinished
-                  ? SvgPicture.asset(
-                      ImageConstant.imgCheckedIcon,
-                      width: 24,
-                      height: 24,
-                      colorFilter: ColorFilter.mode(
-                        AppColors.primary500,
-                        BlendMode.srcIn,
-                      ),
-                    )
-                  : Icon(
-                      Icons.download_outlined,
-                      color: secondaryText,
-                      size: 24,
-                    ),
-              onPressed: () {},
-            ),
-            IconButton(
-              key: _buttonKey,
-              icon: Icon(
-                Icons.more_vert,
-                color: secondaryText,
-                size: 24,
-              ),
-              onPressed: () => _showActionMenu(context, ref),
-            ),
-          ],
+        IconButton(
+          key: _buttonKey,
+          icon: Icon(
+            Icons.more_vert,
+            color: secondaryText,
+            size: 24,
+          ),
+          onPressed: () => _showActionMenu(context, ref),
         ),
       ],
       ),

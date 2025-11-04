@@ -392,20 +392,18 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
                     );
                     if (context.mounted) {
                       Navigator.of(context).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Review submitted'),
-                          behavior: SnackBarBehavior.floating,
-                        ),
+                      ToastNotification.showSuccess(
+                        context,
+                        message: 'Review submitted',
+                        duration: const Duration(seconds: 3),
                       );
                     }
                   } catch (e) {
                     if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Error: ${e.toString()}'),
-                          behavior: SnackBarBehavior.floating,
-                        ),
+                      ToastNotification.showError(
+                        context,
+                        message: 'Error: ${e.toString()}',
+                        duration: const Duration(seconds: 3),
                       );
                     }
                   }

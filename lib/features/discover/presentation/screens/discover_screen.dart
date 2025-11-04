@@ -171,7 +171,7 @@ class _ErrorSection extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'Error: $error',
+                  '${context.i18n.common.errorPrefix} $error',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AppColors.warning,
                       ),
@@ -179,7 +179,7 @@ class _ErrorSection extends StatelessWidget {
                 const Gap(16),
                 ElevatedButton(
                   onPressed: onRetry,
-                  child: const Text('Retry'),
+                  child: Text(context.i18n.common.retry),
                 ),
               ],
             ),

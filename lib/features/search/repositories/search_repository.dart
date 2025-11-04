@@ -27,19 +27,98 @@ class SearchRepository {
     SearchFilters filters = const SearchFilters(),
     int page = 1,
     DocumentSnapshot? startAfter,
+    List<String>? wishlistMovieIds,
   }) async {
     try {
       await Future.delayed(const Duration(milliseconds: 500));
       
       const pageSize = 10;
+      // Nếu search trong wishlist hoặc purchase, fetch movies trực tiếp từ IDs
+      List<Movie> allMoviesData;
       var firestoreQuery = FirebaseQuery.collection('movies', firestore: _db);
-      firestoreQuery = SearchQueryBuilder.buildFirestoreQuery(firestoreQuery, filters);
       
-      if (query.isNotEmpty && 
+      if (wishlistMovieIds != null && wishlistMovieIds.isNotEmpty) {
+        // Firestore whereIn có giới hạn 10 items, cần chunk nếu nhiều hơn
+        final chunks = <List<String>>[];
+        for (int i = 0; i < wishlistMovieIds.length; i += 10) {
+          chunks.add(wishlistMovieIds.sublist(
+            i, 
+            i + 10 > wishlistMovieIds.length ? wishlistMovieIds.length : i + 10,
+          ));
+        }
+        
+        allMoviesData = <Movie>[];
+        for (final chunk in chunks) {
+          final snapshot = await _db
+              .collection('movies')
+              .where(FieldPath.documentId, whereIn: chunk)
+              .get();
+          allMoviesData.addAll(snapshot.docs.map((doc) => Movie.fromDoc(doc)));
+        }
+      } else {
+        // Normal search - query từ movies collection
+        firestoreQuery = SearchQueryBuilder.buildFirestoreQuery(firestoreQuery, filters);
+        
+        if (query.isNotEmpty && 
+            query.toLowerCase() != 'trending' && 
+            query.toLowerCase() != 'popular') {
+          var snapshot = await firestoreQuery.limit(100).get();
+          allMoviesData = snapshot.docs.map((doc) => Movie.fromDoc(doc)).toList();
+        } else {
+          // Handle trending/popular case - continue with existing logic
+          final hasPriceFilter = filters.priceMin != null || filters.priceMax != null;
+          final needsManualSort = hasPriceFilter && 
+              filters.sortBy != SortOption.highestPrice && 
+              filters.sortBy != SortOption.lowestPrice;
+          
+          if (needsManualSort) {
+            var snapshot = await firestoreQuery.limit(pageSize * 10).get();
+            var docs = snapshot.docs;
+            allMoviesData = docs.map((doc) => Movie.fromDoc(doc)).toList();
+          } else {
+            var snapshot = await firestoreQuery.limit(pageSize).get();
+            allMoviesData = snapshot.docs.map((doc) => Movie.fromDoc(doc)).toList();
+          }
+        }
+      }
+      
+      // Process query if not empty and not trending/popular
+      // Nếu search trong wishlist hoặc purchase, luôn filter theo query (không có trending/popular)
+      if (wishlistMovieIds != null && wishlistMovieIds.isNotEmpty) {
+        // Wishlist/Purchase search - filter theo query
+        var allMovies = allMoviesData.map((m) => MovieItem.fromMovie(m)).toList();
+        
+        if (query.isNotEmpty) {
+          final lowerQuery = query.toLowerCase();
+          allMovies = allMovies.where((m) => 
+            m.title.toLowerCase().contains(lowerQuery) ||
+            (m.id.toLowerCase().contains(lowerQuery))
+          ).toList();
+        }
+        
+        final startIndex = (page - 1) * pageSize;
+        final endIndex = startIndex + pageSize;
+        final paginatedMovies = allMovies.skip(startIndex).take(pageSize).toList();
+        final paginatedMoviesData = paginatedMovies.map((m) {
+          return allMoviesData.firstWhere((md) => md.id == m.id);
+        }).toList();
+        
+        final hasNext = endIndex < allMovies.length;
+        
+        SearchLogger.logMovies(paginatedMovies, page, filters, paginatedMoviesData);
+        
+        final results = paginatedMovies.map((m) => SearchMapper.movieItemToSearchResult(m)).toList();
+        
+        return SearchResultsPage<SearchResult>(
+          items: results,
+          page: page,
+          pageSize: pageSize,
+          total: allMovies.length,
+          hasNext: hasNext,
+        );
+      } else if (query.isNotEmpty && 
           query.toLowerCase() != 'trending' && 
           query.toLowerCase() != 'popular') {
-        var snapshot = await firestoreQuery.limit(100).get();
-        var allMoviesData = snapshot.docs.map((doc) => Movie.fromDoc(doc)).toList();
         var allMovies = allMoviesData.map((m) => MovieItem.fromMovie(m)).toList();
         
         final lowerQuery = query.toLowerCase();

@@ -23,6 +23,8 @@ common:
   search: Search
   loading: "Loading…"
   signOut: Sign out
+  retry: Retry
+  errorPrefix: "Error:"
 
 notification:
   title: Notifications
@@ -32,6 +34,8 @@ notification:
   seeAll: See all notifications
   today: Today
   dayAgo: Days ago
+  loadFailed: Error loading notifications
+  markAllAsReadFailed(String error): "Failed to mark all as read: $error"
 
 
 # Authentication Module
@@ -329,6 +333,7 @@ profile:
     title: Payment Methods
     loadError(String error): "Failed to load payment methods: $error"
     addNewMessage: "Add payment method tapped"
+    comingSoon: More payment methods coming soon
 
   notification:
     title: Notification
@@ -377,7 +382,7 @@ profile:
       video: Video
       audio: Audio
     toggles:
-      wifiOnlyDownloads: Download Over Wi-Fi Only
+      wifiOnlyDownloads: Watch over Wi-Fi Only
       autoPlayNextEpisode: Auto Play Next Episode
       continueWatching: Continue Watching from Last Position
       subtitlesEnabled: Subtitles
@@ -547,3 +552,111 @@ utils:
 
 cards:
   showIn: Show in
+ 
+# Purchase Detail Screen
+purchaseDetail:
+  title: Purchase Details
+  infoTitle: Purchase Information
+  labels:
+    movieId: Movie ID
+    downloaded: Downloaded
+    finished: Finished
+    transactions: Transactions
+    amount: Amount
+    created: Created
+    paidAt: Paid At
+    failedAt: Failed At
+    canceledAt: Canceled At
+    paymentIntent: Payment Intent
+    chargeId: Charge ID
+  states:
+    succeeded: Succeeded
+    failed: Failed
+    canceled: Canceled
+    pending: Pending
+  empty:
+    transactions: No transactions found
+    purchaseNotFound: Purchase not found
+  error:
+    generic(String error): "Error: $error"
+
+# Discover Module
+discover:
+  sections:
+    topCharts: Top Charts
+    topSelling: Top Selling
+    topFree: Top Free
+    topNewReleases: Top New Releases
+
+# Home Module
+home:
+  sections:
+    recommendedForYou: Recommended For You
+    yourPurchases: Your Purchases
+    yourWishlist: Your Wishlist
+    recentlyWatched: Recently Watched
+    exploreByGenre: Explore by Genre
+
+# Genre Module
+genre:
+  explore:
+    title: "Genre:"
+    empty: No movies found for
+    loadFailed: Failed to load movies
+
+# Purchase Module
+purchase:
+  common:
+    free: Free
+    purchased: Purchased
+    movieNotFound: Movie not found
+    comingSoon: Coming soon
+    errorPrefix: "Error:"
+  checkout:
+    title: Checkout
+    section:
+      movieSummary: Movie Summary
+      priceDetails: Price Details
+      paymentMethod: Payment Method
+    labels:
+      price: Price
+      total: Total
+      visa: Visa
+    actions:
+      confirm: Confirm
+      payNow: Pay Now
+      processing: Processing...
+    toasts:
+      addedSuccess: "Movie added successfully! 🎬"
+      paymentSuccess: "Payment successful! 🎬"
+      paymentFailed: Payment failed. Please try again.
+      paymentCanceled: Payment was canceled
+  item:
+    menu:
+      watchNow: Watch now
+      viewSeries: View Series
+      purchaseDetails: Purchase Details
+      aboutMovie: About Movie
+    snackbar:
+      viewSeriesComing: View series - coming soon
+  notifications:
+    successTitle: "Purchase Successful! 🎬"
+    successDescription: "You now own"
+
+# Wishlist Module
+wishlist:
+  common:
+    retry: Retry
+    errorPrefix: "Error:"
+    movieNotFound: Movie not found
+  item:
+    menu:
+      removeFromWishlist: Remove from Wishlist
+      share: Share
+      aboutMovie: About Movie
+    snackbar:
+      removed: Removed from wishlist
+      shareComing: Share functionality coming soon
+  empty:
+    title: Your wishlist is empty
+    subtitle: Add movies you want to watch later

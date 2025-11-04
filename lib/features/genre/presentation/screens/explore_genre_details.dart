@@ -34,7 +34,7 @@ class ExploreGenreDetails extends ConsumerWidget {
     final moviesAsync = ref.watch(moviesByGenreProvider(genreName));
 
     return Scaffold(
-      appBar: AppBar(title: Text('Genre: $genreName')),
+      appBar: AppBar(title: Text('${t.genre.explore.title} $genreName')),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -74,7 +74,7 @@ class ExploreGenreDetails extends ConsumerWidget {
                   data: (movies) {
                     if (movies.isEmpty) {
                       return Center(
-                        child: Text('No movies found for "$genreName"', style: theme.textTheme.bodyMedium),
+                        child: Text('${t.genre.explore.empty} "$genreName"', style: theme.textTheme.bodyMedium),
                       );
                     }
                     return ref.read(viewModeProvider.notifier).state == ViewMode.grid
@@ -95,7 +95,7 @@ class ExploreGenreDetails extends ConsumerWidget {
                   },
                   loading: () => const Center(child: CircularProgressIndicator()),
                   error: (_, __) => Center(
-                    child: Text('Failed to load movies', style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.warning)),
+                    child: Text(t.genre.explore.loadFailed, style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.warning)),
                   ),
                 ),
               ),

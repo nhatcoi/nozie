@@ -62,13 +62,11 @@ class TopBarNotifier extends StateNotifier<TopBarState> {
         return TopBarState(
           title: t.navigation.wishlist,
           primaryAction: TopBarAction.search,
-          secondaryAction: TopBarAction.filter,
         );
       case AppRouter.purchase:
         return TopBarState(
           title: t.navigation.purchase,
           primaryAction: TopBarAction.search,
-          secondaryAction: TopBarAction.filter,
         );
       case AppRouter.profile:
         return TopBarState(

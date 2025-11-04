@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/data/image_constant.dart';
 
 class NetworkOrAssetImage extends StatelessWidget {
   const NetworkOrAssetImage({
@@ -30,13 +31,13 @@ class NetworkOrAssetImage extends StatelessWidget {
         height: height,
         fit: fit,
         errorBuilder: (context, error, stackTrace) {
-          return errorWidget ?? 
-            Container(
-              width: width,
-              height: height,
-              color: Colors.grey[300],
-              child: const Icon(Icons.error_outline),
-            );
+          if (errorWidget != null) return errorWidget!;
+          return Image.asset(
+            ImageConstant.imgImageNotFound,
+            width: width,
+            height: height,
+            fit: BoxFit.cover,
+          );
         },
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) return child;
@@ -62,13 +63,13 @@ class NetworkOrAssetImage extends StatelessWidget {
         height: height,
         fit: fit,
         errorBuilder: (context, error, stackTrace) {
-          return errorWidget ?? 
-            Container(
-              width: width,
-              height: height,
-              color: Colors.grey[300],
-              child: const Icon(Icons.error_outline),
-            );
+          if (errorWidget != null) return errorWidget!;
+          return Image.asset(
+            ImageConstant.imgImageNotFound,
+            width: width,
+            height: height,
+            fit: BoxFit.cover,
+          );
         },
       );
     }

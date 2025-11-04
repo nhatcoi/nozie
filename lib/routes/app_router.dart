@@ -13,6 +13,7 @@ import 'package:movie_fe/features/discover/presentation/screens/discover_screen.
 import 'package:movie_fe/features/genre/presentation/screens/explore_genre.dart';
 import 'package:movie_fe/features/genre/presentation/screens/explore_genre_details.dart';
 import 'package:movie_fe/features/home/presentation/screens/home_screen.dart';
+import 'package:movie_fe/features/home/presentation/screens/movie_type_screen.dart';
 import 'package:movie_fe/features/notification/presentation/notification_screen.dart';
 import 'package:movie_fe/features/profile/presentation/help_center_screen.dart';
 import 'package:movie_fe/features/profile/presentation/language_screen.dart';
@@ -24,6 +25,7 @@ import 'package:movie_fe/features/profile/presentation/security_screen.dart';
 import 'package:movie_fe/features/profile/presentation/notification_screen.dart'
     as profile_notification;
 import 'package:movie_fe/features/purchase/presentation/purchase_screen.dart';
+import 'package:movie_fe/features/purchase/presentation/screens/purchase_detail_screen.dart';
 import 'package:movie_fe/features/search/presentation/screens/search_screen.dart';
 import 'package:movie_fe/features/setting/presentation/screens/setting_screen.dart';
 import 'package:movie_fe/features/welcome/welcome_screen.dart';
@@ -68,6 +70,8 @@ class AppRouter {
   static const movieInfo = '/movie-info';
   static const ratings = '/ratings';
   static const checkout = '/checkout';
+  static const purchaseDetail = '/purchase-detail';
+  static const movieType = '/movie-type';
 
   static const _publicPaths = {
     welcome,
@@ -200,6 +204,30 @@ class AppRouter {
         
         return CheckoutScreen(movie: movie);
       }),
+      GoRoute(path: '$purchaseDetail/:movieId', builder: (_, state) {
+        final movieId = state.pathParameters['movieId']!;
+        return PurchaseDetailScreen(movieId: movieId);
+      }),
+      GoRoute(path: '$movieType/:type', builder: (_, state) {
+        final typeStr = state.pathParameters['type']!;
+        MovieListType type;
+        switch (typeStr) {
+          case 'purchase':
+            type = MovieListType.purchase;
+            break;
+          case 'wishlist':
+            type = MovieListType.wishlist;
+            break;
+          case 'recent':
+            type = MovieListType.recent;
+            break;
+          case 'recommended':
+          default:
+            type = MovieListType.recommended;
+            break;
+        }
+        return MovieTypeScreen(type: type);
+      }),
       GoRoute(path: resetPassword, builder: (_, __) => const ForgotPasswordNewPassScreen()),
       GoRoute(path: notification, builder: (_, __) => const NotificationScreen()),
       GoRoute(
@@ -212,7 +240,21 @@ class AppRouter {
       GoRoute(path: preferences, builder: (_, __) => const PreferencesScreen()),
       GoRoute(path: language, builder: (_, __) => const LanguageScreen()),
       GoRoute(path: helpCenter, builder: (_, __) => const HelpCenterScreen()),
-      GoRoute(path: search, builder: (_, __) => const SearchScreen()),
+      GoRoute(path: search, builder: (_, state) {
+        final extra = state.extra;
+        SearchSource searchSource = SearchSource.all;
+        
+        if (extra is Map) {
+          final source = extra['searchSource'] as String?;
+          if (source == 'wishlist') {
+            searchSource = SearchSource.wishlist;
+          } else if (source == 'purchase') {
+            searchSource = SearchSource.purchase;
+          }
+        }
+        
+        return SearchScreen(searchSource: searchSource);
+      }),
       ShellRoute(
         builder: (context, state, child) =>
             MainLayout(showAppBar: true, showBottomNav: true, child: child),

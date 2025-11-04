@@ -4,9 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import '../../../../core/app_export.dart';
 import '../../../../core/models/movie.dart';
-import '../../../profile/models/payment_method.dart';
-import '../../../profile/notifiers/payment_notifier.dart';
-import '../../services/payment_service.dart';
+import '../../../../core/widgets/feedback/toast_notification.dart';
+import '../../../../core/services/stripe_service.dart';
 
 class CheckoutScreen extends ConsumerStatefulWidget {
   const CheckoutScreen({
@@ -28,27 +27,13 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     final theme = Theme.of(context);
     final textColor = AppColors.getText(context);
     final secondaryText = AppColors.getTextSecondary(context);
-    final paymentState = ref.watch(paymentNotifierProvider);
-    final paymentMethods = paymentState.value ?? const <PaymentMethod>[];
-    final defaultMethod = paymentMethods.firstWhere(
-      (method) => method.isDefault,
-      orElse: () => paymentMethods.isNotEmpty 
-          ? paymentMethods.first 
-          : const PaymentMethod(
-              id: '',
-              label: '',
-              brand: '',
-              last4: '',
-              isDefault: false,
-            ),
-    );
 
     final price = widget.movie.priceValue ?? 0.0;
     final isFree = price == 0.0;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Checkout'),
+        title: Text(context.i18n.purchase.checkout.title),
         centerTitle: false,
       ),
       body: Column(
@@ -68,37 +53,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   const Gap(24),
                   // Payment Method Selection
                   if (!isFree) ...[
-                    _buildSectionTitle('Payment Method', theme, textColor),
+                    _buildSectionTitle(context.i18n.purchase.checkout.section.paymentMethod, theme, textColor),
                     const Gap(12),
-                    paymentState.when(
-                      loading: () => const Center(child: CircularProgressIndicator()),
-                      error: (error, _) => Center(
-                        child: Text(
-                          'Failed to load payment methods',
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: AppColors.warning,
-                          ),
-                        ),
-                      ),
-                      data: (_) => Column(
-                        spacing: 12,
-                        children: [
-                          for (final method in paymentMethods)
-                            _buildPaymentMethodCard(
-                              context,
-                              theme,
-                              textColor,
-                              method,
-                              method.id == defaultMethod.id,
-                              () {
-                                ref.read(paymentNotifierProvider.notifier).setDefault(method.id);
-                              },
-                            ),
-                          const Gap(8),
-                          _buildAddPaymentMethodButton(context, theme),
-                        ],
-                      ),
-                    ),
+                    _buildVisaOption(context, theme, textColor),
                   ],
                 ],
               ),
@@ -128,14 +85,14 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Total',
+                            context.i18n.purchase.checkout.labels.total,
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: secondaryText,
                             ),
                           ),
                           const Gap(4),
                           Text(
-                            isFree ? 'Free' : '\$${price.toStringAsFixed(2)}',
+                            isFree ? context.i18n.purchase.common.free : '\$${price.toStringAsFixed(2)}',
                             style: theme.textTheme.headlineMedium?.copyWith(
                               fontWeight: FontWeight.w700,
                               color: textColor,
@@ -146,8 +103,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       SizedBox(
                         width: 200,
                         child: PrimaryButton(
-                          text: _isProcessing ? 'Processing...' : (isFree ? 'Confirm' : 'Pay Now'),
-                          onPressed: _isProcessing ? null : () => _processPayment(context, defaultMethod),
+                          text: _isProcessing ? context.i18n.purchase.checkout.actions.processing : (isFree ? context.i18n.purchase.checkout.actions.confirm : context.i18n.purchase.checkout.actions.payNow),
+                          onPressed: _isProcessing ? null : () => _processPayment(context),
                         ),
                       ),
                     ],
@@ -226,13 +183,13 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
   Widget _buildPriceDetails(BuildContext context, ThemeData theme, Color textColor, Color secondaryText, double price) {
     if (price == 0.0) {
-      return _buildSectionTitle('Price Details', theme, textColor);
+      return _buildSectionTitle(context.i18n.purchase.checkout.section.priceDetails, theme, textColor);
     }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionTitle('Price Details', theme, textColor),
+        _buildSectionTitle(context.i18n.purchase.checkout.section.priceDetails, theme, textColor),
         const Gap(12),
         Container(
           padding: const EdgeInsets.all(16),
@@ -247,7 +204,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Price',
+                    context.i18n.purchase.checkout.labels.price,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: secondaryText,
                     ),
@@ -266,7 +223,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Total',
+                    context.i18n.purchase.checkout.labels.total,
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w700,
                       color: textColor,
@@ -298,151 +255,123 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     );
   }
 
-  Widget _buildPaymentMethodCard(
-    BuildContext context,
-    ThemeData theme,
-    Color textColor,
-    PaymentMethod method,
-    bool isSelected,
-    VoidCallback onTap,
-  ) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: AppColors.getSurface(context),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isSelected ? AppColors.primary500 : Colors.transparent,
-            width: 2,
-          ),
-        ),
-        child: Row(
-          spacing: 16,
-          children: [
-            SvgPicture.asset(
-              _iconForMethod(method),
-              width: 40,
-              height: 40,
-            ),
-            Expanded(
-              child: Text(
-                method.label,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  color: textColor,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            Radio<String>(
-              value: method.id,
-              groupValue: isSelected ? method.id : '',
-              onChanged: (_) => onTap(),
-              activeColor: AppColors.primary500,
-            ),
-          ],
+  Widget _buildVisaOption(BuildContext context, ThemeData theme, Color textColor) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.getSurface(context),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppColors.primary500,
+          width: 2,
         ),
       ),
-    );
-  }
-
-  Widget _buildAddPaymentMethodButton(BuildContext context, ThemeData theme) {
-    return InkWell(
-      onTap: () {
-        // TODO: Navigate to add payment method
-        Navigator.of(context).pushNamed('/payment-methods');
-      },
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: AppColors.primary500,
-            width: 1.5,
+      child: Row(
+        spacing: 16,
+        children: [
+          SvgPicture.asset(
+            ImageConstant.visaIcon,
+            width: 40,
+            height: 40,
           ),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          spacing: 8,
-          children: [
-            const Icon(Icons.add, color: AppColors.primary500),
-            Text(
-              'Add Payment Method',
+          Expanded(
+            child: Text(
+              context.i18n.purchase.checkout.labels.visa,
               style: theme.textTheme.bodyLarge?.copyWith(
-                color: AppColors.primary500,
+                color: textColor,
                 fontWeight: FontWeight.w600,
               ),
             ),
-          ],
-        ),
+          ),
+          Radio<String>(
+            value: 'visa',
+            groupValue: 'visa',
+            onChanged: (_) {},
+            activeColor: AppColors.primary500,
+          ),
+        ],
       ),
     );
   }
 
-  String _iconForMethod(PaymentMethod method) {
-    switch (method.brand.toLowerCase()) {
-      case 'google pay':
-        return ImageConstant.googlePayIcon;
-      case 'apple pay':
-        return ImageConstant.appleIcon;
-      case 'visa':
-        return ImageConstant.visaIcon;
-      case 'american express':
-        return ImageConstant.americanExpressIcon;
-      case 'mastercard':
-        return ImageConstant.mastercardIcon;
-      case 'paypal':
-      default:
-        return ImageConstant.paypalIcon;
-    }
-  }
-
-  Future<void> _processPayment(BuildContext context, PaymentMethod method) async {
+  Future<void> _processPayment(BuildContext context) async {
     if (_isProcessing) return;
+
+    final price = widget.movie.priceValue ?? 0.0;
+    if (price == 0.0) {
+      if (context.mounted) {
+        Navigator.of(context).pop(true);
+        ToastNotification.showSuccess(
+          context,
+          message: context.i18n.purchase.checkout.toasts.addedSuccess,
+          duration: const Duration(seconds: 3),
+        );
+      }
+      return;
+    }
 
     setState(() {
       _isProcessing = true;
     });
 
     try {
-      final paymentService = ref.read(paymentServiceProvider);
-      final success = await paymentService.processPurchase(
-        movie: widget.movie,
-        paymentMethodId: method.id,
+      final stripeService = ref.read(stripeServiceProvider);
+
+      // Step 1: Create Payment Intent via backend
+      final paymentIntent = await stripeService.createPaymentIntent(
+        movieId: widget.movie.id,
+        amount: price,
+        movieTitle: widget.movie.title,
+        movieImageUrl: widget.movie.imageUrl,
+        movieSlug: widget.movie.slug,
+      );
+
+      // Step 2: Present Stripe Payment Sheet
+      await stripeService.presentPaymentSheet(
+        clientSecret: paymentIntent.clientSecret,
+        ephemeralKeySecret: paymentIntent.ephemeralKey,
+        customerId: paymentIntent.customerId,
+      );
+
+      // Step 3: Wait for webhook to update Firestore, then check transaction status
+      final transactionStatus = await _waitForTransactionStatus(
+        stripeService,
+        paymentIntent.transactionId,
       );
 
       if (context.mounted) {
-        if (success) {
-          Navigator.of(context).pop(true); // Return success
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Payment successful! 🎬'),
-              behavior: SnackBarBehavior.floating,
-              backgroundColor: Colors.green,
-              duration: Duration(seconds: 2),
-            ),
+        if (transactionStatus.isSuccess) {
+          Navigator.of(context).pop(true);
+          ToastNotification.showSuccess(
+            context,
+            message: context.i18n.purchase.checkout.toasts.paymentSuccess,
+            duration: const Duration(seconds: 3),
           );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Payment failed. Please try again.'),
-              behavior: SnackBarBehavior.floating,
-              backgroundColor: Colors.red,
-              duration: Duration(seconds: 2),
-            ),
+        } else if (transactionStatus.isFailed) {
+          ToastNotification.showError(
+            context,
+            message: transactionStatus.errorMessage ?? context.i18n.purchase.checkout.toasts.paymentFailed,
+            duration: const Duration(seconds: 3),
+          );
+        } else if (transactionStatus.isCanceled) {
+          ToastNotification.showInfo(
+            context,
+            message: context.i18n.purchase.checkout.toasts.paymentCanceled,
+            duration: const Duration(seconds: 3),
           );
         }
       }
     } catch (e) {
+      final errorMessage = e.toString();
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: ${e.toString()}'),
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 2),
-          ),
+        if (errorMessage.contains('canceled') || errorMessage.contains('Payment canceled')) {
+          // User canceled - don't show error
+          return;
+        }
+        ToastNotification.showError(
+          context,
+          message: '${context.i18n.purchase.common.errorPrefix} ${errorMessage.replaceAll('Exception: ', '')}',
+          duration: const Duration(seconds: 3),
         );
       }
     } finally {
@@ -452,6 +381,30 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         });
       }
     }
+  }
+
+  /// Wait for transaction status to be updated by webhook
+  Future<TransactionStatus> _waitForTransactionStatus(
+    StripeService stripeService,
+    String transactionId, {
+    int maxAttempts = 20,
+    Duration interval = const Duration(seconds: 1),
+  }) async {
+    for (int i = 0; i < maxAttempts; i++) {
+      try {
+        final status = await stripeService.getTransactionStatus(transactionId);
+        if (status.isSuccess || status.isFailed || status.isCanceled) {
+          return status;
+        }
+        await Future.delayed(interval);
+      } catch (e) {
+        if (i == maxAttempts - 1) {
+          rethrow;
+        }
+        await Future.delayed(interval);
+      }
+    }
+    throw Exception('Transaction status timeout');
   }
 }
 

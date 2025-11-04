@@ -49,7 +49,7 @@ class WishlistScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'Your wishlist is empty',
+              context.i18n.wishlist.empty.title,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: AppColors.getText(context),
                     fontWeight: FontWeight.w600,
@@ -57,7 +57,7 @@ class WishlistScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Add movies you want to watch later',
+              context.i18n.wishlist.empty.subtitle,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.getTextSecondary(context),
                   ),
@@ -74,7 +74,7 @@ class WishlistScreen extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Error: $error',
+            '${context.i18n.wishlist.common.errorPrefix} $error',
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   color: AppColors.warning,
                 ),
@@ -84,7 +84,7 @@ class WishlistScreen extends ConsumerWidget {
             onPressed: () {
               ref.invalidate(wishlistProvider);
             },
-            child: const Text('Retry'),
+            child: Text(context.i18n.wishlist.common.retry),
           ),
         ],
       ),

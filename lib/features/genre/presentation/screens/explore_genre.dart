@@ -58,6 +58,8 @@ class ExploreGenre extends ConsumerWidget {
                     context.push('${AppRouter.movieCarouselGenre}$slug');
                   },
                   enableNavigation: false,
+                  titleFontSize: 16,
+                  overlayOpacity: 0.22,
                 );
               },
             );

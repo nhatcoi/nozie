@@ -253,12 +253,10 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
                 );
                 ref.read(profileNotifierProvider.notifier).update(updated).then((_) {
                   if (!mounted) return;
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(t.profile.personalInfo.success),
-                      behavior: SnackBarBehavior.floating,
-                      duration: Duration(seconds: 2),
-                    ),
+                  ToastNotification.showSuccess(
+                    context,
+                    message: t.profile.personalInfo.success,
+                    duration: const Duration(seconds: 2),
                   );
                 });
               },

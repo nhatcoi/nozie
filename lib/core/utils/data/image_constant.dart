@@ -13,6 +13,9 @@ class ImageConstant {
   static const String subPathIconAction = '${subPathIcon}action/';
   static const String subPathNotification = '${_basePath}notifications/';
 
+  // logo
+  static const String logoMovie = '${_basePath}app/movie.svg';
+
   // Auth Icons
   static const String imgGoogleIcon = '${subPathIconAuth}icon_google.svg';
   static const String imgFBIcon = '${subPathIconAuth}icon_facebook.svg';

@@ -7,6 +7,7 @@ import '../../../../core/app_export.dart';
 import '../../../../core/models/movie_item.dart';
 import '../../../../core/models/movie.dart';
 import '../../../../core/widgets/image_utils.dart';
+import '../../../../core/widgets/feedback/toast_notification.dart';
 import '../../../../routes/app_router.dart';
 import '../../data/repositories/movie_repository.dart';
 import '../../../wishlist/repositories/wishlist_repository.dart';
@@ -283,12 +284,10 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                         
                         if (isAlreadyPurchased) {
                           if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('This movie is already in your purchased library'),
-                                behavior: SnackBarBehavior.floating,
-                                duration: Duration(seconds: 2),
-                              ),
+                            ToastNotification.showInfo(
+                              context,
+                              message: 'This movie is already in your purchased library',
+                              duration: const Duration(seconds: 3),
                             );
                           }
                           return;
@@ -308,12 +307,10 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                         }
                       } catch (e) {
                         if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Error: ${e.toString()}'),
-                              behavior: SnackBarBehavior.floating,
-                              duration: const Duration(seconds: 2),
-                            ),
+                          ToastNotification.showError(
+                            context,
+                            message: 'Error: ${e.toString()}',
+                            duration: const Duration(seconds: 3),
                           );
                         }
                       }

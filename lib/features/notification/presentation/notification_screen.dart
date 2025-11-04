@@ -36,7 +36,7 @@ class NotificationScreen extends ConsumerWidget {
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Failed to mark all as read: $e'),
+                        content: Text(t.notification.markAllAsReadFailed(error: e.toString())),
                         behavior: SnackBarBehavior.floating,
                       ),
                     );
@@ -44,7 +44,7 @@ class NotificationScreen extends ConsumerWidget {
                 }
               },
               child: Text(
-                'Mark all read',
+                t.notification.markAllAsRead,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: AppColors.primary500,
                   fontWeight: FontWeight.w600,
@@ -109,7 +109,7 @@ class NotificationScreen extends ConsumerWidget {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Error: ${e.toString()}'),
+                            content: Text('${t.common.errorPrefix} ${e.toString()}'),
                             behavior: SnackBarBehavior.floating,
                           ),
                         );
@@ -136,7 +136,7 @@ class NotificationScreen extends ConsumerWidget {
                   ),
                   const Gap(16),
                   Text(
-                    'Error loading notifications',
+                    t.notification.loadFailed,
                     style: theme.textTheme.titleLarge,
                   ),
                   const Gap(8),
@@ -152,7 +152,7 @@ class NotificationScreen extends ConsumerWidget {
                     onPressed: () {
                       ref.invalidate(notificationsProvider);
                     },
-                    child: const Text('Retry'),
+                    child: Text(t.common.retry),
                   ),
                 ],
               ),

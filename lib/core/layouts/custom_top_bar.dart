@@ -38,12 +38,16 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // SvgPicture.asset(
-        //   ImageConstant.logoIcon,
-        //   width: 100,
-        //   height: 100,
-        // ),
-        SizedBox(width: context.responsiveWidth(2)), // Responsive spacing
+        SvgPicture.asset(
+          ImageConstant.logoMovie,
+          width: 32,
+          height: 32,
+          colorFilter: ColorFilter.mode(
+            AppColors.primary500,
+            BlendMode.srcIn,
+          ),
+        ),
+        SizedBox(width: context.responsiveWidth(4)), // Responsive spacing
         Text(
           title,
           style: AppTypography.h5.copyWith(

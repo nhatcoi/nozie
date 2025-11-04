@@ -1,5 +1,6 @@
 import '../../../../features/search/entities/search_filter.dart';
 import '../../../../features/search/entities/filter_section.dart';
+import '../../../../i18n/translations.g.dart';
 
 enum DiscoverSectionType {
   topCharts,
@@ -12,13 +13,13 @@ extension DiscoverSectionTypeExtension on DiscoverSectionType {
   String get title {
     switch (this) {
       case DiscoverSectionType.topCharts:
-        return 'Top Charts';
+        return t.discover.sections.topCharts;
       case DiscoverSectionType.topSelling:
-        return 'Top Selling';
+        return t.discover.sections.topSelling;
       case DiscoverSectionType.topFree:
-        return 'Top Free';
+        return t.discover.sections.topFree;
       case DiscoverSectionType.topNewReleases:
-        return 'Top New Releases';
+        return t.discover.sections.topNewReleases;
     }
   }
 

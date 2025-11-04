@@ -23,6 +23,8 @@ common:
   search: Tìm kiếm
   loading: "Đang tải…"
   signOut: Đăng xuất
+  retry: Thử lại
+  errorPrefix: "Lỗi:"
 
 notification:
   title: Thông báo
@@ -32,6 +34,8 @@ notification:
   seeAll: Xem tất cả
   today: Hôm nay
   dayAgo: Ngày trước
+  loadFailed: Lỗi khi tải thông báo
+  markAllAsReadFailed(String error): "Không thể đánh dấu tất cả là đã đọc: $error"
 
 # Authentication Module
 auth:
@@ -328,6 +332,7 @@ profile:
     title: Phương thức thanh toán
     loadError(String error): "Không thể tải phương thức thanh toán: $error"
     addNewMessage: "Đã chạm vào thêm phương thức thanh toán"
+    comingSoon: Nozie đang phát triển thêm phương thức thanh toán khác
 
   notification:
     title: Thông báo
@@ -376,7 +381,7 @@ profile:
       video: Video
       audio: Âm thanh
     toggles:
-      wifiOnlyDownloads: Chỉ tải qua Wi-Fi
+      wifiOnlyDownloads: Chỉ xem qua Wi-Fi
       autoPlayNextEpisode: Tự phát tập tiếp theo
       continueWatching: Tiếp tục xem từ vị trí dở
       subtitlesEnabled: Phụ đề
@@ -548,3 +553,111 @@ utils:
 
 cards:
   showIn: Hiển thị trong
+
+# Purchase Detail Screen
+purchaseDetail:
+  title: Chi tiết giao dịch
+  infoTitle: Thông tin mua hàng
+  labels:
+    movieId: Mã phim
+    downloaded: Đã tải xuống
+    finished: Đã xem xong
+    transactions: Giao dịch
+    amount: Số tiền
+    created: Tạo lúc
+    paidAt: Thanh toán lúc
+    failedAt: Thất bại lúc
+    canceledAt: Hủy lúc
+    paymentIntent: Mã Payment Intent
+    chargeId: Mã giao dịch (Charge ID)
+  states:
+    succeeded: Thành công
+    failed: Thất bại
+    canceled: Đã hủy
+    pending: Đang xử lý
+  empty:
+    transactions: Chưa có giao dịch nào
+    purchaseNotFound: Không tìm thấy thông tin mua hàng
+  error:
+    generic(String error): "Lỗi: $error"
+
+# Discover Module
+discover:
+  sections:
+    topCharts: Bảng xếp hạng
+    topSelling: Bán chạy
+    topFree: Miễn phí hàng đầu
+    topNewReleases: Phát hành mới
+
+# Home Module
+home:
+  sections:
+    recommendedForYou: Gợi ý cho bạn
+    yourPurchases: Giao dịch của bạn
+    yourWishlist: Danh sách yêu thích
+    recentlyWatched: Xem gần đây
+    exploreByGenre: Khám phá theo thể loại
+
+# Genre Module
+genre:
+  explore:
+    title: "Thể loại:"
+    empty: Không tìm thấy phim cho
+    loadFailed: Không tải được danh sách phim
+
+# Purchase Module
+purchase:
+  common:
+    free: Miễn phí
+    purchased: Đã mua
+    movieNotFound: Không tìm thấy phim
+    comingSoon: Sắp ra mắt
+    errorPrefix: "Lỗi:"
+  checkout:
+    title: Thanh toán
+    section:
+      movieSummary: Tóm tắt phim
+      priceDetails: Chi tiết giá
+      paymentMethod: Phương thức thanh toán
+    labels:
+      price: Giá
+      total: Tổng cộng
+      visa: Visa
+    actions:
+      confirm: Xác nhận
+      payNow: Thanh toán ngay
+      processing: Đang xử lý...
+    toasts:
+      addedSuccess: "Đã thêm phim thành công! 🎬"
+      paymentSuccess: "Thanh toán thành công! 🎬"
+      paymentFailed: Thanh toán thất bại. Vui lòng thử lại.
+      paymentCanceled: Thanh toán đã bị hủy
+  item:
+    menu:
+      watchNow: Xem ngay
+      viewSeries: Xem series
+      purchaseDetails: Chi tiết giao dịch
+      aboutMovie: Về phim
+    snackbar:
+      viewSeriesComing: Tính năng xem series - sắp ra mắt
+  notifications:
+    successTitle: "Mua hàng thành công! 🎬"
+    successDescription: "Bạn đã sở hữu"
+
+# Wishlist Module
+wishlist:
+  common:
+    retry: Thử lại
+    errorPrefix: "Lỗi:"
+    movieNotFound: Không tìm thấy phim
+  item:
+    menu:
+      removeFromWishlist: Xóa khỏi danh sách yêu thích
+      share: Chia sẻ
+      aboutMovie: Về phim
+    snackbar:
+      removed: Đã xóa khỏi danh sách yêu thích
+      shareComing: Tính năng chia sẻ sẽ có sớm
+  empty:
+    title: Danh sách yêu thích của bạn đang trống
+    subtitle: Thêm những phim bạn muốn xem sau

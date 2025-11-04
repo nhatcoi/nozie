@@ -33,28 +33,28 @@ class HomeScreen extends ConsumerWidget {
             onMore: () {},
           ),
           _Section(
-            title: 'Recommended For You',
+            title: context.i18n.home.sections.recommendedForYou,
             provider: recommendedMoviesProvider,
-            onMore: () {},
+            onMore: () => context.push('${AppRouter.movieType}/recommended'),
           ),
           const Gap(16),
           const _ExploreByGenreSection(),
 
           _Section(
-            title: 'Your Purchases',
+            title: context.i18n.home.sections.yourPurchases,
             provider: purchasedMoviesProvider,
-            onMore: () => context.push(AppRouter.purchase),
+            onMore: () => context.push('${AppRouter.movieType}/purchase'),
           ),
           _Section(
-            title: 'Your Wishlist',
+            title: context.i18n.home.sections.yourWishlist,
             provider: wishlistMoviesProvider,
-            onMore: () => context.go(AppRouter.wishlist),
+            onMore: () => context.push('${AppRouter.movieType}/wishlist'),
             minimal: false,
           ),
           _Section(
-            title: 'Recently Watched',
+            title: context.i18n.home.sections.recentlyWatched,
             provider: recentMoviesProvider,
-            onMore: () {},
+            onMore: () => context.push('${AppRouter.movieType}/recent'),
           ),
         ],
       ),
@@ -215,7 +215,7 @@ class _ExploreByGenreSection extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Explore by Genre',
+                  context.i18n.home.sections.exploreByGenre,
                   style: theme.textTheme.headlineLarge?.copyWith(
                     fontWeight: FontWeight.w600,
                     fontSize: 22,
@@ -251,6 +251,8 @@ class _ExploreByGenreSection extends ConsumerWidget {
                     movieCardType: MovieCardType.titleInImg,
                     enableNavigation: false,
                     onMore: () => context.push('${AppRouter.explore}/$slug'),
+                    titleFontSize: 16,
+                    overlayOpacity: 0.18,
                   );
                 },
               ),
