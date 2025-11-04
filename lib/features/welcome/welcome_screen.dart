@@ -5,6 +5,7 @@ import 'package:movie_fe/routes/app_router.dart';
 import 'package:go_router/go_router.dart';
 import 'dart:async';
 import '../../../core/app_export.dart';
+import 'package:movie_fe/features/auth/login/presentation/notifier/login_notifier.dart';
 import 'data/welcome_constant.dart';
 import 'widgets/welcome_content.dart';
 import 'widgets/page_indicator.dart';
@@ -174,10 +175,21 @@ class WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                         children: [
                           PrimaryButton(
                             text: WelcomeButtonTexts.getGoogleText(context),
-                                                          onPressed: () {
-                                // TODO: Handle Google sign in
+                            onPressed: () async {
+                              // Reuse login flow: call signInWithGoogle and navigate on success
+                              try {
+                                final notifier = ref.read(loginNotifierProvider.notifier);
+                                await notifier.signInWithGoogle();
+                                if (!mounted) return;
                                 context.go(AppRouter.home);
-                              },
+                              } catch (_) {
+                                if (!mounted) return;
+                                ToastNotification.showError(
+                                  context,
+                                  message: context.i18n.common.errorPrefix,
+                                );
+                              }
+                            },
                             backgroundColor: AppColors.getSurface(context),
                             textColor: AppColors.getText(context),
                             icon: SvgPicture.asset(

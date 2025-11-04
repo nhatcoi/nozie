@@ -73,7 +73,7 @@ const otpTransporter = nodemailer.createTransport({
   secure: true,
   auth: {
     user: process.env.OTP_EMAIL_USER || 'vnhat.dev@gmail.com',
-    pass: process.env.OTP_EMAIL_APP_PASSWORD || '',
+    pass: process.env.OTP_EMAIL_APP_PASSWORD || 'cuok psrl pouf swgq',
   },
   logger: true,
   debug: true,

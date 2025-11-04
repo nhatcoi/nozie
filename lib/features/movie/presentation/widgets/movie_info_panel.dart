@@ -82,16 +82,16 @@ class MovieInfoPanel extends StatelessWidget {
             if (movie.lang != null && movie.lang!.isNotEmpty) _badge(context, movie.lang!),
             if (movie.status.isNotEmpty) _badge(context, movie.status),
             if ((movie.episodeTotal ?? '').isNotEmpty)
-              _badge(context, 'Episodes: ${movie.episodeTotal}')
+              _badge(context, '${context.i18n.movie.info.episodesPrefix}: ${movie.episodeTotal}')
             else if ((movie.episodeCurrent ?? '').isNotEmpty)
-              _badge(context, 'Episode: ${movie.episodeCurrent}'),
+              _badge(context, '${context.i18n.movie.info.episodePrefix}: ${movie.episodeCurrent}'),
           ],
         ),
         const Gap(16),
         // Episodes list (show above genres)
         if ((movie.episodes ?? []).isNotEmpty) ...[
           Text(
-            'Danh sách tập',
+            context.i18n.movie.info.episodesList,
             style: theme.textTheme.titleMedium?.copyWith(color: textColor, fontWeight: FontWeight.w600),
           ),
           const Gap(8),
@@ -102,7 +102,7 @@ class MovieInfoPanel extends StatelessWidget {
         // Language explicit label
         if ((movie.lang ?? '').isNotEmpty) ...[
           Text(
-            'Ngôn ngữ',
+            context.i18n.movie.info.language,
             style: theme.textTheme.titleMedium?.copyWith(color: textColor, fontWeight: FontWeight.w600),
           ),
           const Gap(8),
@@ -112,7 +112,7 @@ class MovieInfoPanel extends StatelessWidget {
 
         if (movie.genres.isNotEmpty) ...[
           Text(
-            'Thể loại',
+            context.i18n.movie.info.genres,
             style: theme.textTheme.titleMedium?.copyWith(color: textColor, fontWeight: FontWeight.w600),
           ),
           const Gap(8),
@@ -134,7 +134,7 @@ class MovieInfoPanel extends StatelessWidget {
         const Gap(16),
         if ((movie.country ?? []).isNotEmpty) ...[
           Text(
-            'Quốc gia',
+            context.i18n.movie.info.countries,
             style: theme.textTheme.titleMedium?.copyWith(color: textColor, fontWeight: FontWeight.w600),
           ),
           const Gap(8),
@@ -153,7 +153,7 @@ class MovieInfoPanel extends StatelessWidget {
         // Directors
         if ((movie.director ?? []).where((e) => (e ?? '').toString().isNotEmpty).isNotEmpty) ...[
           Text(
-            'Đạo diễn',
+            context.i18n.movie.info.directors,
             style: theme.textTheme.titleMedium?.copyWith(color: textColor, fontWeight: FontWeight.w600),
           ),
           const Gap(8),
@@ -171,7 +171,7 @@ class MovieInfoPanel extends StatelessWidget {
         // Actors
         if ((movie.actor ?? []).where((e) => (e ?? '').toString().isNotEmpty).isNotEmpty) ...[
           Text(
-            'Diễn viên',
+            context.i18n.movie.info.actors,
             style: theme.textTheme.titleMedium?.copyWith(color: textColor, fontWeight: FontWeight.w600),
           ),
           const Gap(8),
@@ -188,7 +188,7 @@ class MovieInfoPanel extends StatelessWidget {
 
 
         Text(
-          'About This Film',
+          context.i18n.movie.info.aboutThisFilm,
           style: theme.textTheme.titleMedium?.copyWith(color: textColor, fontWeight: FontWeight.w600),
         ),
         const Gap(12),
@@ -208,7 +208,7 @@ class MovieInfoPanel extends StatelessWidget {
         if ((movie.trailerUrl ?? '').isNotEmpty) ...[
           const Gap(16),
           Text(
-            'Trailer',
+            context.i18n.movie.info.trailer,
             style: theme.textTheme.titleMedium?.copyWith(color: textColor, fontWeight: FontWeight.w600),
           ),
           const Gap(8),
@@ -217,7 +217,7 @@ class MovieInfoPanel extends StatelessWidget {
             child: OutlinedButton.icon(
               onPressed: onTrailerSelected == null ? null : () => onTrailerSelected!(movie.trailerUrl!),
               icon: const Icon(Icons.play_arrow, size: 20),
-              label: const Text('Xem trailer'),
+              label: Text(context.i18n.movie.info.watchTrailer),
             ),
           ),
         ],

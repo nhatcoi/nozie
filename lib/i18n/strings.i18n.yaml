@@ -645,6 +645,85 @@ purchase:
     successTitle: "Purchase Successful! 🎬"
     successDescription: "You now own"
 
+# Movie Module
+movie:
+  details:
+    notFound: Movie not found
+    alreadyPurchased: This movie is already in your purchased library
+    quality1080p: 1080p
+    seriesFallback: Series
+  ratings:
+    title: Ratings & Reviews
+    noReviews: No reviews yet
+    rateThisFilm: Rate this Film
+    purchaseRequired: Purchase required to rate
+    writeAReview: Write a Review
+    dialog:
+      title: Write a Review
+      yourRatingPrefix: "Your rating:"
+      star: star
+      stars: stars
+      hint: Write your review...
+      cancel: Cancel
+      submit: Submit
+      submitted: Review submitted
+  info:
+    images: Images
+    cannotLoadImage: Cannot load image
+    episodesList: Episodes
+    language: Language
+    genres: Genres
+    countries: Countries
+    directors: Directors
+    actors: Actors
+    aboutThisFilm: About This Film
+    trailer: Trailer
+    watchTrailer: Watch trailer
+    episodePrefix: Episode
+    episodesPrefix: Episodes
+  player:
+    noAccess: You do not have access to this movie
+    videoUrlMissing: Video URL not available
+    tryingFallback: Trying fallback URL...
+    cannotLoadM3u8: Cannot load video from m3u8 URL
+    cannotLoadBoth: Cannot load video from both m3u8 and embed URL
+    unknownError: Unknown error
+    cannotOpenTrailer: Cannot open trailer
+    playbackSpeed: Playback Speed
+    quality: Quality
+  hero:
+    ratings: ratings
+    reviews: reviews
+    duration: duration
+    quality: quality
+    watched: watched
+    watchNow: Watch now
+    aboutThisFilm: About This Film
+    viewMore: View More
+  similar:
+    title: Similar Movies
+  report:
+    headerTitle: Report an Issue
+    headerSubtitle: Help us improve the service quality
+    movieInfo: Movie Information
+    labels:
+      movieName: Movie Name
+      director: Director
+      videoUrl: Video URL
+      error: Error
+    issueTypeLabel: Issue Type *
+    descriptionLabel: Detailed Description *
+    descriptionHint: Describe the issue you encountered...
+    validations:
+      selectIssue: Please select an issue type
+      descRequired: Please enter a detailed description
+      descMin: Description must be at least 10 characters
+    actions:
+      cancel: Cancel
+      submit: Submit Report
+      sending: Sending...
+    success: Report submitted successfully. Thank you for your feedback!
+    failurePrefix: "Failed to submit report:"
 # Wishlist Module
 wishlist:
   common:

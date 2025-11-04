@@ -29,12 +29,12 @@ class _VideoErrorReportModalState extends ConsumerState<VideoErrorReportModal> {
   bool _isSubmitting = false;
 
   final List<String> _issueTypes = [
-    'Video không load được',
-    'Giật/lag',
-    'Chất lượng video kém',
-    'Lỗi âm thanh',
-    'Không phát được',
-    'Khác',
+    'Video not loading',
+    'Stutter/lag',
+    'Poor video quality',
+    'Audio issue',
+    'Cannot play',
+    'Other',
   ];
 
   @override
@@ -47,7 +47,7 @@ class _VideoErrorReportModalState extends ConsumerState<VideoErrorReportModal> {
     if (!_formKey.currentState!.validate() || _selectedIssueType == null) {
       if (_selectedIssueType == null && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Vui lòng chọn loại vấn đề'), behavior: SnackBarBehavior.floating),
+          SnackBar(content: Text(context.i18n.movie.report.validations.selectIssue), behavior: SnackBarBehavior.floating),
         );
       }
       return;
@@ -77,11 +77,11 @@ class _VideoErrorReportModalState extends ConsumerState<VideoErrorReportModal> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Báo cáo đã được gửi thành công. Cảm ơn bạn đã phản hồi!'),
+          SnackBar(
+            content: Text(context.i18n.movie.report.success),
             behavior: SnackBarBehavior.floating,
             backgroundColor: AppColors.success,
-            duration: Duration(seconds: 3),
+            duration: const Duration(seconds: 3),
           ),
         );
         Navigator.of(context).pop(true);
@@ -90,7 +90,7 @@ class _VideoErrorReportModalState extends ConsumerState<VideoErrorReportModal> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Lỗi khi gửi báo cáo: $e'),
+            content: Text('${context.i18n.movie.report.failurePrefix} $e'),
             behavior: SnackBarBehavior.floating,
             backgroundColor: AppColors.warning,
             duration: const Duration(seconds: 3),
@@ -158,8 +158,8 @@ class _VideoErrorReportModalState extends ConsumerState<VideoErrorReportModal> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Báo cáo vấn đề', style: theme.textTheme.titleLarge?.copyWith(color: textColor, fontWeight: FontWeight.w700)),
-                Text('Giúp chúng tôi cải thiện chất lượng dịch vụ', style: theme.textTheme.bodySmall?.copyWith(color: secondaryText)),
+                Text(context.i18n.movie.report.headerTitle, style: theme.textTheme.titleLarge?.copyWith(color: textColor, fontWeight: FontWeight.w700)),
+                Text(context.i18n.movie.report.headerSubtitle, style: theme.textTheme.bodySmall?.copyWith(color: secondaryText)),
               ],
             ),
           ),
@@ -174,17 +174,17 @@ class _VideoErrorReportModalState extends ConsumerState<VideoErrorReportModal> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Thông tin phim', style: theme.textTheme.titleMedium?.copyWith(color: textColor, fontWeight: FontWeight.w600)),
+        Text(context.i18n.movie.report.movieInfo, style: theme.textTheme.titleMedium?.copyWith(color: textColor, fontWeight: FontWeight.w600)),
         const Gap(12),
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(color: AppColors.getSurface(context), borderRadius: BorderRadius.circular(12), border: border),
           child: Column(
             children: [
-              _buildInfoRow('Tên phim', widget.movie.title, theme, secondaryText),
-              if (widget.movie.directorString.isNotEmpty) _buildInfoRow('Đạo diễn', widget.movie.directorString, theme, secondaryText),
-              _buildInfoRow('Video URL', widget.videoUrl ?? 'N/A', theme, secondaryText),
-              _buildInfoRow('Lỗi', widget.errorMessage, theme, AppColors.warning),
+              _buildInfoRow(context.i18n.movie.report.labels.movieName, widget.movie.title, theme, secondaryText),
+              if (widget.movie.directorString.isNotEmpty) _buildInfoRow(context.i18n.movie.report.labels.director, widget.movie.directorString, theme, secondaryText),
+              _buildInfoRow(context.i18n.movie.report.labels.videoUrl, widget.videoUrl ?? 'N/A', theme, secondaryText),
+              _buildInfoRow(context.i18n.movie.report.labels.error, widget.errorMessage, theme, AppColors.warning),
             ],
           ),
         ),
@@ -211,7 +211,7 @@ class _VideoErrorReportModalState extends ConsumerState<VideoErrorReportModal> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Loại vấn đề *', style: theme.textTheme.titleMedium?.copyWith(color: textColor, fontWeight: FontWeight.w600)),
+        Text(context.i18n.movie.report.issueTypeLabel, style: theme.textTheme.titleMedium?.copyWith(color: textColor, fontWeight: FontWeight.w600)),
         const Gap(12),
         Wrap(
           spacing: 8,
@@ -247,13 +247,13 @@ class _VideoErrorReportModalState extends ConsumerState<VideoErrorReportModal> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Mô tả chi tiết *', style: theme.textTheme.titleMedium?.copyWith(color: textColor, fontWeight: FontWeight.w600)),
+        Text(context.i18n.movie.report.descriptionLabel, style: theme.textTheme.titleMedium?.copyWith(color: textColor, fontWeight: FontWeight.w600)),
         const Gap(12),
         TextFormField(
           controller: _descriptionController,
           maxLines: 5,
           decoration: InputDecoration(
-            hintText: 'Mô tả chi tiết vấn đề bạn gặp phải...',
+            hintText: context.i18n.movie.report.descriptionHint,
             hintStyle: theme.textTheme.bodyMedium?.copyWith(color: secondaryText),
             filled: true,
             fillColor: AppColors.getSurface(context),
@@ -264,8 +264,8 @@ class _VideoErrorReportModalState extends ConsumerState<VideoErrorReportModal> {
           ),
           style: theme.textTheme.bodyMedium?.copyWith(color: textColor),
           validator: (value) {
-            if (value == null || value.trim().isEmpty) return 'Vui lòng nhập mô tả chi tiết';
-            if (value.trim().length < 10) return 'Mô tả phải có ít nhất 10 ký tự';
+            if (value == null || value.trim().isEmpty) return context.i18n.movie.report.validations.descRequired;
+            if (value.trim().length < 10) return context.i18n.movie.report.validations.descMin;
             return null;
           },
         ),
@@ -286,14 +286,14 @@ class _VideoErrorReportModalState extends ConsumerState<VideoErrorReportModal> {
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
-              child: Text('Hủy', style: theme.textTheme.bodyLarge?.copyWith(color: textColor, fontWeight: FontWeight.w600)),
+              child: Text(context.i18n.movie.report.actions.cancel, style: theme.textTheme.bodyLarge?.copyWith(color: textColor, fontWeight: FontWeight.w600)),
             ),
           ),
           const Gap(12),
           Expanded(
             flex: 2,
             child: PrimaryButton(
-              text: _isSubmitting ? 'Đang gửi...' : 'Gửi báo cáo',
+              text: _isSubmitting ? context.i18n.movie.report.actions.sending : context.i18n.movie.report.actions.submit,
               onPressed: _isSubmitting ? null : _submitReport,
               isLoading: _isSubmitting,
             ),

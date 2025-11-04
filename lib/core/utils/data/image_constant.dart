@@ -67,6 +67,8 @@ class ImageConstant {
   static const String imgImageNotFound = '${subPathCommon}placeholder.png';
   static const String imgAvatar = '${subPathCommon}avatar.png';
   static const String imgCard = '${subPathCommon}card.png';
+  static const String heartIcon = '${subPathIconCommon}heart.svg';
+  static const String heartActiveIcon = '${subPathIconCommon}heart-active.svg';
 
   // App Images
   static const String imgLogoApp = '${subPathApp}logo_app.png';
@@ -135,5 +137,7 @@ class ImageConstant {
   static const String paperNegativeIcon = '${subPathIcon}paper-negative.svg';
   static const String sendIcon = '${subPathIcon}send.svg';
   static const String infoSquareIcon = '${subPathIcon}info-square.svg';
+
+// 
   
 }

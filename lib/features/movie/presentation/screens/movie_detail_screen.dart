@@ -122,7 +122,7 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                     const Icon(Icons.movie, size: 64, color: Colors.grey),
                     const Gap(16),
                     Text(
-                      'Movie not found',
+                      context.i18n.movie.details.notFound,
                       style: theme.textTheme.titleLarge?.copyWith(
                         color: textColor,
                       ),
@@ -185,7 +185,7 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
               const Icon(Icons.error_outline, size: 64, color: Colors.red),
               const Gap(16),
               Text(
-                'Error: ${error.toString()}',
+                '${context.i18n.common.errorPrefix} ${error.toString()}',
                 style: theme.textTheme.bodyLarge?.copyWith(
                   color: AppColors.warning,
                 ),
@@ -260,7 +260,7 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                     isPurchased: isPurchased,
                     ratingCount: movie.ratingCount,
                     durationText: (movie.time ?? '').isEmpty ? null : movie.time,
-                    qualityText: '1080p',
+                    qualityText: context.i18n.movie.details.quality1080p,
                     viewsText: (movie.view == null) ? null : movie.viewsString,
                     onBuyPressed: () async {
                       if (shouldWatchNow) {
@@ -286,7 +286,7 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                           if (context.mounted) {
                             ToastNotification.showInfo(
                               context,
-                              message: 'This movie is already in your purchased library',
+                              message: context.i18n.movie.details.alreadyPurchased,
                               duration: const Duration(seconds: 3),
                             );
                           }
@@ -309,7 +309,7 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                         if (context.mounted) {
                           ToastNotification.showError(
                             context,
-                            message: 'Error: ${e.toString()}',
+                            message: '${context.i18n.common.errorPrefix} ${e.toString()}',
                             duration: const Duration(seconds: 3),
                           );
                         }

@@ -115,7 +115,7 @@ class _ImagesCarouselState extends State<_ImagesCarousel> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Hình ảnh',
+              context.i18n.movie.info.images,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: textColor,
                     fontWeight: FontWeight.w600,
@@ -153,7 +153,7 @@ class _ImagesCarouselState extends State<_ImagesCarousel> {
                           errorBuilder: (_, __, ___) => Container(
                             color: AppColors.getSurface(context),
                             alignment: Alignment.center,
-                            child: Text('Cannot load image', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: secondaryText)),
+                            child: Text(context.i18n.movie.info.cannotLoadImage, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: secondaryText)),
                           ),
                         );
                       },

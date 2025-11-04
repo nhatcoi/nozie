@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import '../../../../core/app_export.dart';
 import '../../services/ratings_service.dart';
@@ -25,6 +26,30 @@ final reviewsProvider = StreamProvider.family.autoDispose<List<Map<String, dynam
       .map((s) => s.docs.map((e) => e.data()).toList());
 });
 
+final reviewLikeStatusProvider = StreamProvider.family.autoDispose<bool, Map<String, String>>((ref, params) {
+  final movieId = params['movieId']!;
+  final reviewUserId = params['reviewUserId']!;
+  final currentUserId = ref.watch(_authProvider).currentUser?.uid;
+  
+  if (currentUserId == null) {
+    return Stream.value(false);
+  }
+  
+  return ref
+      .watch(_firestoreProvider)
+      .collection('ratings')
+      .doc(movieId)
+      .collection('reviews')
+      .doc(reviewUserId)
+      .snapshots()
+      .map((snap) {
+        if (!snap.exists) return false;
+        final data = snap.data();
+        final likedBy = List<String>.from((data?['likedBy'] as List?) ?? []);
+        return likedBy.contains(currentUserId);
+      });
+});
+
 class RatingsDetailScreen extends ConsumerWidget {
   const RatingsDetailScreen({super.key, required this.movieId, required this.movieTitle});
 
@@ -42,7 +67,7 @@ class RatingsDetailScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ratings & Reviews'),
+        title: Text(context.i18n.movie.ratings.title),
       ),
       body: ratingDoc.when(
         data: (doc) {
@@ -106,7 +131,7 @@ class RatingsDetailScreen extends ConsumerWidget {
                 child: reviews.when(
                   data: (items) {
                     if (items.isEmpty) {
-                      return Center(child: Text('No reviews yet', style: t.textTheme.bodyLarge?.copyWith(color: secondaryText)));
+                      return Center(child: Text(context.i18n.movie.ratings.noReviews, style: t.textTheme.bodyLarge?.copyWith(color: secondaryText)));
                     }
                     return ListView.separated(
                       padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
@@ -135,7 +160,7 @@ class RatingsDetailScreen extends ConsumerWidget {
                     );
                   },
                   loading: () => const Center(child: CircularProgressIndicator()),
-                  error: (e, _) => Center(child: Text('Error: $e')),
+                  error: (e, _) => Center(child: Text('${context.i18n.common.errorPrefix} $e')),
                 ),
               ),
             ],
@@ -232,12 +257,35 @@ class _ReviewTile extends ConsumerWidget {
         const Gap(8),
         Row(
           children: [
-            IconButton(
-              icon: Icon(Icons.favorite, color: AppColors.warning),
-              onPressed: () async {
+            GestureDetector(
+              onTap: () async {
                 await RatingsService().toggleLike(movieId: movieId, reviewUserId: userId);
               },
+              child: ref.watch(reviewLikeStatusProvider({'movieId': movieId, 'reviewUserId': userId})).when(
+                data: (isLiked) => SvgPicture.asset(
+                  ImageConstant.heartIcon,
+                  width: 24,
+                  height: 24,
+                  colorFilter: ColorFilter.mode(
+                    isLiked ? AppColors.primary500 : secondary,
+                    BlendMode.srcIn,
+                  ),
+                ),
+                loading: () => SvgPicture.asset(
+                  ImageConstant.heartIcon,
+                  width: 24,
+                  height: 24,
+                  colorFilter: ColorFilter.mode(secondary, BlendMode.srcIn),
+                ),
+                error: (_, __) => SvgPicture.asset(
+                  ImageConstant.heartIcon,
+                  width: 24,
+                  height: 24,
+                  colorFilter: ColorFilter.mode(secondary, BlendMode.srcIn),
+                ),
+              ),
             ),
+            const Gap(8),
             Text('${likes}', style: t.textTheme.bodySmall?.copyWith(color: secondary)),
             const Gap(12),
             if (timestamp != null)

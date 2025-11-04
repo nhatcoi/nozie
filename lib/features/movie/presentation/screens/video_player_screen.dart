@@ -82,8 +82,8 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     if (!access) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Bạn chưa có quyền truy cập phim này'),
+          SnackBar(
+            content: Text(context.i18n.movie.player.noAccess),
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -115,8 +115,8 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     if (videoUrl == null || videoUrl.isEmpty) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Video URL not available'),
+          SnackBar(
+            content: Text(context.i18n.movie.player.videoUrlMissing),
             behavior: SnackBarBehavior.floating,
             duration: Duration(seconds: 3),
           ),
@@ -131,7 +131,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     bool initialized = await _tryInitializeVideo(videoUrl, savedState);
     
     if (!initialized) {
-      lastError = 'Không thể load video từ URL m3u8';
+      lastError = context.i18n.movie.player.cannotLoadM3u8;
     }
     
     // If failed and it's an m3u8 URL, try fallback to embed link
@@ -140,8 +140,8 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
       if (fallbackUrl != null && fallbackUrl != videoUrl) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Đang thử URL thay thế...'),
+            SnackBar(
+              content: Text(context.i18n.movie.player.tryingFallback),
               behavior: SnackBarBehavior.floating,
               duration: Duration(seconds: 2),
             ),
@@ -149,7 +149,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
         }
         initialized = await _tryInitializeVideo(fallbackUrl, savedState);
         if (!initialized) {
-          lastError = 'Không thể load video từ cả m3u8 và embed URL';
+          lastError = context.i18n.movie.player.cannotLoadBoth;
         }
       }
     }
@@ -157,7 +157,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     if (!initialized && mounted) {
       final diag = await _diagnoseUrl(videoUrl);
       final details = StringBuffer()
-        ..writeln(lastError ?? 'Lỗi không xác định')
+        ..writeln(lastError ?? context.i18n.movie.player.unknownError)
         ..writeln('head.status=${diag['head.status']} acceptRanges=${diag['head.acceptRanges']} contentLength=${diag['head.contentLength']}')
         ..writeln('range.status=${diag['range.status']} rangeSupported=${diag['range.supported']}')
         ..writeln('m3u8.ok=${diag['m3u8.ok']} m3u8.ct=${diag['m3u8.contentType']} looksPlaylist=${diag['m3u8.looksLikePlaylist']}')
@@ -401,8 +401,8 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
   void _showOpenTrailerError() {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Không mở được trailer'),
+      SnackBar(
+        content: Text(context.i18n.movie.player.cannotOpenTrailer),
         behavior: SnackBarBehavior.floating,
       ),
     );

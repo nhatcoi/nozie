@@ -40,7 +40,7 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Ratings & Reviews',
+              context.i18n.movie.ratings.title,
               style: theme.textTheme.titleLarge?.copyWith(
                 color: textColor,
                 fontWeight: FontWeight.w700,
@@ -87,7 +87,7 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
                       _buildStarRating(avg),
                       const Gap(12),
                       Text(
-                        '(${FormatUtils.formatCount(total)} reviews)',
+                        '(${FormatUtils.formatCount(total)} ${context.i18n.movie.hero.reviews})',
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: secondaryText,
                         ),
@@ -224,7 +224,7 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
           children: [
             Center(
               child: Text(
-                widget.canRate ? 'Rate this Film' : 'Purchase required to rate',
+                widget.canRate ? context.i18n.movie.ratings.rateThisFilm : context.i18n.movie.ratings.purchaseRequired,
                 style: theme.textTheme.titleMedium?.copyWith(
                   color: widget.canRate ? textColor : secondaryText,
                   fontWeight: FontWeight.w600,
@@ -278,7 +278,7 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
                   ),
                 ),
                 child: Text(
-                  'Write a Review',
+                  context.i18n.movie.ratings.writeAReview,
                   style: theme.textTheme.bodyLarge?.copyWith(
                     color: widget.canRate ? AppColors.primary500 : secondaryText,
                     fontWeight: FontWeight.w700,
@@ -312,7 +312,7 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
               borderRadius: BorderRadius.circular(16),
             ),
             title: Text(
-              'Write a Review',
+              context.i18n.movie.ratings.dialog.title,
               style: theme.textTheme.titleLarge?.copyWith(
                 color: textColor,
                 fontWeight: FontWeight.w700,
@@ -322,7 +322,7 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'Your rating: $selectedStars ${selectedStars == 1 ? 'star' : 'stars'}',
+                  '${context.i18n.movie.ratings.dialog.yourRatingPrefix} $selectedStars ${selectedStars == 1 ? context.i18n.movie.ratings.dialog.star : context.i18n.movie.ratings.dialog.stars}',
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: AppColors.primary500,
                     fontWeight: FontWeight.w600,
@@ -359,7 +359,7 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
                   controller: controller,
                   maxLines: 4,
                   decoration: InputDecoration(
-                    hintText: 'Write your review...',
+                    hintText: context.i18n.movie.ratings.dialog.hint,
                     hintStyle: theme.textTheme.bodyMedium?.copyWith(color: secondaryText),
                     filled: true,
                     fillColor: AppColors.getSurface(context),
@@ -376,12 +376,12 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
                 child: Text(
-                  'Cancel',
+                  context.i18n.movie.ratings.dialog.cancel,
                   style: TextStyle(color: secondaryText),
                 ),
               ),
               PrimaryButton(
-                text: 'Submit',
+                text: context.i18n.movie.ratings.dialog.submit,
                 onPressed: () async {
                   try {
                     final svc = RatingsService();
@@ -394,7 +394,7 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
                       Navigator.of(context).pop();
                       ToastNotification.showSuccess(
                         context,
-                        message: 'Review submitted',
+                        message: context.i18n.movie.ratings.dialog.submitted,
                         duration: const Duration(seconds: 3),
                       );
                     }
@@ -402,7 +402,7 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
                     if (context.mounted) {
                       ToastNotification.showError(
                         context,
-                        message: 'Error: ${e.toString()}',
+                        message: '${context.i18n.common.errorPrefix} ${e.toString()}',
                         duration: const Duration(seconds: 3),
                       );
                     }

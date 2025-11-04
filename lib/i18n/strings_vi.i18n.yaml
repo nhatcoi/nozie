@@ -646,6 +646,85 @@ purchase:
     successTitle: "Mua hàng thành công! 🎬"
     successDescription: "Bạn đã sở hữu"
 
+# Movie Module
+movie:
+  details:
+    notFound: Không tìm thấy phim
+    alreadyPurchased: Phim này đã có trong thư viện đã mua của bạn
+    quality1080p: 1080p
+    seriesFallback: Series
+  ratings:
+    title: Đánh giá & Nhận xét
+    noReviews: Chưa có đánh giá nào
+    rateThisFilm: Đánh giá phim này
+    purchaseRequired: Cần mua để đánh giá
+    writeAReview: Viết đánh giá
+    dialog:
+      title: Viết đánh giá
+      yourRatingPrefix: "Đánh giá của bạn:"
+      star: sao
+      stars: sao
+      hint: Viết đánh giá của bạn...
+      cancel: Hủy
+      submit: Gửi
+      submitted: Đã gửi đánh giá
+  info:
+    images: Hình ảnh
+    cannotLoadImage: Không thể tải ảnh
+    episodesList: Danh sách tập
+    language: Ngôn ngữ
+    genres: Thể loại
+    countries: Quốc gia
+    directors: Đạo diễn
+    actors: Diễn viên
+    aboutThisFilm: Giới thiệu
+    trailer: Trailer
+    watchTrailer: Xem trailer
+    episodePrefix: Tập
+    episodesPrefix: Tập
+  player:
+    noAccess: Bạn chưa có quyền truy cập phim này
+    videoUrlMissing: Không có URL video
+    tryingFallback: Đang thử URL thay thế...
+    cannotLoadM3u8: Không thể load video từ URL m3u8
+    cannotLoadBoth: Không thể load video từ cả m3u8 và embed URL
+    unknownError: Lỗi không xác định
+    cannotOpenTrailer: Không mở được trailer
+    playbackSpeed: Tốc độ phát
+    quality: Chất lượng
+  hero:
+    ratings: lượt đánh giá
+    reviews: nhận xét
+    duration: thời lượng
+    quality: chất lượng
+    watched: lượt xem
+    watchNow: Xem ngay
+    aboutThisFilm: Giới thiệu
+    viewMore: Xem thêm
+  similar:
+    title: Phim tương tự
+  report:
+    headerTitle: Báo cáo vấn đề
+    headerSubtitle: Giúp chúng tôi cải thiện chất lượng dịch vụ
+    movieInfo: Thông tin phim
+    labels:
+      movieName: Tên phim
+      director: Đạo diễn
+      videoUrl: Video URL
+      error: Lỗi
+    issueTypeLabel: Loại vấn đề *
+    descriptionLabel: Mô tả chi tiết *
+    descriptionHint: Mô tả chi tiết vấn đề bạn gặp phải...
+    validations:
+      selectIssue: Vui lòng chọn loại vấn đề
+      descRequired: Vui lòng nhập mô tả chi tiết
+      descMin: Mô tả phải có ít nhất 10 ký tự
+    actions:
+      cancel: Hủy
+      submit: Gửi báo cáo
+      sending: Đang gửi...
+    success: Báo cáo đã được gửi thành công. Cảm ơn bạn đã phản hồi!
+    failurePrefix: "Lỗi khi gửi báo cáo:"
 # Wishlist Module
 wishlist:
   common:

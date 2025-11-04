@@ -11,9 +11,9 @@ import 'package:movie_fe/features/search/presentation/widgets/search_history.dar
 import '../widgets/search_body.dart';
 
 enum SearchSource {
-  all, // Search tất cả movies
-  wishlist, // Search trong wishlist của user
-  purchase, // Search trong purchased items của user (có thể dùng sau)
+  all,
+  wishlist,
+  purchase,
 }
 
 class SearchScreen extends ConsumerStatefulWidget {

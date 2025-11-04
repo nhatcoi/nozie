@@ -152,9 +152,11 @@ class MovieHeroSection extends StatelessWidget {
   ) {
     final ratingVal = avgRating.toStringAsFixed(1);
     final ratingCountShort = FormatUtils.formatCount(totalReviews);
-    final ratingCaption = ratingCountShort == '—' ? 'ratings' : '$ratingCountShort reviews';
+    final ratingCaption = ratingCountShort == '—'
+        ? context.i18n.movie.hero.ratings
+        : '$ratingCountShort ${context.i18n.movie.hero.reviews}';
     final duration = FormatUtils.formatDuration(durationText);
-    final quality = (qualityText == null || qualityText!.isEmpty) ? 'FHD' : qualityText!;
+    final quality = (qualityText == null || qualityText!.isEmpty) ? context.i18n.movie.details.quality1080p : qualityText!;
     final watchedShort = FormatUtils.formatWatched(viewsText);
 
     Widget metric(String value, String caption) {
@@ -192,11 +194,11 @@ class MovieHeroSection extends StatelessWidget {
           children: [
             metric(ratingVal, ratingCaption),
             const SizedBox(width: 12),
-            metric(duration, 'duration'),
+            metric(duration, context.i18n.movie.hero.duration),
             const SizedBox(width: 12),
-            metric(quality, 'quality'),
+            metric(quality, context.i18n.movie.hero.quality),
             const SizedBox(width: 12),
-            metric(watchedShort, 'watched'),
+            metric(watchedShort, context.i18n.movie.hero.watched),
           ],
         ),
       ],
@@ -210,7 +212,7 @@ class MovieHeroSection extends StatelessWidget {
     final shouldShowWatchNow = isFree || isPurchased;
     
     final buttonText = shouldShowWatchNow 
-        ? 'Watch now' 
+        ? context.i18n.movie.hero.watchNow 
         : PriceUtils.formatPriceForButton(movie);
     
     return SizedBox(
@@ -235,7 +237,7 @@ class MovieHeroSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'About This Film',
+              context.i18n.movie.hero.aboutThisFilm,
               style: theme.textTheme.titleLarge?.copyWith(
                 color: textColor,
                 fontWeight: FontWeight.w700,
@@ -247,7 +249,7 @@ class MovieHeroSection extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'View More',
+                    context.i18n.movie.hero.viewMore,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: AppColors.primary500,
                       fontWeight: FontWeight.w600,

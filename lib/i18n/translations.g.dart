@@ -4,7 +4,7 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 870 (435 per locale)
+/// Strings: 1002 (501 per locale)
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -164,6 +164,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final _TranslationsHomeEn home = _TranslationsHomeEn._(_root);
 	late final _TranslationsGenreEn genre = _TranslationsGenreEn._(_root);
 	late final _TranslationsPurchaseEn purchase = _TranslationsPurchaseEn._(_root);
+	late final _TranslationsMovieEn movie = _TranslationsMovieEn._(_root);
 	late final _TranslationsWishlistEn wishlist = _TranslationsWishlistEn._(_root);
 }
 
@@ -420,6 +421,22 @@ class _TranslationsPurchaseEn {
 	late final _TranslationsPurchaseCheckoutEn checkout = _TranslationsPurchaseCheckoutEn._(_root);
 	late final _TranslationsPurchaseItemEn item = _TranslationsPurchaseItemEn._(_root);
 	late final _TranslationsPurchaseNotificationsEn notifications = _TranslationsPurchaseNotificationsEn._(_root);
+}
+
+// Path: movie
+class _TranslationsMovieEn {
+	_TranslationsMovieEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	late final _TranslationsMovieDetailsEn details = _TranslationsMovieDetailsEn._(_root);
+	late final _TranslationsMovieRatingsEn ratings = _TranslationsMovieRatingsEn._(_root);
+	late final _TranslationsMovieInfoEn info = _TranslationsMovieInfoEn._(_root);
+	late final _TranslationsMoviePlayerEn player = _TranslationsMoviePlayerEn._(_root);
+	late final _TranslationsMovieHeroEn hero = _TranslationsMovieHeroEn._(_root);
+	late final _TranslationsMovieSimilarEn similar = _TranslationsMovieSimilarEn._(_root);
+	late final _TranslationsMovieReportEn report = _TranslationsMovieReportEn._(_root);
 }
 
 // Path: wishlist
@@ -912,6 +929,121 @@ class _TranslationsPurchaseNotificationsEn {
 	// Translations
 	String get successTitle => 'Purchase Successful! 🎬';
 	String get successDescription => 'You now own';
+}
+
+// Path: movie.details
+class _TranslationsMovieDetailsEn {
+	_TranslationsMovieDetailsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get notFound => 'Movie not found';
+	String get alreadyPurchased => 'This movie is already in your purchased library';
+	String get quality1080p => '1080p';
+	String get seriesFallback => 'Series';
+}
+
+// Path: movie.ratings
+class _TranslationsMovieRatingsEn {
+	_TranslationsMovieRatingsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Ratings & Reviews';
+	String get noReviews => 'No reviews yet';
+	String get rateThisFilm => 'Rate this Film';
+	String get purchaseRequired => 'Purchase required to rate';
+	String get writeAReview => 'Write a Review';
+	late final _TranslationsMovieRatingsDialogEn dialog = _TranslationsMovieRatingsDialogEn._(_root);
+}
+
+// Path: movie.info
+class _TranslationsMovieInfoEn {
+	_TranslationsMovieInfoEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get images => 'Images';
+	String get cannotLoadImage => 'Cannot load image';
+	String get episodesList => 'Episodes';
+	String get language => 'Language';
+	String get genres => 'Genres';
+	String get countries => 'Countries';
+	String get directors => 'Directors';
+	String get actors => 'Actors';
+	String get aboutThisFilm => 'About This Film';
+	String get trailer => 'Trailer';
+	String get watchTrailer => 'Watch trailer';
+	String get episodePrefix => 'Episode';
+	String get episodesPrefix => 'Episodes';
+}
+
+// Path: movie.player
+class _TranslationsMoviePlayerEn {
+	_TranslationsMoviePlayerEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get noAccess => 'You do not have access to this movie';
+	String get videoUrlMissing => 'Video URL not available';
+	String get tryingFallback => 'Trying fallback URL...';
+	String get cannotLoadM3u8 => 'Cannot load video from m3u8 URL';
+	String get cannotLoadBoth => 'Cannot load video from both m3u8 and embed URL';
+	String get unknownError => 'Unknown error';
+	String get cannotOpenTrailer => 'Cannot open trailer';
+	String get playbackSpeed => 'Playback Speed';
+	String get quality => 'Quality';
+}
+
+// Path: movie.hero
+class _TranslationsMovieHeroEn {
+	_TranslationsMovieHeroEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get ratings => 'ratings';
+	String get reviews => 'reviews';
+	String get duration => 'duration';
+	String get quality => 'quality';
+	String get watched => 'watched';
+	String get watchNow => 'Watch now';
+	String get aboutThisFilm => 'About This Film';
+	String get viewMore => 'View More';
+}
+
+// Path: movie.similar
+class _TranslationsMovieSimilarEn {
+	_TranslationsMovieSimilarEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Similar Movies';
+}
+
+// Path: movie.report
+class _TranslationsMovieReportEn {
+	_TranslationsMovieReportEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get headerTitle => 'Report an Issue';
+	String get headerSubtitle => 'Help us improve the service quality';
+	String get movieInfo => 'Movie Information';
+	late final _TranslationsMovieReportLabelsEn labels = _TranslationsMovieReportLabelsEn._(_root);
+	String get issueTypeLabel => 'Issue Type *';
+	String get descriptionLabel => 'Detailed Description *';
+	String get descriptionHint => 'Describe the issue you encountered...';
+	late final _TranslationsMovieReportValidationsEn validations = _TranslationsMovieReportValidationsEn._(_root);
+	late final _TranslationsMovieReportActionsEn actions = _TranslationsMovieReportActionsEn._(_root);
+	String get success => 'Report submitted successfully. Thank you for your feedback!';
+	String get failurePrefix => 'Failed to submit report:';
 }
 
 // Path: wishlist.common
@@ -1413,6 +1545,60 @@ class _TranslationsPurchaseItemSnackbarEn {
 
 	// Translations
 	String get viewSeriesComing => 'View series - coming soon';
+}
+
+// Path: movie.ratings.dialog
+class _TranslationsMovieRatingsDialogEn {
+	_TranslationsMovieRatingsDialogEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Write a Review';
+	String get yourRatingPrefix => 'Your rating:';
+	String get star => 'star';
+	String get stars => 'stars';
+	String get hint => 'Write your review...';
+	String get cancel => 'Cancel';
+	String get submit => 'Submit';
+	String get submitted => 'Review submitted';
+}
+
+// Path: movie.report.labels
+class _TranslationsMovieReportLabelsEn {
+	_TranslationsMovieReportLabelsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get movieName => 'Movie Name';
+	String get director => 'Director';
+	String get videoUrl => 'Video URL';
+	String get error => 'Error';
+}
+
+// Path: movie.report.validations
+class _TranslationsMovieReportValidationsEn {
+	_TranslationsMovieReportValidationsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get selectIssue => 'Please select an issue type';
+	String get descRequired => 'Please enter a detailed description';
+	String get descMin => 'Description must be at least 10 characters';
+}
+
+// Path: movie.report.actions
+class _TranslationsMovieReportActionsEn {
+	_TranslationsMovieReportActionsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get cancel => 'Cancel';
+	String get submit => 'Submit Report';
+	String get sending => 'Sending...';
 }
 
 // Path: wishlist.item.menu
@@ -2107,6 +2293,7 @@ class _TranslationsVi extends Translations {
 	@override late final _TranslationsHomeVi home = _TranslationsHomeVi._(_root);
 	@override late final _TranslationsGenreVi genre = _TranslationsGenreVi._(_root);
 	@override late final _TranslationsPurchaseVi purchase = _TranslationsPurchaseVi._(_root);
+	@override late final _TranslationsMovieVi movie = _TranslationsMovieVi._(_root);
 	@override late final _TranslationsWishlistVi wishlist = _TranslationsWishlistVi._(_root);
 }
 
@@ -2363,6 +2550,22 @@ class _TranslationsPurchaseVi extends _TranslationsPurchaseEn {
 	@override late final _TranslationsPurchaseCheckoutVi checkout = _TranslationsPurchaseCheckoutVi._(_root);
 	@override late final _TranslationsPurchaseItemVi item = _TranslationsPurchaseItemVi._(_root);
 	@override late final _TranslationsPurchaseNotificationsVi notifications = _TranslationsPurchaseNotificationsVi._(_root);
+}
+
+// Path: movie
+class _TranslationsMovieVi extends _TranslationsMovieEn {
+	_TranslationsMovieVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override late final _TranslationsMovieDetailsVi details = _TranslationsMovieDetailsVi._(_root);
+	@override late final _TranslationsMovieRatingsVi ratings = _TranslationsMovieRatingsVi._(_root);
+	@override late final _TranslationsMovieInfoVi info = _TranslationsMovieInfoVi._(_root);
+	@override late final _TranslationsMoviePlayerVi player = _TranslationsMoviePlayerVi._(_root);
+	@override late final _TranslationsMovieHeroVi hero = _TranslationsMovieHeroVi._(_root);
+	@override late final _TranslationsMovieSimilarVi similar = _TranslationsMovieSimilarVi._(_root);
+	@override late final _TranslationsMovieReportVi report = _TranslationsMovieReportVi._(_root);
 }
 
 // Path: wishlist
@@ -2855,6 +3058,121 @@ class _TranslationsPurchaseNotificationsVi extends _TranslationsPurchaseNotifica
 	// Translations
 	@override String get successTitle => 'Mua hàng thành công! 🎬';
 	@override String get successDescription => 'Bạn đã sở hữu';
+}
+
+// Path: movie.details
+class _TranslationsMovieDetailsVi extends _TranslationsMovieDetailsEn {
+	_TranslationsMovieDetailsVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get notFound => 'Không tìm thấy phim';
+	@override String get alreadyPurchased => 'Phim này đã có trong thư viện đã mua của bạn';
+	@override String get quality1080p => '1080p';
+	@override String get seriesFallback => 'Series';
+}
+
+// Path: movie.ratings
+class _TranslationsMovieRatingsVi extends _TranslationsMovieRatingsEn {
+	_TranslationsMovieRatingsVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Đánh giá & Nhận xét';
+	@override String get noReviews => 'Chưa có đánh giá nào';
+	@override String get rateThisFilm => 'Đánh giá phim này';
+	@override String get purchaseRequired => 'Cần mua để đánh giá';
+	@override String get writeAReview => 'Viết đánh giá';
+	@override late final _TranslationsMovieRatingsDialogVi dialog = _TranslationsMovieRatingsDialogVi._(_root);
+}
+
+// Path: movie.info
+class _TranslationsMovieInfoVi extends _TranslationsMovieInfoEn {
+	_TranslationsMovieInfoVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get images => 'Hình ảnh';
+	@override String get cannotLoadImage => 'Không thể tải ảnh';
+	@override String get episodesList => 'Danh sách tập';
+	@override String get language => 'Ngôn ngữ';
+	@override String get genres => 'Thể loại';
+	@override String get countries => 'Quốc gia';
+	@override String get directors => 'Đạo diễn';
+	@override String get actors => 'Diễn viên';
+	@override String get aboutThisFilm => 'Giới thiệu';
+	@override String get trailer => 'Trailer';
+	@override String get watchTrailer => 'Xem trailer';
+	@override String get episodePrefix => 'Tập';
+	@override String get episodesPrefix => 'Tập';
+}
+
+// Path: movie.player
+class _TranslationsMoviePlayerVi extends _TranslationsMoviePlayerEn {
+	_TranslationsMoviePlayerVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get noAccess => 'Bạn chưa có quyền truy cập phim này';
+	@override String get videoUrlMissing => 'Không có URL video';
+	@override String get tryingFallback => 'Đang thử URL thay thế...';
+	@override String get cannotLoadM3u8 => 'Không thể load video từ URL m3u8';
+	@override String get cannotLoadBoth => 'Không thể load video từ cả m3u8 và embed URL';
+	@override String get unknownError => 'Lỗi không xác định';
+	@override String get cannotOpenTrailer => 'Không mở được trailer';
+	@override String get playbackSpeed => 'Tốc độ phát';
+	@override String get quality => 'Chất lượng';
+}
+
+// Path: movie.hero
+class _TranslationsMovieHeroVi extends _TranslationsMovieHeroEn {
+	_TranslationsMovieHeroVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get ratings => 'lượt đánh giá';
+	@override String get reviews => 'nhận xét';
+	@override String get duration => 'thời lượng';
+	@override String get quality => 'chất lượng';
+	@override String get watched => 'lượt xem';
+	@override String get watchNow => 'Xem ngay';
+	@override String get aboutThisFilm => 'Giới thiệu';
+	@override String get viewMore => 'Xem thêm';
+}
+
+// Path: movie.similar
+class _TranslationsMovieSimilarVi extends _TranslationsMovieSimilarEn {
+	_TranslationsMovieSimilarVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Phim tương tự';
+}
+
+// Path: movie.report
+class _TranslationsMovieReportVi extends _TranslationsMovieReportEn {
+	_TranslationsMovieReportVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get headerTitle => 'Báo cáo vấn đề';
+	@override String get headerSubtitle => 'Giúp chúng tôi cải thiện chất lượng dịch vụ';
+	@override String get movieInfo => 'Thông tin phim';
+	@override late final _TranslationsMovieReportLabelsVi labels = _TranslationsMovieReportLabelsVi._(_root);
+	@override String get issueTypeLabel => 'Loại vấn đề *';
+	@override String get descriptionLabel => 'Mô tả chi tiết *';
+	@override String get descriptionHint => 'Mô tả chi tiết vấn đề bạn gặp phải...';
+	@override late final _TranslationsMovieReportValidationsVi validations = _TranslationsMovieReportValidationsVi._(_root);
+	@override late final _TranslationsMovieReportActionsVi actions = _TranslationsMovieReportActionsVi._(_root);
+	@override String get success => 'Báo cáo đã được gửi thành công. Cảm ơn bạn đã phản hồi!';
+	@override String get failurePrefix => 'Lỗi khi gửi báo cáo:';
 }
 
 // Path: wishlist.common
@@ -3356,6 +3674,60 @@ class _TranslationsPurchaseItemSnackbarVi extends _TranslationsPurchaseItemSnack
 
 	// Translations
 	@override String get viewSeriesComing => 'Tính năng xem series - sắp ra mắt';
+}
+
+// Path: movie.ratings.dialog
+class _TranslationsMovieRatingsDialogVi extends _TranslationsMovieRatingsDialogEn {
+	_TranslationsMovieRatingsDialogVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Viết đánh giá';
+	@override String get yourRatingPrefix => 'Đánh giá của bạn:';
+	@override String get star => 'sao';
+	@override String get stars => 'sao';
+	@override String get hint => 'Viết đánh giá của bạn...';
+	@override String get cancel => 'Hủy';
+	@override String get submit => 'Gửi';
+	@override String get submitted => 'Đã gửi đánh giá';
+}
+
+// Path: movie.report.labels
+class _TranslationsMovieReportLabelsVi extends _TranslationsMovieReportLabelsEn {
+	_TranslationsMovieReportLabelsVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get movieName => 'Tên phim';
+	@override String get director => 'Đạo diễn';
+	@override String get videoUrl => 'Video URL';
+	@override String get error => 'Lỗi';
+}
+
+// Path: movie.report.validations
+class _TranslationsMovieReportValidationsVi extends _TranslationsMovieReportValidationsEn {
+	_TranslationsMovieReportValidationsVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get selectIssue => 'Vui lòng chọn loại vấn đề';
+	@override String get descRequired => 'Vui lòng nhập mô tả chi tiết';
+	@override String get descMin => 'Mô tả phải có ít nhất 10 ký tự';
+}
+
+// Path: movie.report.actions
+class _TranslationsMovieReportActionsVi extends _TranslationsMovieReportActionsEn {
+	_TranslationsMovieReportActionsVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get cancel => 'Hủy';
+	@override String get submit => 'Gửi báo cáo';
+	@override String get sending => 'Đang gửi...';
 }
 
 // Path: wishlist.item.menu
@@ -4437,6 +4809,72 @@ extension on Translations {
 			case 'purchase.item.snackbar.viewSeriesComing': return 'View series - coming soon';
 			case 'purchase.notifications.successTitle': return 'Purchase Successful! 🎬';
 			case 'purchase.notifications.successDescription': return 'You now own';
+			case 'movie.details.notFound': return 'Movie not found';
+			case 'movie.details.alreadyPurchased': return 'This movie is already in your purchased library';
+			case 'movie.details.quality1080p': return '1080p';
+			case 'movie.details.seriesFallback': return 'Series';
+			case 'movie.ratings.title': return 'Ratings & Reviews';
+			case 'movie.ratings.noReviews': return 'No reviews yet';
+			case 'movie.ratings.rateThisFilm': return 'Rate this Film';
+			case 'movie.ratings.purchaseRequired': return 'Purchase required to rate';
+			case 'movie.ratings.writeAReview': return 'Write a Review';
+			case 'movie.ratings.dialog.title': return 'Write a Review';
+			case 'movie.ratings.dialog.yourRatingPrefix': return 'Your rating:';
+			case 'movie.ratings.dialog.star': return 'star';
+			case 'movie.ratings.dialog.stars': return 'stars';
+			case 'movie.ratings.dialog.hint': return 'Write your review...';
+			case 'movie.ratings.dialog.cancel': return 'Cancel';
+			case 'movie.ratings.dialog.submit': return 'Submit';
+			case 'movie.ratings.dialog.submitted': return 'Review submitted';
+			case 'movie.info.images': return 'Images';
+			case 'movie.info.cannotLoadImage': return 'Cannot load image';
+			case 'movie.info.episodesList': return 'Episodes';
+			case 'movie.info.language': return 'Language';
+			case 'movie.info.genres': return 'Genres';
+			case 'movie.info.countries': return 'Countries';
+			case 'movie.info.directors': return 'Directors';
+			case 'movie.info.actors': return 'Actors';
+			case 'movie.info.aboutThisFilm': return 'About This Film';
+			case 'movie.info.trailer': return 'Trailer';
+			case 'movie.info.watchTrailer': return 'Watch trailer';
+			case 'movie.info.episodePrefix': return 'Episode';
+			case 'movie.info.episodesPrefix': return 'Episodes';
+			case 'movie.player.noAccess': return 'You do not have access to this movie';
+			case 'movie.player.videoUrlMissing': return 'Video URL not available';
+			case 'movie.player.tryingFallback': return 'Trying fallback URL...';
+			case 'movie.player.cannotLoadM3u8': return 'Cannot load video from m3u8 URL';
+			case 'movie.player.cannotLoadBoth': return 'Cannot load video from both m3u8 and embed URL';
+			case 'movie.player.unknownError': return 'Unknown error';
+			case 'movie.player.cannotOpenTrailer': return 'Cannot open trailer';
+			case 'movie.player.playbackSpeed': return 'Playback Speed';
+			case 'movie.player.quality': return 'Quality';
+			case 'movie.hero.ratings': return 'ratings';
+			case 'movie.hero.reviews': return 'reviews';
+			case 'movie.hero.duration': return 'duration';
+			case 'movie.hero.quality': return 'quality';
+			case 'movie.hero.watched': return 'watched';
+			case 'movie.hero.watchNow': return 'Watch now';
+			case 'movie.hero.aboutThisFilm': return 'About This Film';
+			case 'movie.hero.viewMore': return 'View More';
+			case 'movie.similar.title': return 'Similar Movies';
+			case 'movie.report.headerTitle': return 'Report an Issue';
+			case 'movie.report.headerSubtitle': return 'Help us improve the service quality';
+			case 'movie.report.movieInfo': return 'Movie Information';
+			case 'movie.report.labels.movieName': return 'Movie Name';
+			case 'movie.report.labels.director': return 'Director';
+			case 'movie.report.labels.videoUrl': return 'Video URL';
+			case 'movie.report.labels.error': return 'Error';
+			case 'movie.report.issueTypeLabel': return 'Issue Type *';
+			case 'movie.report.descriptionLabel': return 'Detailed Description *';
+			case 'movie.report.descriptionHint': return 'Describe the issue you encountered...';
+			case 'movie.report.validations.selectIssue': return 'Please select an issue type';
+			case 'movie.report.validations.descRequired': return 'Please enter a detailed description';
+			case 'movie.report.validations.descMin': return 'Description must be at least 10 characters';
+			case 'movie.report.actions.cancel': return 'Cancel';
+			case 'movie.report.actions.submit': return 'Submit Report';
+			case 'movie.report.actions.sending': return 'Sending...';
+			case 'movie.report.success': return 'Report submitted successfully. Thank you for your feedback!';
+			case 'movie.report.failurePrefix': return 'Failed to submit report:';
 			case 'wishlist.common.retry': return 'Retry';
 			case 'wishlist.common.errorPrefix': return 'Error:';
 			case 'wishlist.common.movieNotFound': return 'Movie not found';
@@ -4880,6 +5318,72 @@ extension on _TranslationsVi {
 			case 'purchase.item.snackbar.viewSeriesComing': return 'Tính năng xem series - sắp ra mắt';
 			case 'purchase.notifications.successTitle': return 'Mua hàng thành công! 🎬';
 			case 'purchase.notifications.successDescription': return 'Bạn đã sở hữu';
+			case 'movie.details.notFound': return 'Không tìm thấy phim';
+			case 'movie.details.alreadyPurchased': return 'Phim này đã có trong thư viện đã mua của bạn';
+			case 'movie.details.quality1080p': return '1080p';
+			case 'movie.details.seriesFallback': return 'Series';
+			case 'movie.ratings.title': return 'Đánh giá & Nhận xét';
+			case 'movie.ratings.noReviews': return 'Chưa có đánh giá nào';
+			case 'movie.ratings.rateThisFilm': return 'Đánh giá phim này';
+			case 'movie.ratings.purchaseRequired': return 'Cần mua để đánh giá';
+			case 'movie.ratings.writeAReview': return 'Viết đánh giá';
+			case 'movie.ratings.dialog.title': return 'Viết đánh giá';
+			case 'movie.ratings.dialog.yourRatingPrefix': return 'Đánh giá của bạn:';
+			case 'movie.ratings.dialog.star': return 'sao';
+			case 'movie.ratings.dialog.stars': return 'sao';
+			case 'movie.ratings.dialog.hint': return 'Viết đánh giá của bạn...';
+			case 'movie.ratings.dialog.cancel': return 'Hủy';
+			case 'movie.ratings.dialog.submit': return 'Gửi';
+			case 'movie.ratings.dialog.submitted': return 'Đã gửi đánh giá';
+			case 'movie.info.images': return 'Hình ảnh';
+			case 'movie.info.cannotLoadImage': return 'Không thể tải ảnh';
+			case 'movie.info.episodesList': return 'Danh sách tập';
+			case 'movie.info.language': return 'Ngôn ngữ';
+			case 'movie.info.genres': return 'Thể loại';
+			case 'movie.info.countries': return 'Quốc gia';
+			case 'movie.info.directors': return 'Đạo diễn';
+			case 'movie.info.actors': return 'Diễn viên';
+			case 'movie.info.aboutThisFilm': return 'Giới thiệu';
+			case 'movie.info.trailer': return 'Trailer';
+			case 'movie.info.watchTrailer': return 'Xem trailer';
+			case 'movie.info.episodePrefix': return 'Tập';
+			case 'movie.info.episodesPrefix': return 'Tập';
+			case 'movie.player.noAccess': return 'Bạn chưa có quyền truy cập phim này';
+			case 'movie.player.videoUrlMissing': return 'Không có URL video';
+			case 'movie.player.tryingFallback': return 'Đang thử URL thay thế...';
+			case 'movie.player.cannotLoadM3u8': return 'Không thể load video từ URL m3u8';
+			case 'movie.player.cannotLoadBoth': return 'Không thể load video từ cả m3u8 và embed URL';
+			case 'movie.player.unknownError': return 'Lỗi không xác định';
+			case 'movie.player.cannotOpenTrailer': return 'Không mở được trailer';
+			case 'movie.player.playbackSpeed': return 'Tốc độ phát';
+			case 'movie.player.quality': return 'Chất lượng';
+			case 'movie.hero.ratings': return 'lượt đánh giá';
+			case 'movie.hero.reviews': return 'nhận xét';
+			case 'movie.hero.duration': return 'thời lượng';
+			case 'movie.hero.quality': return 'chất lượng';
+			case 'movie.hero.watched': return 'lượt xem';
+			case 'movie.hero.watchNow': return 'Xem ngay';
+			case 'movie.hero.aboutThisFilm': return 'Giới thiệu';
+			case 'movie.hero.viewMore': return 'Xem thêm';
+			case 'movie.similar.title': return 'Phim tương tự';
+			case 'movie.report.headerTitle': return 'Báo cáo vấn đề';
+			case 'movie.report.headerSubtitle': return 'Giúp chúng tôi cải thiện chất lượng dịch vụ';
+			case 'movie.report.movieInfo': return 'Thông tin phim';
+			case 'movie.report.labels.movieName': return 'Tên phim';
+			case 'movie.report.labels.director': return 'Đạo diễn';
+			case 'movie.report.labels.videoUrl': return 'Video URL';
+			case 'movie.report.labels.error': return 'Lỗi';
+			case 'movie.report.issueTypeLabel': return 'Loại vấn đề *';
+			case 'movie.report.descriptionLabel': return 'Mô tả chi tiết *';
+			case 'movie.report.descriptionHint': return 'Mô tả chi tiết vấn đề bạn gặp phải...';
+			case 'movie.report.validations.selectIssue': return 'Vui lòng chọn loại vấn đề';
+			case 'movie.report.validations.descRequired': return 'Vui lòng nhập mô tả chi tiết';
+			case 'movie.report.validations.descMin': return 'Mô tả phải có ít nhất 10 ký tự';
+			case 'movie.report.actions.cancel': return 'Hủy';
+			case 'movie.report.actions.submit': return 'Gửi báo cáo';
+			case 'movie.report.actions.sending': return 'Đang gửi...';
+			case 'movie.report.success': return 'Báo cáo đã được gửi thành công. Cảm ơn bạn đã phản hồi!';
+			case 'movie.report.failurePrefix': return 'Lỗi khi gửi báo cáo:';
 			case 'wishlist.common.retry': return 'Thử lại';
 			case 'wishlist.common.errorPrefix': return 'Lỗi:';
 			case 'wishlist.common.movieNotFound': return 'Không tìm thấy phim';
