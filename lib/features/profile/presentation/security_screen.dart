@@ -105,34 +105,70 @@ class SecurityScreen extends ConsumerWidget {
               const SizedBox(height: 20),
               _SecurityToggle(
                 title: t.profile.security.toggles.biometricId,
-                value: settings.biometricId,
+                value: false, // Luôn tắt
                 onChanged: isProcessing
                     ? null
-                    : (val) => notifier.toggle(biometricId: val),
+                    : (val) {
+                        if (val) {
+                          // Khi user cố bật, hiển thị toast
+                          ToastNotification.showInfo(
+                            context,
+                            message: t.auth.oauth.featureInDevelopment,
+                          );
+                        }
+                        // Không thay đổi giá trị, luôn giữ false
+                      },
               ),
               const SizedBox(height: 20),
               _SecurityToggle(
                 title: t.profile.security.toggles.faceId,
-                value: settings.faceId,
+                value: false, // Luôn tắt
                 onChanged: isProcessing
                     ? null
-                    : (val) => notifier.toggle(faceId: val),
+                    : (val) {
+                        if (val) {
+                          // Khi user cố bật, hiển thị toast
+                          ToastNotification.showInfo(
+                            context,
+                            message: t.auth.oauth.featureInDevelopment,
+                          );
+                        }
+                        // Không thay đổi giá trị, luôn giữ false
+                      },
               ),
               const SizedBox(height: 20),
               _SecurityToggle(
                 title: t.profile.security.toggles.smsAuthenticator,
-                value: settings.smsAuthenticator,
+                value: false, // Luôn tắt
                 onChanged: isProcessing
                     ? null
-                    : (val) => notifier.toggle(smsAuthenticator: val),
+                    : (val) {
+                        if (val) {
+                          // Khi user cố bật, hiển thị toast
+                          ToastNotification.showInfo(
+                            context,
+                            message: t.auth.oauth.featureInDevelopment,
+                          );
+                        }
+                        // Không thay đổi giá trị, luôn giữ false
+                      },
               ),
               const SizedBox(height: 20),
               _SecurityToggle(
                 title: t.profile.security.toggles.googleAuthenticator,
-                value: settings.googleAuthenticator,
+                value: false, // Luôn tắt
                 onChanged: isProcessing
                     ? null
-                    : (val) => notifier.toggle(googleAuthenticator: val),
+                    : (val) {
+                        if (val) {
+                          // Khi user cố bật, hiển thị toast
+                          ToastNotification.showInfo(
+                            context,
+                            message: t.auth.oauth.featureInDevelopment,
+                          );
+                        }
+                        // Không thay đổi giá trị, luôn giữ false
+                      },
               ),
               const SizedBox(height: 20),
               _SecurityNavigationTile(
@@ -140,16 +176,16 @@ class SecurityScreen extends ConsumerWidget {
                 onTap: openDeviceManagement,
               ),
               const SizedBox(height: 32),
-              SecondaryButton(
-                text: t.profile.security.actions.changePassword,
-                onPressed: () {
-                  ToastNotification.showInfo(
-                    context,
-                    message: t.profile.security.actions.changePasswordMessage,
-                  );
-                },
-                hasShadow: false,
-              ),
+              // SecondaryButton(
+              //   text: t.profile.security.actions.changePassword,
+              //   onPressed: () {
+              //     ToastNotification.showInfo(
+              //       context,
+              //       message: t.profile.security.actions.changePasswordMessage,
+              //     );
+              //   },
+              //   hasShadow: false,
+              // ),
             ],
           ),
         ),
