@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import '../../../../core/app_export.dart';
-import '../../../../core/utils/image_constant.dart';
+import '../../../../core/models/movie_item.dart';
+import '../../../../core/widgets/lists/movie_carousel.dart';
 
 class MovieSeriesSection extends StatelessWidget {
   const MovieSeriesSection({
     super.key,
     required this.seriesTitle,
-    required this.seriesItems,
+    required this.seriesMovies,
     this.onViewAllPressed,
   });
 
   final String seriesTitle;
-  final List<String> seriesItems;
+  final List<MovieItem> seriesMovies;
   final VoidCallback? onViewAllPressed;
 
   @override
@@ -26,11 +27,15 @@ class MovieSeriesSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              seriesTitle,
-              style: theme.textTheme.titleLarge?.copyWith(
-                color: textColor,
-                fontWeight: FontWeight.w700,
+            Expanded(
+              child: Text(
+                seriesTitle,
+                style: theme.textTheme.titleLarge?.copyWith(
+                  color: textColor,
+                  fontWeight: FontWeight.w700,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             IconButton(
@@ -43,24 +48,9 @@ class MovieSeriesSection extends StatelessWidget {
           ],
         ),
         const Gap(12),
-        SizedBox(
-          height: 180,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemCount: seriesItems.length,
-            separatorBuilder: (_, __) => const Gap(12),
-            itemBuilder: (context, index) {
-              return ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.asset(
-                  seriesItems[index],
-                  width: 120,
-                  height: 180,
-                  fit: BoxFit.cover,
-                ),
-              );
-            },
-          ),
+        MovieCarousel(
+          items: seriesMovies,
+          visibleCards: 2.5,
         ),
       ],
     );

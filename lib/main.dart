@@ -4,10 +4,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:flutter_stripe/flutter_stripe.dart';
+
 import 'app/app.dart';
+import 'core/constants/stripe_constants.dart';
 import 'core/services/locale_setting.dart';
 import 'core/services/shared_prefs_provider.dart';
-import 'core/utils/dio_client.dart';
+import 'core/utils/api/dio_client.dart';
 import 'firebase_options.dart';
 import 'i18n/translations.g.dart';
 
@@ -22,6 +25,10 @@ Future<void> main() async {
   );
   final sp = await SharedPreferences.getInstance();
   DioClient.init();
+
+  // Initialize Stripe
+  Stripe.publishableKey = StripeConstants.publishableKey;
+  Stripe.merchantIdentifier = 'merchant.com.oggy.nozie';
 
   // Initialize slang locale BEFORE creating widget tree
   final savedLocaleCode = sp.getString('app_locale') ?? 'vi';

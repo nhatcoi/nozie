@@ -1,6 +1,6 @@
-// lib/features/books/models/book_item.dart
 import 'package:equatable/equatable.dart';
 import 'package:movie_fe/core/enums/movie_item_type.dart';
+import 'movie.dart';
 
 class MovieItem extends Equatable {
   final String id;
@@ -8,6 +8,7 @@ class MovieItem extends Equatable {
   final String imageUrl;
   final double? rating;
   final double? price;
+  final Map<String, dynamic>? priceData; // Full price object with USD and VND
   final MovieItemType type;
 
   const MovieItem({
@@ -16,8 +17,27 @@ class MovieItem extends Equatable {
     required this.imageUrl,
     this.rating,
     this.price,
+    this.priceData,
     this.type = MovieItemType.movie,
   });
+
+  factory MovieItem.fromMovie(Movie movie) {
+    // Fallback image URL nếu không có poster hoặc thumb
+    String imageUrl = movie.imageUrl;
+    if (imageUrl.isEmpty) {
+      imageUrl = 'lib/assets/images/common/img_card.png';
+    }
+
+    return MovieItem(
+      id: movie.id,
+      title: movie.title,
+      imageUrl: imageUrl,
+      rating: movie.rating,
+      price: movie.priceValue,
+      priceData: movie.price,
+      type: MovieItemType.movie,
+    );
+  }
 
   factory MovieItem.fromJson(Map<String, dynamic> json) {
     return MovieItem(
@@ -44,5 +64,5 @@ class MovieItem extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, title, imageUrl, rating, price, type];
+  List<Object?> get props => [id, title, imageUrl, rating, price, priceData, type];
 }

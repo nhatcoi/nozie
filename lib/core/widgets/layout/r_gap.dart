@@ -16,8 +16,8 @@ class RGap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final w = wPercent != null ? context.responsiveWidth(wPercent!) : 0;
-    final h = hPercent != null ? context.responsiveHeight(hPercent!) : 0;
+    final w = wPercent != null ? context.responsiveWidth(wPercent!) : 0.0;
+    final h = hPercent != null ? context.responsiveHeight(hPercent!) : 0.0;
     return SizedBox(width: w, height: h);
   }
 }

@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:movie_fe/core/app_export.dart';
 import 'package:movie_fe/core/models/movie_item.dart';
-import '../../application/wishlist_state_notifier.dart';
+import 'package:movie_fe/core/widgets/image_utils.dart';
+import '../../repositories/wishlist_repository.dart';
+import '../../../../routes/app_router.dart';
+import '../../../../core/repositories/movie_repository.dart';
 
 enum WishlistAction {
   remove,
@@ -49,7 +53,7 @@ class _WishlistItemState extends ConsumerState<WishlistItem> {
     showMenu<WishlistAction>(
       context: context,
       useRootNavigator: true,
-      color: Colors.white,
+      color: AppColors.getModalBackground(context),
       position: RelativeRect.fromLTRB(
         menuLeft,
         menuTop,
@@ -84,7 +88,7 @@ class _WishlistItemState extends ConsumerState<WishlistItem> {
                 const Gap(12),
                 Expanded(
                   child: Text(
-                    'Remove from Wishlist',
+                    context.i18n.wishlist.item.menu.removeFromWishlist,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: textColor,
@@ -114,7 +118,7 @@ class _WishlistItemState extends ConsumerState<WishlistItem> {
                 const Gap(12),
                 Expanded(
                   child: Text(
-                    'Share',
+                    context.i18n.wishlist.item.menu.share,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: textColor,
@@ -144,7 +148,7 @@ class _WishlistItemState extends ConsumerState<WishlistItem> {
                 const Gap(12),
                 Expanded(
                   child: Text(
-                    'About Movie',
+                    context.i18n.wishlist.item.menu.aboutMovie,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: textColor,
@@ -167,37 +171,62 @@ class _WishlistItemState extends ConsumerState<WishlistItem> {
     BuildContext context,
     WidgetRef ref,
     WishlistAction action,
-  ) {
+  ) async {
     switch (action) {
       case WishlistAction.remove:
-        ref.read(wishlistStateProvider.notifier).removeFromWishlist(widget.movie.id);
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Removed from wishlist'),
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
+        try {
+          final repo = ref.read(wishlistRepositoryProvider);
+          await repo.removeFromWishlist(widget.movie.id);
+          if (context.mounted) {
+            ToastNotification.showSuccess(
+              context,
+              message: context.i18n.wishlist.item.snackbar.removed,
+              duration: const Duration(seconds: 2),
+            );
+          }
+        } catch (e) {
+          if (context.mounted) {
+            ToastNotification.showError(
+              context,
+              message: '${context.i18n.wishlist.common.errorPrefix} ${e.toString()}',
+              duration: const Duration(seconds: 2),
+            );
+          }
         }
         break;
       case WishlistAction.share:
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Share functionality coming soon'),
-              behavior: SnackBarBehavior.floating,
-            ),
+          ToastNotification.showInfo(
+            context,
+            message: context.i18n.wishlist.item.snackbar.shareComing,
+            duration: const Duration(seconds: 2),
           );
         }
         break;
       case WishlistAction.about:
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('About movie - coming soon'),
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
+        try {
+          final movieRepo = ref.read(movieRepoProvider);
+          final movie = await movieRepo.getMovieDetail(widget.movie.id);
+          if (movie != null && context.mounted) {
+            context.push(
+              '${AppRouter.movieInfo}/${movie.id}',
+              extra: {'movie': movie},
+            );
+          } else if (context.mounted) {
+            ToastNotification.showError(
+              context,
+              message: context.i18n.wishlist.common.movieNotFound,
+              duration: const Duration(seconds: 2),
+            );
+          }
+        } catch (e) {
+          if (context.mounted) {
+            ToastNotification.showError(
+              context,
+              message: '${context.i18n.wishlist.common.errorPrefix} ${e.toString()}',
+              duration: const Duration(seconds: 2),
+            );
+          }
         }
         break;
     }
@@ -209,13 +238,17 @@ class _WishlistItemState extends ConsumerState<WishlistItem> {
     final textColor = AppColors.getText(context);
     final secondaryText = AppColors.getTextSecondary(context);
 
-    return Row(
+    return InkWell(
+      onTap: () {
+        context.push('${AppRouter.movie}/${widget.movie.id}');
+      },
+      child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(12),
-          child: Image.asset(
-            widget.movie.imageUrl,
+          child: NetworkOrAssetImage(
+            imageUrl: widget.movie.imageUrl,
             width: 80,
             height: 120,
             fit: BoxFit.cover,
@@ -251,7 +284,7 @@ class _WishlistItemState extends ConsumerState<WishlistItem> {
                     ),
                     const Gap(6),
                     Text(
-                      widget.movie.rating.toString(),
+                      widget.movie.rating?.toStringAsFixed(1) ?? '0.0',
                       style: theme.textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.w600,
                         color: secondaryText,
@@ -283,6 +316,7 @@ class _WishlistItemState extends ConsumerState<WishlistItem> {
           onPressed: () => _showActionMenu(context, ref),
         ),
       ],
+      ),
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:movie_fe/routes/app_router.dart';
 import 'package:go_router/go_router.dart';
 import 'dart:async';
 import '../../../core/app_export.dart';
+import '../../../core/widgets/feedback/toast_notification.dart';
 import 'data/welcome_constant.dart';
 import 'widgets/welcome_content.dart';
 import 'widgets/page_indicator.dart';
@@ -174,10 +175,14 @@ class WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                         children: [
                           PrimaryButton(
                             text: WelcomeButtonTexts.getGoogleText(context),
-                                                          onPressed: () {
-                                // TODO: Handle Google sign in
-                                context.go(AppRouter.home);
-                              },
+                            onPressed: () {
+                              ToastNotification.showInfo(
+                                context,
+                                message: context.i18n.auth.oauth.featureInDevelopment,
+                              );
+                              // TODO: Handle Google sign in
+                              // context.go(AppRouter.home);
+                            },
                             backgroundColor: AppColors.getSurface(context),
                             textColor: AppColors.getText(context),
                             icon: SvgPicture.asset(

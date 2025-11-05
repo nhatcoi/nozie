@@ -123,8 +123,15 @@ class _ForgotPasswordOtpScreenState
 
                   Column(
                     children: [
-                      PrimaryButton(text: t.common.confirm, onPressed: () {
-                        context.push(AppRouter.resetPassword);
+                      PrimaryButton(text: t.common.confirm, onPressed: () async {
+                        final token = await otpController.verify();
+                        if (token != null && token.isNotEmpty) {
+                          if (!mounted) return;
+                          context.push(AppRouter.resetPassword, extra: {
+                            'email': widget.email,
+                            'resetToken': token,
+                          });
+                        }
                       }),
                     ],
                   ),

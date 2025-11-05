@@ -7,7 +7,7 @@ import '../../../../core/constants/app_padding.dart';
 import '../../../../routes/app_router.dart';
 import '../../../../features/search/application/search_state_notifier.dart';
 import '../../../../core/widgets/lists/movie_carousel.dart';
-import '../../application/notifiers/discover_notifier.dart';
+import '../../data/repositories/discover_repository.dart';
 import '../../domain/enums/discover_section_type.dart';
 
 class DiscoverScreen extends ConsumerWidget {
@@ -58,11 +58,9 @@ class _DiscoverSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final sectionState = ref.watch(
-      discoverNotifierProvider(sectionType),
-    );
+    final sectionAsync = ref.watch(discoverSectionProvider(sectionType));
 
-    return sectionState.when(
+    return sectionAsync.when(
       data: (items) => MovieCarousel(
         title: sectionType.title,
         items: items,
@@ -73,7 +71,7 @@ class _DiscoverSection extends ConsumerWidget {
         title: sectionType.title,
         error: error.toString(),
         onRetry: () {
-          ref.read(discoverNotifierProvider(sectionType).notifier).refresh();
+          ref.invalidate(discoverSectionProvider(sectionType));
         },
       ),
     );
@@ -85,9 +83,10 @@ class _DiscoverSection extends ConsumerWidget {
     DiscoverSectionType sectionType,
   ) {
     final filters = sectionType.filters;
-    final query = sectionType.searchQuery;
+    // Không set query text vào search bar, chỉ dùng filters
+    final emptyQuery = '';
 
-    ref.read(searchStateProvider.notifier).searchWithFilters(query, filters);
+    ref.read(searchStateProvider.notifier).searchWithFilters(emptyQuery, filters);
 
     context.push(AppRouter.search);
   }
@@ -172,7 +171,7 @@ class _ErrorSection extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'Error: $error',
+                  '${context.i18n.common.errorPrefix} $error',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AppColors.warning,
                       ),
@@ -180,7 +179,7 @@ class _ErrorSection extends StatelessWidget {
                 const Gap(16),
                 ElevatedButton(
                   onPressed: onRetry,
-                  child: const Text('Retry'),
+                  child: Text(context.i18n.common.retry),
                 ),
               ],
             ),

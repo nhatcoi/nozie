@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_fe/core/app_export.dart';
-import '../utils/image_constant.dart';
+import '../utils/data/image_constant.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_typography.dart';
 
@@ -38,12 +38,16 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // SvgPicture.asset(
-        //   ImageConstant.logoIcon,
-        //   width: 100,
-        //   height: 100,
-        // ),
-        SizedBox(width: context.responsiveWidth(2)), // Responsive spacing
+        SvgPicture.asset(
+          ImageConstant.logoMovie,
+          width: 32,
+          height: 32,
+          colorFilter: ColorFilter.mode(
+            AppColors.primary500,
+            BlendMode.srcIn,
+          ),
+        ),
+        SizedBox(width: context.responsiveWidth(4)), // Responsive spacing
         Text(
           title,
           style: AppTypography.h5.copyWith(

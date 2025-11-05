@@ -4,82 +4,56 @@ import '../data/repositories/purchase_repository.dart';
 
 final purchaseStateProvider =
     StateNotifierProvider<PurchaseStateNotifier, PurchaseState>(
-  (ref) => PurchaseStateNotifier(ref.read(purchaseRepositoryProvider)),
+  (ref) => PurchaseStateNotifier(ref),
 );
 
-enum PurchaseStatus { idle, loading, success, error }
-
 class PurchaseState {
-  final List<PurchaseItem> items;
-  final PurchaseStatus status;
-  final String? error;
+  final Map<String, bool> downloadStatus;
+  final Set<String> finishedIds;
 
   const PurchaseState({
-    this.items = const [],
-    this.status = PurchaseStatus.idle,
-    this.error,
+    this.downloadStatus = const {},
+    this.finishedIds = const {},
   });
 
   PurchaseState copyWith({
-    List<PurchaseItem>? items,
-    PurchaseStatus? status,
-    String? error,
+    Map<String, bool>? downloadStatus,
+    Set<String>? finishedIds,
   }) {
     return PurchaseState(
-      items: items ?? this.items,
-      status: status ?? this.status,
-      error: error ?? this.error,
+      downloadStatus: downloadStatus ?? this.downloadStatus,
+      finishedIds: finishedIds ?? this.finishedIds,
     );
   }
 }
 
 class PurchaseStateNotifier extends StateNotifier<PurchaseState> {
-  final PurchaseRepository _repository;
-
-  PurchaseStateNotifier(this._repository) : super(const PurchaseState()) {
-    loadPurchasedItems();
-  }
-
-  Future<void> loadPurchasedItems() async {
-    state = state.copyWith(status: PurchaseStatus.loading);
-    try {
-      final items = await _repository.getPurchasedItems();
-      state = state.copyWith(items: items, status: PurchaseStatus.success);
-    } catch (e) {
-      state = state.copyWith(status: PurchaseStatus.error, error: e.toString());
-    }
-  }
-
-  Future<void> removeDownload(String id) async {
-    try {
-      await _repository.removeDownload(id);
-      state = state.copyWith(
-        items: state.items.map((item) {
-          if (item.id == id) {
-            return item.copyWith(isDownloaded: false);
+  PurchaseStateNotifier(this._ref) : super(const PurchaseState()) {
+    _ref.listen(purchaseProvider, (previous, next) {
+      next.whenData((items) {
+        final downloadStatus = Map<String, bool>.from(state.downloadStatus);
+        for (var item in items) {
+          if (!downloadStatus.containsKey(item.id)) {
+            downloadStatus[item.id] = true;
           }
-          return item;
-        }).toList(),
-      );
-    } catch (e) {
-      state = state.copyWith(status: PurchaseStatus.error, error: e.toString());
-    }
+        }
+        state = state.copyWith(downloadStatus: downloadStatus);
+      });
+    });
   }
 
-  Future<void> markAsFinished(String id) async {
-    try {
-      await _repository.markAsFinished(id);
-      state = state.copyWith(
-        items: state.items.map((item) {
-          if (item.id == id) {
-            return item.copyWith(isFinished: true);
-          }
-          return item;
-        }).toList(),
-      );
-    } catch (e) {
-      state = state.copyWith(status: PurchaseStatus.error, error: e.toString());
-    }
+  final Ref _ref;
+
+  void removeDownload(String id) {
+    state = state.copyWith(
+      downloadStatus: {...state.downloadStatus, id: false},
+    );
+  }
+
+  void markAsFinished(String id) {
+    state = state.copyWith(
+      finishedIds: {...state.finishedIds, id},
+    );
   }
 }
 

@@ -10,8 +10,19 @@ import 'package:movie_fe/features/search/presentation/widgets/search_history.dar
 
 import '../widgets/search_body.dart';
 
+enum SearchSource {
+  all,
+  wishlist,
+  purchase,
+}
+
 class SearchScreen extends ConsumerStatefulWidget {
-  const SearchScreen({super.key});
+  final SearchSource searchSource;
+  
+  const SearchScreen({
+    super.key,
+    this.searchSource = SearchSource.all,
+  });
 
   @override
   ConsumerState<SearchScreen> createState() => _SearchScreenState();
@@ -27,6 +38,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     super.initState();
     _searchController.addListener(_onSearchChanged);
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Set search source from widget
+      ref.read(searchStateProvider.notifier).setSearchSource(widget.searchSource);
+      
       final searchState = ref.read(searchStateProvider);
       if (searchState.query.isNotEmpty && _searchController.text != searchState.query) {
         _searchController.text = searchState.query;

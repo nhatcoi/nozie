@@ -13,6 +13,9 @@ class ImageConstant {
   static const String subPathIconAction = '${subPathIcon}action/';
   static const String subPathNotification = '${_basePath}notifications/';
 
+  // logo
+  static const String logoMovie = '${_basePath}app/movie.svg';
+
   // Auth Icons
   static const String imgGoogleIcon = '${subPathIconAuth}icon_google.svg';
   static const String imgFBIcon = '${subPathIconAuth}icon_facebook.svg';
@@ -64,6 +67,8 @@ class ImageConstant {
   static const String imgImageNotFound = '${subPathCommon}placeholder.png';
   static const String imgAvatar = '${subPathCommon}avatar.png';
   static const String imgCard = '${subPathCommon}card.png';
+  static const String heartIcon = '${subPathIconCommon}heart.svg';
+  static const String heartActiveIcon = '${subPathIconCommon}heart-active.svg';
 
   // App Images
   static const String imgLogoApp = '${subPathApp}logo_app.png';
@@ -132,5 +137,7 @@ class ImageConstant {
   static const String paperNegativeIcon = '${subPathIcon}paper-negative.svg';
   static const String sendIcon = '${subPathIcon}send.svg';
   static const String infoSquareIcon = '${subPathIcon}info-square.svg';
+
+// 
   
 }

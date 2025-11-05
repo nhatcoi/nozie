@@ -1,6 +1,6 @@
-import '../widgets/inputs/dropdown.dart';
+import '../../widgets/inputs/dropdown.dart';
 import 'package:flutter/material.dart';
-import '../extension/context_extensions.dart';
+import '../../extension/context_extensions.dart';
 import 'image_constant.dart';
 
 class Countries {
@@ -204,22 +204,29 @@ class Genres {
   static Map<String, String> getOptions(BuildContext context) {
     final t = context.i18n;
     return {
-      'action': t.auth.register.steps.genres.list.action,
-      'adventure': t.auth.register.steps.genres.list.adventure,
-      'animation': t.auth.register.steps.genres.list.animation,
-      'comedy': t.auth.register.steps.genres.list.comedy,
-      'crime': t.auth.register.steps.genres.list.crime,
-      'documentary': t.auth.register.steps.genres.list.documentary,
-      'drama': t.auth.register.steps.genres.list.drama,
-      'family': t.auth.register.steps.genres.list.family,
-      'fantasy': t.auth.register.steps.genres.list.fantasy,
-      'horror': t.auth.register.steps.genres.list.horror,
-      'mystery': t.auth.register.steps.genres.list.mystery,
-      'romance': t.auth.register.steps.genres.list.romance,
-      'sci_fi': t.auth.register.steps.genres.list.sciFi,
-      'thriller': t.auth.register.steps.genres.list.thriller,
-      'war': t.auth.register.steps.genres.list.war,
-      'western': t.auth.register.steps.genres.list.western,
+      'am-nhac': t.auth.register.steps.genres.list.amNhac,
+      'bi-an': t.auth.register.steps.genres.list.biAn,
+      'chien-tranh': t.auth.register.steps.genres.list.chienTranh,
+      'chinh-kich': t.auth.register.steps.genres.list.chinhKich,
+      'co-trang': t.auth.register.steps.genres.list.coTrang,
+      'gia-dinh': t.auth.register.steps.genres.list.giaDinh,
+      'hai-huoc': t.auth.register.steps.genres.list.haiHuoc,
+      'hanh-dong': t.auth.register.steps.genres.list.hanhDong,
+      'hinh-su': t.auth.register.steps.genres.list.hinhSu,
+      'hoc-duong': t.auth.register.steps.genres.list.hocDuong,
+      'khoa-hoc': t.auth.register.steps.genres.list.khoaHoc,
+      'kinh-di': t.auth.register.steps.genres.list.kinhDi,
+      'kinh-dien': t.auth.register.steps.genres.list.kinhDien,
+      'phieu-luu': t.auth.register.steps.genres.list.phieuLuu,
+      'phim-18': t.auth.register.steps.genres.list.phim18,
+      'short-drama': t.auth.register.steps.genres.list.shortDrama,
+      'tai-lieu': t.auth.register.steps.genres.list.taiLieu,
+      'tam-ly': t.auth.register.steps.genres.list.tamLy,
+      'than-thoai': t.auth.register.steps.genres.list.thanThoai,
+      'the-thao': t.auth.register.steps.genres.list.theThao,
+      'tinh-cam': t.auth.register.steps.genres.list.tinhCam,
+      'vien-tuong': t.auth.register.steps.genres.list.vienTuong,
+      'vo-thuat': t.auth.register.steps.genres.list.voThuat,
     };
   }
 }

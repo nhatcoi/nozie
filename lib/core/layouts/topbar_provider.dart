@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import '../../i18n/translations.g.dart';
 import '../../routes/app_router.dart';
-import '../utils/image_constant.dart';
+import '../utils/data/image_constant.dart';
 
 enum TopBarAction {
   notification,
@@ -62,13 +62,11 @@ class TopBarNotifier extends StateNotifier<TopBarState> {
         return TopBarState(
           title: t.navigation.wishlist,
           primaryAction: TopBarAction.search,
-          secondaryAction: TopBarAction.filter,
         );
       case AppRouter.purchase:
         return TopBarState(
           title: t.navigation.purchase,
           primaryAction: TopBarAction.search,
-          secondaryAction: TopBarAction.filter,
         );
       case AppRouter.profile:
         return TopBarState(

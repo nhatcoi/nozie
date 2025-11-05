@@ -124,12 +124,12 @@ class ProfileScreen extends ConsumerWidget {
               title: t.profile.menu.helpCenter,
               onTap: () => context.push(AppRouter.helpCenter),
             ),
-            _SettingItem(
-              lightBackgroundColor: const Color(0xFFFFF4E6),
-              iconAsset: ImageConstant.infoIcon,
-              title: t.profile.menu.about,
-              onTap: () {},
-            ),
+            // _SettingItem(
+            //   lightBackgroundColor: const Color(0xFFFFF4E6),
+            //   iconAsset: ImageConstant.infoIcon,
+            //   title: t.profile.menu.about,
+            //   onTap: () {},
+            // ),
             const SizedBox(height: 8),
             _LogoutItem(onTap: _showLogoutConfirmation),
           ],

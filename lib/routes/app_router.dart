@@ -13,6 +13,7 @@ import 'package:movie_fe/features/discover/presentation/screens/discover_screen.
 import 'package:movie_fe/features/genre/presentation/screens/explore_genre.dart';
 import 'package:movie_fe/features/genre/presentation/screens/explore_genre_details.dart';
 import 'package:movie_fe/features/home/presentation/screens/home_screen.dart';
+import 'package:movie_fe/features/home/presentation/screens/movie_type_screen.dart';
 import 'package:movie_fe/features/notification/presentation/notification_screen.dart';
 import 'package:movie_fe/features/profile/presentation/help_center_screen.dart';
 import 'package:movie_fe/features/profile/presentation/language_screen.dart';
@@ -24,14 +25,20 @@ import 'package:movie_fe/features/profile/presentation/security_screen.dart';
 import 'package:movie_fe/features/profile/presentation/notification_screen.dart'
     as profile_notification;
 import 'package:movie_fe/features/purchase/presentation/purchase_screen.dart';
+import 'package:movie_fe/features/purchase/presentation/screens/purchase_detail_screen.dart';
 import 'package:movie_fe/features/search/presentation/screens/search_screen.dart';
 import 'package:movie_fe/features/setting/presentation/screens/setting_screen.dart';
 import 'package:movie_fe/features/welcome/welcome_screen.dart';
 import 'package:movie_fe/features/wishlist/presentation/wishlist_screen.dart';
 import 'package:movie_fe/features/movie/presentation/screens/movie_detail_screen.dart';
+import 'package:movie_fe/features/movie/presentation/screens/video_player_screen.dart';
+import 'package:movie_fe/features/movie/presentation/screens/movie_info_screen.dart';
+import 'package:movie_fe/features/movie/presentation/screens/ratings_detail_screen.dart';
+import 'package:movie_fe/features/purchase/presentation/widgets/checkout_screen.dart';
+import 'package:movie_fe/core/models/movie.dart';
 import '../core/layouts/main_layout.dart';
 import '../core/services/locale_setting.dart';
-import '../core/utils/no_transition_page.dart';
+import 'transition_page.dart';
 import 'auth_guard.dart';
 
 class AppRouter {
@@ -59,6 +66,12 @@ class AppRouter {
   static const explore = '/explore';
   static const movieCarouselGenre = '/movie-carousel-genre/';
   static const movie = '/movie';
+  static const videoPlayer = '/video-player';
+  static const movieInfo = '/movie-info';
+  static const ratings = '/ratings';
+  static const checkout = '/checkout';
+  static const purchaseDetail = '/purchase-detail';
+  static const movieType = '/movie-type';
 
   static const _publicPaths = {
     welcome,
@@ -115,7 +128,116 @@ class AppRouter {
         final id = state.pathParameters['id']!;
         return MovieDetailScreen(movieId: id);
       }),
-      GoRoute(path: resetPassword, builder: (_, __) => const ForgotPasswordNewPassScreen()),
+      GoRoute(path: '$videoPlayer/:id', builder: (_, state) {
+        final id = state.pathParameters['id']!;
+        final extra = state.extra;
+        Movie? movie;
+        String? videoUrl;
+        
+        if (extra is Map) {
+          movie = extra['movie'] as Movie?;
+          videoUrl = extra['videoUrl'] as String?;
+        } else if (extra is Movie) {
+          movie = extra;
+        }
+        
+        if (movie == null) {
+          return Scaffold(
+            body: Center(
+              child: Text('Movie not found: $id'),
+            ),
+          );
+        }
+        
+        return VideoPlayerScreen(
+          movie: movie,
+          videoUrl: videoUrl,
+        );
+      }),
+      GoRoute(path: '$movieInfo/:id', builder: (_, state) {
+        final id = state.pathParameters['id']!;
+        final extra = state.extra;
+        Movie? movie;
+        if (extra is Map) {
+          movie = extra['movie'] as Movie?;
+        } else if (extra is Movie) {
+          movie = extra;
+        }
+
+        if (movie == null) {
+          return Scaffold(
+            body: Center(
+              child: Text('Movie not found: $id'),
+            ),
+          );
+        }
+
+        return MovieInfoScreen(movie: movie);
+      }),
+      GoRoute(path: '$ratings/:id', builder: (context, state) {
+        final id = state.pathParameters['id']!;
+        final extra = state.extra;
+        String? title;
+        if (extra is Map) {
+          title = extra['title'] as String?;
+        } else if (extra is String) {
+          title = extra;
+        }
+        return RatingsDetailScreen(movieId: id, movieTitle: title ?? id);
+      }),
+      GoRoute(path: checkout, builder: (_, state) {
+        final extra = state.extra;
+        Movie? movie;
+        if (extra is Map) {
+          movie = extra['movie'] as Movie?;
+        } else if (extra is Movie) {
+          movie = extra;
+        }
+        
+        if (movie == null) {
+          return Scaffold(
+            body: Center(
+              child: Text('Movie not found'),
+            ),
+          );
+        }
+        
+        return CheckoutScreen(movie: movie);
+      }),
+      GoRoute(path: '$purchaseDetail/:movieId', builder: (_, state) {
+        final movieId = state.pathParameters['movieId']!;
+        return PurchaseDetailScreen(movieId: movieId);
+      }),
+      GoRoute(path: '$movieType/:type', builder: (_, state) {
+        final typeStr = state.pathParameters['type']!;
+        MovieListType type;
+        switch (typeStr) {
+          case 'purchase':
+            type = MovieListType.purchase;
+            break;
+          case 'wishlist':
+            type = MovieListType.wishlist;
+            break;
+          case 'recent':
+            type = MovieListType.recent;
+            break;
+          case 'recommended':
+          default:
+            type = MovieListType.recommended;
+            break;
+        }
+        return MovieTypeScreen(type: type);
+      }),
+      GoRoute(path: resetPassword, builder: (_, state) {
+        final extra = state.extra;
+        String? email;
+        String? resetToken;
+        if (extra is Map) {
+          email = extra['email'] as String?;
+          resetToken = extra['resetToken'] as String?;
+        }
+        return ForgotPasswordNewPassScreen(email: email, resetToken: resetToken);
+      }),
       GoRoute(path: notification, builder: (_, __) => const NotificationScreen()),
       GoRoute(
         path: notificationSettings,
@@ -127,7 +249,21 @@ class AppRouter {
       GoRoute(path: preferences, builder: (_, __) => const PreferencesScreen()),
       GoRoute(path: language, builder: (_, __) => const LanguageScreen()),
       GoRoute(path: helpCenter, builder: (_, __) => const HelpCenterScreen()),
-      GoRoute(path: search, builder: (_, __) => const SearchScreen()),
+      GoRoute(path: search, builder: (_, state) {
+        final extra = state.extra;
+        SearchSource searchSource = SearchSource.all;
+        
+        if (extra is Map) {
+          final source = extra['searchSource'] as String?;
+          if (source == 'wishlist') {
+            searchSource = SearchSource.wishlist;
+          } else if (source == 'purchase') {
+            searchSource = SearchSource.purchase;
+          }
+        }
+        
+        return SearchScreen(searchSource: searchSource);
+      }),
       ShellRoute(
         builder: (context, state, child) =>
             MainLayout(showAppBar: true, showBottomNav: true, child: child),

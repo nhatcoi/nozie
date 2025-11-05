@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_fe/core/theme/app_colors.dart';
 import 'package:movie_fe/core/theme/app_typography.dart';
-import 'package:movie_fe/core/utils/image_constant.dart';
+import 'package:movie_fe/core/utils/data/image_constant.dart';
 class RadioBox extends StatelessWidget {
   final String title;
   final String value;

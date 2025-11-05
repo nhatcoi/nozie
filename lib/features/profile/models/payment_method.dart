@@ -47,24 +47,10 @@ class PaymentMethod extends Equatable {
 
   static const sampleMethods = <PaymentMethod>[
     PaymentMethod(
-      id: 'pm_paypal',
-      label: 'PayPal',
-      brand: 'PayPal',
-      last4: '—',
-      isDefault: true,
-    ),
-    PaymentMethod(
       id: 'pm_visa',
-      label: 'Visa •••• 5567',
+      label: 'Visa',
       brand: 'Visa',
-      last4: '5567',
-      isDefault: false,
-    ),
-    PaymentMethod(
-      id: 'pm_mastercard',
-      label: 'Mastercard •••• 7839',
-      brand: 'Mastercard',
-      last4: '7839',
+      last4: '',
       isDefault: false,
     ),
   ];

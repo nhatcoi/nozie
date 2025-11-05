@@ -21,7 +21,7 @@ class MovieSimilarSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Similar Movies',
+          context.i18n.movie.similar.title,
           style: theme.textTheme.titleLarge?.copyWith(
             color: textColor,
             fontWeight: FontWeight.w700,

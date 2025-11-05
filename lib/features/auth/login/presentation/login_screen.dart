@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:movie_fe/core/app_export.dart';
 import 'package:movie_fe/core/common/ui_state.dart';
-import 'package:movie_fe/core/utils/custom_snackbar.dart';
+import 'package:movie_fe/core/widgets/feedback/toast_notification.dart';
 import 'package:movie_fe/core/widgets/buttons/social_button.dart';
 import 'package:movie_fe/core/widgets/layout/lined_text_divider.dart';
 import 'package:movie_fe/features/auth/login/presentation/providers/login_provider.dart';
@@ -40,19 +40,17 @@ class LoginScreen extends ConsumerWidget {
 
       final emailError = ValidationUtils.validateEmail(email, context);
       if (emailError != null) {
-        CustomSnackBar.show(
+        ToastNotification.showError(
           context,
           message: emailError,
-          type: SnackBarType.error,
         );
         return;
       }
 
       if (password.isEmpty) {
-        CustomSnackBar.show(
+        ToastNotification.showError(
           context,
           message: t.validation.password.required,
-          type: SnackBarType.error,
         );
         return;
       }
@@ -61,7 +59,12 @@ class LoginScreen extends ConsumerWidget {
     }
 
     Future<void> _handleGoogleSignIn() async {
-      await loginNotifier.signInWithGoogle();
+      ToastNotification.showInfo(
+        context,
+        message: t.auth.oauth.featureInDevelopment,
+      );
+      // TODO: Implement Google sign in
+      // await loginNotifier.signInWithGoogle();
     }
 
     ref.listen<UIState<bool>>(loginNotifierProvider, (previous, next) {
@@ -72,10 +75,13 @@ class LoginScreen extends ConsumerWidget {
         loginNotifier.reset();
       } else if (next is Error<bool>) {
         if (context.mounted) {
-          CustomSnackBar.show(
+          final raw = next.message ?? '';
+          final friendly = raw.contains('The supplied auth credential is malformed or has expired')
+              ? t.auth.errors.invalidCredentials
+              : raw;
+          ToastNotification.showError(
             context,
-            message: next.message,
-            type: SnackBarType.error,
+            message: friendly,
           );
         }
         loginNotifier.reset();
@@ -197,7 +203,10 @@ class LoginScreen extends ConsumerWidget {
                           color: isDark ? AppColors.white : AppColors.black,
                         ),
                         onPressed: () {
-                          // TODO: Apple login
+                          ToastNotification.showInfo(
+                            context,
+                            message: t.auth.oauth.featureInDevelopment,
+                          );
                         },
                       ),
                     ),
@@ -209,7 +218,10 @@ class LoginScreen extends ConsumerWidget {
                           height: 24,
                         ),
                         onPressed: () {
-                          // TODO: Facebook login
+                          ToastNotification.showInfo(
+                            context,
+                            message: t.auth.oauth.featureInDevelopment,
+                          );
                         },
                       ),
                     ),

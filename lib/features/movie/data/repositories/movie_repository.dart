@@ -1,27 +1,26 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/data/movie_data_store.dart';
 import '../../../../core/models/movie_item.dart';
+import '../../../../core/models/movie.dart';
+import '../../../../core/repositories/movie_repository.dart';
 
-final movieRepositoryProvider = Provider((ref) => MovieRepository());
+final movieDetailProvider = FutureProvider.autoDispose.family<Movie?, String>(
+  (ref, movieId) async {
+    final repo = ref.watch(movieRepoProvider);
+    return await repo.getMovieDetail(movieId);
+  },
+);
 
-class MovieRepository {
-  final _dataStore = MovieDataStore();
+final similarMoviesProvider = StreamProvider.autoDispose.family<List<MovieItem>, String>(
+  (ref, movieId) {
+    final repo = ref.watch(movieRepoProvider);
+    return repo.streamSimilar(movieId);
+  },
+);
 
-  Future<Map<String, dynamic>?> getMovieDetail(String movieId) async {
-    await Future.delayed(const Duration(milliseconds: 300));
-    return _dataStore.getById(movieId);
-  }
-
-  Future<List<MovieItem>> getSimilarMovies(String movieId, {int limit = 10}) async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    final similar = _dataStore.getSimilar(movieId, limit: limit);
-    return _dataStore.toMovieItems(similar);
-  }
-
-  Future<List<MovieItem>> getSeriesMovies(String franchiseId) async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    final series = _dataStore.getByFranchise(franchiseId);
-    return _dataStore.toMovieItems(series);
-  }
-}
+final seriesMoviesProvider = StreamProvider.autoDispose.family<List<MovieItem>, String>(
+  (ref, franchiseId) {
+    final repo = ref.watch(movieRepoProvider);
+    return repo.streamByFranchise(franchiseId);
+  },
+);
 

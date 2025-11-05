@@ -23,6 +23,8 @@ common:
   search: Tìm kiếm
   loading: "Đang tải…"
   signOut: Đăng xuất
+  retry: Thử lại
+  errorPrefix: "Lỗi:"
 
 notification:
   title: Thông báo
@@ -32,6 +34,8 @@ notification:
   seeAll: Xem tất cả
   today: Hôm nay
   dayAgo: Ngày trước
+  loadFailed: Lỗi khi tải thông báo
+  markAllAsReadFailed(String error): "Không thể đánh dấu tất cả là đã đọc: $error"
 
 # Authentication Module
 auth:
@@ -44,6 +48,8 @@ auth:
   username: Tên đăng nhập
   confirmPassword: Xác nhận mật khẩu
   rememberMe: Ghi nhớ tôi
+  errors:
+    invalidCredentials: Sai tên đăng nhập hoặc mật khẩu
   
   # Login Screen
   loginScreen:
@@ -52,6 +58,10 @@ auth:
     placeholder:
       email: admin@ziet.dev
       password: "●●●●●●●●●●●●"
+  
+  # OAuth Features
+  oauth:
+    featureInDevelopment: Tính năng đang phát triển
   
   # Forgot Password Flow
   forgotPassword:
@@ -124,22 +134,29 @@ auth:
         title: Chọn thể loại phim bạn thích
         description: Chọn thể loại phim yêu thích để có gợi ý tốt hơn hoặc bạn có thể bỏ qua
         list:
-          action: Hành động
-          adventure: Phiêu lưu
-          animation: Hoạt hình
-          comedy: Hài
-          crime: Tội phạm
-          documentary: Tài liệu
-          drama: Kịch tính
-          family: Gia đình
-          fantasy: Viễn tưởng
-          horror: Kinh dị
-          mystery: Bí ẩn
-          romance: Lãng mạn
-          sciFi: Khoa học viễn tưởng
-          thriller: Giật gân
-          war: Chiến tranh
-          western: Viễn Tây
+          amNhac: Âm Nhạc
+          biAn: Bí ẩn
+          chienTranh: Chiến Tranh
+          chinhKich: Chính kịch
+          coTrang: Cổ Trang
+          giaDinh: Gia Đình
+          haiHuoc: Hài Hước
+          hanhDong: Hành Động
+          hinhSu: Hình Sự
+          hocDuong: Học Đường
+          khoaHoc: Khoa Học
+          kinhDi: Kinh Dị
+          kinhDien: Kinh Điển
+          phieuLuu: Phiêu Lưu
+          phim18: Phim 18+
+          shortDrama: Short Drama
+          taiLieu: Tài Liệu
+          tamLy: Tâm Lý
+          thanThoai: Thần Thoại
+          theThao: Thể Thao
+          tinhCam: Tình Cảm
+          vienTuong: Viễn Tưởng
+          voThuat: Võ Thuật
       
       # Profile Information
       profile:
@@ -321,6 +338,7 @@ profile:
     title: Phương thức thanh toán
     loadError(String error): "Không thể tải phương thức thanh toán: $error"
     addNewMessage: "Đã chạm vào thêm phương thức thanh toán"
+    comingSoon: Nozie đang phát triển thêm phương thức thanh toán khác
 
   notification:
     title: Thông báo
@@ -328,7 +346,7 @@ profile:
     sectionTitle: Thông báo cho tôi khi...
     toggles:
       newRecommendation: Có gợi ý mới
-      newBookSeries: Có bộ sách mới
+      newBookSeries: Có phim mới
       authorUpdates: Có cập nhật từ tác giả
       priceDrops: Có khuyến mãi giảm giá
       purchase: Khi tôi thực hiện giao dịch
@@ -369,7 +387,7 @@ profile:
       video: Video
       audio: Âm thanh
     toggles:
-      wifiOnlyDownloads: Chỉ tải qua Wi-Fi
+      wifiOnlyDownloads: Chỉ xem qua Wi-Fi
       autoPlayNextEpisode: Tự phát tập tiếp theo
       continueWatching: Tiếp tục xem từ vị trí dở
       subtitlesEnabled: Phụ đề
@@ -541,3 +559,190 @@ utils:
 
 cards:
   showIn: Hiển thị trong
+
+# Purchase Detail Screen
+purchaseDetail:
+  title: Chi tiết giao dịch
+  infoTitle: Thông tin mua hàng
+  labels:
+    movieId: Mã phim
+    downloaded: Đã tải xuống
+    finished: Đã xem xong
+    transactions: Giao dịch
+    amount: Số tiền
+    created: Tạo lúc
+    paidAt: Thanh toán lúc
+    failedAt: Thất bại lúc
+    canceledAt: Hủy lúc
+    paymentIntent: Mã Payment Intent
+    chargeId: Mã giao dịch (Charge ID)
+  states:
+    succeeded: Thành công
+    failed: Thất bại
+    canceled: Đã hủy
+    pending: Đang xử lý
+  empty:
+    transactions: Chưa có giao dịch nào
+    purchaseNotFound: Không tìm thấy thông tin mua hàng
+  error:
+    generic(String error): "Lỗi: $error"
+
+# Discover Module
+discover:
+  sections:
+    topCharts: Bảng xếp hạng
+    topSelling: Bán chạy
+    topFree: Miễn phí hàng đầu
+    topNewReleases: Phát hành mới
+
+# Home Module
+home:
+  sections:
+    recommendedForYou: Gợi ý cho bạn
+    yourPurchases: Giao dịch của bạn
+    yourWishlist: Danh sách yêu thích
+    recentlyWatched: Xem gần đây
+    exploreByGenre: Khám phá theo thể loại
+
+# Genre Module
+genre:
+  explore:
+    title: "Thể loại:"
+    empty: Không tìm thấy phim cho
+    loadFailed: Không tải được danh sách phim
+
+# Purchase Module
+purchase:
+  common:
+    free: Miễn phí
+    purchased: Đã mua
+    movieNotFound: Không tìm thấy phim
+    comingSoon: Sắp ra mắt
+    errorPrefix: "Lỗi:"
+  checkout:
+    title: Thanh toán
+    section:
+      movieSummary: Tóm tắt phim
+      priceDetails: Chi tiết giá
+      paymentMethod: Phương thức thanh toán
+    labels:
+      price: Giá
+      total: Tổng cộng
+      visa: Visa
+    actions:
+      confirm: Xác nhận
+      payNow: Thanh toán ngay
+      processing: Đang xử lý...
+    toasts:
+      addedSuccess: "Đã thêm phim thành công! 🎬"
+      paymentSuccess: "Thanh toán thành công! 🎬"
+      paymentFailed: Thanh toán thất bại. Vui lòng thử lại.
+      paymentCanceled: Thanh toán đã bị hủy
+  item:
+    menu:
+      watchNow: Xem ngay
+      viewSeries: Xem series
+      purchaseDetails: Chi tiết giao dịch
+      aboutMovie: Về phim
+    snackbar:
+      viewSeriesComing: Tính năng xem series - sắp ra mắt
+  notifications:
+    successTitle: "Mua hàng thành công! 🎬"
+    successDescription: "Bạn đã sở hữu"
+
+# Movie Module
+movie:
+  details:
+    notFound: Không tìm thấy phim
+    alreadyPurchased: Phim này đã có trong thư viện đã mua của bạn
+    quality1080p: 1080p
+    seriesFallback: Series
+  ratings:
+    title: Đánh giá & Nhận xét
+    noReviews: Chưa có đánh giá nào
+    rateThisFilm: Đánh giá phim này
+    purchaseRequired: Cần mua để đánh giá
+    writeAReview: Viết đánh giá
+    dialog:
+      title: Viết đánh giá
+      yourRatingPrefix: "Đánh giá của bạn:"
+      star: sao
+      stars: sao
+      hint: Viết đánh giá của bạn...
+      cancel: Hủy
+      submit: Gửi
+      submitted: Đã gửi đánh giá
+  info:
+    images: Hình ảnh
+    cannotLoadImage: Không thể tải ảnh
+    episodesList: Danh sách tập
+    language: Ngôn ngữ
+    genres: Thể loại
+    countries: Quốc gia
+    directors: Đạo diễn
+    actors: Diễn viên
+    aboutThisFilm: Giới thiệu
+    trailer: Trailer
+    watchTrailer: Xem trailer
+    episodePrefix: Tập
+    episodesPrefix: Tập
+  player:
+    noAccess: Bạn chưa có quyền truy cập phim này
+    videoUrlMissing: Không có URL video
+    tryingFallback: Đang thử URL thay thế...
+    cannotLoadM3u8: Không thể load video từ URL m3u8
+    cannotLoadBoth: Không thể load video từ cả m3u8 và embed URL
+    unknownError: Lỗi không xác định
+    cannotOpenTrailer: Không mở được trailer
+    playbackSpeed: Tốc độ phát
+    quality: Chất lượng
+  hero:
+    ratings: lượt đánh giá
+    reviews: nhận xét
+    duration: thời lượng
+    quality: chất lượng
+    watched: lượt xem
+    watchNow: Xem ngay
+    aboutThisFilm: Giới thiệu
+    viewMore: Xem thêm
+  similar:
+    title: Phim tương tự
+  report:
+    headerTitle: Báo cáo vấn đề
+    headerSubtitle: Giúp chúng tôi cải thiện chất lượng dịch vụ
+    movieInfo: Thông tin phim
+    labels:
+      movieName: Tên phim
+      director: Đạo diễn
+      videoUrl: Video URL
+      error: Lỗi
+    issueTypeLabel: Loại vấn đề *
+    descriptionLabel: Mô tả chi tiết *
+    descriptionHint: Mô tả chi tiết vấn đề bạn gặp phải...
+    validations:
+      selectIssue: Vui lòng chọn loại vấn đề
+      descRequired: Vui lòng nhập mô tả chi tiết
+      descMin: Mô tả phải có ít nhất 10 ký tự
+    actions:
+      cancel: Hủy
+      submit: Gửi báo cáo
+      sending: Đang gửi...
+    success: Báo cáo đã được gửi thành công. Cảm ơn bạn đã phản hồi!
+    failurePrefix: "Lỗi khi gửi báo cáo:"
+# Wishlist Module
+wishlist:
+  common:
+    retry: Thử lại
+    errorPrefix: "Lỗi:"
+    movieNotFound: Không tìm thấy phim
+  item:
+    menu:
+      removeFromWishlist: Xóa khỏi danh sách yêu thích
+      share: Chia sẻ
+      aboutMovie: Về phim
+    snackbar:
+      removed: Đã xóa khỏi danh sách yêu thích
+      shareComing: Tính năng chia sẻ sẽ có sớm
+  empty:
+    title: Danh sách yêu thích của bạn đang trống
+    subtitle: Thêm những phim bạn muốn xem sau

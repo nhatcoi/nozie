@@ -1,4 +1,4 @@
-import '../../routes/app_router.dart';
+import 'app_router.dart';
 
 class NavigationUtils {
   static const List<String> bottomNavRoutes = [

@@ -6,8 +6,10 @@ import 'package:movie_fe/core/enums/movie_type.dart';
 
 import '../../models/movie_item.dart';
 import '../../theme/app_colors.dart';
-import '../../utils/image_constant.dart';
+import '../../utils/data/image_constant.dart';
+import '../../utils/data/price_utils.dart';
 import '../../../routes/app_router.dart';
+import '../image_utils.dart';
 
 class MovieCard extends StatelessWidget {
   const MovieCard({
@@ -19,6 +21,8 @@ class MovieCard extends StatelessWidget {
     this.onMore,
     this.genres,
     this.enableNavigation = true,
+    this.titleFontSize,
+    this.overlayOpacity,
   });
 
   final MovieItem movie;
@@ -32,6 +36,12 @@ class MovieCard extends StatelessWidget {
   final VoidCallback? onMore;
   
   final bool enableNavigation;
+  
+  /// Custom fontSize for title when using titleInImg type. If null, uses default (9 * scale)
+  final double? titleFontSize;
+
+  /// Optional overlay opacity for title-in-image cards to improve text contrast
+  final double? overlayOpacity;
 
   @override
   Widget build(BuildContext context) {
@@ -49,28 +59,27 @@ class MovieCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () => _handleTap(context),
-      child: SizedBox(
-        width: width,
-        child: movieCardType == MovieCardType.vertical
-            ? Row(
+      child: movieCardType == MovieCardType.vertical
+          ? Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildPosterImage(),
+            SizedBox(
+              width: width,
+              height: height,
+              child: _buildPosterImage(),
+            ),
             const Gap(12),
-            Expanded(
+            Flexible(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   _buildTitle(theme, scale),
-                  if (movie.price != null && movie.rating != null) ...[
-                    const Gap(12),
-                    _buildMetadata(theme, isDark, scale, type: movieCardType),
-                    const Gap(12),
-
-                    genres != null ? Row(
+                  const Gap(4),
+                  if (genres != null) ...[
+                    Wrap(
                       spacing: 12,
+                      runSpacing: 4,
                       children: genres!.map((g) => Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
@@ -79,36 +88,59 @@ class MovieCard extends StatelessWidget {
                         ),
                         child: Text(g),
                       )).toList(),
-                    ) : Container(),
+                    ),
+                    const Gap(12),
                   ],
+                  if (movie.price != null && movie.rating != null)
+                    _buildMetadata(theme, isDark, scale, type: movieCardType),
                 ],
               ),
             ),
           ],
         )
-            : Column(
-
+          : SizedBox(
+        width: width,
+        height: height,
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             if (movieCardType != MovieCardType.titleInImg) ...[
               _buildPosterImage(),
               const Gap(8),
-              _buildTitle(theme, scale),
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _buildTitle(theme, scale),
+                    const Spacer(),
+                    if (movie.price != null && movie.rating != null)
+                      _buildMetadata(theme, isDark, scale),
+                  ],
+                ),
+              ),
             ] else ...[
               Stack(
                 children: [
                   _buildPosterImage(),
+                  if (overlayOpacity != null)
+                    Positioned.fill(
+                      child: Container(
+                        color: Colors.black.withOpacity(overlayOpacity!.clamp(0.0, 1.0)),
+                      ),
+                    ),
                   Positioned(
-                    bottom: 0,
-                    left: 5,
-                    child: _buildTitle2(scale),
+                    bottom: 6,
+                    left: 8,
+                    child: _buildTitle2(scale, titleFontSize),
                   ),
                 ],
               ),
-            ],
-            if (movie.price != null && movie.rating != null) ...[
-              const Gap(6),
-              _buildMetadata(theme, isDark, scale),
+              if (movie.price != null && movie.rating != null) ...[
+                const Gap(6),
+                _buildMetadata(theme, isDark, scale),
+              ],
             ],
           ],
         ),
@@ -119,8 +151,8 @@ class MovieCard extends StatelessWidget {
   Widget _buildPosterImage() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
-      child: Image.asset(
-        movie.imageUrl,
+      child: NetworkOrAssetImage(
+        imageUrl: movie.imageUrl,
         width: width,
         height: height,
         fit: BoxFit.cover,
@@ -140,7 +172,8 @@ class MovieCard extends StatelessWidget {
     );
   }
 
-  Widget _buildTitle2(double scale) {
+  Widget _buildTitle2(double scale, double? customFontSize) {
+    final fontSize = customFontSize ?? (9 * scale);
     return Text(
       movie.title,
       maxLines: 2,
@@ -148,15 +181,15 @@ class MovieCard extends StatelessWidget {
       style: TextStyle(
         color: Colors.white,
         fontWeight: FontWeight.w700,
-        fontSize: 18 * scale,
+        fontSize: fontSize,
       ),
     );
   }
 
   Widget _buildMetadata(ThemeData theme, bool isDark, double scale, { MovieCardType type = MovieCardType.horizontal}) {
-    final textStyle = theme.textTheme.bodyLarge?.copyWith(
+    final textStyle = theme.textTheme.bodyMedium?.copyWith(
       fontWeight: FontWeight.w600,
-      fontSize: 18 * scale,
+      fontSize: 14 * scale,
       color: isDark ? AppColors.greyscale300 : AppColors.greyscale700,
     );
 
@@ -185,12 +218,18 @@ class MovieCard extends StatelessWidget {
           height: 16 * scale,
         ),
         const Gap(6),
-        Text(movie.rating.toString(), style: textStyle),
+        Text(movie.rating?.toStringAsFixed(1) ?? '0.0', style: textStyle),
       ],
     );
   }
 
   Widget _buildPrice(TextStyle? textStyle) {
-    return Text('\$${movie.price?.toStringAsFixed(2)}', style: textStyle);
+    final priceText = PriceUtils.formatPrice(movie);
+    
+    if (priceText.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    
+    return Text(priceText, style: textStyle);
   }
 }

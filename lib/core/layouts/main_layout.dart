@@ -6,7 +6,7 @@ import 'custom_bottom_nav_bar.dart';
 import '../theme/app_colors.dart';
 import '../../routes/app_router.dart';
 import 'topbar_provider.dart';
-import '../utils/navigation_utils.dart';
+import '../../routes/navigation_utils.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class MainLayout extends ConsumerWidget {
@@ -109,9 +109,24 @@ class MainLayout extends ConsumerWidget {
   }
 
   void _handleTopBarAction(TopBarNotifier notifier, TopBarAction action, String actionType, BuildContext context) {
+    final currentPath = GoRouterState.of(context).uri.toString();
+    
     switch (action) {
       case TopBarAction.search:
-        context.push(AppRouter.search);
+        // Check if we're on wishlist or purchase page, then search only in that collection
+        if (currentPath == AppRouter.wishlist) {
+          context.push(
+            AppRouter.search,
+            extra: {'searchSource': 'wishlist'},
+          );
+        } else if (currentPath == AppRouter.purchase) {
+          context.push(
+            AppRouter.search,
+            extra: {'searchSource': 'purchase'},
+          );
+        } else {
+          context.push(AppRouter.search);
+        }
         break;
       case TopBarAction.notification:
         context.push(AppRouter.notification);

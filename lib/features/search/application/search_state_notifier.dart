@@ -1,11 +1,14 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../entities/search_result.dart';
 import '../entities/search_filter.dart';
 import '../repositories/search_repository.dart';
+import '../presentation/screens/search_screen.dart';
 
 final searchStateProvider = StateNotifierProvider<SearchStateNotifier, SearchState>(
-      (ref) => SearchStateNotifier(),
+      (ref) => SearchStateNotifier(ref),
 );
 
 enum SearchStatus { idle, loading, success, error }
@@ -26,6 +29,7 @@ class SearchState {
   final bool isLoadingMore;
   final List<String> suggestions;
   final ShowInMode showInMode;
+  final SearchSource searchSource;
 
   const SearchState({
     this.query = '',
@@ -41,6 +45,7 @@ class SearchState {
     this.isLoadingMore = false,
     this.suggestions = const [],
     this.showInMode = ShowInMode.category,
+    this.searchSource = SearchSource.all,
   });
 
   SearchState copyWith({
@@ -57,6 +62,7 @@ class SearchState {
     bool? isLoadingMore,
     List<String>? suggestions,
     ShowInMode? showInMode,
+    SearchSource? searchSource,
   }) {
     return SearchState(
       query: query ?? this.query,
@@ -72,15 +78,18 @@ class SearchState {
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
       suggestions: suggestions ?? this.suggestions,
       showInMode: showInMode ?? this.showInMode,
+      searchSource: searchSource ?? this.searchSource,
     );
   }
 }
 
 class SearchStateNotifier extends StateNotifier<SearchState> {
-  SearchStateNotifier() : super(const SearchState());
+  SearchStateNotifier(this._ref) : super(const SearchState());
   
+  final Ref _ref;
   Timer? _debounceTimer;
-  final SearchRepository _repository = SearchRepository();
+  
+  SearchRepository get _repository => _ref.read(searchRepositoryProvider);
 
   void updateQuery(String query) {
     _debounceTimer?.cancel();
@@ -92,7 +101,6 @@ class SearchStateNotifier extends StateNotifier<SearchState> {
       error: null,
     );
 
-    //
     if (query.isNotEmpty) {
       _debounceTimer = Timer(const Duration(milliseconds: 300), () {
         _fetchSuggestions(query);
@@ -103,9 +111,6 @@ class SearchStateNotifier extends StateNotifier<SearchState> {
   }
 
   Future<void> performSearch(String query) async {
-    if (query.trim().isEmpty) return;
-
-    // loading
     state = state.copyWith(
       query: query,
       isSearching: true,
@@ -117,7 +122,78 @@ class SearchStateNotifier extends StateNotifier<SearchState> {
     );
     
     try {
-      final results = await _repository.search(query, filters: state.filters, page: 1);
+      // Lấy wishlist hoặc purchase IDs tùy theo searchSource
+      List<String>? wishlistMovieIds;
+      if (state.searchSource == SearchSource.wishlist) {
+        final userId = FirebaseAuth.instance.currentUser?.uid;
+        if (userId == null) {
+          state = state.copyWith(
+            isSearching: false,
+            status: SearchStatus.success,
+            results: [],
+            hasResults: false,
+            hasMoreResults: false,
+          );
+          return;
+        }
+        
+        final wishlistSnapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .collection('wishlist')
+            .get();
+        
+        wishlistMovieIds = wishlistSnapshot.docs.map((doc) => doc.id).toList();
+        
+        if (wishlistMovieIds.isEmpty) {
+          state = state.copyWith(
+            isSearching: false,
+            status: SearchStatus.success,
+            results: [],
+            hasResults: false,
+            hasMoreResults: false,
+          );
+          return;
+        }
+      } else if (state.searchSource == SearchSource.purchase) {
+        final userId = FirebaseAuth.instance.currentUser?.uid;
+        if (userId == null) {
+          state = state.copyWith(
+            isSearching: false,
+            status: SearchStatus.success,
+            results: [],
+            hasResults: false,
+            hasMoreResults: false,
+          );
+          return;
+        }
+        
+        final purchaseSnapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .collection('purchases')
+            .get();
+        
+        wishlistMovieIds = purchaseSnapshot.docs.map((doc) => doc.id).toList();
+        
+        if (wishlistMovieIds.isEmpty) {
+          state = state.copyWith(
+            isSearching: false,
+            status: SearchStatus.success,
+            results: [],
+            hasResults: false,
+            hasMoreResults: false,
+          );
+          return;
+        }
+      }
+      
+      final results = await _repository.search(
+        query, 
+        filters: state.filters, 
+        page: 1,
+        wishlistMovieIds: wishlistMovieIds,
+      );
       state = state.copyWith(
         results: results.items,
         hasResults: results.items.isNotEmpty,
@@ -137,15 +213,7 @@ class SearchStateNotifier extends StateNotifier<SearchState> {
 
   void updateFilters(SearchFilters filters) {
     state = state.copyWith(filters: filters);
-    // print('[SearchState] updateFilters => '
-    //     'sort:${filters.sortBy.name}, '
-    //     'priceMin:${filters.priceMin}, priceMax:${filters.priceMax}, '
-    //     'ratingMin:${filters.ratingMin}, '
-    //     'genres:${filters.genres}, '
-    //     'language:${filters.language.name}, age:${filters.age.name}, ');
-    if (state.query.isNotEmpty) {
-      performSearch(state.query);
-    }
+    performSearch(state.query);
   }
 
   Future<void> searchWithFilters(String query, SearchFilters filters) async {
@@ -165,10 +233,37 @@ class SearchStateNotifier extends StateNotifier<SearchState> {
     state = state.copyWith(isLoadingMore: true);
     
     try {
+      // Lấy wishlist hoặc purchase IDs tùy theo searchSource
+      List<String>? wishlistMovieIds;
+      if (state.searchSource == SearchSource.wishlist) {
+        final userId = FirebaseAuth.instance.currentUser?.uid;
+        if (userId != null) {
+          final wishlistSnapshot = await FirebaseFirestore.instance
+              .collection('users')
+              .doc(userId)
+              .collection('wishlist')
+              .get();
+          
+          wishlistMovieIds = wishlistSnapshot.docs.map((doc) => doc.id).toList();
+        }
+      } else if (state.searchSource == SearchSource.purchase) {
+        final userId = FirebaseAuth.instance.currentUser?.uid;
+        if (userId != null) {
+          final purchaseSnapshot = await FirebaseFirestore.instance
+              .collection('users')
+              .doc(userId)
+              .collection('purchases')
+              .get();
+          
+          wishlistMovieIds = purchaseSnapshot.docs.map((doc) => doc.id).toList();
+        }
+      }
+      
       final results = await _repository.search(
         state.query, 
         filters: state.filters, 
-        page: state.currentPage + 1
+        page: state.currentPage + 1,
+        wishlistMovieIds: wishlistMovieIds,
       );
       
       state = state.copyWith(
@@ -185,8 +280,11 @@ class SearchStateNotifier extends StateNotifier<SearchState> {
     }
   }
 
+  void setSearchSource(SearchSource source) {
+    state = state.copyWith(searchSource: source);
+  }
 
-  // view mode
+
   void toggleShowInMode() {
     final newMode = state.showInMode == ShowInMode.category 
         ? ShowInMode.document 
@@ -198,7 +296,6 @@ class SearchStateNotifier extends StateNotifier<SearchState> {
     state = state.copyWith(showInMode: mode);
   }
 
-  // gợi ý search
   Future<void> _fetchSuggestions(String query) async {
     try {
       final suggestions = await _repository.getSuggestions(query);

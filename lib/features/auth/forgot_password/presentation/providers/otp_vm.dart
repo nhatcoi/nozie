@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:movie_fe/features/auth/forgot_password/domain/repositories/auth_repository.dart' as domain;
+import 'package:movie_fe/features/auth/forgot_password/providers/forgot_password_repository_provider.dart';
 
 class OtpVmState {
   const OtpVmState({
@@ -8,6 +10,7 @@ class OtpVmState {
     required this.secondsLeft,
     this.isLoading = false,
     this.error,
+    this.resetToken,
   });
 
   final int length;
@@ -15,6 +18,7 @@ class OtpVmState {
   final int secondsLeft;
   final bool isLoading;
   final String? error;
+  final String? resetToken;
 
   String get code => digits.join();
   bool get isFilled => digits.every((e) => e.isNotEmpty) && digits.length == length;
@@ -24,6 +28,7 @@ class OtpVmState {
     int? secondsLeft,
     bool? isLoading,
     String? error,
+    String? resetToken,
   }) =>
       OtpVmState(
         length: length,
@@ -31,6 +36,7 @@ class OtpVmState {
         secondsLeft: secondsLeft ?? this.secondsLeft,
         isLoading: isLoading ?? this.isLoading,
         error: error,
+        resetToken: resetToken ?? this.resetToken,
       );
 
   factory OtpVmState.initial(int length, {int seconds = 60}) =>
@@ -97,20 +103,28 @@ class OtpVm extends AutoDisposeFamilyNotifier<
   }
 
   Future<void> resend() async {
-    // TODO: gọi API resendOtp(email: _params.email)
-    await Future<void>.delayed(const Duration(milliseconds: 400));
-    state = state.copyWith(digits: List.filled(state.length, ''));
-    restartTimer(60);
-  }
-
-  Future<void> verify() async {
-    // TODO: gọi API verifyOtp(email: _params.email, code: state.code)
     state = state.copyWith(isLoading: true, error: null);
     try {
-      await Future<void>.delayed(const Duration(milliseconds: 800));
+      final repo = ref.read(forgotPasswordRepositoryProvider);
+      await repo.resendOtp(email: _params.email);
+      state = state.copyWith(digits: List.filled(state.length, ''));
+      restartTimer(60);
       state = state.copyWith(isLoading: false);
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
+
+  Future<String?> verify() async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      final repo = ref.read(forgotPasswordRepositoryProvider);
+      final token = await repo.verifyOtp(email: _params.email, code: state.code);
+      state = state.copyWith(isLoading: false, resetToken: token);
+      return token;
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+      return null;
     }
   }
 }

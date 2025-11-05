@@ -58,12 +58,45 @@ class PaymentScreen extends ConsumerWidget {
                 data: (_) => Column(
                   children: [
                     for (var i = 0; i < methods.length; i++) ...[
-                      _PaymentMethodRow(
-                        method: methods[i],
-                        groupValue: selectedId,
+                      InkWell(
                         onTap: () => notifier.setDefault(methods[i].id),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                ImageConstant.visaIcon,
+                                width: 40,
+                                height: 40,
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: Text(
+                                  (methods[i].brand.isNotEmpty ? methods[i].brand : t.purchase.checkout.labels.visa),
+                                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                        color: AppColors.getText(context),
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                ),
+                              ),
+                              Radio<String>(
+                                value: methods[i].id,
+                                groupValue: selectedId,
+                                onChanged: (_) => notifier.setDefault(methods[i].id),
+                                activeColor: AppColors.primary500,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      if (i != methods.length - 1) const _Divider(),
+                      if (i != methods.length - 1)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          child: Divider(
+                            height: 1,
+                            color: AppColors.getText(context).withOpacity(0.08),
+                          ),
+                        ),
                     ],
                   ],
                 ),
@@ -85,11 +118,10 @@ class PaymentScreen extends ConsumerWidget {
                   icon: const Icon(Icons.add, color: Colors.white, size: 18),
                   textColor: Colors.white,
                   onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(t.profile.payment.addNewMessage),
-                        behavior: SnackBarBehavior.floating,
-                      ),
+                    ToastNotification.showInfo(
+                      context,
+                      message: t.profile.payment.comingSoon,
+                      duration: const Duration(seconds: 3),
                     );
                   },
                   hasShadow: true,
@@ -99,86 +131,6 @@ class PaymentScreen extends ConsumerWidget {
             ],
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _PaymentMethodRow extends StatelessWidget {
-  const _PaymentMethodRow({
-    required this.method,
-    required this.groupValue,
-    required this.onTap,
-  });
-
-  final PaymentMethod method;
-  final String groupValue;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final textColor = AppColors.getText(context);
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        child: Row(
-          children: [
-            SvgPicture.asset(
-              _iconForMethod(method),
-              width: 40,
-              height: 40,
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Text(
-                method.label,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: textColor,
-                      fontWeight: FontWeight.w600,
-                    ),
-              ),
-            ),
-            Radio<String>(
-              value: method.id,
-              groupValue: groupValue,
-              onChanged: (_) => onTap(),
-              activeColor: AppColors.primary500,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  String _iconForMethod(PaymentMethod method) {
-    switch (method.brand.toLowerCase()) {
-      case 'google pay':
-        return ImageConstant.googlePayIcon;
-      case 'apple pay':
-        return ImageConstant.appleIcon;
-      case 'visa':
-        return ImageConstant.visaIcon;
-      case 'american express':
-        return ImageConstant.americanExpressIcon;
-      case 'mastercard':
-        return ImageConstant.mastercardIcon;
-      case 'paypal':
-      default:
-        return ImageConstant.paypalIcon;
-    }
-  }
-}
-
-class _Divider extends StatelessWidget {
-  const _Divider();
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      child: Divider(
-        height: 1,
-        color: AppColors.getText(context).withOpacity(0.08),
       ),
     );
   }

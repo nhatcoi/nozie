@@ -23,6 +23,8 @@ common:
   search: Search
   loading: "Loading…"
   signOut: Sign out
+  retry: Retry
+  errorPrefix: "Error:"
 
 notification:
   title: Notifications
@@ -32,6 +34,8 @@ notification:
   seeAll: See all notifications
   today: Today
   dayAgo: Days ago
+  loadFailed: Error loading notifications
+  markAllAsReadFailed(String error): "Failed to mark all as read: $error"
 
 
 # Authentication Module
@@ -45,6 +49,8 @@ auth:
   username: Username
   confirmPassword: Confirm Password
   rememberMe: Remember me
+  errors:
+    invalidCredentials: Incorrect username or password
   
   # Login Screen
   loginScreen:
@@ -53,6 +59,10 @@ auth:
     placeholder:
       email: admin@ziet.dev
       password: "●●●●●●●●●●●●"
+  
+  # OAuth Features
+  oauth:
+    featureInDevelopment: This feature is under development
   
   # Forgot Password Flow
   forgotPassword:
@@ -125,22 +135,29 @@ auth:
         title: Choose the Movie Genre You Like
         description: Select your preferred movie genre for better recommendation or you can skip it
         list:
-          action: Action
-          adventure: Adventure
-          animation: Animation
-          comedy: Comedy
-          crime: Crime
-          documentary: Documentary
-          drama: Drama
-          family: Family
-          fantasy: Fantasy
-          horror: Horror
-          mystery: Mystery
-          romance: Romance
-          sciFi: Sci-Fi
-          thriller: Thriller
-          war: War
-          western: Western
+          amNhac: Music
+          biAn: Mystery
+          chienTranh: War
+          chinhKich: Drama
+          coTrang: Historical
+          giaDinh: Family
+          haiHuoc: Comedy
+          hanhDong: Action
+          hinhSu: Crime
+          hocDuong: School
+          khoaHoc: Science
+          kinhDi: Horror
+          kinhDien: Classic
+          phieuLuu: Adventure
+          phim18: Adult 18+
+          shortDrama: Short Drama
+          taiLieu: Documentary
+          tamLy: Psychological
+          thanThoai: Mythology
+          theThao: Sport
+          tinhCam: Romance
+          vienTuong: Sci-Fi
+          voThuat: Martial Arts
       
       # Profile Information
       profile:
@@ -322,6 +339,7 @@ profile:
     title: Payment Methods
     loadError(String error): "Failed to load payment methods: $error"
     addNewMessage: "Add payment method tapped"
+    comingSoon: More payment methods coming soon
 
   notification:
     title: Notification
@@ -370,7 +388,7 @@ profile:
       video: Video
       audio: Audio
     toggles:
-      wifiOnlyDownloads: Download Over Wi-Fi Only
+      wifiOnlyDownloads: Watch over Wi-Fi Only
       autoPlayNextEpisode: Auto Play Next Episode
       continueWatching: Continue Watching from Last Position
       subtitlesEnabled: Subtitles
@@ -540,3 +558,190 @@ utils:
 
 cards:
   showIn: Show in
+ 
+# Purchase Detail Screen
+purchaseDetail:
+  title: Purchase Details
+  infoTitle: Purchase Information
+  labels:
+    movieId: Movie ID
+    downloaded: Downloaded
+    finished: Finished
+    transactions: Transactions
+    amount: Amount
+    created: Created
+    paidAt: Paid At
+    failedAt: Failed At
+    canceledAt: Canceled At
+    paymentIntent: Payment Intent
+    chargeId: Charge ID
+  states:
+    succeeded: Succeeded
+    failed: Failed
+    canceled: Canceled
+    pending: Pending
+  empty:
+    transactions: No transactions found
+    purchaseNotFound: Purchase not found
+  error:
+    generic(String error): "Error: $error"
+
+# Discover Module
+discover:
+  sections:
+    topCharts: Top Charts
+    topSelling: Top Selling
+    topFree: Top Free
+    topNewReleases: Top New Releases
+
+# Home Module
+home:
+  sections:
+    recommendedForYou: Recommended For You
+    yourPurchases: Your Purchases
+    yourWishlist: Your Wishlist
+    recentlyWatched: Recently Watched
+    exploreByGenre: Explore by Genre
+
+# Genre Module
+genre:
+  explore:
+    title: "Genre:"
+    empty: No movies found for
+    loadFailed: Failed to load movies
+
+# Purchase Module
+purchase:
+  common:
+    free: Free
+    purchased: Purchased
+    movieNotFound: Movie not found
+    comingSoon: Coming soon
+    errorPrefix: "Error:"
+  checkout:
+    title: Checkout
+    section:
+      movieSummary: Movie Summary
+      priceDetails: Price Details
+      paymentMethod: Payment Method
+    labels:
+      price: Price
+      total: Total
+      visa: Visa
+    actions:
+      confirm: Confirm
+      payNow: Pay Now
+      processing: Processing...
+    toasts:
+      addedSuccess: "Movie added successfully! 🎬"
+      paymentSuccess: "Payment successful! 🎬"
+      paymentFailed: Payment failed. Please try again.
+      paymentCanceled: Payment was canceled
+  item:
+    menu:
+      watchNow: Watch now
+      viewSeries: View Series
+      purchaseDetails: Purchase Details
+      aboutMovie: About Movie
+    snackbar:
+      viewSeriesComing: View series - coming soon
+  notifications:
+    successTitle: "Purchase Successful! 🎬"
+    successDescription: "You now own"
+
+# Movie Module
+movie:
+  details:
+    notFound: Movie not found
+    alreadyPurchased: This movie is already in your purchased library
+    quality1080p: 1080p
+    seriesFallback: Series
+  ratings:
+    title: Ratings & Reviews
+    noReviews: No reviews yet
+    rateThisFilm: Rate this Film
+    purchaseRequired: Purchase required to rate
+    writeAReview: Write a Review
+    dialog:
+      title: Write a Review
+      yourRatingPrefix: "Your rating:"
+      star: star
+      stars: stars
+      hint: Write your review...
+      cancel: Cancel
+      submit: Submit
+      submitted: Review submitted
+  info:
+    images: Images
+    cannotLoadImage: Cannot load image
+    episodesList: Episodes
+    language: Language
+    genres: Genres
+    countries: Countries
+    directors: Directors
+    actors: Actors
+    aboutThisFilm: About This Film
+    trailer: Trailer
+    watchTrailer: Watch trailer
+    episodePrefix: Episode
+    episodesPrefix: Episodes
+  player:
+    noAccess: You do not have access to this movie
+    videoUrlMissing: Video URL not available
+    tryingFallback: Trying fallback URL...
+    cannotLoadM3u8: Cannot load video from m3u8 URL
+    cannotLoadBoth: Cannot load video from both m3u8 and embed URL
+    unknownError: Unknown error
+    cannotOpenTrailer: Cannot open trailer
+    playbackSpeed: Playback Speed
+    quality: Quality
+  hero:
+    ratings: ratings
+    reviews: reviews
+    duration: duration
+    quality: quality
+    watched: watched
+    watchNow: Watch now
+    aboutThisFilm: About This Film
+    viewMore: View More
+  similar:
+    title: Similar Movies
+  report:
+    headerTitle: Report an Issue
+    headerSubtitle: Help us improve the service quality
+    movieInfo: Movie Information
+    labels:
+      movieName: Movie Name
+      director: Director
+      videoUrl: Video URL
+      error: Error
+    issueTypeLabel: Issue Type *
+    descriptionLabel: Detailed Description *
+    descriptionHint: Describe the issue you encountered...
+    validations:
+      selectIssue: Please select an issue type
+      descRequired: Please enter a detailed description
+      descMin: Description must be at least 10 characters
+    actions:
+      cancel: Cancel
+      submit: Submit Report
+      sending: Sending...
+    success: Report submitted successfully. Thank you for your feedback!
+    failurePrefix: "Failed to submit report:"
+# Wishlist Module
+wishlist:
+  common:
+    retry: Retry
+    errorPrefix: "Error:"
+    movieNotFound: Movie not found
+  item:
+    menu:
+      removeFromWishlist: Remove from Wishlist
+      share: Share
+      aboutMovie: About Movie
+    snackbar:
+      removed: Removed from wishlist
+      shareComing: Share functionality coming soon
+  empty:
+    title: Your wishlist is empty
+    subtitle: Add movies you want to watch later
