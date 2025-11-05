@@ -75,6 +75,7 @@ class _StepProfileState extends ConsumerState<StepProfile> {
       'phone': phone,
       'dob': dob,
       'country': country,
+      if (_selectedImage != null) 'avatarPath': _selectedImage!.path,
     };
 
     print('StepProfile input: $profile');

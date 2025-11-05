@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/core/widgets/lined_text_divider.dart';
-import 'package:movie_fe/core/widgets/social_button.dart';
+import 'package:movie_fe/core/common/ui_state.dart';
+import 'package:movie_fe/core/widgets/feedback/toast_notification.dart';
+import 'package:movie_fe/core/widgets/buttons/social_button.dart';
+import 'package:movie_fe/core/widgets/layout/lined_text_divider.dart';
 import 'package:movie_fe/features/auth/login/presentation/providers/login_provider.dart';
-import 'package:movie_fe/core/widgets/app_checkbox.dart';
+import 'package:movie_fe/core/widgets/selection/app_checkbox.dart';
+import 'package:movie_fe/features/auth/login/presentation/notifier/login_notifier.dart';
 
-import '../../../../routes/app_routers.dart';
+import '../../../../routes/app_router.dart';
+import 'package:go_router/go_router.dart';
 
 final rememberMeProvider = StateProvider<bool>((ref) => false);
 
@@ -26,6 +31,63 @@ class LoginScreen extends ConsumerWidget {
     final userNode = ref.watch(userFocusProvider);
     final passNode = ref.watch(passFocusProvider);
 
+    final loginState = ref.watch(loginNotifierProvider);
+    final loginNotifier = ref.read(loginNotifierProvider.notifier);
+
+    Future<void> _handleEmailSignIn() async {
+      final email = userCtl.text.trim();
+      final password = passCtl.text.trim();
+
+      final emailError = ValidationUtils.validateEmail(email, context);
+      if (emailError != null) {
+        ToastNotification.showError(
+          context,
+          message: emailError,
+        );
+        return;
+      }
+
+      if (password.isEmpty) {
+        ToastNotification.showError(
+          context,
+          message: t.validation.password.required,
+        );
+        return;
+      }
+
+      await loginNotifier.signIn(email: email, password: password);
+    }
+
+    Future<void> _handleGoogleSignIn() async {
+      ToastNotification.showInfo(
+        context,
+        message: t.auth.oauth.featureInDevelopment,
+      );
+      // TODO: Implement Google sign in
+      // await loginNotifier.signInWithGoogle();
+    }
+
+    ref.listen<UIState<bool>>(loginNotifierProvider, (previous, next) {
+      if (next is Success<bool>) {
+        if (context.mounted) {
+          context.go(AppRouter.home);
+        }
+        loginNotifier.reset();
+      } else if (next is Error<bool>) {
+        if (context.mounted) {
+          final raw = next.message ?? '';
+          final friendly = raw.contains('The supplied auth credential is malformed or has expired')
+              ? t.auth.errors.invalidCredentials
+              : raw;
+          ToastNotification.showError(
+            context,
+            message: friendly,
+          );
+        }
+        loginNotifier.reset();
+      }
+    });
+
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -37,7 +99,7 @@ class LoginScreen extends ConsumerWidget {
         },
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 16, 24, 48),
+            padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -50,7 +112,7 @@ class LoginScreen extends ConsumerWidget {
                 const SizedBox(height: 32),
 
                 Text(
-                  '${t.auth.username} / ${t.auth.email}',
+                  t.auth.email,
                   style: type.labelLarge?.copyWith(fontWeight: FontWeight.w700),
                 ),
 
@@ -58,7 +120,7 @@ class LoginScreen extends ConsumerWidget {
                   hintText: t.auth.loginScreen.placeholder.email,
                   controller: userCtl,
                   focusNode: userNode,
-                  validator: (value) => ValidationUtils.validateEmail2(value, context),
+                  validator: (value) => ValidationUtils.validateEmail(value, context),
                   onSubmitted: (_) =>
                       FocusScope.of(context).requestFocus(passNode),
                 ),
@@ -100,7 +162,7 @@ class LoginScreen extends ConsumerWidget {
                   alignment: Alignment.center, // căn giữa text
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, AppRouters.forgotPassword);
+                      context.push(AppRouter.forgotPassword);
                     },
                     child: Text(
                       t.auth.forgotPassword.title,
@@ -127,7 +189,8 @@ class LoginScreen extends ConsumerWidget {
                           height: 24,
                         ),
                         onPressed: () {
-                          // TODO: Google login
+                          if (loginState is Loading<bool>) return;
+                          _handleGoogleSignIn();
                         },
                       ),
                     ),
@@ -140,7 +203,10 @@ class LoginScreen extends ConsumerWidget {
                           color: isDark ? AppColors.white : AppColors.black,
                         ),
                         onPressed: () {
-                          // TODO: Apple login
+                          ToastNotification.showInfo(
+                            context,
+                            message: t.auth.oauth.featureInDevelopment,
+                          );
                         },
                       ),
                     ),
@@ -152,27 +218,27 @@ class LoginScreen extends ConsumerWidget {
                           height: 24,
                         ),
                         onPressed: () {
-                          // TODO: Facebook login
+                          ToastNotification.showInfo(
+                            context,
+                            message: t.auth.oauth.featureInDevelopment,
+                          );
                         },
                       ),
                     ),
                   ],
                 ),
 
-                const Spacer(),
+                Gap(24),
+                Spacer(),
 
                 PrimaryButton(
                   text: t.auth.signIn,
-                  onPressed: () {
-                    if(userCtl.text.isNotEmpty && passCtl.text.isNotEmpty) {
-                      Navigator.pushNamed(context, AppRouters.home);
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(t.validation.general.fillAllFields))
-                      );
-                    }
-
-                  },
+                  isLoading: loginState is Loading<bool>,
+                  onPressed: loginState is Loading<bool>
+                      ? null
+                      : () {
+                          _handleEmailSignIn();
+                        },
                 ),
               ],
             ),

@@ -41,6 +41,11 @@ dependencies:
   flutter_riverpod: ^2.4.10
   riverpod_annotation: ^2.3.4
   shared_preferences: ^2.3.2
+  firebase_core: ^3.6.0
+  firebase_auth: ^5.3.0
+  firebase_storage: ^12.3.2
+  google_sign_in: ^6.2.1
+  cloud_firestore: ^5.4.4
   
   # Internationalization with slang
   slang: ^3.32.0
@@ -49,12 +54,23 @@ dependencies:
   # UI dependencies
   flutter_svg: ^2.0.10+1
   image_picker: ^1.0.7
-  http: ^1.1.0
 
+  # Routing
+  go_router: ^14.2.0
 
+  # Video player
+  video_player: ^2.9.2
 
- # add equatable
+  # URL launcher for opening external or in-app web views
+  url_launcher: ^6.3.0
+
+  # Stripe Payment
+  flutter_stripe: ^12.1.0
+
+  # add equatable
   equatable: ^2.0.7
+  gap: ^3.0.1
+  intl: ^0.20.2
 
 
 dev_dependencies:
@@ -82,7 +98,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "lib/assets/images/logo_app.png"
+  image_path: "lib/assets/images/app/logo_app.png"
 
 # The following section is specific to Flutter packages.
 flutter:
@@ -97,8 +113,18 @@ flutter:
   assets:
     - lib/assets/fonts/Urbanist/
     - lib/assets/images/
-    - lib/assets/images/icons/
+    - lib/assets/images/app/
+    - lib/assets/images/common/
     - lib/assets/images/welcome/
+    - lib/assets/images/icons/
+    - lib/assets/images/icons/auth/
+    - lib/assets/images/icons/navigation/
+    - lib/assets/images/icons/common/
+    - lib/assets/images/icons/action/
+    - lib/assets/images/icons/profile/
+    - lib/assets/images/icons/payment/
+    - lib/assets/images/icons/contact/
+    - lib/assets/images/notifications/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

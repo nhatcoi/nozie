@@ -36,6 +36,11 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
         }
+        debug {
+            // Tối ưu tốc độ build cho debug mode
+            isMinifyEnabled = false
+            isShrinkResources = false
+        }
     }
 }
 

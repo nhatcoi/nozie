@@ -22,7 +22,13 @@ class AppColors{
   
   static Color getTextSecondary(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark 
-        ? greyscale400 
+        ? greyscale400
+        : greyscale600;
+  }
+
+  static Color getTextThird(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? greyscale300
         : greyscale600;
   }
 
@@ -32,6 +38,17 @@ class AppColors{
         : white;
   }
 
+  static Color getAutoLayoutBg(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? dark2
+        : greyscale50;
+  }
+
+  static Color getLine(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? dark4
+        : greyscale200;
+  }
 
 
   static const Color primary500 = Color(0xFFF89300);

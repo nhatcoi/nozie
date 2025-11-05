@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/core/widgets/numeric_keyboard.dart';
+import 'package:movie_fe/core/widgets/inputs/numeric_keyboard.dart';
 import 'package:movie_fe/features/auth/forgot_password/presentation/providers/otp_vm.dart';
 import 'package:movie_fe/features/auth/forgot_password/presentation/widgets/otp_input_controller.dart';
 import 'package:movie_fe/features/auth/forgot_password/presentation/widgets/otp_input_group.dart';
 import 'package:movie_fe/features/auth/forgot_password/presentation/widgets/otp_countdown_widget.dart';
-import 'package:movie_fe/routes/app_routers.dart';
+import 'package:movie_fe/routes/app_router.dart';
+import 'package:go_router/go_router.dart';
 
 class ForgotPasswordOtpScreen extends ConsumerStatefulWidget {
   const ForgotPasswordOtpScreen({
@@ -122,8 +123,15 @@ class _ForgotPasswordOtpScreenState
 
                   Column(
                     children: [
-                      PrimaryButton(text: t.common.confirm, onPressed: () {
-                        Navigator.pushNamed(context, AppRouters.resetPassword);
+                      PrimaryButton(text: t.common.confirm, onPressed: () async {
+                        final token = await otpController.verify();
+                        if (token != null && token.isNotEmpty) {
+                          if (!mounted) return;
+                          context.push(AppRouter.resetPassword, extra: {
+                            'email': widget.email,
+                            'resetToken': token,
+                          });
+                        }
                       }),
                     ],
                   ),

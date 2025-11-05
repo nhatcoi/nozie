@@ -1,8 +1,11 @@
-import '../entities/user_registration.dart';
+import '../models/user_registration.dart';
 
 abstract class AuthRepository {
-  Future<void> registerUser(UserReg userRegistration);
-  Future<bool> checkEmailAvailability(String email);
-  Future<bool> checkUsernameAvailability(String username);
+  Future<void> register(
+    UserReg userRegistration, {
+    String? avatarUrl,
+  });
+  Future<void> signIn({required String email, required String password});
+  Future<void> signInWithGoogle();
 }
 

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:movie_fe/core/widgets/modal.dart';
+import 'package:go_router/go_router.dart';
+import 'package:movie_fe/core/widgets/feedback/modal.dart';
+import '../../../../../routes/app_router.dart';
 import '../../../../../core/app_export.dart';
 import '../../../../../core/common/ui_state.dart';
-import '../viewmodel/signup_viewmodel.dart';
+import '../notifier/signup_notifier.dart';
 import '../models/signup_step.dart';
-import '../../domain/entities/user_registration.dart';
+import '../../domain/models/user_registration.dart';
 import 'steps/step_gender.dart';
 import 'steps/step_age.dart';
 import 'steps/step_genre.dart';
@@ -94,9 +96,9 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
   }
 
   Future<void> _handleSignUp() async {
-    final signupViewModel = ref.read(signupViewModelProvider.notifier);
+    final signupNotifier = ref.read(signupNotifierProvider.notifier);
 
-    final result = await signupViewModel.registerUser(
+    final result = await signupNotifier.registerUser(
       gender: selectedGender,
       age: selectedAge,
       genres: selectedGenres,
@@ -116,7 +118,7 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
           iconPath: ImageConstant.successIcon,
           primaryButton: PrimaryButton(
             text: 'OK',
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => context.go(AppRouter.home),
           ),
         );
         break;
@@ -129,11 +131,11 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
           iconPath: ImageConstant.successIcon,
           primaryButton: PrimaryButton(
             text: 'Close',
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => context.go(AppRouter.welcome),
           ),
           secondaryButton: SecondaryButton(
             text: 'ok',
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => context.go(AppRouter.welcome),
           ),
         );
         break;
@@ -214,7 +216,7 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
             child: GestureDetector(
               onTap: () {
                 if (currentStep.isFirst) {
-                  Navigator.pop(context);
+                  context.pop();
                 } else {
                   _previousStep();
                 }
@@ -291,7 +293,8 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
   Widget _buildButtonBar() {
     final isLastStep = currentStep.isLast;
     final isGenreStep = currentStep.canSkip;
-    final signupState = ref.watch(signupViewModelProvider);
+    final signupState = ref.watch(signupNotifierProvider);
+    final isLoading = signupState is Loading<UserReg>;
 
     return Container(
       padding: const EdgeInsets.all(24),
@@ -326,11 +329,12 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
                   ? context.i18n.auth.signUp
                   : context.i18n.common.continueText,
               onPressed: isLastStep
-                  ? (_canNextStep() ? _handleSignUp : null)
+                  ? (_canNextStep() && !isLoading ? _handleSignUp : null)
                   : (_canNextStep() ? _nextStep : null),
               backgroundColor: (_canNextStep()
                   ? AppColors.primary500
                   : AppColors.getSurface(context)),
+              isLoading: isLastStep && isLoading,
             ),
           ),
         ],
