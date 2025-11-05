@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/app_export.dart';
 import '../../../../core/widgets/image_utils.dart';
+import '../../../../core/widgets/feedback/toast_notification.dart';
 import '../../../../core/repositories/movie_repository.dart';
 import '../../../../routes/app_router.dart';
 import '../../models/purchase_item.dart' as purchase_model;
@@ -216,31 +217,25 @@ class _PurchaseItemWidgetState extends ConsumerState<PurchaseItemWidget> {
               },
             );
           } else if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(context.i18n.purchase.common.movieNotFound),
-                behavior: SnackBarBehavior.floating,
-              ),
+            ToastNotification.showError(
+              context,
+              message: context.i18n.purchase.common.movieNotFound,
             );
           }
         } catch (e) {
           if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('${context.i18n.purchase.common.errorPrefix} ${e.toString()}'),
-                behavior: SnackBarBehavior.floating,
-              ),
+            ToastNotification.showError(
+              context,
+              message: '${context.i18n.purchase.common.errorPrefix} ${e.toString()}',
             );
           }
         }
         break;
       case PurchaseAction.viewSeries:
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(context.i18n.purchase.item.snackbar.viewSeriesComing),
-              behavior: SnackBarBehavior.floating,
-            ),
+          ToastNotification.showInfo(
+            context,
+            message: context.i18n.purchase.item.snackbar.viewSeriesComing,
           );
         }
         break;
@@ -262,20 +257,16 @@ class _PurchaseItemWidgetState extends ConsumerState<PurchaseItemWidget> {
               extra: {'movie': movie},
             );
           } else if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(context.i18n.purchase.common.movieNotFound),
-                behavior: SnackBarBehavior.floating,
-              ),
+            ToastNotification.showError(
+              context,
+              message: context.i18n.purchase.common.movieNotFound,
             );
           }
         } catch (e) {
           if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('${context.i18n.purchase.common.errorPrefix} ${e.toString()}'),
-                behavior: SnackBarBehavior.floating,
-              ),
+            ToastNotification.showError(
+              context,
+              message: '${context.i18n.purchase.common.errorPrefix} ${e.toString()}',
             );
           }
         }

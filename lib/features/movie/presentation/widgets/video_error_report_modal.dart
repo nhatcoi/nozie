@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import '../../../../core/app_export.dart';
+import '../../../../core/widgets/feedback/toast_notification.dart';
 import '../../../../core/models/movie.dart';
 
 class VideoErrorReportModal extends ConsumerStatefulWidget {
@@ -46,8 +47,9 @@ class _VideoErrorReportModalState extends ConsumerState<VideoErrorReportModal> {
   Future<void> _submitReport() async {
     if (!_formKey.currentState!.validate() || _selectedIssueType == null) {
       if (_selectedIssueType == null && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(context.i18n.movie.report.validations.selectIssue), behavior: SnackBarBehavior.floating),
+        ToastNotification.showError(
+          context,
+          message: context.i18n.movie.report.validations.selectIssue,
         );
       }
       return;
@@ -76,25 +78,19 @@ class _VideoErrorReportModalState extends ConsumerState<VideoErrorReportModal> {
       });
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(context.i18n.movie.report.success),
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: AppColors.success,
-            duration: const Duration(seconds: 3),
-          ),
+        ToastNotification.showSuccess(
+          context,
+          message: context.i18n.movie.report.success,
+          duration: const Duration(seconds: 3),
         );
         Navigator.of(context).pop(true);
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${context.i18n.movie.report.failurePrefix} $e'),
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: AppColors.warning,
-            duration: const Duration(seconds: 3),
-          ),
+        ToastNotification.showError(
+          context,
+          message: '${context.i18n.movie.report.failurePrefix} $e',
+          duration: const Duration(seconds: 3),
         );
       }
     } finally {

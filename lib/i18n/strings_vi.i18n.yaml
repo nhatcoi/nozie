@@ -59,6 +59,10 @@ auth:
       email: admin@ziet.dev
       password: "●●●●●●●●●●●●"
   
+  # OAuth Features
+  oauth:
+    featureInDevelopment: Tính năng đang phát triển
+  
   # Forgot Password Flow
   forgotPassword:
     title: "Quên Mật Khẩu 🔑"

@@ -9,6 +9,7 @@ import 'package:video_player/video_player.dart';
 import 'package:movie_fe/core/widgets/loading.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/app_export.dart';
+import '../../../../core/widgets/feedback/toast_notification.dart';
 import '../../../../core/models/movie.dart';
 import '../../models/playback_state.dart';
 import '../../services/playback_state_service.dart';
@@ -81,11 +82,9 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     final access = await MovieWatchService().hasAccess(widget.movie.id);
     if (!access) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(context.i18n.movie.player.noAccess),
-            behavior: SnackBarBehavior.floating,
-          ),
+        ToastNotification.showError(
+          context,
+          message: context.i18n.movie.player.noAccess,
         );
         Navigator.of(context).pop();
       }
@@ -114,12 +113,10 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     
     if (videoUrl == null || videoUrl.isEmpty) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(context.i18n.movie.player.videoUrlMissing),
-            behavior: SnackBarBehavior.floating,
-            duration: Duration(seconds: 3),
-          ),
+        ToastNotification.showError(
+          context,
+          message: context.i18n.movie.player.videoUrlMissing,
+          duration: const Duration(seconds: 3),
         );
         Navigator.of(context).pop();
       }
@@ -139,12 +136,10 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
       final fallbackUrl = _getFallbackVideoUrl(widget.movie);
       if (fallbackUrl != null && fallbackUrl != videoUrl) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(context.i18n.movie.player.tryingFallback),
-              behavior: SnackBarBehavior.floating,
-              duration: Duration(seconds: 2),
-            ),
+          ToastNotification.showInfo(
+            context,
+            message: context.i18n.movie.player.tryingFallback,
+            duration: const Duration(seconds: 2),
           );
         }
         initialized = await _tryInitializeVideo(fallbackUrl, savedState);
@@ -400,11 +395,9 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
 
   void _showOpenTrailerError() {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(context.i18n.movie.player.cannotOpenTrailer),
-        behavior: SnackBarBehavior.floating,
-      ),
+    ToastNotification.showError(
+      context,
+      message: context.i18n.movie.player.cannotOpenTrailer,
     );
   }
 

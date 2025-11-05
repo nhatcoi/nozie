@@ -59,7 +59,12 @@ class LoginScreen extends ConsumerWidget {
     }
 
     Future<void> _handleGoogleSignIn() async {
-      await loginNotifier.signInWithGoogle();
+      ToastNotification.showInfo(
+        context,
+        message: t.auth.oauth.featureInDevelopment,
+      );
+      // TODO: Implement Google sign in
+      // await loginNotifier.signInWithGoogle();
     }
 
     ref.listen<UIState<bool>>(loginNotifierProvider, (previous, next) {
@@ -198,7 +203,10 @@ class LoginScreen extends ConsumerWidget {
                           color: isDark ? AppColors.white : AppColors.black,
                         ),
                         onPressed: () {
-                          // TODO: Apple login
+                          ToastNotification.showInfo(
+                            context,
+                            message: t.auth.oauth.featureInDevelopment,
+                          );
                         },
                       ),
                     ),
@@ -210,7 +218,10 @@ class LoginScreen extends ConsumerWidget {
                           height: 24,
                         ),
                         onPressed: () {
-                          // TODO: Facebook login
+                          ToastNotification.showInfo(
+                            context,
+                            message: t.auth.oauth.featureInDevelopment,
+                          );
                         },
                       ),
                     ),

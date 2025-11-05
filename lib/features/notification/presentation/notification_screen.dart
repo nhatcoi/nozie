@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movie_fe/core/app_export.dart';
+import 'package:movie_fe/core/widgets/feedback/toast_notification.dart';
 import 'package:movie_fe/features/notification/presentation/widgets/notification_card.dart';
 import 'package:movie_fe/features/notification/providers/notification_providers.dart';
 import 'package:movie_fe/routes/app_router.dart';
@@ -34,11 +35,9 @@ class NotificationScreen extends ConsumerWidget {
                   await notificationRepo.markAllAsRead();
                 } catch (e) {
                   if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(t.notification.markAllAsReadFailed(error: e.toString())),
-                        behavior: SnackBarBehavior.floating,
-                      ),
+                    ToastNotification.showError(
+                      context,
+                      message: t.notification.markAllAsReadFailed(error: e.toString()),
                     );
                   }
                 }
@@ -107,11 +106,9 @@ class NotificationScreen extends ConsumerWidget {
                       await notificationRepo.markAsRead(notification.id);
                     } catch (e) {
                       if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('${t.common.errorPrefix} ${e.toString()}'),
-                            behavior: SnackBarBehavior.floating,
-                          ),
+                        ToastNotification.showError(
+                          context,
+                          message: '${t.common.errorPrefix} ${e.toString()}',
                         );
                       }
                     }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:movie_fe/core/app_export.dart';
+import 'package:movie_fe/core/widgets/feedback/toast_notification.dart';
 import 'package:movie_fe/features/profile/models/security_settings.dart';
 import 'package:movie_fe/features/profile/notifiers/security_notifier.dart';
 
@@ -41,14 +42,10 @@ class SecurityScreen extends ConsumerWidget {
                     Navigator.of(sheetContext).maybePop();
                   }
                   if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          t.profile.security.actions
-                              .signOutDevice(name: session.name),
-                        ),
-                        behavior: SnackBarBehavior.floating,
-                      ),
+                    ToastNotification.showSuccess(
+                      context,
+                      message: t.profile.security.actions
+                          .signOutDevice(name: session.name),
                     );
                   }
                 },
@@ -58,13 +55,9 @@ class SecurityScreen extends ConsumerWidget {
                     Navigator.of(sheetContext).maybePop();
                   }
                   if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          t.profile.security.actions.signOutAll,
-                        ),
-                        behavior: SnackBarBehavior.floating,
-                      ),
+                    ToastNotification.showSuccess(
+                      context,
+                      message: t.profile.security.actions.signOutAll,
                     );
                   }
                 },
@@ -150,11 +143,9 @@ class SecurityScreen extends ConsumerWidget {
               SecondaryButton(
                 text: t.profile.security.actions.changePassword,
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(t.profile.security.actions.changePasswordMessage),
-                      behavior: SnackBarBehavior.floating,
-                    ),
+                  ToastNotification.showInfo(
+                    context,
+                    message: t.profile.security.actions.changePasswordMessage,
                   );
                 },
                 hasShadow: false,

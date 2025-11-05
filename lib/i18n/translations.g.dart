@@ -4,7 +4,7 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 1002 (501 per locale)
+/// Strings: 1004 (502 per locale)
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -241,6 +241,7 @@ class _TranslationsAuthEn {
 	String get rememberMe => 'Remember me';
 	late final _TranslationsAuthErrorsEn errors = _TranslationsAuthErrorsEn._(_root);
 	late final _TranslationsAuthLoginScreenEn loginScreen = _TranslationsAuthLoginScreenEn._(_root);
+	late final _TranslationsAuthOauthEn oauth = _TranslationsAuthOauthEn._(_root);
 	late final _TranslationsAuthForgotPasswordEn forgotPassword = _TranslationsAuthForgotPasswordEn._(_root);
 	late final _TranslationsAuthRegisterEn register = _TranslationsAuthRegisterEn._(_root);
 }
@@ -471,6 +472,16 @@ class _TranslationsAuthLoginScreenEn {
 	String get title => 'Hello there 👋';
 	String get description => 'Please enter your username/email and password to sign in.';
 	late final _TranslationsAuthLoginScreenPlaceholderEn placeholder = _TranslationsAuthLoginScreenPlaceholderEn._(_root);
+}
+
+// Path: auth.oauth
+class _TranslationsAuthOauthEn {
+	_TranslationsAuthOauthEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get featureInDevelopment => 'This feature is under development';
 }
 
 // Path: auth.forgotPassword
@@ -2370,6 +2381,7 @@ class _TranslationsAuthVi extends _TranslationsAuthEn {
 	@override String get rememberMe => 'Ghi nhớ tôi';
 	@override late final _TranslationsAuthErrorsVi errors = _TranslationsAuthErrorsVi._(_root);
 	@override late final _TranslationsAuthLoginScreenVi loginScreen = _TranslationsAuthLoginScreenVi._(_root);
+	@override late final _TranslationsAuthOauthVi oauth = _TranslationsAuthOauthVi._(_root);
 	@override late final _TranslationsAuthForgotPasswordVi forgotPassword = _TranslationsAuthForgotPasswordVi._(_root);
 	@override late final _TranslationsAuthRegisterVi register = _TranslationsAuthRegisterVi._(_root);
 }
@@ -2600,6 +2612,16 @@ class _TranslationsAuthLoginScreenVi extends _TranslationsAuthLoginScreenEn {
 	@override String get title => 'Xin chào bạn 👋';
 	@override String get description => 'Điền email/tên đăng nhập và mật khẩu để tiếp tục nha ✨';
 	@override late final _TranslationsAuthLoginScreenPlaceholderVi placeholder = _TranslationsAuthLoginScreenPlaceholderVi._(_root);
+}
+
+// Path: auth.oauth
+class _TranslationsAuthOauthVi extends _TranslationsAuthOauthEn {
+	_TranslationsAuthOauthVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get featureInDevelopment => 'Tính năng đang phát triển';
 }
 
 // Path: auth.forgotPassword
@@ -4427,6 +4449,7 @@ extension on Translations {
 			case 'auth.loginScreen.description': return 'Please enter your username/email and password to sign in.';
 			case 'auth.loginScreen.placeholder.email': return 'admin@ziet.dev';
 			case 'auth.loginScreen.placeholder.password': return '●●●●●●●●●●●●';
+			case 'auth.oauth.featureInDevelopment': return 'This feature is under development';
 			case 'auth.forgotPassword.title': return 'Forgot Password 🔑';
 			case 'auth.forgotPassword.description': return 'Enter your email address. We will send an OTP code for verification in the next step.';
 			case 'auth.forgotPassword.orContinueWith': return 'or continue with';
@@ -4936,6 +4959,7 @@ extension on _TranslationsVi {
 			case 'auth.loginScreen.description': return 'Điền email/tên đăng nhập và mật khẩu để tiếp tục nha ✨';
 			case 'auth.loginScreen.placeholder.email': return 'admin@ziet.dev';
 			case 'auth.loginScreen.placeholder.password': return '●●●●●●●●●●●●';
+			case 'auth.oauth.featureInDevelopment': return 'Tính năng đang phát triển';
 			case 'auth.forgotPassword.title': return 'Quên Mật Khẩu 🔑';
 			case 'auth.forgotPassword.description': return 'Nhập email của bạn, chúng tôi sẽ gửi mã OTP để xác minh ở bước tiếp theo.';
 			case 'auth.forgotPassword.orContinueWith': return 'hoặc tiếp tục với';

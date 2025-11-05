@@ -62,24 +62,18 @@ class _WishlistButton extends ConsumerWidget {
           await repo.toggleWishlist(movieId);
           if (context.mounted) {
             final isIn = await repo.isInWishlist(movieId);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  isIn ? 'Added to wishlist' : 'Removed from wishlist',
-                ),
-                behavior: SnackBarBehavior.floating,
-                duration: const Duration(seconds: 2),
-              ),
+            ToastNotification.showSuccess(
+              context,
+              message: isIn ? 'Added to wishlist' : 'Removed from wishlist',
+              duration: const Duration(seconds: 2),
             );
           }
         } catch (e) {
           if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Error: ${e.toString()}'),
-                behavior: SnackBarBehavior.floating,
-                duration: const Duration(seconds: 2),
-              ),
+            ToastNotification.showError(
+              context,
+              message: 'Error: ${e.toString()}',
+              duration: const Duration(seconds: 2),
             );
           }
         }
@@ -462,26 +456,20 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                       final repo = ref.read(wishlistRepositoryProvider);
                       await repo.toggleWishlist(movie.id);
                       if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              isInWishlistAsync?.value ?? false
-                                  ? 'Removed from wishlist'
-                                  : 'Added to wishlist',
-                            ),
-                            behavior: SnackBarBehavior.floating,
-                            duration: const Duration(seconds: 2),
-                          ),
+                        ToastNotification.showSuccess(
+                          context,
+                          message: isInWishlistAsync?.value ?? false
+                              ? 'Removed from wishlist'
+                              : 'Added to wishlist',
+                          duration: const Duration(seconds: 2),
                         );
                       }
                     } catch (e) {
                       if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Error: ${e.toString()}'),
-                            behavior: SnackBarBehavior.floating,
-                            duration: const Duration(seconds: 2),
-                          ),
+                        ToastNotification.showError(
+                          context,
+                          message: 'Error: ${e.toString()}',
+                          duration: const Duration(seconds: 2),
                         );
                       }
                     }

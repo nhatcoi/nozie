@@ -142,30 +142,15 @@ class DeviceSession extends Equatable {
   static const defaults = <DeviceSession>[
     DeviceSession(
       id: 'device-iphone',
-      name: 'iPhone 15 Pro',
-      location: 'Ho Chi Minh City, Vietnam',
+      name: 'iPhone 16 Plus',
+      location: 'Hanoi, Vietnam',
       status: 'Active now',
       lastActive: 'Just now',
       platform: DevicePlatform.ios,
       isCurrent: true,
     ),
-    DeviceSession(
-      id: 'device-mac',
-      name: 'MacBook Air',
-      location: 'Ho Chi Minh City, Vietnam',
-      status: 'Signed in 2 days ago',
-      lastActive: '2 days ago',
-      platform: DevicePlatform.macos,
-    ),
-    DeviceSession(
-      id: 'device-tablet',
-      name: 'Pixel Tablet',
-      location: 'Da Nang, Vietnam',
-      status: 'Signed out',
-      lastActive: '1 week ago',
-      platform: DevicePlatform.android,
-    ),
   ];
+
 
   @override
   List<Object?> get props => [

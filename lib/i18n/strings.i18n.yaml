@@ -60,6 +60,10 @@ auth:
       email: admin@ziet.dev
       password: "●●●●●●●●●●●●"
   
+  # OAuth Features
+  oauth:
+    featureInDevelopment: This feature is under development
+  
   # Forgot Password Flow
   forgotPassword:
     title: "Forgot Password 🔑"
