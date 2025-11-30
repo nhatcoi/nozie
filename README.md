@@ -1,16 +1,63 @@
-# movie_fe
+# Nozie - Movie Streaming App
 
-A new Flutter project.
+A movie streaming application built with Flutter.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- 🔐 **Authentication**: Login, registration, password recovery with Firebase Auth
+- 🏠 **Home**: Discover movies by genre and trending content
+- 🔍 **Search**: Advanced movie search with filters
+- ❤️ **Wishlist**: Save favorite movies
+- 💳 **Payment**: Stripe integration for movie purchases
+- 📱 **Video Player**: Built-in video player with playback controls
+- 🌐 **Internationalization**: Support for Vietnamese and English
+- 🌙 **Dark Mode**: Light and dark theme support
+- 🔔 **Notifications**: In-app notification system
 
-A few resources to get you started if this is your first Flutter project:
+## Tech Stack
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Frontend (Flutter)
+- **State Management**: Riverpod
+- **Routing**: GoRouter
+- **Backend**: Firebase (Auth, Firestore, Storage)
+- **Payment**: Stripe
+- **i18n**: Slang
+- **UI**: Material Design with custom theme
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Backend (Node.js)
+- Express server for Stripe payment processing
+- Firebase Admin SDK
+- Email service with Nodemailer
+
+## Installation
+
+### Requirements
+- Flutter SDK ^3.8.1
+- Node.js (for backend)
+- Firebase project with service account key
+
+## Demo
+
+Watch the app demo: [Demo Video](https://drive.google.com/file/d/1kuqE5ovGwGaspJyN6Eh5gFMxHCyMnfME/view?usp=sharing)
+
+## Project Structure
+
+```
+lib/
+├── app/              # App configuration
+├── core/             # Core utilities, widgets, services
+├── features/         # Feature modules
+│   ├── auth/         # Authentication
+│   ├── home/         # Home screen
+│   ├── discover/     # Discover movies
+│   ├── movie/        # Movie details & player
+│   ├── search/       # Search functionality
+│   ├── wishlist/     # Wishlist
+│   ├── purchase/     # Purchase & payment
+│   └── profile/      # User profile
+├── routes/           # Navigation & routing
+└── i18n/             # Internationalization
+
+backend/
+└── server.js         # Express server for Stripe
+```
