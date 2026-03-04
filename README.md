@@ -1,5 +1,7 @@
 # Nozie - Movie Streaming App
 
+> **→ Upgraded version (Nozie Platform - Microservices with Java Spring):** [ndviet0303/SA25-26_ClassN02_Group_3](https://github.com/ndviet0303/SA25-26_ClassN02_Group_3)
+
 A movie streaming application built with Flutter.
 
 ## Features
