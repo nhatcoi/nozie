@@ -1,0 +1,17 @@
+{
+  "name": "nozie-import-firestore",
+  "version": "1.0.0",
+  "private": true,
+  "description": "One-off migration of the movie catalog from Firestore to the Nozie PostgreSQL database",
+  "bin": { "nozie-import": "src/cli.js" },
+  "scripts": {
+    "test": "node --test",
+    "export": "node src/cli.js export",
+    "import": "node src/cli.js import"
+  },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "firebase-admin": "^12.7.0",
+    "pg": "^8.13.1"
+  }
+}
