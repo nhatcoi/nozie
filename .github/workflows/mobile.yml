@@ -1,0 +1,29 @@
+name: mobile
+
+on:
+  push:
+    branches: [master]
+    paths: ['apps/mobile/**', '.github/workflows/mobile.yml']
+  pull_request:
+    paths: ['apps/mobile/**', '.github/workflows/mobile.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      # Existing warnings are tolerated for now; errors fail the build.
+      - run: flutter analyze --no-fatal-infos --no-fatal-warnings
+      - run: flutter test
+      - run: flutter build web --dart-define=API_BASE_URL=https://api.example.invalid/api/v1

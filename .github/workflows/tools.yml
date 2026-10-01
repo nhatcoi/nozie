@@ -1,0 +1,38 @@
+name: tools
+
+on:
+  push:
+    branches: [master]
+    paths: ['tools/**', 'services/api/src/main/resources/db/migration/**']
+  pull_request:
+    paths: ['tools/**', 'services/api/src/main/resources/db/migration/**']
+
+permissions:
+  contents: read
+
+jobs:
+  import-firestore:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 3s --health-retries 10
+    defaults:
+      run:
+        working-directory: tools/import-firestore
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: tools/import-firestore/package-lock.json
+      - run: npm ci
+      - run: npm test
+        env:
+          TEST_DATABASE_URL: postgres://postgres:test@localhost:5432/test
