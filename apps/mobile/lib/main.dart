@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,11 +6,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 import 'app/app.dart';
-import 'core/constants/stripe_constants.dart';
+import 'core/config/env.dart';
 import 'core/services/locale_setting.dart';
+import 'core/network/api_client.dart';
+import 'core/network/providers.dart';
 import 'core/services/shared_prefs_provider.dart';
-import 'core/utils/api/dio_client.dart';
-import 'firebase_options.dart';
+import 'core/session/session_state.dart';
+import 'core/storage/token_storage.dart';
+import 'features/auth/data/api_auth_repository.dart';
+import 'package:nozie_mobile/app/router/app_router.dart';
 import 'i18n/translations.g.dart';
 
 Future<void> main() async {
@@ -20,14 +23,23 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
   final sp = await SharedPreferences.getInstance();
-  DioClient.init();
+
+  // Session first: the router's guard reads it, so it must be resolved before the first frame.
+  final session = SessionStore();
+  final tokens = TokenStorage();
+  await ApiAuthRepository(
+    dio: buildApiClient(tokens: tokens, onSessionExpired: session.expire),
+    tokens: tokens,
+    session: session,
+  ).restoreSession();
+  AppRouter.configure(session);
 
   // Initialize Stripe
-  Stripe.publishableKey = StripeConstants.publishableKey;
+  // Publishable key only (safe to ship); comes from --dart-define, never from source control.
+  if (Env.stripePublishableKey.isNotEmpty) {
+    Stripe.publishableKey = Env.stripePublishableKey;
+  }
   Stripe.merchantIdentifier = 'merchant.com.oggy.nozie';
 
   // Initialize slang locale BEFORE creating widget tree
@@ -43,6 +55,8 @@ Future<void> main() async {
       overrides: [
         localeControllerProvider.overrideWith((ref) => LocaleController(sp, ref)),
         sharedPreferencesProvider.overrideWithValue(sp),
+        sessionStoreProvider.overrideWithValue(session),
+        tokenStorageProvider.overrideWithValue(tokens),
       ],
       child: TranslationProvider(child: const NozieApp()),
     ),

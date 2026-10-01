@@ -3,26 +3,18 @@ import '../../../../core/models/movie_item.dart';
 import '../../../../core/repositories/movie_repository.dart';
 import '../../domain/enums/discover_section_type.dart';
 
-final discoverSectionProvider = StreamProvider.autoDispose.family<List<MovieItem>, DiscoverSectionType>(
+final discoverSectionProvider = FutureProvider.autoDispose.family<List<MovieItem>, DiscoverSectionType>(
   (ref, sectionType) {
     final repo = ref.watch(movieRepoProvider);
-
-    Stream<List<MovieItem>> stream;
     switch (sectionType) {
       case DiscoverSectionType.topCharts:
-        stream = repo.streamTopCharts(limit: 5);
-        break;
+        return repo.topCharts(limit: 5);
       case DiscoverSectionType.topSelling:
-        stream = repo.streamTopSelling(limit: 4);
-        break;
+        return repo.topSelling(limit: 4);
       case DiscoverSectionType.topFree:
-        stream = repo.streamTopFree(limit: 4);
-        break;
+        return repo.topFree(limit: 4);
       case DiscoverSectionType.topNewReleases:
-        stream = repo.streamTopNewReleases(limit: 4);
-        break;
+        return repo.topNewReleases(limit: 4);
     }
-
-    return stream;
   },
 );

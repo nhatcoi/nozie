@@ -1,17 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nozie_mobile/core/app_export.dart';
-import 'package:nozie_mobile/features/auth/forgot_password/data/forgot_password_repository_impl.dart';
+import 'package:nozie_mobile/features/auth/forgot_password/providers/forgot_password_repository_provider.dart';
 import 'package:nozie_mobile/app/router/app_router.dart';
 import 'package:go_router/go_router.dart';
 
-class ForgotPasswordScreen extends StatelessWidget {
+class ForgotPasswordScreen extends ConsumerStatefulWidget {
   const ForgotPasswordScreen({super.key});
+
+  @override
+  ConsumerState<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+}
+
+class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
+  final TextEditingController _emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final t = context.i18n;
     final type = Theme.of(context).textTheme;
-    final TextEditingController _emailController = TextEditingController();
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
@@ -52,7 +65,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                     if (email.isEmpty) return;
 
                     try {
-                      final repo = ForgotPasswordRepositoryImpl();
+                      final repo = ref.read(forgotPasswordRepositoryProvider);
                       await repo.resendOtp(email: email);
                     } catch (_) {}
                     if (!context.mounted) return;

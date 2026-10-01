@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../services/ratings_service.dart';
 import '../../../../core/utils/data/format_utils.dart';
 import '../../../../core/app_export.dart';
 import '../../../../core/models/movie_item.dart';
@@ -9,7 +10,7 @@ import '../../../../core/utils/data/format_utils.dart';
 import '../../../../core/utils/data/text_utils.dart';
 import '../../../../core/widgets/image_utils.dart';
 
-class MovieHeroSection extends StatelessWidget {
+class MovieHeroSection extends ConsumerWidget {
   const MovieHeroSection({
     super.key,
     required this.movie,
@@ -40,7 +41,7 @@ class MovieHeroSection extends StatelessWidget {
   final String? viewsText;    // e.g., "50M+ views"
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final textColor = AppColors.getText(context);
     final secondaryText = AppColors.getTextSecondary(context);
@@ -50,15 +51,12 @@ class MovieHeroSection extends StatelessWidget {
       children: [
         _buildHeroInfo(context, theme, textColor, secondaryText),
         const Gap(24),
-        StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-          stream: FirebaseFirestore.instance
-              .collection('ratings')
-              .doc(movie.id)
-              .snapshots(),
-          builder: (context, snap) {
-            final data = snap.data?.data();
-            final avg = (data?['averageRating'] as num?)?.toDouble() ?? (movie.rating ?? 0.0);
-            final total = (data?['totalReviews'] as num?)?.toInt() ?? (ratingCount ?? 0);
+        Builder(
+          builder: (context) {
+            final data = ref.watch(ratingDocProvider(movie.id)).valueOrNull;
+            final reviewed = ((data?['totalReviews'] as num?)?.toInt() ?? 0) > 0;
+            final avg = reviewed ? (data!['averageRating'] as num).toDouble() : (movie.rating ?? 0.0);
+            final total = reviewed ? (data!['totalReviews'] as num).toInt() : (ratingCount ?? 0);
             return _buildMetrics(context, theme, textColor, secondaryText, avg, total);
           },
         ),

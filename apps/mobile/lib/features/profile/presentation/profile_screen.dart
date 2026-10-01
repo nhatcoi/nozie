@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:nozie_mobile/core/app_export.dart';
 import 'package:nozie_mobile/core/widgets/layout/lined_text_divider.dart';
-import 'package:nozie_mobile/features/auth/shared/providers/firebase_auth_provider.dart';
+import 'package:nozie_mobile/features/auth/shared/providers/auth_repository_provider.dart';
 import 'package:nozie_mobile/features/profile/models/language_settings.dart';
 import 'package:nozie_mobile/features/profile/models/user_profile.dart';
 import 'package:nozie_mobile/features/profile/notifiers/auth_user_provider.dart';
@@ -25,7 +25,7 @@ class ProfileScreen extends ConsumerWidget {
 
     void _showLogoutConfirmation() {
       final router = GoRouter.of(context);
-      final auth = ref.read(firebaseAuthProvider);
+      final authRepository = ref.read(authRepositoryProvider);
 
       showModalBottomSheet<void>(
         context: context,
@@ -39,7 +39,7 @@ class ProfileScreen extends ConsumerWidget {
           onCancel: () => Navigator.of(sheetContext).maybePop(),
           onConfirm: () async {
             Navigator.of(sheetContext).maybePop();
-            await auth.signOut();
+            await authRepository.signOut();
             await LogoutService.logout(ref);
             if (context.mounted) {
               router.go(AppRouter.welcome);

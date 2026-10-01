@@ -1,11 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import '../../../../core/app_export.dart';
 import '../../../../core/widgets/feedback/toast_notification.dart';
 import '../../../../core/models/movie.dart';
+import '../../services/report_service.dart';
 
 class VideoErrorReportModal extends ConsumerStatefulWidget {
   const VideoErrorReportModal({
@@ -58,24 +57,12 @@ class _VideoErrorReportModalState extends ConsumerState<VideoErrorReportModal> {
     setState(() => _isSubmitting = true);
 
     try {
-      final user = FirebaseAuth.instance.currentUser;
-      await FirebaseFirestore.instance.collection('reports').add({
-        'movieId': widget.movie.id,
-        'movieTitle': widget.movie.title,
-        'movieSlug': widget.movie.slug,
-        'videoUrl': widget.videoUrl ?? '',
-        'videoUrlType': widget.videoUrl?.contains('.m3u8') == true ? 'm3u8' : 'embed',
-        'issueType': _selectedIssueType,
-        'description': _descriptionController.text.trim(),
-        'errorMessage': widget.errorMessage,
-        'userId': user?.uid ?? 'anonymous',
-        'userEmail': user?.email ?? '',
-        'userDisplayName': user?.displayName ?? '',
-        'deviceInfo': {'platform': Theme.of(context).platform.toString()},
-        'status': 'pending',
-        'createdAt': FieldValue.serverTimestamp(),
-        'updatedAt': FieldValue.serverTimestamp(),
-      });
+      await ref.read(reportServiceProvider).reportVideoIssue(
+            movieId: widget.movie.id,
+            issueType: _selectedIssueType!,
+            description: _descriptionController.text,
+            errorMessage: widget.errorMessage,
+          );
 
       if (mounted) {
         ToastNotification.showSuccess(

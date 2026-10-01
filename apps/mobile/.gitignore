@@ -32,6 +32,8 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+/.flutter-plugins
+/.flutter-plugins-dependencies
 
 # Symbolication related
 app.*.symbols
@@ -44,3 +46,11 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 /functions
+# Local env files (copy env/dev.example.json to env/dev.json)
+/env/*.json
+!/env/*.example.json
+
+# Generated desktop scaffolding (this app targets mobile + web only)
+/linux/
+/macos/
+/windows/

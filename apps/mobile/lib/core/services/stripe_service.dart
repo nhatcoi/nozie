@@ -1,68 +1,32 @@
 import 'package:dio/dio.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
-import '../constants/stripe_constants.dart';
+import '../network/api_exception.dart';
+import '../network/api_response.dart';
+import '../network/providers.dart';
 
-final stripeServiceProvider = Provider<StripeService>((ref) {
-  return StripeService();
-});
+final stripeServiceProvider = Provider<StripeService>((ref) => StripeService(ref.watch(dioProvider)));
 
+/// Client side of a purchase. Price and currency are decided by the server from its catalog, and the purchase is
+/// granted only when Stripe confirms the payment to the server's webhook; the app merely shows the payment sheet.
 class StripeService {
-  StripeService({Dio? dio}) : _dio = dio ?? Dio() {
-    _dio.options.baseUrl = StripeConstants.backendBaseUrl;
-    _dio.options.connectTimeout = const Duration(seconds: 30);
-    _dio.options.receiveTimeout = const Duration(seconds: 30);
-  }
+  StripeService(this._dio);
 
   final Dio _dio;
 
-  /// Create Payment Intent via backend
-  Future<PaymentIntentResponse> createPaymentIntent({
-    required String movieId,
-    required double amount,
-    String currency = 'usd',
-    String? movieTitle,
-    String? movieImageUrl,
-    String? movieSlug,
-  }) async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      throw Exception('User not authenticated');
-    }
-
-    try {
-      final requestData = {
-        'userId': user.uid,
-        'movieId': movieId,
-        'amount': amount,
-        'currency': currency,
-      };
-
-      if (movieTitle != null) requestData['movieTitle'] = movieTitle;
-      if (movieImageUrl != null) requestData['movieImageUrl'] = movieImageUrl;
-      if (movieSlug != null) requestData['movieSlug'] = movieSlug;
-
-      final response = await _dio.post(
-        '/create-payment',
-        data: requestData,
-      );
-
-      return PaymentIntentResponse.fromJson(response.data);
-    } catch (e) {
-      throw Exception('Failed to create payment intent: ${e.toString()}');
-    }
+  /// Creates a payment intent for [movieId]. The user is identified by the access token, never by the request body.
+  Future<PaymentIntentResponse> createPaymentIntent({required String movieId}) async {
+    final res = await guardApi(() => _dio.post<dynamic>('/payments/intents', data: {'movieId': movieId}));
+    return PaymentIntentResponse.fromJson(res.payloadMap);
   }
 
-  /// Initialize and present Stripe Payment Sheet
   Future<void> presentPaymentSheet({
     required String clientSecret,
     required String ephemeralKeySecret,
     required String customerId,
   }) async {
     try {
-      // Initialize Payment Sheet with v12 API
       await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
           paymentIntentClientSecret: clientSecret,
@@ -71,41 +35,24 @@ class StripeService {
           customerEphemeralKeySecret: ephemeralKeySecret,
         ),
       );
-
-      // Present Payment Sheet
       await Stripe.instance.presentPaymentSheet();
     } on StripeException catch (e) {
       if (e.error.code == FailureCode.Canceled) {
         throw Exception('Payment canceled');
-      } else {
-        throw Exception('Payment failed: ${e.error.message}');
       }
+      throw Exception('Payment failed: ${e.error.message}');
     } catch (e) {
-      throw Exception('Payment error: ${e.toString()}');
+      throw Exception('Payment error: $e');
     }
   }
 
-  /// Get transaction status from backend
   Future<TransactionStatus> getTransactionStatus(String transactionId) async {
-    try {
-      final user = FirebaseAuth.instance.currentUser;
-      if (user == null) {
-        throw Exception('User not authenticated');
-      }
-      final response = await _dio.get('/transaction/${user.uid}/$transactionId');
-      return TransactionStatus.fromJson(response.data);
-    } catch (e) {
-      throw Exception('Failed to get transaction status: ${e.toString()}');
-    }
+    final res = await guardApi(() => _dio.get<dynamic>('/payments/$transactionId'));
+    return TransactionStatus.fromJson(res.payloadMap);
   }
 }
 
 class PaymentIntentResponse {
-  final String clientSecret;
-  final String ephemeralKey;
-  final String customerId;
-  final String transactionId;
-
   PaymentIntentResponse({
     required this.clientSecret,
     required this.ephemeralKey,
@@ -113,60 +60,45 @@ class PaymentIntentResponse {
     required this.transactionId,
   });
 
+  final String clientSecret;
+  final String ephemeralKey;
+  final String customerId;
+  final String transactionId;
+
   factory PaymentIntentResponse.fromJson(Map<String, dynamic> json) {
+    String field(String key) {
+      final v = json[key];
+      if (v is! String || v.isEmpty) {
+        throw ApiException(code: 'UNKNOWN', message: 'Payment response is missing "$key"');
+      }
+      return v;
+    }
+
     return PaymentIntentResponse(
-      clientSecret: json['clientSecret'] as String,
-      ephemeralKey: json['ephemeralKey'] as String,
-      customerId: json['customerId'] as String,
-      transactionId: json['transactionId'] as String,
+      clientSecret: field('clientSecret'),
+      ephemeralKey: field('ephemeralKey'),
+      customerId: field('customerId'),
+      transactionId: field('transactionId'),
     );
   }
 }
 
 class TransactionStatus {
+  TransactionStatus({required this.id, required this.status, this.paidAt, this.errorMessage});
+
   final String id;
+
+  /// Lower-case: `pending`, `succeeded`, `failed`, `canceled`.
   final String status;
   final DateTime? paidAt;
-  final DateTime? failedAt;
-  final DateTime? canceledAt;
   final String? errorMessage;
 
-  TransactionStatus({
-    required this.id,
-    required this.status,
-    this.paidAt,
-    this.failedAt,
-    this.canceledAt,
-    this.errorMessage,
-  });
-
-  factory TransactionStatus.fromJson(Map<String, dynamic> json) {
-    DateTime? parseTimestamp(dynamic value) {
-      if (value == null) return null;
-      if (value is DateTime) return value;
-      if (value is Map) {
-        final seconds = value['_seconds'] ?? value['seconds'];
-        if (seconds != null) {
-          return DateTime.fromMillisecondsSinceEpoch((seconds as int) * 1000);
-        }
-      }
-      if (value is String) {
-        try {
-          return DateTime.parse(value);
-        } catch (_) {}
-      }
-      return null;
-    }
-
-    return TransactionStatus(
-      id: json['id'] as String? ?? '',
-      status: json['status'] as String? ?? 'pending',
-      paidAt: parseTimestamp(json['paidAt']),
-      failedAt: parseTimestamp(json['failedAt']),
-      canceledAt: parseTimestamp(json['canceledAt']),
-      errorMessage: json['errorMessage'] as String?,
-    );
-  }
+  factory TransactionStatus.fromJson(Map<String, dynamic> json) => TransactionStatus(
+        id: json['id'] as String? ?? '',
+        status: (json['status'] as String? ?? 'PENDING').toLowerCase(),
+        paidAt: json['paidAt'] is String ? DateTime.tryParse(json['paidAt'] as String) : null,
+        errorMessage: json['errorMessage'] as String?,
+      );
 
   bool get isSuccess => status == 'succeeded';
   bool get isFailed => status == 'failed';

@@ -10,6 +10,10 @@ class MovieItem extends Equatable {
   final double? price;
   final Map<String, dynamic>? priceData; // Full price object with USD and VND
   final MovieItemType type;
+  final List<String> genres;
+  final int? year;
+  final int? ratingCount;
+  final int? views;
 
   const MovieItem({
     required this.id,
@@ -19,6 +23,10 @@ class MovieItem extends Equatable {
     this.price,
     this.priceData,
     this.type = MovieItemType.movie,
+    this.genres = const [],
+    this.year,
+    this.ratingCount,
+    this.views,
   });
 
   factory MovieItem.fromMovie(Movie movie) {
@@ -36,6 +44,10 @@ class MovieItem extends Equatable {
       price: movie.priceValue,
       priceData: movie.price,
       type: MovieItemType.movie,
+      genres: movie.genres,
+      year: movie.year,
+      ratingCount: movie.ratingCount,
+      views: movie.view,
     );
   }
 
@@ -64,5 +76,5 @@ class MovieItem extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, title, imageUrl, rating, price, priceData, type];
+  List<Object?> get props => [id, title, imageUrl, rating, price, priceData, type, genres, year, ratingCount, views];
 }

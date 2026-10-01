@@ -6,6 +6,7 @@ import '../../../../core/app_export.dart';
 import '../../../../core/models/movie.dart';
 import '../../../../core/widgets/feedback/toast_notification.dart';
 import '../../../../core/services/stripe_service.dart';
+import '../../data/repositories/purchase_repository.dart';
 
 class CheckoutScreen extends ConsumerStatefulWidget {
   const CheckoutScreen({
@@ -318,13 +319,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       final stripeService = ref.read(stripeServiceProvider);
 
       // Step 1: Create Payment Intent via backend
-      final paymentIntent = await stripeService.createPaymentIntent(
-        movieId: widget.movie.id,
-        amount: price,
-        movieTitle: widget.movie.title,
-        movieImageUrl: widget.movie.imageUrl,
-        movieSlug: widget.movie.slug,
-      );
+      final paymentIntent = await stripeService.createPaymentIntent(movieId: widget.movie.id);
 
       // Step 2: Present Stripe Payment Sheet
       await stripeService.presentPaymentSheet(
@@ -333,7 +328,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         customerId: paymentIntent.customerId,
       );
 
-      // Step 3: Wait for webhook to update Firestore, then check transaction status
+      // Step 3: Wait for the server's Stripe webhook to confirm, then check transaction status
       final transactionStatus = await _waitForTransactionStatus(
         stripeService,
         paymentIntent.transactionId,
@@ -341,6 +336,10 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
       if (context.mounted) {
         if (transactionStatus.isSuccess) {
+          // The webhook just recorded the purchase: refresh everything that shows ownership.
+          ref.invalidate(purchaseIdsProvider);
+          ref.invalidate(purchaseProvider);
+          ref.invalidate(isPurchasedProvider(widget.movie.id));
           Navigator.of(context).pop(true);
           ToastNotification.showSuccess(
             context,

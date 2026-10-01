@@ -79,7 +79,8 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
 
   Future<void> _initializePlayer() async {
     // Access check before resolving streams
-    final access = await MovieWatchService().hasAccess(widget.movie.id);
+    final watchService = ref.read(movieWatchServiceProvider);
+    final access = await watchService.hasAccess(widget.movie.id);
     if (!access) {
       if (mounted) {
         ToastNotification.showError(
@@ -99,18 +100,22 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
       _selectedQuality = savedState.quality;
     }
 
-    // Try to get video URL, with fallback options
-    String? videoUrl = widget.videoUrl;
-    
-    if (videoUrl == null || videoUrl.isEmpty) {
-      videoUrl = widget.movie.trailerUrl;
+    // The server decides what may be played: it re-checks ownership and returns the stream sources.
+    StreamInfo? stream;
+    try {
+      stream = await watchService.resolveStream(widget.movie.id);
+    } catch (_) {
+      stream = null;
     }
-    
-    // If still empty, try to get from episodes
+    _stream = stream;
+
+    String? videoUrl = (stream?.streamUrl?.isNotEmpty ?? false) ? stream!.streamUrl : stream?.embedUrl;
+
+    // Last resort: a direct-media trailer.
     if (videoUrl == null || videoUrl.isEmpty) {
-      videoUrl = _getVideoUrlWithFallback(widget.movie);
+      videoUrl = _directTrailer(widget.movie);
     }
-    
+
     if (videoUrl == null || videoUrl.isEmpty) {
       if (mounted) {
         ToastNotification.showError(
@@ -161,65 +166,18 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     }
   }
 
-  String? _getVideoUrlWithFallback(Movie movie) {
-    // 1) Prefer direct stream in trailerUrl only if it's a real media URL
-    if (movie.trailerUrl != null && movie.trailerUrl!.isNotEmpty) {
-      final t = movie.trailerUrl!;
-      final isDirectStream = t.contains('.m3u8') || t.contains('.mp4');
-      final isYouTube = t.contains('youtube.com') || t.contains('youtu.be');
-      if (isDirectStream && !isYouTube) {
-        return t;
-      }
-      // Skip YouTube or non-stream trailer for video_player
-    }
-    
-    if (movie.episodes != null && movie.episodes!.isNotEmpty) {
-      final firstEpisode = movie.episodes!.first;
-      
-      if (firstEpisode['server_data'] != null && firstEpisode['server_data'] is List) {
-        final serverData = firstEpisode['server_data'] as List;
-        if (serverData.isNotEmpty) {
-          final firstVideo = serverData.first;
-          // Prefer m3u8 for better quality (direct stream)
-          if (firstVideo['link_m3u8'] != null &&
-              (firstVideo['link_m3u8'].toString().contains('.m3u8') ||
-               firstVideo['link_m3u8'].toString().contains('.mp4'))) {
-            return firstVideo['link_m3u8'].toString();
-          }
-          if (firstVideo['link_embed'] != null) {
-            return firstVideo['link_embed'].toString();
-          }
-        }
-      }
-      
-      if (firstEpisode['url'] != null) {
-        return firstEpisode['url'].toString();
-      }
-      if (firstEpisode['videoUrl'] != null) {
-        return firstEpisode['videoUrl'].toString();
-      }
-    }
-    
-    return null;
+  StreamInfo? _stream;
+
+  /// A trailer is only usable when it is a real media file (not YouTube).
+  String? _directTrailer(Movie movie) {
+    final t = movie.trailerUrl;
+    if (t == null || t.isEmpty) return null;
+    final isDirect = t.contains('.m3u8') || t.contains('.mp4');
+    final isYouTube = t.contains('youtube.com') || t.contains('youtu.be');
+    return isDirect && !isYouTube ? t : null;
   }
 
-  String? _getFallbackVideoUrl(Movie movie) {
-    if (movie.episodes != null && movie.episodes!.isNotEmpty) {
-      final firstEpisode = movie.episodes!.first;
-      
-      if (firstEpisode['server_data'] != null && firstEpisode['server_data'] is List) {
-        final serverData = firstEpisode['server_data'] as List;
-        if (serverData.isNotEmpty) {
-          final firstVideo = serverData.first;
-          // Return embed link as fallback
-          if (firstVideo['link_embed'] != null) {
-            return firstVideo['link_embed'].toString();
-          }
-        }
-      }
-    }
-    return null;
-  }
+  String? _getFallbackVideoUrl(Movie movie) => _stream?.embedUrl;
 
   Future<bool> _tryInitializeVideo(String videoUrl, PlaybackState? savedState) async {
     try {
@@ -253,8 +211,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
         // Record view + history once
         if (!_viewRecorded) {
           _viewRecorded = true;
-          unawaited(MovieWatchService().incrementView(widget.movie.id));
-          unawaited(MovieWatchService().addWatchHistory(widget.movie.id));
+            unawaited(ref.read(movieWatchServiceProvider).addWatchHistory(widget.movie.id));
         }
         _startPeriodicSave();
         _togglePlayPause();

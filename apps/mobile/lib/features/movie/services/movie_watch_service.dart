@@ -1,62 +1,70 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../core/models/movie.dart';
+import '../../../core/models/movie_item.dart';
+import '../../../core/network/api_page.dart';
+import '../../../core/network/api_response.dart';
+import '../../../core/network/providers.dart';
+
+/// Where to stream a movie from. Only the server hands these out, and only after checking the caller
+/// owns the movie (or it is free).
+class StreamInfo {
+  const StreamInfo({this.streamUrl, this.embedUrl});
+
+  final String? streamUrl;
+  final String? embedUrl;
+
+  bool get isEmpty => (streamUrl == null || streamUrl!.isEmpty) && (embedUrl == null || embedUrl!.isEmpty);
+}
 
 class MovieWatchService {
-  MovieWatchService({FirebaseFirestore? db, FirebaseAuth? auth})
-      : _db = db ?? FirebaseFirestore.instance,
-        _auth = auth ?? FirebaseAuth.instance;
+  MovieWatchService(this._dio);
 
-  final FirebaseFirestore _db;
-  final FirebaseAuth _auth;
+  final Dio _dio;
 
+  /// Free movies and purchased ones are watchable. Errors count as "no access" (never fail open).
   Future<bool> hasAccess(String movieId) async {
-    final user = _auth.currentUser;
-    if (user == null) return false;
     try {
-      final movieDoc = await _db.collection('movies').doc(movieId).get();
-      final data = movieDoc.data() ?? {};
-      final price = (data['price'] ?? {}) as Map<String, dynamic>;
-      final priceUsd = (price['usd'] as num?)?.toDouble() ?? 0.0;
-      if (priceUsd <= 0) return true;
-
-      final purchasedDoc = await _db
-          .collection('users')
-          .doc(user.uid)
-          .collection('purchases')
-          .doc(movieId)
-          .get();
-      if (purchasedDoc.exists) return true;
-
-      final userDoc = await _db.collection('users').doc(user.uid).get();
-      final isSubscribed = (userDoc.data() ?? {})['isSubscribed'] == true;
-      if (isSubscribed) return true;
-    } catch (_) {}
-    return false;
+      final res = await _dio.get<dynamic>('/playback/$movieId/access');
+      return res.payloadMap['canWatch'] == true;
+    } catch (_) {
+      return false;
+    }
   }
 
-  Future<void> incrementView(String movieId) async {
+  /// Resolving a stream also counts one view on the server.
+  Future<StreamInfo> resolveStream(String movieId, {String? episodeId}) async {
+    final res = await guardApi(() => _dio.get<dynamic>('/playback/$movieId',
+        queryParameters: {if (episodeId != null) 'episodeId': episodeId}));
+    final data = res.payloadMap;
+    return StreamInfo(streamUrl: data['streamUrl'] as String?, embedUrl: data['embedUrl'] as String?);
+  }
+
+  Future<void> addWatchHistory(
+    String movieId, {
+    String? episodeId,
+    int positionSeconds = 0,
+    int durationSeconds = 0,
+  }) async {
     try {
-      await _db.collection('movies').doc(movieId).update({
-        'view': FieldValue.increment(1),
+      await _dio.put<dynamic>('/users/me/watch-history/$movieId', data: {
+        if (episodeId != null) 'episodeId': episodeId,
+        'positionSeconds': positionSeconds.clamp(0, 86400),
+        'durationSeconds': durationSeconds.clamp(0, 86400),
       });
-    } catch (_) {}
+    } catch (_) {
+      // History is a convenience; never interrupt playback for it.
+    }
   }
 
-  Future<void> addWatchHistory(String movieId) async {
-    final user = _auth.currentUser;
-    if (user == null) return;
-    try {
-      final historyRef = _db
-          .collection('users')
-          .doc(user.uid)
-          .collection('watch_history')
-          .doc(movieId);
-      await historyRef.set({
-        'movieId': movieId,
-        'lastWatchedAt': FieldValue.serverTimestamp(),
-      }, SetOptions(merge: true));
-    } catch (_) {}
+  Future<List<MovieItem>> recent({int limit = 20}) async {
+    final res = await guardApi(() => _dio.get<dynamic>('/users/me/watch-history', queryParameters: {'size': limit}));
+    return ApiPage.fromJson(
+      res.payloadMap,
+      (j) => MovieItem.fromMovie(Movie.fromApi(Map<String, dynamic>.from(j['movie'] as Map))),
+    ).items;
   }
 }
 
-
+final movieWatchServiceProvider = Provider((ref) => MovieWatchService(ref.watch(dioProvider)));

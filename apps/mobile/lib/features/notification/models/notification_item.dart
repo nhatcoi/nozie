@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class NotificationItem extends Equatable {
@@ -24,40 +23,21 @@ class NotificationItem extends Equatable {
   final String? deepLink; // Deep link when tapping notification
   final Map<String, dynamic>? metadata; // Additional data
 
+  /// From the API's `NotificationResponse` (`read` is a flag, so [readAt] is only a marker).
   factory NotificationItem.fromJson(Map<String, dynamic> json) {
-    Timestamp? readTimestamp;
-    Timestamp? createdAtTimestamp;
-
-    if (json['readAt'] != null) {
-      if (json['readAt'] is Timestamp) {
-        readTimestamp = json['readAt'] as Timestamp;
-      } else if (json['readAt'] is Map) {
-        readTimestamp = Timestamp.fromMillisecondsSinceEpoch(
-          (json['readAt']['_seconds'] as int) * 1000,
-        );
-      }
-    }
-
-    if (json['createdAt'] != null) {
-      if (json['createdAt'] is Timestamp) {
-        createdAtTimestamp = json['createdAt'] as Timestamp;
-      } else if (json['createdAt'] is Map) {
-        createdAtTimestamp = Timestamp.fromMillisecondsSinceEpoch(
-          (json['createdAt']['_seconds'] as int) * 1000,
-        );
-      }
-    }
-
+    DateTime? date(dynamic v) => v is String ? DateTime.tryParse(v)?.toLocal() : null;
+    final createdAt = date(json['createdAt']) ?? DateTime.now();
+    final isRead = json['read'] == true || json['readAt'] != null;
     return NotificationItem(
       id: json['id'] as String? ?? '',
       type: NotificationType.fromString(json['type'] as String? ?? 'general'),
       title: json['title'] as String? ?? '',
       description: json['description'] as String? ?? '',
-      createdAt: createdAtTimestamp?.toDate() ?? DateTime.now(),
-      readAt: readTimestamp?.toDate(),
+      createdAt: createdAt,
+      readAt: isRead ? (date(json['readAt']) ?? createdAt) : null,
       imageUrl: json['imageUrl'] as String?,
       deepLink: json['deepLink'] as String?,
-      metadata: json['metadata'] as Map<String, dynamic>?,
+      metadata: json['metadata'] is Map ? Map<String, dynamic>.from(json['metadata'] as Map) : null,
     );
   }
 
@@ -67,8 +47,8 @@ class NotificationItem extends Equatable {
       'type': type.value,
       'title': title,
       'description': description,
-      'createdAt': Timestamp.fromDate(createdAt),
-      'readAt': readAt != null ? Timestamp.fromDate(readAt!) : null,
+      'createdAt': createdAt.toUtc().toIso8601String(),
+      'readAt': readAt?.toUtc().toIso8601String(),
       'imageUrl': imageUrl,
       'deepLink': deepLink,
       'metadata': metadata,

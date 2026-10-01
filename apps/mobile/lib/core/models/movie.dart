@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class Movie {
   final String id;
   final String name;
@@ -81,156 +79,65 @@ class Movie {
     this.updatedAt,
   });
 
-  factory Movie.fromMap(Map<String, dynamic> map, {String? id}) {
-    // Parse Map safely (handle Timestamp and other types)
-    Map<String, dynamic>? _safeParseMap(dynamic value) {
-      if (value == null) return null;
-      if (value is Timestamp) {
-        return {
-          '_seconds': value.seconds,
-          '_nanoseconds': value.nanoseconds,
-        };
-      }
-      if (value is Map) {
-        try {
-          return Map<String, dynamic>.from(value);
-        } catch (e) {
-          return null;
-        }
-      }
-      return null;
-    }
+  /// Builds a [Movie] from the API's `MovieSummaryResponse` / `MovieDetailResponse`.
+  ///
+  /// The API reports prices in integer USD cents and ratings on a 0-5 scale; the rest of the app still reads
+  /// `price['usd'|'vnd']` and `tmdb['vote_average']` (0-10), so those shapes are reproduced here.
+  /// Stream URLs are never part of this model: they come from the playback endpoint after an access check.
+  factory Movie.fromApi(Map<String, dynamic> json) {
+    int? asInt(dynamic v) => v is num ? v.toInt() : null;
+    String? asStr(dynamic v) => v?.toString();
+    List<String>? strings(dynamic v) =>
+        v is List ? v.map((e) => e.toString()).where((e) => e.isNotEmpty).toList() : null;
 
-    // Parse DateTime từ String hoặc Timestamp
-    DateTime? parseDateTime(dynamic value) {
-      if (value == null) return null;
-      if (value is DateTime) return value;
-      if (value is Timestamp) return value.toDate();
-      if (value is String) {
-        try {
-          return DateTime.parse(value);
-        } catch (e) {
-          return null;
-        }
-      }
-      // Handle Firestore timestamp map format
-      if (value is Map) {
-        final seconds = value['_seconds'] ?? value['seconds'];
-        if (seconds != null) {
-          final nanoseconds = value['_nanoseconds'] ?? value['nanoseconds'] ?? 0;
-          return DateTime.fromMillisecondsSinceEpoch(
-            (seconds as num).toInt() * 1000 + ((nanoseconds as num).toInt() ~/ 1000000),
-          );
-        }
-      }
-      return null;
-    }
+    final cents = asInt(json['priceCents']) ?? 0;
+    final usd = cents / 100.0;
+    final rating = (json['rating'] as num?)?.toDouble();
 
-    // Parse List<String> từ List
-    List<String>? parseStringList(dynamic value) {
-      if (value == null) return null;
-      if (value is List) {
-        return value.map((e) => e.toString()).where((e) => e.isNotEmpty).toList();
-      }
-      return null;
-    }
+    // Summaries list genre names, details list {id, slug, name}.
+    final rawGenres = json['genres'];
+    final category = rawGenres is List
+        ? rawGenres
+            .map<Map<String, dynamic>>((g) => g is Map
+                ? {'id': g['id']?.toString(), 'name': g['name'], 'slug': g['slug']}
+                : {'name': g.toString()})
+            .toList()
+        : null;
 
-    // Parse List<Map> từ List
-    List<Map<String, dynamic>>? parseMapList(dynamic value) {
-      if (value == null) return null;
-      if (value is List) {
-        return value
-            .whereType<Map>()
-            .map((e) => Map<String, dynamic>.from(e))
-            .toList();
-      }
-      return null;
-    }
+    final rawCountries = json['countries'];
 
     return Movie(
-      id: id ?? map['id']?.toString() ?? '',
-      name: map['name']?.toString() ?? '',
-      originName: map['originName']?.toString() ?? '',
-      slug: map['slug']?.toString() ?? '',
-      originalId: map['originalId']?.toString() ?? '',
-      type: map['type']?.toString() ?? '',
-      status: map['status']?.toString() ?? '',
-      content: map['content']?.toString(),
-      notify: map['notify']?.toString(),
-      showtimes: map['showtimes']?.toString(),
-      trailerUrl: map['trailerUrl']?.toString(),
-      posterUrl: map['posterUrl']?.toString(),
-      thumbUrl: map['thumbUrl']?.toString(),
-      quality: map['quality']?.toString(),
-      time: map['time']?.toString(),
-      lang: map['lang']?.toString(),
-      year: map['year'] is int ? map['year'] : (map['year'] as num?)?.toInt(),
-      view: map['view'] is int ? map['view'] : (map['view'] as num?)?.toInt(),
-      episodeCurrent: map['episodeCurrent']?.toString(),
-      episodeTotal: map['episodeTotal']?.toString(),
-      chieurap: map['chieurap'] as bool?,
-      subDocquyen: map['subDocquyen'] as bool?,
-      isCopyright: map['isCopyright'] as bool?,
-      country: parseMapList(map['country']),
-      category: parseMapList(map['category']),
-      director: parseStringList(map['director']),
-      actor: parseStringList(map['actor']),
-      alternativeNames: parseStringList(map['alternativeNames']),
-      tmdb: _safeParseMap(map['tmdb']),
-      imdb: _safeParseMap(map['imdb']),
-      price: _safeParseMap(map['price']),
-      episodes: parseMapList(map['episodes']),
-      originalCreatedAt: parseDateTime(map['originalCreatedAt']),
-      originalModifiedAt: parseDateTime(map['originalModifiedAt']),
-      createdAt: _safeParseMap(map['createdAt']),
-      updatedAt: _safeParseMap(map['updatedAt']),
+      id: asStr(json['id']) ?? '',
+      name: asStr(json['name']) ?? '',
+      originName: asStr(json['originName']) ?? '',
+      slug: asStr(json['slug']) ?? '',
+      originalId: '',
+      type: asStr(json['type']) ?? '',
+      status: asStr(json['status']) ?? '',
+      content: asStr(json['content']),
+      trailerUrl: asStr(json['trailerUrl']),
+      posterUrl: asStr(json['posterUrl']),
+      thumbUrl: asStr(json['thumbUrl']),
+      quality: asStr(json['quality']),
+      time: asStr(json['duration']),
+      lang: asStr(json['lang']),
+      year: asInt(json['year']),
+      view: asInt(json['viewCount']),
+      episodeCurrent: asStr(json['episodeCurrent']),
+      episodeTotal: asStr(json['episodeTotal']),
+      chieurap: json['cinema'] as bool?,
+      subDocquyen: json['subExclusive'] as bool?,
+      country: rawCountries is List
+          ? rawCountries.whereType<Map>().map((e) => Map<String, dynamic>.from(e)).toList()
+          : null,
+      category: category,
+      director: strings(json['directors']),
+      actor: strings(json['actors']),
+      tmdb: rating == null
+          ? null
+          : {'vote_average': rating * 2, 'vote_count': asInt(json['ratingCount']) ?? 0},
+      price: {'usd': usd, 'vnd': (usd * 23000).round()},
     );
-  }
-
-  factory Movie.fromDoc(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-    return Movie.fromMap(data, id: doc.id);
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'name': name,
-      'originName': originName,
-      'slug': slug,
-      'originalId': originalId,
-      'type': type,
-      'status': status,
-      'content': content,
-      'notify': notify,
-      'showtimes': showtimes,
-      'trailerUrl': trailerUrl,
-      'posterUrl': posterUrl,
-      'thumbUrl': thumbUrl,
-      'quality': quality,
-      'time': time,
-      'lang': lang,
-      'year': year,
-      'view': view,
-      'episodeCurrent': episodeCurrent,
-      'episodeTotal': episodeTotal,
-      'chieurap': chieurap,
-      'subDocquyen': subDocquyen,
-      'isCopyright': isCopyright,
-      'country': country,
-      'category': category,
-      'director': director,
-      'actor': actor,
-      'alternativeNames': alternativeNames,
-      'tmdb': tmdb,
-      'imdb': imdb,
-      'price': price,
-      'episodes': episodes,
-      'originalCreatedAt': originalCreatedAt?.toIso8601String(),
-      'originalModifiedAt': originalModifiedAt?.toIso8601String(),
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
-    };
   }
 
   // Helper getters để lấy dữ liệu dễ dàng

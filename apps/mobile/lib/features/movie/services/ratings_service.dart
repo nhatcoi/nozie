@@ -1,213 +1,98 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/network/api_response.dart';
+import '../../../core/network/providers.dart';
+import '../data/repositories/movie_repository.dart';
+
+/// Viewer reviews for a movie, through the API. Who the reviewer is always comes from the access token.
 class RatingsService {
-  RatingsService({FirebaseFirestore? firestore, FirebaseAuth? auth})
-      : _firestore = firestore ?? FirebaseFirestore.instance,
-        _auth = auth ?? FirebaseAuth.instance;
+  RatingsService(this._dio, {void Function(String movieId)? onChanged}) : _onChanged = onChanged;
 
-  final FirebaseFirestore _firestore;
-  final FirebaseAuth _auth;
+  final Dio _dio;
+  final void Function(String movieId)? _onChanged;
 
   Future<void> submitReview({
     required String movieId,
     required int rating,
     String? comment,
   }) async {
-    final user = _auth.currentUser;
-    if (user == null) {
-      throw StateError('User not logged in');
-    }
-
     if (rating < 1 || rating > 5) {
       throw ArgumentError('Rating must be between 1 and 5');
     }
-
-    final ratingDocRef = _firestore.collection('ratings').doc(movieId);
-    final reviewDocRef = ratingDocRef.collection('reviews').doc(user.uid);
-
-    // Resolve display name / avatar from preferences or Firestore user doc, with auth fallback
-    final resolved = await _resolveUserProfile(user);
-    final resolvedName = resolved['name'];
-    final resolvedAvatar = resolved['avatar'];
-
-    await _firestore.runTransaction((txn) async {
-      final now = FieldValue.serverTimestamp();
-
-      final ratingSnap = await txn.get(ratingDocRef);
-      int total = 0;
-      int sum = 0;
-      Map<String, int> starsCount = _initStarsCount();
-
-      if (ratingSnap.exists) {
-        final data = ratingSnap.data() as Map<String, dynamic>;
-        total = (data['totalReviews'] as num?)?.toInt() ?? 0;
-        sum = (data['sumRatings'] as num?)?.toInt() ?? 0;
-        starsCount = _initStarsCount(data['starsCount'] as Map?);
-      }
-
-      final existingReviewSnap = await txn.get(reviewDocRef);
-      int? oldRating;
-
-      if (existingReviewSnap.exists) {
-        final existing = existingReviewSnap.data() as Map<String, dynamic>;
-        oldRating = (existing['rating'] as num?)?.toInt() ?? 0;
-        sum = sum - oldRating + rating;
-        if (oldRating >= 1 && oldRating <= 5) {
-          starsCount[oldRating.toString()] = (starsCount[oldRating.toString()] ?? 1) - 1;
-        }
-        starsCount[rating.toString()] = (starsCount[rating.toString()] ?? 0) + 1;
-        txn.update(reviewDocRef, {
-          'userId': user.uid,
+    await guardApi(() => _dio.put<dynamic>('/movies/$movieId/reviews/me', data: {
           'rating': rating,
-          'comment': comment ?? existing['comment'],
-          'userName': resolvedName ?? existing['userName'],
-          'userAvatar': resolvedAvatar ?? existing['userAvatar'],
-          'updatedAt': now,
-          'createdAt': existing['createdAt'] ?? now,
-        });
-      } else {
-        total += 1;
-        sum += rating;
-        starsCount[rating.toString()] = (starsCount[rating.toString()] ?? 0) + 1;
-        txn.set(reviewDocRef, {
-          'userId': user.uid,
-          'rating': rating,
-          'comment': comment,
-          'userName': resolvedName ?? user.displayName ?? user.email ?? user.uid,
-          'userAvatar': resolvedAvatar ?? user.photoURL ?? '',
-          'likes': 0,
-          'likedBy': <String>[],
-          'createdAt': now,
-          'updatedAt': now,
-        });
-      }
-
-      final average = total == 0 ? 0.0 : (sum / total);
-      final aggregatePayload = _buildAggregatePayload(
-        averageRating: average,
-        totalReviews: total,
-        sumRatings: sum,
-        starsCount: starsCount,
-        updatedAt: now,
-      );
-      if (ratingSnap.exists) {
-        txn.update(ratingDocRef, {
-          ...aggregatePayload,
-          // remove legacy/duplicate fields
-          'totalReview': FieldValue.delete(),
-          'totalRating': FieldValue.delete(),
-          'sumRating': FieldValue.delete(),
-        });
-      } else {
-        txn.set(ratingDocRef, {
-          ...aggregatePayload,
-          'createdAt': now,
-        });
-      }
-
-      // Sync aggregates to movies collection (tmdb fields)
-      final moviesDocRef = _firestore.collection('movies').doc(movieId);
-      final voteAverage = (average * 2).clamp(0.0, 10.0);
-      txn.update(moviesDocRef, {
-        'tmdb.vote_average': voteAverage,
-        'tmdb.vote_count': total,
-      });
-    });
+          if (comment != null && comment.trim().isNotEmpty) 'review': comment.trim(),
+        }));
+    _onChanged?.call(movieId);
   }
 
-  Future<Map<String, String?>> _resolveUserProfile(User user) async {
-    String? name;
-    String? avatar;
-
-    // 1) Prefer Firestore profile by userId (contains photoUrl most reliably)
-    try {
-      final snap = await _firestore.collection('users').doc(user.uid).get();
-      final data = snap.data();
-      if (data != null) {
-        name = (data['displayName'] as String?) ?? (data['name'] as String?);
-        avatar = (data['photoUrl'] as String?) ?? (data['photoURL'] as String?) ?? (data['avatarUrl'] as String?);
-      }
-    } catch (_) {}
-
-    // 2) Fallback to SharedPreferences cache
-    if ((name == null || name.isEmpty) || (avatar == null || avatar.isEmpty)) {
-      try {
-        final prefs = await SharedPreferences.getInstance();
-        name = name ?? prefs.getString('userName') ?? prefs.getString('profile.displayName');
-        avatar = avatar ?? prefs.getString('userAvatar') ?? prefs.getString('profile.photoURL') ?? prefs.getString('profile.photoUrl');
-      } catch (_) {}
-    }
-
-    // 3) Final fallback to FirebaseAuth provider
-    name = name ?? user.displayName ?? user.email ?? user.uid;
-    if (avatar == null || avatar.isEmpty) {
-      final providerPhoto = user.providerData.isNotEmpty ? user.providerData.first.photoURL : null;
-      avatar = user.photoURL ?? providerPhoto ?? '';
-    }
-
-    return {'name': name, 'avatar': avatar};
+  Future<void> deleteMyReview(String movieId) async {
+    await guardApi(() => _dio.delete<dynamic>('/movies/$movieId/reviews/me'));
+    _onChanged?.call(movieId);
   }
 
-  Future<void> toggleLike({
-    required String movieId,
-    required String reviewUserId,
-  }) async {
-    final user = _auth.currentUser;
-    if (user == null) {
-      throw StateError('User not logged in');
-    }
-    final reviewDocRef = _firestore
-        .collection('ratings')
-        .doc(movieId)
-        .collection('reviews')
-        .doc(reviewUserId);
-
-    await _firestore.runTransaction((txn) async {
-      final snap = await txn.get(reviewDocRef);
-      if (!snap.exists) return;
-      final data = snap.data() as Map<String, dynamic>;
-      final likedBy = List<String>.from((data['likedBy'] as List?) ?? const []);
-      final hasLiked = likedBy.contains(user.uid);
-      if (hasLiked) {
-        likedBy.remove(user.uid);
-      } else {
-        likedBy.add(user.uid);
-      }
-      txn.update(reviewDocRef, {
-        'likedBy': likedBy,
-        'likes': likedBy.length,
-        'updatedAt': FieldValue.serverTimestamp(),
-      });
-    });
+  /// Likes are explicit (not a toggle on the server) so a double tap can never flip the wrong way.
+  Future<void> setLike({required String movieId, required String reviewUserId, required bool liked}) async {
+    final path = '/movies/$movieId/reviews/$reviewUserId/like';
+    await guardApi(() => liked ? _dio.put<dynamic>(path) : _dio.delete<dynamic>(path));
+    _onChanged?.call(movieId);
   }
 
-  Map<String, int> _initStarsCount([Map? existing]) {
-    final base = { '1': 0, '2': 0, '3': 0, '4': 0, '5': 0 };
-    if (existing == null) return base;
-    final casted = existing.map((k, v) => MapEntry(k.toString(), (v as num).toInt()));
-    for (final k in base.keys) {
-      base[k] = casted[k] ?? 0;
-    }
-    return base;
-  }
-
-  Map<String, dynamic> _buildAggregatePayload({
-    required double averageRating,
-    required int totalReviews,
-    required int sumRatings,
-    required Map<String, int> starsCount,
-    required FieldValue updatedAt,
-  }) {
+  /// `{ averageRating, totalReviews, starsCount: {'1'..'5'} }`.
+  Future<Map<String, dynamic>> fetchSummary(String movieId) async {
+    final res = await guardApi(() => _dio.get<dynamic>('/movies/$movieId/reviews/summary'));
+    final data = res.payloadMap;
+    final distribution = Map<String, dynamic>.from((data['distribution'] as Map?) ?? const {});
     return {
-      'averageRating': averageRating,
-      'totalReviews': totalReviews,
-      'sumRatings': sumRatings,
-      'starsCount': starsCount,
-      'updatedAt': updatedAt,
+      'averageRating': (data['average'] as num?)?.toDouble() ?? 0.0,
+      'totalReviews': (data['count'] as num?)?.toInt() ?? 0,
+      'starsCount': {for (final e in distribution.entries) e.key.toString(): (e.value as num).toInt()},
     };
+  }
+
+  /// Newest first. Each item: `userId, userName, userAvatar, rating, comment, likes, likedByMe, updatedAt`.
+  Future<List<Map<String, dynamic>>> fetchReviews(String movieId, {int size = 50}) async {
+    final res = await guardApi(() => _dio.get<dynamic>('/movies/$movieId/reviews', queryParameters: {'size': size}));
+    final items = (res.payloadMap['items'] as List?) ?? const [];
+    return items.map<Map<String, dynamic>>((raw) {
+      final r = Map<String, dynamic>.from(raw as Map);
+      return {
+        'userId': r['userId'],
+        'userName': r['userName'],
+        'userAvatar': r['avatarUrl'],
+        'rating': r['rating'],
+        'comment': r['review'],
+        'likes': r['likes'],
+        'likedByMe': r['likedByMe'] == true,
+        'updatedAt': r['updatedAt'] is String ? DateTime.tryParse(r['updatedAt'] as String)?.toLocal() : null,
+      };
+    }).toList();
   }
 }
 
+final ratingsServiceProvider = Provider<RatingsService>((ref) => RatingsService(
+      ref.watch(dioProvider),
+      // A new/changed review or like refreshes the summary, the list and the movie's own rating.
+      onChanged: (movieId) {
+        ref.invalidate(ratingDocProvider(movieId));
+        ref.invalidate(reviewsProvider(movieId));
+        ref.invalidate(movieDetailProvider(movieId));
+      },
+    ));
 
+final AutoDisposeFutureProviderFamily<Map<String, dynamic>?, String> ratingDocProvider =
+    FutureProvider.autoDispose.family<Map<String, dynamic>?, String>(
+  (ref, movieId) => ref.watch(ratingsServiceProvider).fetchSummary(movieId),
+);
+
+final AutoDisposeFutureProviderFamily<List<Map<String, dynamic>>, String> reviewsProvider =
+    FutureProvider.autoDispose.family<List<Map<String, dynamic>>, String>(
+  (ref, movieId) => ref.watch(ratingsServiceProvider).fetchReviews(movieId),
+);
+
+/// Whether the caller liked a given review, taken from the already-loaded review list.
+final reviewLikeStatusProvider = FutureProvider.autoDispose.family<bool, Map<String, String>>((ref, params) async {
+  final reviews = await ref.watch(reviewsProvider(params['movieId']!).future);
+  return reviews.any((r) => r['userId'] == params['reviewUserId'] && r['likedByMe'] == true);
+});

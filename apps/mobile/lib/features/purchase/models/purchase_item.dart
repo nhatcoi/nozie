@@ -1,3 +1,4 @@
+import '../../../../core/models/movie.dart';
 import '../../../../core/models/movie_item.dart';
 
 class PurchaseItem extends MovieItem {
@@ -13,6 +14,19 @@ class PurchaseItem extends MovieItem {
     this.isDownloaded = false,
     this.isFinished = false,
   }) : super();
+
+  /// From the API's `PurchaseResponse`: `{ movie: MovieSummary, purchasedAt }`.
+  factory PurchaseItem.fromApi(Map<String, dynamic> json) {
+    final movie = MovieItem.fromMovie(Movie.fromApi(Map<String, dynamic>.from(json['movie'] as Map)));
+    return PurchaseItem(
+      id: movie.id,
+      title: movie.title,
+      imageUrl: movie.imageUrl,
+      rating: movie.rating,
+      price: movie.price,
+      isDownloaded: true,
+    );
+  }
 
   PurchaseItem copyWith({
     String? id,

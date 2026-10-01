@@ -10,13 +10,13 @@ class SearchMapper {
       'subtitle': null,
       'imageUrl': item.imageUrl,
       'rating': item.rating ?? 0.0,
-      'ratingCount': 0,
+      'ratingCount': item.ratingCount ?? 0,
       'price': item.priceData ?? item.price,
-      'genres': ['General'],
+      'genres': item.genres.isEmpty ? ['General'] : item.genres,
       'isTrending': false,
       'isNew': false,
-      'releaseDate': 'Unknown',
-      'views': '0',
+      'releaseDate': item.year?.toString() ?? 'Unknown',
+      'views': (item.views ?? 0).toString(),
     };
   }
 

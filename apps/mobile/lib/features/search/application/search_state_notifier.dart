@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../entities/search_result.dart';
 import '../entities/search_filter.dart';
@@ -122,77 +120,11 @@ class SearchStateNotifier extends StateNotifier<SearchState> {
     );
     
     try {
-      // Lấy wishlist hoặc purchase IDs tùy theo searchSource
-      List<String>? wishlistMovieIds;
-      if (state.searchSource == SearchSource.wishlist) {
-        final userId = FirebaseAuth.instance.currentUser?.uid;
-        if (userId == null) {
-          state = state.copyWith(
-            isSearching: false,
-            status: SearchStatus.success,
-            results: [],
-            hasResults: false,
-            hasMoreResults: false,
-          );
-          return;
-        }
-        
-        final wishlistSnapshot = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(userId)
-            .collection('wishlist')
-            .get();
-        
-        wishlistMovieIds = wishlistSnapshot.docs.map((doc) => doc.id).toList();
-        
-        if (wishlistMovieIds.isEmpty) {
-          state = state.copyWith(
-            isSearching: false,
-            status: SearchStatus.success,
-            results: [],
-            hasResults: false,
-            hasMoreResults: false,
-          );
-          return;
-        }
-      } else if (state.searchSource == SearchSource.purchase) {
-        final userId = FirebaseAuth.instance.currentUser?.uid;
-        if (userId == null) {
-          state = state.copyWith(
-            isSearching: false,
-            status: SearchStatus.success,
-            results: [],
-            hasResults: false,
-            hasMoreResults: false,
-          );
-          return;
-        }
-        
-        final purchaseSnapshot = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(userId)
-            .collection('purchases')
-            .get();
-        
-        wishlistMovieIds = purchaseSnapshot.docs.map((doc) => doc.id).toList();
-        
-        if (wishlistMovieIds.isEmpty) {
-          state = state.copyWith(
-            isSearching: false,
-            status: SearchStatus.success,
-            results: [],
-            hasResults: false,
-            hasMoreResults: false,
-          );
-          return;
-        }
-      }
-      
       final results = await _repository.search(
-        query, 
-        filters: state.filters, 
+        query,
+        filters: state.filters,
         page: 1,
-        wishlistMovieIds: wishlistMovieIds,
+        source: state.searchSource,
       );
       state = state.copyWith(
         results: results.items,
@@ -233,39 +165,13 @@ class SearchStateNotifier extends StateNotifier<SearchState> {
     state = state.copyWith(isLoadingMore: true);
     
     try {
-      // Lấy wishlist hoặc purchase IDs tùy theo searchSource
-      List<String>? wishlistMovieIds;
-      if (state.searchSource == SearchSource.wishlist) {
-        final userId = FirebaseAuth.instance.currentUser?.uid;
-        if (userId != null) {
-          final wishlistSnapshot = await FirebaseFirestore.instance
-              .collection('users')
-              .doc(userId)
-              .collection('wishlist')
-              .get();
-          
-          wishlistMovieIds = wishlistSnapshot.docs.map((doc) => doc.id).toList();
-        }
-      } else if (state.searchSource == SearchSource.purchase) {
-        final userId = FirebaseAuth.instance.currentUser?.uid;
-        if (userId != null) {
-          final purchaseSnapshot = await FirebaseFirestore.instance
-              .collection('users')
-              .doc(userId)
-              .collection('purchases')
-              .get();
-          
-          wishlistMovieIds = purchaseSnapshot.docs.map((doc) => doc.id).toList();
-        }
-      }
-      
       final results = await _repository.search(
-        state.query, 
-        filters: state.filters, 
+        state.query,
+        filters: state.filters,
         page: state.currentPage + 1,
-        wishlistMovieIds: wishlistMovieIds,
+        source: state.searchSource,
       );
-      
+
       state = state.copyWith(
         results: [...state.results, ...results.items],
         currentPage: state.currentPage + 1,

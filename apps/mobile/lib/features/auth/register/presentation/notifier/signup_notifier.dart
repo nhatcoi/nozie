@@ -1,20 +1,15 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:nozie_mobile/core/common/ui_state.dart';
+import 'package:nozie_mobile/core/network/providers.dart';
 import 'package:nozie_mobile/features/auth/shared/providers/auth_repository_provider.dart';
-import 'package:nozie_mobile/features/auth/shared/providers/firebase_auth_provider.dart';
-import 'package:nozie_mobile/features/auth/shared/providers/storage_service_provider.dart';
-import 'package:nozie_mobile/features/auth/shared/services/storage_service.dart';
 import 'package:nozie_mobile/features/auth/register/domain/models/user_registration.dart';
 import 'package:nozie_mobile/features/auth/register/domain/repositories/auth_repository.dart';
-import 'package:nozie_mobile/features/profile/models/user_profile.dart'
-    as profile_models;
 import 'package:nozie_mobile/features/profile/notifiers/profile_notifier.dart';
+import 'package:nozie_mobile/features/profile/repository/profile_api.dart';
 import 'package:nozie_mobile/features/profile/repository/settings_repository.dart';
 
 final signupNotifierProvider =
@@ -53,30 +48,6 @@ class SignupNotifier extends StateNotifier<UIState<UserReg>> {
         rememberMe: accountData['rememberMe'] ?? false,
       );
 
-      // Upload avatar before creating user (if avatar exists)
-      String? avatarUrl;
-      final avatarPath = profileData['avatarPath'];
-      if (avatarPath != null && avatarPath.isNotEmpty) {
-        try {
-          final avatarFile = File(avatarPath);
-          if (await avatarFile.exists()) {
-            debugPrint('[SignupNotifier] Uploading avatar before user creation');
-            // Upload to temp location, will move to user location after user creation
-            final storageService = _ref.read(storageServiceProvider);
-            // Create temporary ID for signup
-            final tempId = DateTime.now().millisecondsSinceEpoch.toString();
-            avatarUrl = await storageService.uploadAvatarForSignup(
-              avatarFile,
-              tempId,
-            );
-            debugPrint('[SignupNotifier] Avatar uploaded: $avatarUrl');
-          }
-        } catch (error) {
-          debugPrint('[SignupNotifier] Failed to upload avatar: $error');
-          // Continue without avatar if upload fails
-        }
-      }
-
       final userRegistration = UserReg(
         gender: gender,
         age: age,
@@ -85,13 +56,23 @@ class SignupNotifier extends StateNotifier<UIState<UserReg>> {
         account: userAccount,
       );
 
-      // Pass avatarUrl to repository
-      await _repository.register(
-        userRegistration,
-        avatarUrl: avatarUrl,
-      );
+      await _repository.register(userRegistration);
 
-      await _syncUserProfile();
+      // The avatar goes up once the account exists; losing it must not undo a successful signup.
+      final avatarPath = profileData['avatarPath'];
+      if (avatarPath != null && avatarPath.isNotEmpty) {
+        try {
+          final file = File(avatarPath);
+          if (await file.exists()) {
+            final updated = await ProfileApi(_ref.read(dioProvider)).uploadAvatar(file);
+            _ref.read(sessionStoreProvider).updateUser(updated);
+          }
+        } catch (error) {
+          debugPrint('[SignupNotifier] Avatar upload failed: $error');
+        }
+      }
+
+      await _publishProfile();
 
       state = Success<UserReg>(userRegistration);
       return state;
@@ -103,43 +84,17 @@ class SignupNotifier extends StateNotifier<UIState<UserReg>> {
 
   Future<void> signInWithGoogle() async {
     await _repository.signInWithGoogle();
-    await _syncUserProfile();
+    await _publishProfile();
   }
 
-  Future<void> _syncUserProfile() async {
+  Future<void> _publishProfile() async {
     try {
-      final auth = _ref.read(firebaseAuthProvider);
-      final user = auth.currentUser;
+      final user = _ref.read(sessionStoreProvider).value.user;
       if (user == null) return;
-
-      final snapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .get();
-
-      final data = snapshot.data() ?? <String, dynamic>{};
-      debugPrint('[Auth] Firestore user data fetched after signup: $data');
-
-      final profile = profile_models.UserProfile(
-        id: user.uid,
-        fullName: (data['displayName'] ?? data['fullName'] ??
-                user.displayName ?? '')
-            .toString(),
-        username: (data['username'] ?? '').toString(),
-        email: (data['email'] ?? user.email ?? '').toString(),
-        phone: (data['phone'] ?? '').toString(),
-        dateOfBirth: (data['dateOfBirth'] ?? '').toString(),
-        country: (data['country'] ?? '').toString(),
-        avatarUrl: (data['avatarUrl'] ?? user.photoURL ?? '').toString(),
-      );
-
-      final settingsRepository = _ref.read(settingsRepositoryProvider);
-      await settingsRepository.updateProfile(profile);
-      _ref.read(profileNotifierProvider.notifier).setProfile(profile);
+      await _ref.read(settingsRepositoryProvider).updateProfile(user);
+      _ref.read(profileNotifierProvider.notifier).setProfile(user);
     } catch (error) {
-      debugPrint('Failed to sync user profile after signup: $error');
+      debugPrint('Failed to publish user profile after signup: $error');
     }
   }
 }
-
-

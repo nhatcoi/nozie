@@ -13,7 +13,7 @@ class ForgotPasswordOtpScreen extends ConsumerStatefulWidget {
   const ForgotPasswordOtpScreen({
     super.key,
     required this.email,
-    this.length = 4,
+    this.length = 6,
     this.initialSeconds = 10,
   });
 

@@ -251,12 +251,20 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
                   country: _country ?? '',
                   avatarUrl: baseProfile.avatarUrl,
                 );
-                ref.read(profileNotifierProvider.notifier).update(updated).then((_) {
+                ref.read(profileNotifierProvider.notifier).update(updated, avatar: _avatarFile).then((_) {
                   if (!mounted) return;
+                  _avatarFile = null;
                   ToastNotification.showSuccess(
                     context,
                     message: t.profile.personalInfo.success,
                     duration: const Duration(seconds: 2),
+                  );
+                }).catchError((Object error) {
+                  if (!mounted) return;
+                  ToastNotification.showError(
+                    context,
+                    message: error.toString(),
+                    duration: const Duration(seconds: 3),
                   );
                 });
               },

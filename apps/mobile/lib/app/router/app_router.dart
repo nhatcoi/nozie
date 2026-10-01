@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nozie_mobile/core/session/session_state.dart';
 import 'package:nozie_mobile/features/auth/forgot_password/presentation/forgot_password_new_pass_screen.dart';
 import 'package:nozie_mobile/features/auth/forgot_password/presentation/forgot_password_otp_screen.dart';
 import 'package:nozie_mobile/features/auth/forgot_password/presentation/forgot_password_screen.dart';
@@ -89,16 +89,23 @@ class AppRouter {
   };
 
   static GoRouter? _router;
+  static SessionStore? _session;
+
+  /// Must be called once in `main()` before [router] is read.
+  static void configure(SessionStore session) {
+    _session = session;
+    _router = null;
+  }
 
   static GoRouter get router => _router ??= _createRouter();
 
   static GoRouter _createRouter() {
-    final guard = AuthGuard();
+    final session = _session ?? (throw StateError('AppRouter.configure(session) was not called'));
+    final guard = AuthGuard(session: session);
 
     return GoRouter(
       initialLocation: welcome,
-      refreshListenable:
-          _GoRouterRefreshStream(FirebaseAuth.instance.authStateChanges()),
+      refreshListenable: session,
       redirect: guard.redirect,
       routes: _buildRoutes(),
       errorBuilder: (context, state) =>
@@ -314,19 +321,5 @@ class AppRouter {
     final uri = Uri.parse(location);
     final path = uri.path;
     return path.isEmpty ? welcome : path;
-  }
-}
-
-class _GoRouterRefreshStream extends ChangeNotifier {
-  _GoRouterRefreshStream(Stream<dynamic> stream) {
-    _subscription = stream.asBroadcastStream().listen((_) => notifyListeners());
-  }
-
-  late final StreamSubscription<dynamic> _subscription;
-
-  @override
-  void dispose() {
-    _subscription.cancel();
-    super.dispose();
   }
 }

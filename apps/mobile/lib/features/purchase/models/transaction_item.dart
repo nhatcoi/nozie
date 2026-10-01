@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class TransactionItem {
   final String id;
   final String userId;
@@ -37,45 +35,20 @@ class TransactionItem {
     this.errorMessage,
   });
 
-  factory TransactionItem.fromFirestore(String id, Map<String, dynamic> data) {
-    DateTime? parseTimestamp(dynamic value) {
-      if (value == null) return null;
-      if (value is DateTime) return value;
-      if (value is Timestamp) return value.toDate();
-      if (value is Map) {
-        final seconds = value['_seconds'] ?? value['seconds'];
-        if (seconds != null) {
-          final nanoseconds = value['_nanoseconds'] ?? value['nanoseconds'] ?? 0;
-          return DateTime.fromMillisecondsSinceEpoch(
-            (seconds as int) * 1000 + ((nanoseconds as int) ~/ 1000000),
-          );
-        }
-      }
-      if (value is String) {
-        try {
-          return DateTime.parse(value);
-        } catch (_) {}
-      }
-      return null;
-    }
-
+  /// From the API's `TransactionResponse`. Stripe ids are deliberately not exposed by the server.
+  factory TransactionItem.fromApi(Map<String, dynamic> json) {
+    DateTime? date(dynamic v) => v is String ? DateTime.tryParse(v)?.toLocal() : null;
+    final status = (json['status'] as String? ?? 'PENDING').toLowerCase();
     return TransactionItem(
-      id: id,
-      userId: data['userId'] as String? ?? '',
-      movieId: data['movieId'] as String? ?? '',
-      movieTitle: data['movieTitle'] as String?,
-      movieImageUrl: data['movieImageUrl'] as String?,
-      movieSlug: data['movieSlug'] as String?,
-      amount: (data['amount'] as num?)?.toDouble() ?? 0.0,
-      currency: data['currency'] as String? ?? 'usd',
-      status: data['status'] as String? ?? 'pending',
-      createdAt: parseTimestamp(data['createdAt']),
-      paidAt: parseTimestamp(data['paidAt']),
-      failedAt: parseTimestamp(data['failedAt']),
-      canceledAt: parseTimestamp(data['canceledAt']),
-      stripePaymentIntentId: data['stripePaymentIntentId'] as String?,
-      chargeId: data['chargeId'] as String?,
-      errorMessage: data['errorMessage'] as String?,
+      id: json['id'] as String? ?? '',
+      userId: '',
+      movieId: json['movieId'] as String? ?? '',
+      amount: ((json['amountCents'] as num?)?.toDouble() ?? 0.0) / 100.0,
+      currency: (json['currency'] as String? ?? 'USD').toLowerCase(),
+      status: status,
+      createdAt: date(json['createdAt']),
+      paidAt: date(json['paidAt']),
+      errorMessage: json['errorMessage'] as String?,
     );
   }
 

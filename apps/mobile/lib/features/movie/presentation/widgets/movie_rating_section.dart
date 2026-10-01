@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../core/utils/data/format_utils.dart';
 import '../../../../core/app_export.dart';
 import '../../services/ratings_service.dart';
@@ -57,15 +56,12 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
           ],
         ),
         const Gap(24),
-        StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-          stream: FirebaseFirestore.instance
-              .collection('ratings')
-              .doc(widget.movieId)
-              .snapshots(),
-          builder: (context, snap) {
-            final data = snap.data?.data();
-            final avg = (data?['averageRating'] as num?)?.toDouble() ?? (widget.rating);
-            final total = (data?['totalReviews'] as num?)?.toInt() ?? (widget.reviewCount);
+        Builder(
+          builder: (context) {
+            final data = ref.watch(ratingDocProvider(widget.movieId)).valueOrNull;
+            final reviewed = ((data?['totalReviews'] as num?)?.toInt() ?? 0) > 0;
+            final avg = reviewed ? (data!['averageRating'] as num).toDouble() : widget.rating;
+            final total = reviewed ? (data!['totalReviews'] as num).toInt() : widget.reviewCount;
             final stars = (data?['starsCount'] as Map?)?.map((k, v) => MapEntry(k.toString(), (v as num).toInt())) ?? {};
 
             return Row(
@@ -384,7 +380,7 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
                 text: context.i18n.movie.ratings.dialog.submit,
                 onPressed: () async {
                   try {
-                    final svc = RatingsService();
+                    final svc = ref.read(ratingsServiceProvider);
                     await svc.submitReview(
                       movieId: widget.movieId,
                       rating: selectedStars,

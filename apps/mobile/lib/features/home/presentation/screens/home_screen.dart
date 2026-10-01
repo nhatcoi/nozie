@@ -71,7 +71,7 @@ class _Section extends ConsumerWidget {
   });
 
   final String title;
-  final AutoDisposeStreamProvider<List<MovieItem>> provider;
+  final AutoDisposeFutureProvider<List<MovieItem>> provider;
   final VoidCallback? onMore;
   final bool minimal;
 

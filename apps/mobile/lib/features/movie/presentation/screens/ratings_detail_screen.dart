@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,48 +5,6 @@ import 'package:gap/gap.dart';
 import '../../../../core/app_export.dart';
 import '../../services/ratings_service.dart';
 import '../../../../core/utils/data/format_utils.dart';
-
-final _firestoreProvider = Provider((_) => FirebaseFirestore.instance);
-final _authProvider = Provider((_) => FirebaseAuth.instance);
-
-final ratingDocProvider = StreamProvider.family.autoDispose<Map<String, dynamic>?, String>((ref, movieId) {
-  return ref.watch(_firestoreProvider).collection('ratings').doc(movieId).snapshots().map((d) => d.data());
-});
-
-final reviewsProvider = StreamProvider.family.autoDispose<List<Map<String, dynamic>>, String>((ref, movieId) {
-  return ref
-      .watch(_firestoreProvider)
-      .collection('ratings')
-      .doc(movieId)
-      .collection('reviews')
-      .orderBy('updatedAt', descending: true)
-      .snapshots()
-      .map((s) => s.docs.map((e) => e.data()).toList());
-});
-
-final reviewLikeStatusProvider = StreamProvider.family.autoDispose<bool, Map<String, String>>((ref, params) {
-  final movieId = params['movieId']!;
-  final reviewUserId = params['reviewUserId']!;
-  final currentUserId = ref.watch(_authProvider).currentUser?.uid;
-  
-  if (currentUserId == null) {
-    return Stream.value(false);
-  }
-  
-  return ref
-      .watch(_firestoreProvider)
-      .collection('ratings')
-      .doc(movieId)
-      .collection('reviews')
-      .doc(reviewUserId)
-      .snapshots()
-      .map((snap) {
-        if (!snap.exists) return false;
-        final data = snap.data();
-        final likedBy = List<String>.from((data?['likedBy'] as List?) ?? []);
-        return likedBy.contains(currentUserId);
-      });
-});
 
 class RatingsDetailScreen extends ConsumerWidget {
   const RatingsDetailScreen({super.key, required this.movieId, required this.movieTitle});
@@ -154,7 +110,7 @@ class RatingsDetailScreen extends ConsumerWidget {
                           likes: likes,
                           userId: userId,
                           movieId: movieId,
-                          timestamp: createdAt is Timestamp ? createdAt.toDate() : null,
+                          timestamp: createdAt is DateTime ? createdAt : null,
                         );
                       },
                     );
@@ -221,7 +177,6 @@ class _ReviewTile extends ConsumerWidget {
     final t = Theme.of(context);
     final text = AppColors.getText(context);
     final secondary = AppColors.getTextSecondary(context);
-    final me = ref.watch(_authProvider).currentUser;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -259,7 +214,8 @@ class _ReviewTile extends ConsumerWidget {
           children: [
             GestureDetector(
               onTap: () async {
-                await RatingsService().toggleLike(movieId: movieId, reviewUserId: userId);
+                final isLiked = ref.read(reviewLikeStatusProvider({'movieId': movieId, 'reviewUserId': userId})).valueOrNull ?? false;
+                await ref.read(ratingsServiceProvider).setLike(movieId: movieId, reviewUserId: userId, liked: !isLiked);
               },
               child: ref.watch(reviewLikeStatusProvider({'movieId': movieId, 'reviewUserId': userId})).when(
                 data: (isLiked) => SvgPicture.asset(

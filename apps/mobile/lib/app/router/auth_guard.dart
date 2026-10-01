@@ -1,15 +1,16 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:nozie_mobile/core/session/session_state.dart';
+
 class AuthGuard {
   AuthGuard({
-    FirebaseAuth? auth,
+    required SessionStore session,
     Set<String>? publicPaths,
     Set<String>? authRedirectWhitelist,
-  })  : _auth = auth ?? FirebaseAuth.instance,
+  })  : _session = session,
         _publicPaths = publicPaths ?? const {
           '/',
           '/signup',
@@ -24,13 +25,12 @@ class AuthGuard {
           '/signup',
         };
 
-  final FirebaseAuth _auth;
+  final SessionStore _session;
   final Set<String> _publicPaths;
   final Set<String> _authRedirectWhitelist;
 
   FutureOr<String?> redirect(BuildContext context, GoRouterState state) {
-    final user = _auth.currentUser;
-    final isLoggedIn = user != null;
+    final isLoggedIn = _session.value.isAuthenticated;
     final location = _normalize(state.matchedLocation);
 
     if (!isLoggedIn && !_publicPaths.contains(location)) {
@@ -51,4 +51,3 @@ class AuthGuard {
     return path.isEmpty ? '/' : path;
   }
 }
-
