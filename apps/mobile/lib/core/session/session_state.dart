@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import '../../features/profile/models/user_profile.dart';
+import 'package:nozie_mobile/features/profile/user_profile.dart';
 
 enum SessionStatus { unknown, authenticated, unauthenticated }
 

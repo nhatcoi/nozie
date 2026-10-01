@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nozie_mobile/core/app_export.dart';
-import '../utils/data/image_constant.dart';
-import '../theme/app_colors.dart';
-import '../theme/app_typography.dart';
+import 'package:nozie_mobile/core/utils/image_constant.dart';
+import 'package:nozie_mobile/core/theme/app_colors.dart';
+import 'package:nozie_mobile/core/theme/app_typography.dart';
 
 class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;

@@ -3,12 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 
-import '../i18n/translations.g.dart';
-import '../core/services/locale_setting.dart';
-import '../core/services/theme_mode_notifier.dart';
-import '../core/theme/app_theme.dart';
-import '../core/widgets/orientation_lock_widget.dart';
-import 'package:nozie_mobile/app/router/app_router.dart';
+import 'package:nozie_mobile/i18n/translations.g.dart';
+import 'package:nozie_mobile/core/services/locale_setting.dart';
+import 'package:nozie_mobile/core/services/theme_mode_notifier.dart';
+import 'package:nozie_mobile/core/theme/app_theme.dart';
+import 'package:nozie_mobile/core/widgets/orientation_lock_widget.dart';
+import 'package:nozie_mobile/app/app_router.dart';
 
 
 

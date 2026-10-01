@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 
-import '../storage/token_storage.dart';
+import 'package:nozie_mobile/core/storage/token_storage.dart';
 
 /// Adds the bearer token and, on a 401, refreshes once (single-flight) and replays the request.
 class AuthInterceptor extends Interceptor {

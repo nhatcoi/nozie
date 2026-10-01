@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:nozie_mobile/features/profile/models/user_profile_api.dart';
+import 'package:nozie_mobile/features/profile/user_profile_api.dart';
 
 void main() {
   test('maps API user JSON and converts ISO date to dd/MM/yyyy', () {

@@ -1,6 +1,6 @@
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import '../theme/app_colors.dart';
+import 'package:nozie_mobile/core/theme/app_colors.dart';
 
 class CustomRangeThumb extends RangeSliderThumbShape {
   final double enabledThumbRadius;

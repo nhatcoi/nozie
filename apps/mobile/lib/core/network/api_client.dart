@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
-import '../config/env.dart';
-import '../storage/token_storage.dart';
-import 'auth_interceptor.dart';
+import 'package:nozie_mobile/core/config/env.dart';
+import 'package:nozie_mobile/core/storage/token_storage.dart';
+import 'package:nozie_mobile/core/network/auth_interceptor.dart';
 
 /// The one and only HTTP client for the Nozie API.
 Dio buildApiClient({

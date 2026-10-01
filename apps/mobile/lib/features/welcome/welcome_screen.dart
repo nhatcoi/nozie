@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:nozie_mobile/app/router/app_router.dart';
+import 'package:nozie_mobile/app/app_router.dart';
 import 'package:go_router/go_router.dart';
 import 'dart:async';
-import '../../../core/app_export.dart';
-import '../../../core/widgets/feedback/toast_notification.dart';
-import 'data/welcome_constant.dart';
-import 'widgets/welcome_content.dart';
-import 'widgets/page_indicator.dart';
+import 'package:nozie_mobile/core/app_export.dart';
+import 'package:nozie_mobile/core/widgets/toast_notification.dart';
+import 'package:nozie_mobile/features/welcome/welcome_constant.dart';
+import 'package:nozie_mobile/features/welcome/welcome_content.dart';
+import 'package:nozie_mobile/features/welcome/page_indicator.dart';
 
 class WelcomeScreen extends ConsumerStatefulWidget {
   const WelcomeScreen({super.key});

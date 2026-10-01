@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../models/movie.dart';
-import '../models/movie_item.dart';
-import '../network/api_exception.dart';
-import '../network/api_page.dart';
-import '../network/api_response.dart';
-import '../network/providers.dart';
+import 'package:nozie_mobile/core/models/movie.dart';
+import 'package:nozie_mobile/core/models/movie_item.dart';
+import 'package:nozie_mobile/core/network/api_exception.dart';
+import 'package:nozie_mobile/core/network/api_page.dart';
+import 'package:nozie_mobile/core/network/api_response.dart';
+import 'package:nozie_mobile/core/network/providers.dart';
 
 /// Read-only access to the movie catalog through the API.
 class MovieRepository {

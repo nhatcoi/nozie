@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../utils/data/image_constant.dart';
+import 'package:nozie_mobile/core/utils/image_constant.dart';
 
 class NetworkOrAssetImage extends StatelessWidget {
   const NetworkOrAssetImage({

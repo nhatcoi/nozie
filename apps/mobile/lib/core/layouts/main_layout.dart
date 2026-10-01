@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'custom_top_bar.dart';
-import 'custom_bottom_nav_bar.dart';
-import '../theme/app_colors.dart';
-import 'package:nozie_mobile/app/router/app_router.dart';
-import 'topbar_provider.dart';
-import 'package:nozie_mobile/app/router/navigation_utils.dart';
+import 'package:nozie_mobile/core/layouts/custom_top_bar.dart';
+import 'package:nozie_mobile/core/layouts/custom_bottom_nav_bar.dart';
+import 'package:nozie_mobile/core/theme/app_colors.dart';
+import 'package:nozie_mobile/app/app_router.dart';
+import 'package:nozie_mobile/core/layouts/topbar_provider.dart';
+import 'package:nozie_mobile/app/navigation_utils.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class MainLayout extends ConsumerWidget {

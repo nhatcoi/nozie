@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:nozie_mobile/core/enums/movie_item_type.dart';
-import 'movie.dart';
+import 'package:nozie_mobile/core/models/movie.dart';
 
 class MovieItem extends Equatable {
   final String id;

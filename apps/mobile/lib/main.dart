@@ -5,17 +5,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter_stripe/flutter_stripe.dart';
 
-import 'app/app.dart';
-import 'core/config/env.dart';
-import 'core/services/locale_setting.dart';
-import 'core/network/api_client.dart';
-import 'core/network/providers.dart';
-import 'core/services/shared_prefs_provider.dart';
-import 'core/session/session_state.dart';
-import 'core/storage/token_storage.dart';
-import 'features/auth/data/api_auth_repository.dart';
-import 'package:nozie_mobile/app/router/app_router.dart';
-import 'i18n/translations.g.dart';
+import 'package:nozie_mobile/app/app.dart';
+import 'package:nozie_mobile/core/config/env.dart';
+import 'package:nozie_mobile/core/services/locale_setting.dart';
+import 'package:nozie_mobile/core/network/api_client.dart';
+import 'package:nozie_mobile/core/network/providers.dart';
+import 'package:nozie_mobile/core/services/shared_prefs_provider.dart';
+import 'package:nozie_mobile/core/session/session_state.dart';
+import 'package:nozie_mobile/core/storage/token_storage.dart';
+import 'package:nozie_mobile/features/auth/api_auth_repository.dart';
+import 'package:nozie_mobile/app/app_router.dart';
+import 'package:nozie_mobile/i18n/translations.g.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

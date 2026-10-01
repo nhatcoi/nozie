@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../app_export.dart';
-import 'custom_range_thumb.dart';
+import 'package:nozie_mobile/core/app_export.dart';
+import 'package:nozie_mobile/core/widgets/custom_range_thumb.dart';
 
 class PriceRangeSlider extends StatefulWidget {
   final RangeValues values;

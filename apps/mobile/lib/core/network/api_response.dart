@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import 'api_exception.dart';
+import 'package:nozie_mobile/core/network/api_exception.dart';
 
 /// Unwraps the server envelope `{ status, message, data }`.
 extension ApiResponseX on Response<dynamic> {

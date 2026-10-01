@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:nozie_mobile/features/search/entities/filter_section.dart';
-import 'package:nozie_mobile/features/search/services/search_query_mapper.dart';
+import 'package:nozie_mobile/features/search/filter_section.dart';
+import 'package:nozie_mobile/features/search/search_query_mapper.dart';
 
 void main() {
   test('sort options map to whitelisted API sorts', () {

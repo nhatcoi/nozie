@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../constants/app_padding.dart';
-import '../utils/data/image_constant.dart';
-import '../theme/app_colors.dart';
-import '../theme/app_typography.dart';
-import '../extension/responsive_extensions.dart';
-import 'topbar_provider.dart';
-import '../../i18n/translations.g.dart';
+import 'package:nozie_mobile/core/constants/app_padding.dart';
+import 'package:nozie_mobile/core/utils/image_constant.dart';
+import 'package:nozie_mobile/core/theme/app_colors.dart';
+import 'package:nozie_mobile/core/theme/app_typography.dart';
+import 'package:nozie_mobile/core/extension/responsive_extensions.dart';
+import 'package:nozie_mobile/core/layouts/topbar_provider.dart';
+import 'package:nozie_mobile/i18n/translations.g.dart';
 
 class CustomBottomNavBar extends ConsumerWidget {
   final Function(int) onTap;

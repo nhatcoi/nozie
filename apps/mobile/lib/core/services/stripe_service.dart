@@ -2,9 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
-import '../network/api_exception.dart';
-import '../network/api_response.dart';
-import '../network/providers.dart';
+import 'package:nozie_mobile/core/network/api_exception.dart';
+import 'package:nozie_mobile/core/network/api_response.dart';
+import 'package:nozie_mobile/core/network/providers.dart';
 
 final stripeServiceProvider = Provider<StripeService>((ref) => StripeService(ref.watch(dioProvider)));
 

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:nozie_mobile/features/purchase/models/transaction_item.dart';
-import 'package:nozie_mobile/features/purchase/models/purchase_item.dart';
+import 'package:nozie_mobile/features/purchase/transaction_item.dart';
+import 'package:nozie_mobile/features/purchase/purchase_item.dart';
 
 void main() {
   test('transaction status and amount are normalised for the existing screens', () {

@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../features/profile/models/user_profile.dart';
-import '../network/providers.dart';
-import 'session_state.dart';
+import 'package:nozie_mobile/features/profile/user_profile.dart';
+import 'package:nozie_mobile/core/network/providers.dart';
+import 'package:nozie_mobile/core/session/session_state.dart';
 
 /// Current session, rebuilt whenever someone logs in or out.
 final sessionStateProvider = Provider<SessionState>((ref) {

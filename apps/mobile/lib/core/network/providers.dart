@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../session/session_state.dart';
-import '../storage/token_storage.dart';
-import 'api_client.dart';
+import 'package:nozie_mobile/core/session/session_state.dart';
+import 'package:nozie_mobile/core/storage/token_storage.dart';
+import 'package:nozie_mobile/core/network/api_client.dart';
 
 final tokenStorageProvider = Provider<TokenStorage>((ref) => TokenStorage());
 

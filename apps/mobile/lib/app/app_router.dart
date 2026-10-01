@@ -1,0 +1,325 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:nozie_mobile/core/session/session_state.dart';
+import 'package:nozie_mobile/features/forgot_password/forgot_password_new_pass_screen.dart';
+import 'package:nozie_mobile/features/forgot_password/forgot_password_otp_screen.dart';
+import 'package:nozie_mobile/features/forgot_password/forgot_password_screen.dart';
+import 'package:nozie_mobile/features/auth/login_screen.dart';
+import 'package:nozie_mobile/features/signup/signup_flow_screen.dart';
+import 'package:nozie_mobile/features/discover/discover_screen.dart';
+import 'package:nozie_mobile/features/genre/explore_genre.dart';
+import 'package:nozie_mobile/features/genre/explore_genre_details.dart';
+import 'package:nozie_mobile/features/home/home_screen.dart';
+import 'package:nozie_mobile/features/home/movie_type_screen.dart';
+import 'package:nozie_mobile/features/notification/notification_screen.dart';
+import 'package:nozie_mobile/features/help_center/help_center_screen.dart';
+import 'package:nozie_mobile/features/setting/language_screen.dart';
+import 'package:nozie_mobile/features/setting/payment_screen.dart';
+import 'package:nozie_mobile/features/profile/personal_info_screen.dart';
+import 'package:nozie_mobile/features/setting/preferences_screen.dart';
+import 'package:nozie_mobile/features/profile/profile_screen.dart';
+import 'package:nozie_mobile/features/setting/security_screen.dart';
+import 'package:nozie_mobile/features/setting/notification_settings_screen.dart'
+    as profile_notification;
+import 'package:nozie_mobile/features/purchase/purchase_screen.dart';
+import 'package:nozie_mobile/features/purchase/purchase_detail_screen.dart';
+import 'package:nozie_mobile/features/search/search_screen.dart';
+import 'package:nozie_mobile/features/setting/setting_screen.dart';
+import 'package:nozie_mobile/features/welcome/welcome_screen.dart';
+import 'package:nozie_mobile/features/wishlist/wishlist_screen.dart';
+import 'package:nozie_mobile/features/movie/movie_detail_screen.dart';
+import 'package:nozie_mobile/features/movie/video_player_screen.dart';
+import 'package:nozie_mobile/features/movie/movie_info_screen.dart';
+import 'package:nozie_mobile/features/movie/ratings_detail_screen.dart';
+import 'package:nozie_mobile/features/purchase/checkout_screen.dart';
+import 'package:nozie_mobile/core/models/movie.dart';
+import 'package:nozie_mobile/core/layouts/main_layout.dart';
+import 'package:nozie_mobile/core/services/locale_setting.dart';
+import 'package:nozie_mobile/app/transition_page.dart';
+import 'package:nozie_mobile/app/auth_guard.dart';
+
+class AppRouter {
+  static const welcome = '/';
+  static const signup = '/signup';
+  static const signIn = '/sign-in';
+  static const home = '/home';
+  static const discover = '/discover';
+  static const wishlist = '/wishlist';
+  static const purchase = '/purchase';
+  static const profile = '/profile';
+  static const settings = '/settings';
+  static const forgotPassword = '/forgot-password';
+  static const otpVerification = '/otp-verification';
+  static const resetPassword = '/reset-password';
+  static const search = '/search';
+  static const notification = '/notification';
+  static const notificationSettings = '/notification-settings';
+  static const paymentMethods = '/payment-methods';
+  static const personalInfo = '/personal-info';
+  static const preferences = '/preferences';
+  static const language = '/language';
+  static const security = '/security';
+  static const helpCenter = '/help-center';
+  static const explore = '/explore';
+  static const movieCarouselGenre = '/movie-carousel-genre/';
+  static const movie = '/movie';
+  static const videoPlayer = '/video-player';
+  static const movieInfo = '/movie-info';
+  static const ratings = '/ratings';
+  static const checkout = '/checkout';
+  static const purchaseDetail = '/purchase-detail';
+  static const movieType = '/movie-type';
+
+  static const _publicPaths = {
+    welcome,
+    signup,
+    signIn,
+    forgotPassword,
+    otpVerification,
+    resetPassword,
+  };
+
+  static const _authRedirectWhitelist = {
+    welcome,
+    signIn,
+    signup,
+  };
+
+  static GoRouter? _router;
+  static SessionStore? _session;
+
+  /// Must be called once in `main()` before [router] is read.
+  static void configure(SessionStore session) {
+    _session = session;
+    _router = null;
+  }
+
+  static GoRouter get router => _router ??= _createRouter();
+
+  static GoRouter _createRouter() {
+    final session = _session ?? (throw StateError('AppRouter.configure(session) was not called'));
+    final guard = AuthGuard(session: session);
+
+    return GoRouter(
+      initialLocation: welcome,
+      refreshListenable: session,
+      redirect: guard.redirect,
+      routes: _buildRoutes(),
+      errorBuilder: (context, state) =>
+          const Scaffold(body: Center(child: Text('Route not found'))),
+    );
+  }
+
+  static List<RouteBase> _buildRoutes() {
+    return [
+      GoRoute(path: welcome, builder: (_, __) => const WelcomeScreen()),
+      GoRoute(path: signup, builder: (_, __) => const SignupFlowScreen()),
+      GoRoute(path: signIn, builder: (_, __) => const LoginScreen()),
+      GoRoute(path: forgotPassword, builder: (_, __) => const ForgotPasswordScreen()),
+      GoRoute(path: otpVerification, builder: (_, state) {
+        final email = state.extra as String?;
+        return ForgotPasswordOtpScreen(email: email ?? '');
+      }),
+      GoRoute(path: '${movieCarouselGenre}:id', builder: (_, state) {
+        final id = state.pathParameters['id']!;
+        return ExploreGenreDetails(query: id);
+      }),
+      GoRoute(path: '$explore/:name', builder: (_, state) {
+        final name = state.pathParameters['name']!;
+        return ExploreGenre(query: name);
+      }),
+      GoRoute(path: '$movie/:id', builder: (_, state) {
+        final id = state.pathParameters['id']!;
+        return MovieDetailScreen(movieId: id);
+      }),
+      GoRoute(path: '$videoPlayer/:id', builder: (_, state) {
+        final id = state.pathParameters['id']!;
+        final extra = state.extra;
+        Movie? movie;
+        String? videoUrl;
+        
+        if (extra is Map) {
+          movie = extra['movie'] as Movie?;
+          videoUrl = extra['videoUrl'] as String?;
+        } else if (extra is Movie) {
+          movie = extra;
+        }
+        
+        if (movie == null) {
+          return Scaffold(
+            body: Center(
+              child: Text('Movie not found: $id'),
+            ),
+          );
+        }
+        
+        return VideoPlayerScreen(
+          movie: movie,
+          videoUrl: videoUrl,
+        );
+      }),
+      GoRoute(path: '$movieInfo/:id', builder: (_, state) {
+        final id = state.pathParameters['id']!;
+        final extra = state.extra;
+        Movie? movie;
+        if (extra is Map) {
+          movie = extra['movie'] as Movie?;
+        } else if (extra is Movie) {
+          movie = extra;
+        }
+
+        if (movie == null) {
+          return Scaffold(
+            body: Center(
+              child: Text('Movie not found: $id'),
+            ),
+          );
+        }
+
+        return MovieInfoScreen(movie: movie);
+      }),
+      GoRoute(path: '$ratings/:id', builder: (context, state) {
+        final id = state.pathParameters['id']!;
+        final extra = state.extra;
+        String? title;
+        if (extra is Map) {
+          title = extra['title'] as String?;
+        } else if (extra is String) {
+          title = extra;
+        }
+        return RatingsDetailScreen(movieId: id, movieTitle: title ?? id);
+      }),
+      GoRoute(path: checkout, builder: (_, state) {
+        final extra = state.extra;
+        Movie? movie;
+        if (extra is Map) {
+          movie = extra['movie'] as Movie?;
+        } else if (extra is Movie) {
+          movie = extra;
+        }
+        
+        if (movie == null) {
+          return Scaffold(
+            body: Center(
+              child: Text('Movie not found'),
+            ),
+          );
+        }
+        
+        return CheckoutScreen(movie: movie);
+      }),
+      GoRoute(path: '$purchaseDetail/:movieId', builder: (_, state) {
+        final movieId = state.pathParameters['movieId']!;
+        return PurchaseDetailScreen(movieId: movieId);
+      }),
+      GoRoute(path: '$movieType/:type', builder: (_, state) {
+        final typeStr = state.pathParameters['type']!;
+        MovieListType type;
+        switch (typeStr) {
+          case 'purchase':
+            type = MovieListType.purchase;
+            break;
+          case 'wishlist':
+            type = MovieListType.wishlist;
+            break;
+          case 'recent':
+            type = MovieListType.recent;
+            break;
+          case 'recommended':
+          default:
+            type = MovieListType.recommended;
+            break;
+        }
+        return MovieTypeScreen(type: type);
+      }),
+      GoRoute(path: resetPassword, builder: (_, state) {
+        final extra = state.extra;
+        String? email;
+        String? resetToken;
+        if (extra is Map) {
+          email = extra['email'] as String?;
+          resetToken = extra['resetToken'] as String?;
+        }
+        return ForgotPasswordNewPassScreen(email: email, resetToken: resetToken);
+      }),
+      GoRoute(path: notification, builder: (_, __) => const NotificationScreen()),
+      GoRoute(
+        path: notificationSettings,
+        builder: (_, __) => const profile_notification.NotificationSettingsScreen(),
+      ),
+      GoRoute(path: paymentMethods, builder: (_, __) => const PaymentScreen()),
+      GoRoute(path: personalInfo, builder: (_, __) => const PersonalInfoScreen()),
+      GoRoute(path: security, builder: (_, __) => const SecurityScreen()),
+      GoRoute(path: preferences, builder: (_, __) => const PreferencesScreen()),
+      GoRoute(path: language, builder: (_, __) => const LanguageScreen()),
+      GoRoute(path: helpCenter, builder: (_, __) => const HelpCenterScreen()),
+      GoRoute(path: search, builder: (_, state) {
+        final extra = state.extra;
+        SearchSource searchSource = SearchSource.all;
+        
+        if (extra is Map) {
+          final source = extra['searchSource'] as String?;
+          if (source == 'wishlist') {
+            searchSource = SearchSource.wishlist;
+          } else if (source == 'purchase') {
+            searchSource = SearchSource.purchase;
+          }
+        }
+        
+        return SearchScreen(searchSource: searchSource);
+      }),
+      ShellRoute(
+        builder: (context, state, child) =>
+            MainLayout(showAppBar: true, showBottomNav: true, child: child),
+        routes: [
+          GoRoute(
+            path: home,
+            pageBuilder: (_, __) => TransitionPage(child: const HomeScreen()),
+          ),
+          GoRoute(
+            path: discover,
+            pageBuilder: (_, __) => TransitionPage(child: const DiscoverScreen()),
+          ),
+          GoRoute(
+            path: wishlist,
+            pageBuilder: (_, __) => TransitionPage(child: const WishlistScreen()),
+          ),
+          GoRoute(
+            path: purchase,
+            pageBuilder: (_, __) => TransitionPage(child: const PurchaseScreen()),
+          ),
+          // GoRoute(
+          //   path: purchase,
+          //   pageBuilder: (_, __) => TransitionPage(
+          //     child: Consumer(
+          //       builder: (context, ref, child) {
+          //         final currentLocale = ref.watch(localeControllerProvider);
+          //         final localeController =
+          //             ref.read(localeControllerProvider.notifier);
+          //         return SettingPage(
+          //           currentLocale,
+          //           (locale) => localeController.setLocale(locale),
+          //         );
+          //       },
+          //     ),
+          //   ),
+          // ),
+          GoRoute(
+            path: profile,
+            pageBuilder: (_, __) => TransitionPage(child: const ProfileScreen()),
+          ),
+        ],
+      ),
+    ];
+  }
+
+  static String _normalize(String location) {
+    if (location.isEmpty) return welcome;
+    final uri = Uri.parse(location);
+    final path = uri.path;
+    return path.isEmpty ? welcome : path;
+  }
+}

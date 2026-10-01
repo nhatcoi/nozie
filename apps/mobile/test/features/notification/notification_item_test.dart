@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:nozie_mobile/features/notification/models/notification_item.dart';
+import 'package:nozie_mobile/features/notification/notification_item.dart';
 
 void main() {
   test('parses an API notification, including the read flag', () {

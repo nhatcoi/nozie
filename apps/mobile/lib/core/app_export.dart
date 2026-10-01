@@ -1,38 +1,38 @@
 // Core exports
-export 'presentation/splash_screen/splash_screen.dart';
+export 'package:nozie_mobile/features/welcome/splash_screen.dart';
 
 // Services
-export 'services/locale_setting.dart';
-export 'services/theme_mode_notifier.dart';
+export 'package:nozie_mobile/core/services/locale_setting.dart';
+export 'package:nozie_mobile/core/services/theme_mode_notifier.dart';
 
 // Theme
-export 'theme/app_colors.dart';
-export 'theme/app_gradients.dart';
-export 'theme/app_theme.dart';
-export 'theme/app_typography.dart';
+export 'package:nozie_mobile/core/theme/app_colors.dart';
+export 'package:nozie_mobile/core/theme/app_gradients.dart';
+export 'package:nozie_mobile/core/theme/app_theme.dart';
+export 'package:nozie_mobile/core/theme/app_typography.dart';
 
 
-export 'utils/data/image_constant.dart';
-export 'utils/data/validation_utils.dart';
-export 'utils/data/data.dart';
+export 'package:nozie_mobile/core/utils/image_constant.dart';
+export 'package:nozie_mobile/core/utils/validation_utils.dart';
+export 'package:nozie_mobile/core/utils/data.dart';
 
 // Widgets
-export 'widgets/inputs/info_field.dart';
-export 'widgets/buttons/primary_button.dart';
-export 'widgets/selection/radio_box.dart';
-export 'widgets/feedback/tag.dart';
-export 'widgets/feedback/toast_notification.dart';
-export 'widgets/buttons/secondary_button.dart';
-export 'widgets/inputs/dropdown.dart';
-export 'widgets/layout/image_picker.dart';
-export 'widgets/inputs/select_date.dart';
-export 'widgets/layout/content_wrapper.dart';
+export 'package:nozie_mobile/core/widgets/info_field.dart';
+export 'package:nozie_mobile/core/widgets/primary_button.dart';
+export 'package:nozie_mobile/core/widgets/radio_box.dart';
+export 'package:nozie_mobile/core/widgets/tag.dart';
+export 'package:nozie_mobile/core/widgets/toast_notification.dart';
+export 'package:nozie_mobile/core/widgets/secondary_button.dart';
+export 'package:nozie_mobile/core/widgets/dropdown.dart';
+export 'package:nozie_mobile/core/widgets/image_picker.dart';
+export 'package:nozie_mobile/core/widgets/select_date.dart';
+export 'package:nozie_mobile/core/widgets/content_wrapper.dart';
 
 // Extensions
-export 'extension/context_extensions.dart';
-export 'extension/responsive_extensions.dart';
+export 'package:nozie_mobile/core/extension/context_extensions.dart';
+export 'package:nozie_mobile/core/extension/responsive_extensions.dart';
 
 // Constants
-export 'constants/app_padding.dart';
-export 'constants/app_sizing.dart';
+export 'package:nozie_mobile/core/constants/app_padding.dart';
+export 'package:nozie_mobile/core/constants/app_sizing.dart';
 
