@@ -40,10 +40,7 @@ class LoginScreen extends ConsumerWidget {
 
       final emailError = ValidationUtils.validateEmail(email, context);
       if (emailError != null) {
-        ToastNotification.showError(
-          context,
-          message: emailError,
-        );
+        ToastNotification.showError(context, message: emailError);
         return;
       }
 
@@ -76,171 +73,198 @@ class LoginScreen extends ConsumerWidget {
       } else if (next is Error<bool>) {
         if (context.mounted) {
           final raw = next.message ?? '';
-          final friendly = raw.contains('The supplied auth credential is malformed or has expired')
+          final friendly =
+              raw.contains(
+                'The supplied auth credential is malformed or has expired',
+              )
               ? t.auth.errors.invalidCredentials
               : raw;
-          ToastNotification.showError(
-            context,
-            message: friendly,
-          );
+          ToastNotification.showError(context, message: friendly);
         }
         loginNotifier.reset();
       }
     });
 
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(),
       body: GestureDetector(
-          behavior: HitTestBehavior.translucent,
+        behavior: HitTestBehavior.translucent,
         onTap: () {
           FocusScope.of(context).unfocus();
         },
+        // Scrollable so small screens and the keyboard never overflow; IntrinsicHeight keeps the
+        // sign-in button pinned to the bottom when there is room.
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(t.auth.loginScreen.title, style: type.displaySmall),
+          child: LayoutBuilder(
+            builder: (context, constraints) => SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: IntrinsicHeight(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          t.auth.loginScreen.title,
+                          style: type.displaySmall,
+                        ),
 
-                const SizedBox(height: 12),
+                        const SizedBox(height: 12),
 
-                Text(t.auth.loginScreen.description, style: type.titleLarge),
+                        Text(
+                          t.auth.loginScreen.description,
+                          style: type.titleLarge,
+                        ),
 
-                const SizedBox(height: 32),
+                        const SizedBox(height: 32),
 
-                Text(
-                  t.auth.email,
-                  style: type.labelLarge?.copyWith(fontWeight: FontWeight.w700),
-                ),
+                        Text(
+                          t.auth.email,
+                          style: type.labelLarge?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
 
-                InfoField(
-                  hintText: t.auth.loginScreen.placeholder.email,
-                  controller: userCtl,
-                  focusNode: userNode,
-                  validator: (value) => ValidationUtils.validateEmail(value, context),
-                  onSubmitted: (_) =>
-                      FocusScope.of(context).requestFocus(passNode),
-                ),
+                        InfoField(
+                          hintText: t.auth.loginScreen.placeholder.email,
+                          controller: userCtl,
+                          focusNode: userNode,
+                          validator: (value) =>
+                              ValidationUtils.validateEmail(value, context),
+                          onSubmitted: (_) =>
+                              FocusScope.of(context).requestFocus(passNode),
+                        ),
 
-                const SizedBox(height: 24),
+                        const SizedBox(height: 24),
 
-                Text(
-                  t.auth.password,
-                  style: type.labelLarge?.copyWith(fontWeight: FontWeight.w700),
-                ),
+                        Text(
+                          t.auth.password,
+                          style: type.labelLarge?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
 
-                InfoField(
-                    hintText: t.auth.loginScreen.placeholder.password, isPassword: true,
-                controller: passCtl,
-                focusNode: passNode,
-                // validator: (value) => ValidationUtils.validatePassword(value, context),
-                onSubmitted: (_) => FocusScope.of(context).unfocus()),
+                        InfoField(
+                          hintText: t.auth.loginScreen.placeholder.password,
+                          isPassword: true,
+                          controller: passCtl,
+                          focusNode: passNode,
+                          // validator: (value) => ValidationUtils.validatePassword(value, context),
+                          onSubmitted: (_) => FocusScope.of(context).unfocus(),
+                        ),
 
-                const SizedBox(height: 24),
+                        const SizedBox(height: 24),
 
-                AppCheckbox(
-                  value: rememberMe,
-                  label: t.auth.rememberMe,
-                  textStyle: type.titleMedium,
-                  spacing: 16,
-                  onChanged: (bool value) {
-                    ref.read(rememberMeProvider.notifier).state = value;
-                  },
-                ),
+                        AppCheckbox(
+                          value: rememberMe,
+                          label: t.auth.rememberMe,
+                          textStyle: type.titleMedium,
+                          spacing: 16,
+                          onChanged: (bool value) {
+                            ref.read(rememberMeProvider.notifier).state = value;
+                          },
+                        ),
 
-                const SizedBox(height: 24),
+                        const SizedBox(height: 24),
 
-                LinedTextDivider(),
+                        LinedTextDivider(),
 
-                const SizedBox(height: 24),
+                        const SizedBox(height: 24),
 
-                Container(
-                  width: double.infinity, // full width
-                  alignment: Alignment.center, // căn giữa text
-                  child: GestureDetector(
-                    onTap: () {
-                      context.push(AppRouter.forgotPassword);
-                    },
-                    child: Text(
-                      t.auth.forgotPassword.title,
-                      style: type.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primary500,
-                      ),
+                        Container(
+                          width: double.infinity, // full width
+                          alignment: Alignment.center, // căn giữa text
+                          child: GestureDetector(
+                            onTap: () {
+                              context.push(AppRouter.forgotPassword);
+                            },
+                            child: Text(
+                              t.auth.forgotPassword.title,
+                              style: type.titleLarge?.copyWith(
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.primary500,
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 32),
+
+                        LinedTextDivider(
+                          text: t.auth.forgotPassword.orContinueWith,
+                        ),
+
+                        const SizedBox(height: 24),
+
+                        Row(
+                          children: [
+                            Expanded(
+                              child: SocialButton(
+                                icon: SvgPicture.asset(
+                                  ImageConstant.imgGoogleIcon,
+                                  height: 24,
+                                ),
+                                onPressed: () {
+                                  if (loginState is Loading<bool>) return;
+                                  _handleGoogleSignIn();
+                                },
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: SocialButton(
+                                icon: Icon(
+                                  Icons.apple,
+                                  size: 28,
+                                  color: isDark
+                                      ? AppColors.white
+                                      : AppColors.black,
+                                ),
+                                onPressed: () {
+                                  ToastNotification.showInfo(
+                                    context,
+                                    message: t.auth.oauth.featureInDevelopment,
+                                  );
+                                },
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: SocialButton(
+                                icon: SvgPicture.asset(
+                                  ImageConstant.imgFBIcon,
+                                  height: 24,
+                                ),
+                                onPressed: () {
+                                  ToastNotification.showInfo(
+                                    context,
+                                    message: t.auth.oauth.featureInDevelopment,
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Gap(24),
+                        Spacer(),
+
+                        PrimaryButton(
+                          text: t.auth.signIn,
+                          isLoading: loginState is Loading<bool>,
+                          onPressed: loginState is Loading<bool>
+                              ? null
+                              : () {
+                                  _handleEmailSignIn();
+                                },
+                        ),
+                      ],
                     ),
                   ),
                 ),
-
-                const SizedBox(height: 32),
-
-                LinedTextDivider(text: t.auth.forgotPassword.orContinueWith),
-
-                const SizedBox(height: 24),
-
-                Row(
-                  children: [
-                    Expanded(
-                      child: SocialButton(
-                        icon: SvgPicture.asset(
-                          ImageConstant.imgGoogleIcon,
-                          height: 24,
-                        ),
-                        onPressed: () {
-                          if (loginState is Loading<bool>) return;
-                          _handleGoogleSignIn();
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: SocialButton(
-                        icon: Icon(
-                          Icons.apple,
-                          size: 28,
-                          color: isDark ? AppColors.white : AppColors.black,
-                        ),
-                        onPressed: () {
-                          ToastNotification.showInfo(
-                            context,
-                            message: t.auth.oauth.featureInDevelopment,
-                          );
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: SocialButton(
-                        icon: SvgPicture.asset(
-                          ImageConstant.imgFBIcon,
-                          height: 24,
-                        ),
-                        onPressed: () {
-                          ToastNotification.showInfo(
-                            context,
-                            message: t.auth.oauth.featureInDevelopment,
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-
-                Gap(24),
-                Spacer(),
-
-                PrimaryButton(
-                  text: t.auth.signIn,
-                  isLoading: loginState is Loading<bool>,
-                  onPressed: loginState is Loading<bool>
-                      ? null
-                      : () {
-                          _handleEmailSignIn();
-                        },
-                ),
-              ],
+              ),
             ),
           ),
         ),

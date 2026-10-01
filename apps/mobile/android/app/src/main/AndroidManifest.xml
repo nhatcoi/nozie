@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Previously merged in by the Firebase plugins; now declared explicitly so release builds can reach the API. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="Nozie"
         android:name="${applicationName}"
