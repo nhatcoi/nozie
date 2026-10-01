@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nozie_mobile/core/network/error_messages.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:nozie_mobile/core/app_export.dart';
@@ -353,7 +354,7 @@ class PurchaseDetailScreen extends ConsumerWidget {
             const Icon(Icons.error_outline, size: 48, color: AppColors.warning),
             const Gap(8),
             Text(
-              '${context.i18n.purchaseDetail.error.generic} ${error.toString()}',
+              errorMessage(error),
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.warning,
               ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nozie_mobile/core/network/error_messages.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
@@ -36,7 +37,7 @@ class NotificationScreen extends ConsumerWidget {
                   if (context.mounted) {
                     ToastNotification.showError(
                       context,
-                      message: t.notification.markAllAsReadFailed(error: e.toString()),
+                      message: t.notification.markAllAsReadFailed(error: errorMessage(e)),
                     );
                   }
                 }
@@ -107,7 +108,7 @@ class NotificationScreen extends ConsumerWidget {
                       if (context.mounted) {
                         ToastNotification.showError(
                           context,
-                          message: '${t.common.errorPrefix} ${e.toString()}',
+                          message: errorMessage(e),
                         );
                       }
                     }
@@ -137,7 +138,7 @@ class NotificationScreen extends ConsumerWidget {
                   ),
                   const Gap(8),
                   Text(
-                    error.toString(),
+                    errorMessage(error),
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: AppColors.getTextSecondary(context),
                     ),

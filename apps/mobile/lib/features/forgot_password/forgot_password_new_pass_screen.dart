@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nozie_mobile/core/network/error_messages.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nozie_mobile/core/app_export.dart';
@@ -136,7 +137,7 @@ class ForgotPasswordNewPassScreen extends ConsumerWidget {
                     await showAppModal(
                       context: context,
                       title: 'Error',
-                      description: e.toString(),
+                      description: errorMessage(e),
                       iconPath: ImageConstant.successIcon,
                       primaryButton: PrimaryButton(
                         text: 'Close',

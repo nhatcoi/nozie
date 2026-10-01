@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nozie_mobile/core/network/error_messages.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:nozie_mobile/core/utils/format_utils.dart';
@@ -398,7 +399,7 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
                     if (context.mounted) {
                       ToastNotification.showError(
                         context,
-                        message: '${context.i18n.common.errorPrefix} ${e.toString()}',
+                        message: errorMessage(e),
                         duration: const Duration(seconds: 3),
                       );
                     }

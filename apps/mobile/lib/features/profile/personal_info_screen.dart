@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:nozie_mobile/core/network/error_messages.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -263,7 +264,7 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
                   if (!context.mounted) return;
                   ToastNotification.showError(
                     context,
-                    message: error.toString(),
+                    message: errorMessage(error),
                     duration: const Duration(seconds: 3),
                   );
                 });

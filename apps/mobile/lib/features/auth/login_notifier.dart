@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:nozie_mobile/core/network/error_messages.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:nozie_mobile/core/common/ui_state.dart';
@@ -36,7 +37,7 @@ class LoginNotifier extends StateNotifier<UIState<bool>> {
       await _publishProfile();
       state = const Success<bool>(true);
     } catch (error) {
-      state = Error<bool>(error.toString().replaceFirst('Exception: ', ''));
+      state = Error<bool>(errorMessage(error));
     }
   }
 

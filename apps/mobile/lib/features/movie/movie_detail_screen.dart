@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:nozie_mobile/core/network/error_messages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -67,7 +68,7 @@ class _WishlistButton extends ConsumerWidget {
           if (context.mounted) {
             ToastNotification.showError(
               context,
-              message: 'Error: ${e.toString()}',
+              message: errorMessage(e),
               duration: const Duration(seconds: 2),
             );
           }
@@ -176,7 +177,7 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
               const Icon(Icons.error_outline, size: 64, color: Colors.red),
               const Gap(16),
               Text(
-                '${context.i18n.common.errorPrefix} ${error.toString()}',
+                errorMessage(error),
                 style: theme.textTheme.bodyLarge?.copyWith(
                   color: AppColors.warning,
                 ),
@@ -310,7 +311,7 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                           ToastNotification.showError(
                             context,
                             message:
-                                '${context.i18n.common.errorPrefix} ${e.toString()}',
+                                errorMessage(e),
                             duration: const Duration(seconds: 3),
                           );
                         }
@@ -493,7 +494,7 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                 if (context.mounted) {
                   ToastNotification.showError(
                     context,
-                    message: 'Error: ${e.toString()}',
+                    message: errorMessage(e),
                     duration: const Duration(seconds: 2),
                   );
                 }

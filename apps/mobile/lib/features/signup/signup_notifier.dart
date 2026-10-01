@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:nozie_mobile/core/network/error_messages.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -77,7 +78,7 @@ class SignupNotifier extends StateNotifier<UIState<UserReg>> {
       state = Success<UserReg>(userRegistration);
       return state;
     } catch (error) {
-      state = Error<UserReg>(error.toString());
+      state = Error<UserReg>(errorMessage(error));
       return state;
     }
   }

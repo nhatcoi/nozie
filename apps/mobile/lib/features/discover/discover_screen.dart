@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nozie_mobile/core/network/error_messages.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -68,7 +69,7 @@ class _DiscoverSection extends ConsumerWidget {
       loading: () => _LoadingSection(title: sectionType.title),
       error: (error, stack) => _ErrorSection(
         title: sectionType.title,
-        error: error.toString(),
+        error: errorMessage(error),
         onRetry: () {
           ref.invalidate(discoverSectionProvider(sectionType));
         },

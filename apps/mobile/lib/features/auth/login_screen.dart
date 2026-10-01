@@ -71,14 +71,7 @@ class LoginScreen extends ConsumerWidget {
         loginNotifier.reset();
       } else if (next is Error<bool>) {
         if (context.mounted) {
-          final raw = next.message;
-          final friendly =
-              raw.contains(
-                'The supplied auth credential is malformed or has expired',
-              )
-              ? t.auth.errors.invalidCredentials
-              : raw;
-          ToastNotification.showError(context, message: friendly);
+          ToastNotification.showError(context, message: next.message);
         }
         loginNotifier.reset();
       }

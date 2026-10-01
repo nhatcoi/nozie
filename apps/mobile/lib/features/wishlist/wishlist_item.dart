@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:nozie_mobile/core/network/error_messages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -172,7 +173,7 @@ class _WishlistItemState extends ConsumerState<WishlistItem> {
             ToastNotification.showError(
               context,
               message:
-                  '${context.i18n.wishlist.common.errorPrefix} ${e.toString()}',
+                  errorMessage(e),
               duration: const Duration(seconds: 2),
             );
           }
@@ -210,7 +211,7 @@ class _WishlistItemState extends ConsumerState<WishlistItem> {
             ToastNotification.showError(
               context,
               message:
-                  '${context.i18n.wishlist.common.errorPrefix} ${e.toString()}',
+                  errorMessage(e),
               duration: const Duration(seconds: 2),
             );
           }

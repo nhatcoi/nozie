@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nozie_mobile/core/network/error_messages.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -49,7 +50,7 @@ class PaymentScreen extends ConsumerWidget {
                 loading: () => const Center(child: CircularProgressIndicator()),
                 error: (error, _) => Center(
                   child: Text(
-                    t.profile.payment.loadError(error: error.toString()),
+                    t.profile.payment.loadError(error: errorMessage(error)),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: AppColors.warning,
                         ),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:nozie_mobile/core/network/error_messages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -201,7 +202,7 @@ class _PurchaseItemWidgetState extends ConsumerState<PurchaseItemWidget> {
             ToastNotification.showError(
               context,
               message:
-                  '${context.i18n.purchase.common.errorPrefix} ${e.toString()}',
+                  errorMessage(e),
             );
           }
         }
@@ -244,7 +245,7 @@ class _PurchaseItemWidgetState extends ConsumerState<PurchaseItemWidget> {
             ToastNotification.showError(
               context,
               message:
-                  '${context.i18n.purchase.common.errorPrefix} ${e.toString()}',
+                  errorMessage(e),
             );
           }
         }

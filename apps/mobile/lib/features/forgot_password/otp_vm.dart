@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:nozie_mobile/core/network/error_messages.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nozie_mobile/features/forgot_password/forgot_password_repository_provider.dart';
 
@@ -110,7 +111,7 @@ class OtpVm extends AutoDisposeFamilyNotifier<
       restartTimer(60);
       state = state.copyWith(isLoading: false);
     } catch (e) {
-      state = state.copyWith(isLoading: false, error: e.toString());
+      state = state.copyWith(isLoading: false, error: errorMessage(e));
     }
   }
 
@@ -122,7 +123,7 @@ class OtpVm extends AutoDisposeFamilyNotifier<
       state = state.copyWith(isLoading: false, resetToken: token);
       return token;
     } catch (e) {
-      state = state.copyWith(isLoading: false, error: e.toString());
+      state = state.copyWith(isLoading: false, error: errorMessage(e));
       return null;
     }
   }

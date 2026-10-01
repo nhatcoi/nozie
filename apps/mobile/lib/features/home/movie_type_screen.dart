@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nozie_mobile/core/network/error_messages.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nozie_mobile/core/app_export.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -123,7 +124,7 @@ class MovieTypeScreen extends ConsumerWidget {
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (error, _) => Center(
               child: Text(
-                error.toString(),
+                errorMessage(error),
                 style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.warning),
               ),
             ),

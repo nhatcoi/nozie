@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:nozie_mobile/core/network/error_messages.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nozie_mobile/features/search/search_result.dart';
 import 'package:nozie_mobile/features/search/search_filter.dart';
@@ -138,7 +139,7 @@ class SearchStateNotifier extends StateNotifier<SearchState> {
       state = state.copyWith(
         isSearching: false,
         status: SearchStatus.error,
-        error: e.toString(),
+        error: errorMessage(e),
       );
     }
   }
@@ -181,7 +182,7 @@ class SearchStateNotifier extends StateNotifier<SearchState> {
     } catch (e) {
       state = state.copyWith(
         isLoadingMore: false,
-        error: e.toString(),
+        error: errorMessage(e),
       );
     }
   }
