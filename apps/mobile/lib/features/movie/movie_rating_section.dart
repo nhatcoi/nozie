@@ -46,7 +46,7 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
               ),
             ),
             IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_forward,
                 color: AppColors.primary500,
                 size: 24,
@@ -122,7 +122,7 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
 
     return Row(
       children: [
-        ...List.generate(fullStars, (_) => Icon(
+        ...List.generate(fullStars, (_) => const Icon(
               Icons.star,
               color: AppColors.primary500,
               size: 24,
@@ -130,7 +130,7 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
         if (hasPartialStar)
           Stack(
             children: [
-              Icon(
+              const Icon(
                 Icons.star_border,
                 color: AppColors.primary500,
                 size: 24,
@@ -139,7 +139,7 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   widthFactor: remainder.clamp(0.0, 1.0),
-                  child: Icon(
+                  child: const Icon(
                     Icons.star,
                     color: AppColors.primary500,
                     size: 24,
@@ -150,7 +150,7 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
           ),
         ...List.generate(emptyStars, (_) => Icon(
               Icons.star_border,
-              color: AppColors.primary500.withOpacity(0.3),
+              color: AppColors.primary500.withValues(alpha: 0.3),
               size: 24,
             )),
       ],
@@ -191,7 +191,7 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
                   child: LinearProgressIndicator(
                     value: pct,
                     backgroundColor: AppColors.getSurface(context),
-                    valueColor: AlwaysStoppedAnimation<Color>(
+                    valueColor: const AlwaysStoppedAnimation<Color>(
                       AppColors.primary500,
                     ),
                     minHeight: 8,
@@ -249,8 +249,8 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
                       color: widget.canRate
                           ? (starNumber <= selectedStars
                               ? AppColors.primary500
-                              : secondaryText.withOpacity(0.5))
-                          : secondaryText.withOpacity(0.3),
+                              : secondaryText.withValues(alpha: 0.5))
+                          : secondaryText.withValues(alpha: 0.3),
                       size: 32,
                     ),
                   ),
@@ -267,7 +267,7 @@ class _MovieRatingSectionState extends ConsumerState<MovieRatingSection> {
                     : null,
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.primary500,
-                  side: BorderSide(color: AppColors.primary500, width: 2),
+                  side: const BorderSide(color: AppColors.primary500, width: 2),
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(100),

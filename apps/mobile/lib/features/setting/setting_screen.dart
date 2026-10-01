@@ -42,9 +42,9 @@ class SettingPage extends ConsumerWidget {
             // ---- Switch theme: System / Light / Dark ----
             SegmentedButton<ThemeMode>(
               segments: [
-                ButtonSegment(value: ThemeMode.system, icon: Icon(Icons.phone_iphone), label: Text(t.settings.theme.system)),
-                ButtonSegment(value: ThemeMode.light,  icon: Icon(Icons.light_mode),  label: Text(t.settings.theme.light)),
-                ButtonSegment(value: ThemeMode.dark,   icon: Icon(Icons.dark_mode),   label: Text(t.settings.theme.dark)),
+                ButtonSegment(value: ThemeMode.system, icon: const Icon(Icons.phone_iphone), label: Text(t.settings.theme.system)),
+                ButtonSegment(value: ThemeMode.light,  icon: const Icon(Icons.light_mode),  label: Text(t.settings.theme.light)),
+                ButtonSegment(value: ThemeMode.dark,   icon: const Icon(Icons.dark_mode),   label: Text(t.settings.theme.dark)),
               ],
               selected: {themeMode},
               onSelectionChanged: (s) => ref.read(themeModeProvider.notifier).set(s.first),

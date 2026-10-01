@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:nozie_mobile/core/app_export.dart';
-import 'package:nozie_mobile/core/widgets/toast_notification.dart';
 import 'package:nozie_mobile/core/models/movie.dart';
 import 'package:nozie_mobile/features/movie/report_service.dart';
 
@@ -135,7 +134,7 @@ class _VideoErrorReportModalState extends ConsumerState<VideoErrorReportModal> {
       decoration: BoxDecoration(border: Border(bottom: BorderSide(color: AppColors.getLine(context)))),
       child: Row(
         children: [
-          Icon(Icons.report_problem, color: AppColors.warning, size: 28),
+          const Icon(Icons.report_problem, color: AppColors.warning, size: 28),
           const Gap(12),
           Expanded(
             child: Column(
@@ -242,7 +241,7 @@ class _VideoErrorReportModalState extends ConsumerState<VideoErrorReportModal> {
             fillColor: AppColors.getSurface(context),
             border: border,
             enabledBorder: border,
-            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: AppColors.primary500, width: 2)),
+            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.primary500, width: 2)),
             contentPadding: const EdgeInsets.all(16),
           ),
           style: theme.textTheme.bodyMedium?.copyWith(color: textColor),

@@ -122,7 +122,7 @@ class _SignupFlowScreenState extends ConsumerState<SignupFlowScreen> {
           ),
         );
         break;
-      case Error<UserReg>(message: final msg):
+      case Error<UserReg>():
         if (!mounted) return;
         await showAppModal(
           context: context,

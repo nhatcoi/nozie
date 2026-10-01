@@ -5,7 +5,7 @@ class FormatUtils {
     if (count == null) return '—';
     if (count >= 1000000) return '${count ~/ 1000000}M+';
     if (count >= 1000) {
-      return _trimTrailingZero((count / 1000).toStringAsFixed(1)) + 'K+';
+      return '${_trimTrailingZero((count / 1000).toStringAsFixed(1))}K+';
     }
     return count.toString();
   }
@@ -13,11 +13,11 @@ class FormatUtils {
   static String formatCount(int count) {
     if (count >= 1000000) {
       final v = (count / 1000000).toStringAsFixed(1);
-      return _trimTrailingZero(v) + 'M';
+      return '${_trimTrailingZero(v)}M';
     }
     if (count >= 1000) {
       final v = (count / 1000).toStringAsFixed(1);
-      return _trimTrailingZero(v) + 'k';
+      return '${_trimTrailingZero(v)}k';
     }
     return count.toString();
   }
@@ -25,8 +25,8 @@ class FormatUtils {
   static String formatDuration(String? raw) {
     if (raw == null || raw.trim().isEmpty) return '—';
     final s = raw.toLowerCase();
-    final hMatch = RegExp(r"(\d+)\s*h").firstMatch(s);
-    final mMatch = RegExp(r"(\d+)\s*m|\b(\d+)\s*min|\b(\d+)\s*phút").firstMatch(s);
+    final hMatch = RegExp(r'(\d+)\s*h').firstMatch(s);
+    final mMatch = RegExp(r'(\d+)\s*m|\b(\d+)\s*min|\b(\d+)\s*phút').firstMatch(s);
     int h = 0;
     int m = 0;
     if (hMatch != null) h = int.tryParse(hMatch.group(1)!) ?? 0;
@@ -48,7 +48,7 @@ class FormatUtils {
   static String formatWatched(String? raw) {
     if (raw == null || raw.trim().isEmpty) return '—';
     final s = raw.toLowerCase().trim();
-    final unitMatch = RegExp(r"(\d+[\.,]?\d*)\s*([kmb])").firstMatch(s);
+    final unitMatch = RegExp(r'(\d+[\.,]?\d*)\s*([kmb])').firstMatch(s);
     num n;
     if (unitMatch != null) {
       final numStr = unitMatch.group(1)!.replaceAll(',', '.');
@@ -74,13 +74,13 @@ class FormatUtils {
     }
     final ni = n.toInt();
     if (ni >= 1000000) return '${ni ~/ 1000000}M+';
-    if (ni >= 1000) return _trimTrailingZero((ni / 1000).toStringAsFixed(1)) + 'K+';
+    if (ni >= 1000) return '${_trimTrailingZero((ni / 1000).toStringAsFixed(1))}K+';
     return ni.toString();
   }
 
   static String _trimTrailingZero(String s) {
     if (s.contains('.')) {
-      s = s.replaceAll(RegExp(r"\.0$"), '');
+      s = s.replaceAll(RegExp(r'\.0$'), '');
     }
     return s;
   }

@@ -128,7 +128,7 @@ class Movie {
       chieurap: json['cinema'] as bool?,
       subDocquyen: json['subExclusive'] as bool?,
       country: rawCountries is List
-          ? rawCountries.whereType<Map>().map((e) => Map<String, dynamic>.from(e)).toList()
+          ? rawCountries.whereType<Map>().map(Map<String, dynamic>.from).toList()
           : null,
       category: category,
       director: strings(json['directors']),

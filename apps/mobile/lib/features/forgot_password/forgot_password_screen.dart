@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nozie_mobile/core/app_export.dart';
@@ -9,7 +10,8 @@ class ForgotPasswordScreen extends ConsumerStatefulWidget {
   const ForgotPasswordScreen({super.key});
 
   @override
-  ConsumerState<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+  ConsumerState<ForgotPasswordScreen> createState() =>
+      _ForgotPasswordScreenState();
 }
 
 class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
@@ -52,7 +54,8 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                 hintText: t.auth.loginScreen.placeholder.email,
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                validator: (value) => ValidationUtils.validateEmail(value, context),
+                validator: (value) =>
+                    ValidationUtils.validateEmail(value, context),
               ),
 
               const Spacer(),
@@ -69,9 +72,14 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                       await repo.resendOtp(email: email);
                     } catch (_) {}
                     if (!context.mounted) return;
-                    context.push(AppRouter.otpVerification, extra: email);
+                    unawaited(
+                      context.push(AppRouter.otpVerification, extra: email),
+                    );
                   },
-                  child: Text(t.common.continueText, style: AppTypography.bodyLBold),
+                  child: Text(
+                    t.common.continueText,
+                    style: AppTypography.bodyLBold,
+                  ),
                 ),
               ),
             ],

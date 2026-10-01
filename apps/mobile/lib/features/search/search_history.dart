@@ -78,7 +78,7 @@ class _SearchHistoryState extends ConsumerState<SearchHistory> {
 
         const SizedBox(height: 24),
 
-        LinedTextDivider(),
+        const LinedTextDivider(),
 
         const SizedBox(height: 24),
 
@@ -107,7 +107,7 @@ class _SearchHistoryState extends ConsumerState<SearchHistory> {
             textColor: AppColors.getText(context),
             borderColor: AppColors.getTextSecondary(
               context,
-            ).withOpacity(0.2),
+            ).withValues(alpha: 0.2),
             borderWidth: 1,
             fontSize: 14,
           ),

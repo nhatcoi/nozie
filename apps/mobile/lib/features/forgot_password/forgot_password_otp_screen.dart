@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nozie_mobile/core/app_export.dart';
@@ -29,14 +30,18 @@ class ForgotPasswordOtpScreen extends ConsumerStatefulWidget {
 class _ForgotPasswordOtpScreenState
     extends ConsumerState<ForgotPasswordOtpScreen>
     with OtpInputController {
-
   @override
   int get length => widget.length;
-  
+
   @override
   OtpVm get otpController => ref.read(_getProvider().notifier);
 
-  AutoDisposeFamilyNotifierProvider<OtpVm, OtpVmState, ({String email, int initialSeconds, int length})> _getProvider() {
+  AutoDisposeFamilyNotifierProvider<
+    OtpVm,
+    OtpVmState,
+    ({String email, int initialSeconds, int length})
+  >
+  _getProvider() {
     final args = (
       email: widget.email,
       length: widget.length,
@@ -58,7 +63,6 @@ class _ForgotPasswordOtpScreenState
 
     final vm = ref.watch(provider);
 
-
     return Scaffold(
       appBar: AppBar(),
       resizeToAvoidBottomInset: false,
@@ -76,74 +80,88 @@ class _ForgotPasswordOtpScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(24,16,24,28),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                  Column(
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 16, 24, 28),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(t.auth.forgotPassword.otp.title, style: theme.displaySmall),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            t.auth.forgotPassword.otp.title,
+                            style: theme.displaySmall,
+                          ),
 
-                      const SizedBox(height: 12),
+                          const SizedBox(height: 12),
 
-                      Text(t.auth.forgotPassword.otp.description, style: theme.titleLarge),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      OtpInputGroup(
-                        length: widget.length,
-                        controllers: controllers,
-                        focusNodes: focusNodes,
-                        currentIndex: currentIndex,
-                        onChanged: (value, index) => commitInput(value, index),
-                        onTap: (index) {
-                          if (currentIndex != index) {
-                            setState(() => currentIndex = index);
-                          }
-                        },
-                        onKeyEvent: handleKeyEvent,
+                          Text(
+                            t.auth.forgotPassword.otp.description,
+                            style: theme.titleLarge,
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          OtpInputGroup(
+                            length: widget.length,
+                            controllers: controllers,
+                            focusNodes: focusNodes,
+                            currentIndex: currentIndex,
+                            onChanged: commitInput,
+                            onTap: (index) {
+                              if (currentIndex != index) {
+                                setState(() => currentIndex = index);
+                              }
+                            },
+                            onKeyEvent: handleKeyEvent,
+                          ),
+
+                          const SizedBox(height: 40),
+
+                          OtpCountdownWidget(
+                            secondsLeft: vm.secondsLeft,
+                            onResendCode: () async {
+                              // await otpController.resendCode();
+                            },
+                          ),
+                        ],
                       ),
 
-                      const SizedBox(height: 40),
-
-                      OtpCountdownWidget(
-                        secondsLeft: vm.secondsLeft,
-                        onResendCode: () async {
-                          // await otpController.resendCode();
-                        },
+                      Column(
+                        children: [
+                          PrimaryButton(
+                            text: t.common.confirm,
+                            onPressed: () async {
+                              final token = await otpController.verify();
+                              if (token != null && token.isNotEmpty) {
+                                if (!context.mounted) return;
+                                unawaited(
+                                  context.push(
+                                    AppRouter.resetPassword,
+                                    extra: {
+                                      'email': widget.email,
+                                      'resetToken': token,
+                                    },
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+                        ],
                       ),
                     ],
                   ),
-
-                  Column(
-                    children: [
-                      PrimaryButton(text: t.common.confirm, onPressed: () async {
-                        final token = await otpController.verify();
-                        if (token != null && token.isNotEmpty) {
-                          if (!mounted) return;
-                          context.push(AppRouter.resetPassword, extra: {
-                            'email': widget.email,
-                            'resetToken': token,
-                          });
-                        }
-                      }),
-                    ],
-                  ),
-                ],
                 ),
               ),
-            ),
 
-            NumericKeyboard(
-              onTextInput: onTextFromKeyboard,
-              onBackspace: onBackspaceFromKeyboard,
-            ),
+              NumericKeyboard(
+                onTextInput: onTextFromKeyboard,
+                onBackspace: onBackspaceFromKeyboard,
+              ),
             ],
           ),
         ),

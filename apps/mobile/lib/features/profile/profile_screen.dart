@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -23,7 +24,7 @@ class ProfileScreen extends ConsumerWidget {
     final t = context.i18n;
     final languageLabel = _languageLabel(context, languageState);
 
-    void _showLogoutConfirmation() {
+    void showLogoutConfirmation() {
       final router = GoRouter.of(context);
       final authRepository = ref.read(authRepositoryProvider);
 
@@ -38,7 +39,7 @@ class ProfileScreen extends ConsumerWidget {
         builder: (sheetContext) => _LogoutBottomSheet(
           onCancel: () => Navigator.of(sheetContext).maybePop(),
           onConfirm: () async {
-            Navigator.of(sheetContext).maybePop();
+            unawaited(Navigator.of(sheetContext).maybePop());
             await authRepository.signOut();
             await LogoutService.logout(ref);
             if (context.mounted) {
@@ -99,8 +100,8 @@ class ProfileScreen extends ConsumerWidget {
                   Text(
                     languageLabel,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.getText(context).withOpacity(0.7),
-                        ),
+                      color: AppColors.getText(context).withValues(alpha: 0.7),
+                    ),
                   ),
                   const SizedBox(width: 8),
                   SvgPicture.asset(
@@ -108,7 +109,7 @@ class ProfileScreen extends ConsumerWidget {
                     width: 14,
                     height: 14,
                     colorFilter: ColorFilter.mode(
-                      AppColors.getText(context).withOpacity(0.5),
+                      AppColors.getText(context).withValues(alpha: 0.5),
                       BlendMode.srcIn,
                     ),
                   ),
@@ -131,7 +132,7 @@ class ProfileScreen extends ConsumerWidget {
             //   onTap: () {},
             // ),
             const SizedBox(height: 8),
-            _LogoutItem(onTap: _showLogoutConfirmation),
+            _LogoutItem(onTap: showLogoutConfirmation),
           ],
         ),
       ),
@@ -140,9 +141,7 @@ class ProfileScreen extends ConsumerWidget {
 }
 
 class _ProfileHeader extends StatelessWidget {
-  const _ProfileHeader({
-    required this.userState,
-  });
+  const _ProfileHeader({required this.userState});
 
   final AsyncValue<UserProfile> userState;
 
@@ -177,9 +176,9 @@ class _ProfileHeader extends StatelessWidget {
               ),
               subtitle: Text(
                 profile.email,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: secondaryText,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: secondaryText),
               ),
             ),
           ),
@@ -189,10 +188,7 @@ class _ProfileHeader extends StatelessWidget {
               ImageConstant.editIcon,
               width: 14,
               height: 14,
-              colorFilter: ColorFilter.mode(
-                textColor,
-                BlendMode.srcIn,
-              ),
+              colorFilter: ColorFilter.mode(textColor, BlendMode.srcIn),
             ),
           ),
         ],
@@ -209,9 +205,9 @@ class _ProfileHeader extends StatelessWidget {
             child: Text(
               t.profile.header.loadError,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: textColor,
-                    fontWeight: FontWeight.w600,
-                  ),
+                color: textColor,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],
@@ -268,7 +264,7 @@ class _SettingItem extends StatelessWidget {
                   width: 14,
                   height: 14,
                   colorFilter: ColorFilter.mode(
-                    textColor.withOpacity(0.5),
+                    textColor.withValues(alpha: 0.5),
                     BlendMode.srcIn,
                   ),
                 ),
@@ -334,17 +330,15 @@ class _DarkModeSetting extends ConsumerWidget {
       title: t.profile.menu.darkMode,
       trailing: Switch.adaptive(
         value: isDark,
-        onChanged: (val) => notifier.set(val ? ThemeMode.dark : ThemeMode.light),
+        onChanged: (val) =>
+            notifier.set(val ? ThemeMode.dark : ThemeMode.light),
       ),
     );
   }
 }
 
 class _LogoutBottomSheet extends StatelessWidget {
-  const _LogoutBottomSheet({
-    required this.onCancel,
-    required this.onConfirm,
-  });
+  const _LogoutBottomSheet({required this.onCancel, required this.onConfirm});
 
   final VoidCallback onCancel;
   final VoidCallback onConfirm;
@@ -353,13 +347,12 @@ class _LogoutBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final textColor = AppColors.getText(context);
     final secondaryText = AppColors.getTextSecondary(context);
-    final bottomInset = MediaQuery.of(context).viewPadding.bottom;
     final t = context.i18n;
 
     return SafeArea(
       top: false,
       child: Padding(
-        padding: EdgeInsets.fromLTRB(24, 16, 24, 0),
+        padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -370,7 +363,7 @@ class _LogoutBottomSheet extends StatelessWidget {
                 height: 4,
                 margin: const EdgeInsets.only(bottom: 18),
                 decoration: BoxDecoration(
-                  color: AppColors.getText(context).withOpacity(0.12),
+                  color: AppColors.getText(context).withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(100),
                 ),
               ),
@@ -379,7 +372,7 @@ class _LogoutBottomSheet extends StatelessWidget {
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: AppColors.trRed.withOpacity(0.5),
+                color: AppColors.trRed.withValues(alpha: 0.5),
                 shape: BoxShape.circle,
               ),
               alignment: Alignment.center,
@@ -430,7 +423,10 @@ class _LogoutBottomSheet extends StatelessWidget {
   }
 }
 
-String _languageLabel(BuildContext context, AsyncValue<LanguageSettings> state) {
+String _languageLabel(
+  BuildContext context,
+  AsyncValue<LanguageSettings> state,
+) {
   return state.when(
     data: (value) {
       final label = value.selected;
@@ -459,5 +455,5 @@ Color _bgForTheme(BuildContext context, Color lightColor) {
   final darkHsl = hsl
       .withSaturation((hsl.saturation * 0.6).clamp(0.0, 1.0))
       .withLightness((hsl.lightness * 0.25).clamp(0.0, 1.0));
-  return darkHsl.toColor().withOpacity(0.6);
+  return darkHsl.toColor().withValues(alpha: 0.6);
 }

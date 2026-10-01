@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nozie_mobile/core/app_export.dart';
-import 'package:nozie_mobile/core/widgets/toast_notification.dart';
 import 'package:nozie_mobile/features/notification/notification_card.dart';
 import 'package:nozie_mobile/features/notification/notification_providers.dart';
 import 'package:nozie_mobile/app/app_router.dart';
@@ -126,7 +125,7 @@ class NotificationScreen extends ConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.error_outline,
                     size: 64,
                     color: AppColors.warning,

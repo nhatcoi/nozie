@@ -58,7 +58,6 @@ class FilterPageNotifier extends StateNotifier<FilterPageState> {
       selectedLanguage: filters.language,
       selectedAge: filters.age,
     );
-    print('[FilterPage] initializeFromFilters => temp:${state.tempFilters}');
   }
 
   RatingOption _ratingFromFilters(SearchFilters filters) {
@@ -73,7 +72,6 @@ class FilterPageNotifier extends StateNotifier<FilterPageState> {
       selectedSort: sort,
       tempFilters: state.tempFilters.copyWith(sortBy: sort),
     );
-    print('[FilterPage] updateSort => sort:${state.selectedSort.name}');
   }
 
   void updateRating(RatingOption rating) {
@@ -86,7 +84,6 @@ class FilterPageNotifier extends StateNotifier<FilterPageState> {
       selectedRating: rating,
       tempFilters: state.tempFilters.copyWith(ratingMin: ratingMin),
     );
-    print('[FilterPage] updateRating => rating:${state.selectedRating.name}, min:${ratingMin}');
   }
 
   void updateLanguage(LanguageOption language) {
@@ -94,7 +91,6 @@ class FilterPageNotifier extends StateNotifier<FilterPageState> {
       selectedLanguage: language,
       tempFilters: state.tempFilters.copyWith(language: language),
     );
-    print('[FilterPage] updateLanguage => lang:${state.selectedLanguage.name}');
   }
 
   void updateAge(AgeOption age) {
@@ -102,7 +98,6 @@ class FilterPageNotifier extends StateNotifier<FilterPageState> {
       selectedAge: age,
       tempFilters: state.tempFilters.copyWith(age: age),
     );
-    print('[FilterPage] updateAge => age:${state.selectedAge.name}');
   }
 
   void updatePriceRange(double min, double max) {
@@ -112,14 +107,12 @@ class FilterPageNotifier extends StateNotifier<FilterPageState> {
         priceMax: max,
       ),
     );
-    print('[FilterPage] updatePriceRange => min:$min, max:$max');
   }
 
   void updateGenres(List<String> genres) {
     state = state.copyWith(
       tempFilters: state.tempFilters.copyWith(genres: genres),
     );
-    print('[FilterPage] updateGenres => ${state.tempFilters.genres}');
   }
 
   void reset() {

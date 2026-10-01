@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:nozie_mobile/core/app_export.dart';
 import 'package:nozie_mobile/core/common/ui_state.dart';
-import 'package:nozie_mobile/core/widgets/toast_notification.dart';
 import 'package:nozie_mobile/core/widgets/social_button.dart';
 import 'package:nozie_mobile/core/widgets/lined_text_divider.dart';
 import 'package:nozie_mobile/features/auth/login_provider.dart';
@@ -21,7 +20,7 @@ class LoginScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var rememberMe = ref.watch(rememberMeProvider);
+    final rememberMe = ref.watch(rememberMeProvider);
     final t = context.i18n;
     final type = Theme.of(context).textTheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -34,7 +33,7 @@ class LoginScreen extends ConsumerWidget {
     final loginState = ref.watch(loginNotifierProvider);
     final loginNotifier = ref.read(loginNotifierProvider.notifier);
 
-    Future<void> _handleEmailSignIn() async {
+    Future<void> handleEmailSignIn() async {
       final email = userCtl.text.trim();
       final password = passCtl.text.trim();
 
@@ -55,7 +54,7 @@ class LoginScreen extends ConsumerWidget {
       await loginNotifier.signIn(email: email, password: password);
     }
 
-    Future<void> _handleGoogleSignIn() async {
+    Future<void> handleGoogleSignIn() async {
       ToastNotification.showInfo(
         context,
         message: t.auth.oauth.featureInDevelopment,
@@ -72,7 +71,7 @@ class LoginScreen extends ConsumerWidget {
         loginNotifier.reset();
       } else if (next is Error<bool>) {
         if (context.mounted) {
-          final raw = next.message ?? '';
+          final raw = next.message;
           final friendly =
               raw.contains(
                 'The supplied auth credential is malformed or has expired',
@@ -169,7 +168,7 @@ class LoginScreen extends ConsumerWidget {
 
                         const SizedBox(height: 24),
 
-                        LinedTextDivider(),
+                        const LinedTextDivider(),
 
                         const SizedBox(height: 24),
 
@@ -208,7 +207,7 @@ class LoginScreen extends ConsumerWidget {
                                 ),
                                 onPressed: () {
                                   if (loginState is Loading<bool>) return;
-                                  _handleGoogleSignIn();
+                                  handleGoogleSignIn();
                                 },
                               ),
                             ),
@@ -248,17 +247,15 @@ class LoginScreen extends ConsumerWidget {
                           ],
                         ),
 
-                        Gap(24),
-                        Spacer(),
+                        const Gap(24),
+                        const Spacer(),
 
                         PrimaryButton(
                           text: t.auth.signIn,
                           isLoading: loginState is Loading<bool>,
                           onPressed: loginState is Loading<bool>
                               ? null
-                              : () {
-                                  _handleEmailSignIn();
-                                },
+                              : handleEmailSignIn,
                         ),
                       ],
                     ),

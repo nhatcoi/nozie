@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:nozie_mobile/features/movie/playback_state.dart';
@@ -18,7 +19,7 @@ class PlaybackStateService {
       await _prefs.setString(key, json);
     } catch (e) {
       // Log error but don't throw
-      print('Error saving playback state: $e');
+      debugPrint('Error saving playback state: $e');
     }
   }
 
@@ -32,7 +33,7 @@ class PlaybackStateService {
       final json = jsonDecode(jsonString) as Map<String, dynamic>;
       return PlaybackState.fromJson(json);
     } catch (e) {
-      print('Error loading playback state: $e');
+      debugPrint('Error loading playback state: $e');
       return null;
     }
   }
@@ -43,7 +44,7 @@ class PlaybackStateService {
       final key = _getKey(movieId);
       await _prefs.remove(key);
     } catch (e) {
-      print('Error clearing playback state: $e');
+      debugPrint('Error clearing playback state: $e');
     }
   }
 
@@ -70,7 +71,7 @@ class PlaybackStateService {
       states.sort((a, b) => b.lastWatchedAt.compareTo(a.lastWatchedAt));
       return states;
     } catch (e) {
-      print('Error loading all playback states: $e');
+      debugPrint('Error loading all playback states: $e');
       return [];
     }
   }
@@ -83,7 +84,7 @@ class PlaybackStateService {
         await _prefs.remove(key);
       }
     } catch (e) {
-      print('Error clearing all playback states: $e');
+      debugPrint('Error clearing all playback states: $e');
     }
   }
 }

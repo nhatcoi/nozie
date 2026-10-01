@@ -11,8 +11,6 @@ class LanguageScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
-    final textColor = AppColors.getText(context);
-    final secondaryColor = AppColors.getTextSecondary(context);
     final languageState = ref.watch(languageNotifierProvider);
     final selected = languageState.value?.selected ?? LanguageSettings.defaults.selected;
     final t = context.i18n;
@@ -123,7 +121,7 @@ class _LanguageSection extends StatelessWidget {
                 ),
               ),
               if (index != items.length - 1)
-                Divider(height: 1, color: secondaryColor.withOpacity(0.1)),
+                Divider(height: 1, color: secondaryColor.withValues(alpha: 0.1)),
             ],
           );
         }),
@@ -149,7 +147,7 @@ class _SelectionIndicator extends StatelessWidget {
         border: Border.all(
           color: isSelected
               ? AppColors.primary500
-              : secondaryColor.withOpacity(0.4),
+              : secondaryColor.withValues(alpha: 0.4),
           width: 2,
         ),
       ),

@@ -1,10 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nozie_mobile/features/purchase/purchase_item.dart';
 import 'package:nozie_mobile/features/purchase/purchase_repository.dart';
 
 final purchaseStateProvider =
     StateNotifierProvider<PurchaseStateNotifier, PurchaseState>(
-  (ref) => PurchaseStateNotifier(ref),
+  PurchaseStateNotifier.new,
 );
 
 class PurchaseState {

@@ -1,11 +1,7 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:nozie_mobile/core/models/movie.dart';
 import 'package:nozie_mobile/core/models/movie_item.dart';
 import 'package:nozie_mobile/core/network/api_page.dart';
-import 'package:nozie_mobile/core/network/api_response.dart';
-import 'package:nozie_mobile/core/network/providers.dart';
 import 'package:nozie_mobile/core/repositories/movie_repository.dart';
 import 'package:nozie_mobile/features/purchase/purchase_repository.dart';
 import 'package:nozie_mobile/features/wishlist/wishlist_repository.dart';
@@ -20,19 +16,17 @@ final searchRepositoryProvider = Provider((ref) => SearchRepository(
       ref.watch(movieRepoProvider),
       ref.watch(wishlistRepositoryProvider),
       ref.watch(purchaseRepositoryProvider),
-      ref.watch(dioProvider),
     ));
 
 /// All filtering, sorting and paging happens on the server; this only translates the UI's filters.
 class SearchRepository {
-  SearchRepository(this._movies, this._wishlist, this._purchases, this._dio);
+  SearchRepository(this._movies, this._wishlist, this._purchases);
 
   static const pageSize = 10;
 
   final MovieRepository _movies;
   final WishlistRepository _wishlist;
   final PurchaseRepository _purchases;
-  final Dio _dio;
 
   /// [page] is 1-based (the UI's convention); the API is 0-based.
   Future<SearchResultsPage<SearchResult>> search(

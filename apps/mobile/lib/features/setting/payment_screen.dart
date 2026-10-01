@@ -79,11 +79,13 @@ class PaymentScreen extends ConsumerWidget {
                                       ),
                                 ),
                               ),
-                              Radio<String>(
-                                value: methods[i].id,
+                              RadioGroup<String>(
                                 groupValue: selectedId,
                                 onChanged: (_) => notifier.setDefault(methods[i].id),
-                                activeColor: AppColors.primary500,
+                                child: Radio<String>(
+                                  value: methods[i].id,
+                                  activeColor: AppColors.primary500,
+                                ),
                               ),
                             ],
                           ),
@@ -94,7 +96,7 @@ class PaymentScreen extends ConsumerWidget {
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           child: Divider(
                             height: 1,
-                            color: AppColors.getText(context).withOpacity(0.08),
+                            color: AppColors.getText(context).withValues(alpha: 0.08),
                           ),
                         ),
                     ],
@@ -109,7 +111,7 @@ class PaymentScreen extends ConsumerWidget {
               Divider(
                 height: 1,
                 thickness: 1,
-                color: AppColors.getText(context).withOpacity(0.08),
+                color: AppColors.getText(context).withValues(alpha: 0.08),
               ),
               Padding(
                 padding: ResponsivePadding.content(context).copyWith(top: 26, bottom: 26),

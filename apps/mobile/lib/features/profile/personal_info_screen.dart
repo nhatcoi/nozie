@@ -143,7 +143,7 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
             const SizedBox(height: 24),
             
             Divider(
-              color: AppColors.getTextSecondary(context).withOpacity(0.15),
+              color: AppColors.getTextSecondary(context).withValues(alpha: 0.15),
               height: 1,
               thickness: 1,
             ),
@@ -252,7 +252,7 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
                   avatarUrl: baseProfile.avatarUrl,
                 );
                 ref.read(profileNotifierProvider.notifier).update(updated, avatar: _avatarFile).then((_) {
-                  if (!mounted) return;
+                  if (!context.mounted) return;
                   _avatarFile = null;
                   ToastNotification.showSuccess(
                     context,
@@ -260,7 +260,7 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
                     duration: const Duration(seconds: 2),
                   );
                 }).catchError((Object error) {
-                  if (!mounted) return;
+                  if (!context.mounted) return;
                   ToastNotification.showError(
                     context,
                     message: error.toString(),

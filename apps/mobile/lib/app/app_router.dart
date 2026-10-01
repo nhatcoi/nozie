@@ -1,7 +1,5 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nozie_mobile/core/session/session_state.dart';
 import 'package:nozie_mobile/features/forgot_password/forgot_password_new_pass_screen.dart';
@@ -27,7 +25,6 @@ import 'package:nozie_mobile/features/setting/notification_settings_screen.dart'
 import 'package:nozie_mobile/features/purchase/purchase_screen.dart';
 import 'package:nozie_mobile/features/purchase/purchase_detail_screen.dart';
 import 'package:nozie_mobile/features/search/search_screen.dart';
-import 'package:nozie_mobile/features/setting/setting_screen.dart';
 import 'package:nozie_mobile/features/welcome/welcome_screen.dart';
 import 'package:nozie_mobile/features/wishlist/wishlist_screen.dart';
 import 'package:nozie_mobile/features/movie/movie_detail_screen.dart';
@@ -37,7 +34,6 @@ import 'package:nozie_mobile/features/movie/ratings_detail_screen.dart';
 import 'package:nozie_mobile/features/purchase/checkout_screen.dart';
 import 'package:nozie_mobile/core/models/movie.dart';
 import 'package:nozie_mobile/core/layouts/main_layout.dart';
-import 'package:nozie_mobile/core/services/locale_setting.dart';
 import 'package:nozie_mobile/app/transition_page.dart';
 import 'package:nozie_mobile/app/auth_guard.dart';
 
@@ -72,21 +68,6 @@ class AppRouter {
   static const checkout = '/checkout';
   static const purchaseDetail = '/purchase-detail';
   static const movieType = '/movie-type';
-
-  static const _publicPaths = {
-    welcome,
-    signup,
-    signIn,
-    forgotPassword,
-    otpVerification,
-    resetPassword,
-  };
-
-  static const _authRedirectWhitelist = {
-    welcome,
-    signIn,
-    signup,
-  };
 
   static GoRouter? _router;
   static SessionStore? _session;
@@ -123,7 +104,7 @@ class AppRouter {
         final email = state.extra as String?;
         return ForgotPasswordOtpScreen(email: email ?? '');
       }),
-      GoRoute(path: '${movieCarouselGenre}:id', builder: (_, state) {
+      GoRoute(path: '$movieCarouselGenre:id', builder: (_, state) {
         final id = state.pathParameters['id']!;
         return ExploreGenreDetails(query: id);
       }),
@@ -202,7 +183,7 @@ class AppRouter {
         }
         
         if (movie == null) {
-          return Scaffold(
+          return const Scaffold(
             body: Center(
               child: Text('Movie not found'),
             ),
@@ -277,19 +258,19 @@ class AppRouter {
         routes: [
           GoRoute(
             path: home,
-            pageBuilder: (_, __) => TransitionPage(child: const HomeScreen()),
+            pageBuilder: (_, __) => const TransitionPage(child: HomeScreen()),
           ),
           GoRoute(
             path: discover,
-            pageBuilder: (_, __) => TransitionPage(child: const DiscoverScreen()),
+            pageBuilder: (_, __) => const TransitionPage(child: DiscoverScreen()),
           ),
           GoRoute(
             path: wishlist,
-            pageBuilder: (_, __) => TransitionPage(child: const WishlistScreen()),
+            pageBuilder: (_, __) => const TransitionPage(child: WishlistScreen()),
           ),
           GoRoute(
             path: purchase,
-            pageBuilder: (_, __) => TransitionPage(child: const PurchaseScreen()),
+            pageBuilder: (_, __) => const TransitionPage(child: PurchaseScreen()),
           ),
           // GoRoute(
           //   path: purchase,
@@ -309,17 +290,10 @@ class AppRouter {
           // ),
           GoRoute(
             path: profile,
-            pageBuilder: (_, __) => TransitionPage(child: const ProfileScreen()),
+            pageBuilder: (_, __) => const TransitionPage(child: ProfileScreen()),
           ),
         ],
       ),
     ];
-  }
-
-  static String _normalize(String location) {
-    if (location.isEmpty) return welcome;
-    final uri = Uri.parse(location);
-    final path = uri.path;
-    return path.isEmpty ? welcome : path;
   }
 }

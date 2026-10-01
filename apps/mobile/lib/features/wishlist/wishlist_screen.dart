@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:nozie_mobile/core/app_export.dart';
-import 'package:nozie_mobile/core/constants/app_padding.dart';
 import 'package:nozie_mobile/features/wishlist/wishlist_state_notifier.dart';
 import 'package:nozie_mobile/features/wishlist/wishlist_repository.dart';
 import 'package:nozie_mobile/features/wishlist/wishlist_item.dart';

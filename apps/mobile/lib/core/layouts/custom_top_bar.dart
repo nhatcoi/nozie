@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nozie_mobile/core/app_export.dart';
-import 'package:nozie_mobile/core/utils/image_constant.dart';
-import 'package:nozie_mobile/core/theme/app_colors.dart';
-import 'package:nozie_mobile/core/theme/app_typography.dart';
 
 class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -42,7 +39,7 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
           ImageConstant.logoMovie,
           width: 32,
           height: 32,
-          colorFilter: ColorFilter.mode(
+          colorFilter: const ColorFilter.mode(
             AppColors.primary500,
             BlendMode.srcIn,
           ),

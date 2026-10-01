@@ -39,7 +39,7 @@ class SettingsRepository {
   Future<NotificationSettings> fetchNotificationSettings() async {
     final jsonString = _prefs.getString(_keyNotification);
     if (jsonString == null) {
-      final defaults = NotificationSettings.defaults;
+      const defaults = NotificationSettings.defaults;
       await _prefs.setString(_keyNotification, jsonEncode(defaults.toJson()));
       return defaults;
     }
@@ -59,7 +59,7 @@ class SettingsRepository {
   Future<Preferences> fetchPreferences() async {
     final jsonString = _prefs.getString(_keyPreferences);
     if (jsonString == null) {
-      final defaults = Preferences.defaults;
+      const defaults = Preferences.defaults;
       await _prefs.setString(_keyPreferences, jsonEncode(defaults.toJson()));
       return defaults;
     }
@@ -75,7 +75,7 @@ class SettingsRepository {
   Future<SecuritySettings> fetchSecuritySettings() async {
     final jsonString = _prefs.getString(_keySecurity);
     if (jsonString == null) {
-      final defaults = SecuritySettings.defaults;
+      const defaults = SecuritySettings.defaults;
       await _prefs.setString(_keySecurity, jsonEncode(defaults.toJson()));
       return defaults;
     }
@@ -112,7 +112,7 @@ class SettingsRepository {
   Future<LanguageSettings> fetchLanguageSettings() async {
     final jsonString = _prefs.getString(_keyLanguage);
     if (jsonString == null) {
-      final defaults = LanguageSettings.defaults;
+      const defaults = LanguageSettings.defaults;
       await _prefs.setString(_keyLanguage, jsonEncode(defaults.toJson()));
       return defaults;
     }
@@ -130,7 +130,7 @@ class SettingsRepository {
   Future<List<PaymentMethod>> fetchPaymentMethods() async {
     final jsonString = _prefs.getString(_keyPayments);
     if (jsonString == null) {
-      final defaults = PaymentMethod.sampleMethods;
+      const defaults = PaymentMethod.sampleMethods;
       await _prefs.setString(
         _keyPayments,
         jsonEncode(defaults.map((e) => e.toJson()).toList()),

@@ -73,7 +73,7 @@ class _Grid extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, c) {
         final w = (c.maxWidth - 2 * 12) / 3; // spacing 12
-        final h = 48.0; // Giảm height để tiết kiệm space
+        const h = 48.0; // Giảm height để tiết kiệm space
 
         return Wrap(
           spacing: 12,
@@ -87,9 +87,13 @@ class _Grid extends StatelessWidget {
                 isBackspace: isBack,
                 fg: fg,
                 onTap: () {
-                  if (isBack) onBack();
-                  else if (k == '✓') onSubmit?.call();
-                  else onTap(k);
+                  if (isBack) {
+                    onBack();
+                  } else if (k == '✓') {
+                    onSubmit?.call();
+                  } else {
+                    onTap(k);
+                  }
                 },
               ),
             );

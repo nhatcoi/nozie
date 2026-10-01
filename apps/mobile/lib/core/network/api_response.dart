@@ -6,7 +6,7 @@ import 'package:nozie_mobile/core/network/api_exception.dart';
 extension ApiResponseX on Response<dynamic> {
   /// The `data` payload (any JSON type). Throws [ApiException] if the body is not an envelope.
   dynamic get payload {
-    final body = this.data;
+    final body = data;
     if (body is Map && body.containsKey('status')) return body['data'];
     throw ApiException(code: 'UNKNOWN', message: 'Unexpected response format', statusCode: statusCode);
   }

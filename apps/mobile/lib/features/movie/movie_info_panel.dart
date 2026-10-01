@@ -50,7 +50,7 @@ class MovieInfoPanel extends StatelessWidget {
         const Gap(12),
         Row(
           children: [
-            Icon(Icons.star, color: AppColors.primary500, size: 18),
+            const Icon(Icons.star, color: AppColors.primary500, size: 18),
             const Gap(6),
             Text(
               (movie.rating ?? 0.0).toStringAsFixed(1),
@@ -151,7 +151,7 @@ class MovieInfoPanel extends StatelessWidget {
         ],
 
         // Directors
-        if ((movie.director ?? []).where((e) => (e ?? '').toString().isNotEmpty).isNotEmpty) ...[
+        if ((movie.director ?? []).where((e) => e.isNotEmpty).isNotEmpty) ...[
           Text(
             context.i18n.movie.info.directors,
             style: theme.textTheme.titleMedium?.copyWith(color: textColor, fontWeight: FontWeight.w600),
@@ -161,15 +161,15 @@ class MovieInfoPanel extends StatelessWidget {
             spacing: 8,
             runSpacing: 8,
             children: (movie.director ?? [])
-                .where((e) => (e ?? '').toString().isNotEmpty)
-                .map((name) => _badge(context, (name ?? '').toString()))
+                .where((e) => e.isNotEmpty)
+                .map((name) => _badge(context, name))
                 .toList(),
           ),
           const Gap(16),
         ],
 
         // Actors
-        if ((movie.actor ?? []).where((e) => (e ?? '').toString().isNotEmpty).isNotEmpty) ...[
+        if ((movie.actor ?? []).where((e) => e.isNotEmpty).isNotEmpty) ...[
           Text(
             context.i18n.movie.info.actors,
             style: theme.textTheme.titleMedium?.copyWith(color: textColor, fontWeight: FontWeight.w600),
@@ -179,8 +179,8 @@ class MovieInfoPanel extends StatelessWidget {
             spacing: 8,
             runSpacing: 8,
             children: (movie.actor ?? [])
-                .where((e) => (e ?? '').toString().isNotEmpty)
-                .map((name) => _badge(context, (name ?? '').toString()))
+                .where((e) => e.isNotEmpty)
+                .map((name) => _badge(context, name))
                 .toList(),
           ),
           const Gap(16),
@@ -310,7 +310,7 @@ class _EpisodeEntry {
 }
 
 List<TextSpan> _buildDescriptionSpans(String raw, ThemeData theme, Color textColor) {
-  var text = raw
+  final text = raw
       .replaceAll(RegExp(r'</?p[^>]*>', caseSensitive: false), '')
       .replaceAll(RegExp(r'<br\s*/?>', caseSensitive: false), '\n')
       .trim();

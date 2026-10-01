@@ -20,13 +20,13 @@ Future<DateTime?> pickDate(BuildContext context, {
       return Theme(
         data: Theme.of(context).copyWith(
           colorScheme: Theme.of(context).brightness == Brightness.dark
-              ? ColorScheme.dark(
+              ? const ColorScheme.dark(
                   primary: AppColors.primary500,
                   onPrimary: AppColors.white,
                   surface: AppColors.dark2,
                   onSurface: AppColors.white,
                 )
-              : ColorScheme.light(
+              : const ColorScheme.light(
                   primary: AppColors.primary500,
                   onPrimary: AppColors.white,
                   surface: AppColors.white,
@@ -43,7 +43,7 @@ String formatDateDDMMYYYY(DateTime date) {
   final String d = date.day.toString().padLeft(2, '0');
   final String m = date.month.toString().padLeft(2, '0');
   final String y = date.year.toString();
-  return "$d/$m/$y";
+  return '$d/$m/$y';
 }
 
 

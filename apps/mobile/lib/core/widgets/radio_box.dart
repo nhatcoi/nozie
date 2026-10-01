@@ -65,9 +65,8 @@ class RadioBox extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    final defaultBorderColor = AppColors.primary500;
-    final defaultSelectedBorderColor = AppColors.primary500;
-    final defaultRadioBackgroundColor = isDarkMode ? AppColors.dark2 : AppColors.white;
+    const defaultBorderColor = AppColors.primary500;
+    const defaultSelectedBorderColor = AppColors.primary500;
     final defaultTextColor = isDarkMode ? AppColors.white : AppColors.greyscale900;
 
     return GestureDetector(

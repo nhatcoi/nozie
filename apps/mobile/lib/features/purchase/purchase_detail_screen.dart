@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 import 'package:nozie_mobile/core/app_export.dart';
-import 'package:nozie_mobile/core/widgets/image_utils.dart';
 import 'package:nozie_mobile/features/purchase/purchase_repository.dart';
 import 'package:nozie_mobile/features/purchase/transaction_item.dart';
-import 'package:nozie_mobile/app/app_router.dart';
 
 class PurchaseDetailScreen extends ConsumerWidget {
   final String movieId;
@@ -181,7 +178,7 @@ class PurchaseDetailScreen extends ConsumerWidget {
         color: surfaceColor,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: statusColor.withOpacity(0.3),
+          color: statusColor.withValues(alpha: 0.3),
           width: 1,
         ),
       ),
@@ -203,7 +200,7 @@ class PurchaseDetailScreen extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: statusColor.withOpacity(0.1),
+                  color: statusColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(
@@ -256,13 +253,13 @@ class PurchaseDetailScreen extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: AppColors.warning.withOpacity(0.1),
+                color: AppColors.warning.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.error_outline, size: 20, color: AppColors.warning),
+                  const Icon(Icons.error_outline, size: 20, color: AppColors.warning),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -313,7 +310,7 @@ class PurchaseDetailScreen extends ConsumerWidget {
         padding: const EdgeInsets.all(32),
         child: Column(
           children: [
-            Icon(Icons.info_outline, size: 64, color: textColor.withOpacity(0.5)),
+            Icon(Icons.info_outline, size: 64, color: textColor.withValues(alpha: 0.5)),
             const Gap(16),
             Text(
               context.i18n.purchaseDetail.empty.purchaseNotFound,
@@ -333,7 +330,7 @@ class PurchaseDetailScreen extends ConsumerWidget {
       child: Center(
         child: Column(
           children: [
-            Icon(Icons.receipt_long_outlined, size: 64, color: secondaryText.withOpacity(0.5)),
+            Icon(Icons.receipt_long_outlined, size: 64, color: secondaryText.withValues(alpha: 0.5)),
             const Gap(16),
             Text(
               context.i18n.purchaseDetail.empty.transactions,
@@ -353,7 +350,7 @@ class PurchaseDetailScreen extends ConsumerWidget {
       child: Center(
         child: Column(
           children: [
-            Icon(Icons.error_outline, size: 48, color: AppColors.warning),
+            const Icon(Icons.error_outline, size: 48, color: AppColors.warning),
             const Gap(8),
             Text(
               '${context.i18n.purchaseDetail.error.generic} ${error.toString()}',
@@ -411,25 +408,5 @@ class PurchaseDetailScreen extends ConsumerWidget {
       default:
         return status;
     }
-  }
-
-  String _formatDateTimeFromMap(dynamic timestamp) {
-    if (timestamp == null) return 'N/A';
-    DateTime? date;
-    if (timestamp is DateTime) {
-      date = timestamp;
-    } else if (timestamp is Map) {
-      final seconds = timestamp['_seconds'] ?? timestamp['seconds'];
-      if (seconds != null) {
-        date = DateTime.fromMillisecondsSinceEpoch((seconds as int) * 1000);
-      }
-    }
-    if (date == null) return 'N/A';
-    return _formatDateTime(date);
-  }
-
-  String _formatDateTime(DateTime? dateTime) {
-    if (dateTime == null) return 'N/A';
-    return '${dateTime.day}/${dateTime.month}/${dateTime.year} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
   }
 }

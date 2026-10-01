@@ -43,7 +43,7 @@ class ToastNotification extends StatelessWidget {
 
   Color _getIconBackgroundColor() {
     final accent = _getAccentColor();
-    return accent.withOpacity(0.15);
+    return accent.withValues(alpha: 0.15);
   }
 
   IconData _getDefaultIcon() {
@@ -74,13 +74,13 @@ class ToastNotification extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.15),
+            color: Colors.black.withValues(alpha: 0.15),
             blurRadius: 20,
             offset: const Offset(0, 8),
             spreadRadius: 0,
           ),
           BoxShadow(
-            color: accentColor.withOpacity(0.1),
+            color: accentColor.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
             spreadRadius: -2,
@@ -92,7 +92,7 @@ class ToastNotification extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: accentColor.withOpacity(0.2),
+            color: accentColor.withValues(alpha: 0.2),
             width: 1,
           ),
         ),
@@ -148,14 +148,14 @@ class ToastNotification extends StatelessWidget {
     final overlay = Overlay.of(context);
     final overlayEntry = OverlayEntry(
       builder: (context) => _ToastOverlay(
+        duration: duration,
+        onDismiss: dismiss,
         child: ToastNotification(
           message: message,
           type: type,
           duration: duration,
           icon: icon,
         ),
-        duration: duration,
-        onDismiss: dismiss,
       ),
     );
 

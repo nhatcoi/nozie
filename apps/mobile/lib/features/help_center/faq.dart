@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nozie_mobile/core/app_export.dart';
-import 'package:nozie_mobile/core/utils/data.dart';
 
 class HelpCenterCategoryTags extends StatelessWidget {
   final List<String> categories;
@@ -31,7 +30,7 @@ class HelpCenterCategoryTags extends StatelessWidget {
               isSelected: isActive,
               onTap: () => onSelected(index),
               backgroundColor: Colors.transparent,
-              textColor: AppColors.getText(context).withOpacity(0.7),
+              textColor: AppColors.getText(context).withValues(alpha: 0.7),
               selectedTextColor: Colors.white,
               borderColor: AppColors.primary500,
               selectedBorderColor: AppColors.primary500,
@@ -115,7 +114,7 @@ class _HelpCenterSearchBarState extends State<HelpCenterSearchBar> {
             : null,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 12,
             offset: const Offset(0, 6),
           ),
@@ -129,7 +128,7 @@ class _HelpCenterSearchBarState extends State<HelpCenterSearchBar> {
             width: 18,
             height: 18,
             colorFilter: ColorFilter.mode(
-              textColor.withOpacity(0.4),
+              textColor.withValues(alpha: 0.4),
               BlendMode.srcIn,
             ),
           ),
@@ -142,7 +141,7 @@ class _HelpCenterSearchBarState extends State<HelpCenterSearchBar> {
                 hintText: widget.hintText ?? context.i18n.common.search,
                 border: InputBorder.none,
                 hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: textColor.withOpacity(0.4),
+                  color: textColor.withValues(alpha: 0.4),
                 ),
               ),
             ),
@@ -156,7 +155,7 @@ class _HelpCenterSearchBarState extends State<HelpCenterSearchBar> {
               colorFilter: ColorFilter.mode(
                 _hasQuery
                     ? AppColors.getText(context)
-                    : textColor.withOpacity(0.6),
+                    : textColor.withValues(alpha: 0.6),
                 BlendMode.srcIn,
               ),
             ),
@@ -201,7 +200,7 @@ class HelpCenterSuggestionList extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.12),
+            color: Colors.black.withValues(alpha: 0.12),
             blurRadius: 24,
             offset: const Offset(0, 12),
           ),
@@ -217,7 +216,7 @@ class HelpCenterSuggestionList extends StatelessWidget {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             separatorBuilder: (_, __) =>
-                Divider(height: 1, color: secondary.withOpacity(0.1)),
+                Divider(height: 1, color: secondary.withValues(alpha: 0.1)),
             itemBuilder: (context, index) {
               final faq = filteredFaqs[index];
               return InkWell(
@@ -273,7 +272,7 @@ class HelpCenterFilterBanner extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.trOrange,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.primary500.withOpacity(0.4)),
+        border: Border.all(color: AppColors.primary500.withValues(alpha: 0.4)),
       ),
       child: Row(
         children: [
@@ -323,7 +322,7 @@ class HelpCenterFaqTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 16,
               offset: const Offset(0, 8),
             ),

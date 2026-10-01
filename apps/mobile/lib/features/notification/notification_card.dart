@@ -63,7 +63,7 @@ class NotificationCard extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "|",
+                            '|',
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: AppColors.getTextSecondary(context),
                             ),
@@ -86,14 +86,14 @@ class NotificationCard extends StatelessWidget {
                         horizontal: 10,
                         vertical: 6,
                       ),
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(6)),
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
                         color: AppColors.primary500,
                       ),
                       child: Center(
                         child: Text(
                           context.i18n.notification.newItem,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: AppColors.white,
                             fontSize: 10,
                             fontWeight: FontWeight.w600,

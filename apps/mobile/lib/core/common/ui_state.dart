@@ -28,6 +28,7 @@ class Loading<T> extends UIState<T> {
 }
 
 class Success<T> extends UIState<T> {
+  @override
   final T data;
   const Success(this.data);
 }

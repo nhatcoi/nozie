@@ -37,10 +37,6 @@ mixin OtpInputController<T extends StatefulWidget> on State<T> {
     }
   }
 
-  void _hideSoftKeyboard() {
-    // Không cần ẩn bàn phím nữa
-  }
-
   void _requestInitialFocus() {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => focusNodes.first.requestFocus(),
@@ -121,10 +117,6 @@ mixin OtpInputController<T extends StatefulWidget> on State<T> {
     } else {
       // Giữ focus ở ô cuối
     }
-  }
-
-  bool _isAllFieldsFilled() {
-    return controllers.every((controller) => controller.text.isNotEmpty);
   }
 
   void onTextFromKeyboard(String char) {

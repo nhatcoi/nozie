@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nozie_mobile/core/app_export.dart';
@@ -19,8 +18,6 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
 
     return ContentWrappers.page(
       context,
@@ -147,7 +144,7 @@ class _AutoSlideMoviesState extends State<_AutoSlideMovies> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final cardWidth = screenWidth * 0.8;
-    final aspect = 160 / 80; // title-in-image card aspect
+    const aspect = 160 / 80; // title-in-image card aspect
     final posterHeight = cardWidth / aspect;
     final totalHeight = posterHeight; // no extra metadata below to avoid overflow
 
@@ -182,7 +179,7 @@ class _AutoSlideMoviesState extends State<_AutoSlideMovies> {
                       ),
                       Positioned.fill(
                         child: IgnorePointer(
-                          child: Container(color: Colors.black.withOpacity(dimOpacity)),
+                          child: Container(color: Colors.black.withValues(alpha: dimOpacity)),
                         ),
                       ),
                     ],

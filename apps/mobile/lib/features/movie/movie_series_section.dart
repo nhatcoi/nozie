@@ -39,7 +39,7 @@ class MovieSeriesSection extends StatelessWidget {
               ),
             ),
             IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_forward,
                 color: AppColors.primary500,
               ),

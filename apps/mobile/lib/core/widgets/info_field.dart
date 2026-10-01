@@ -192,7 +192,7 @@ class _InfoFieldState extends State<InfoField> {
             focusNode: _focusNode,
             keyboardType: widget.keyboardType,
             obscureText: _isObscured,
-            obscuringCharacter: "●",
+            obscuringCharacter: '●',
             enabled: widget.isEnabled,
             readOnly: widget.isReadOnly,
             maxLines: widget.maxLines,

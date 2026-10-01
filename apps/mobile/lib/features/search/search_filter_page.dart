@@ -255,7 +255,7 @@ class _SearchFilterBottomSheetState extends ConsumerState<SearchFilterPage> {
                               itemCount: RatingOption.values.length,
                               itemBuilder: (context, index) {
                                 final rating = RatingOption.values[index];
-                                var isSelected = filterPageState.selectedRating == rating;
+                                final isSelected = filterPageState.selectedRating == rating;
                                 return RadioBox(
                                   title: rating.label(context),
                                   value: rating.name,
@@ -361,7 +361,7 @@ class _SearchFilterBottomSheetState extends ConsumerState<SearchFilterPage> {
                               itemCount: LanguageOption.values.length,
                               itemBuilder: (context, index) {
                                 final language = LanguageOption.values[index];
-                                var isSelected = filterPageState.selectedLanguage == language;
+                                final isSelected = filterPageState.selectedLanguage == language;
                                 return RadioBox(
                                   title: language.label(context),
                                   value: language.name,
@@ -403,7 +403,7 @@ class _SearchFilterBottomSheetState extends ConsumerState<SearchFilterPage> {
                               itemCount: AgeOption.values.length,
                               itemBuilder: (context, index) {
                                 final age = AgeOption.values[index];
-                                var isSelected = filterPageState.selectedAge == age;
+                                final isSelected = filterPageState.selectedAge == age;
                                 return RadioBox(
                                   title: age.label(context),
                                   value: age.name,
@@ -436,9 +436,7 @@ class _SearchFilterBottomSheetState extends ConsumerState<SearchFilterPage> {
                   Expanded(
                     child: SecondaryButton(
                       text: context.i18n.search.filter.reset,
-                      onPressed: () {
-                        filterPageNotifier.reset();
-                      },
+                      onPressed: filterPageNotifier.reset,
                     ),
                   ),
 

@@ -9,10 +9,8 @@ import 'package:video_player/video_player.dart';
 import 'package:nozie_mobile/core/widgets/loading.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:nozie_mobile/core/app_export.dart';
-import 'package:nozie_mobile/core/widgets/toast_notification.dart';
 import 'package:nozie_mobile/core/models/movie.dart';
 import 'package:nozie_mobile/features/movie/playback_state.dart';
-import 'package:nozie_mobile/features/movie/playback_state_service.dart';
 import 'package:nozie_mobile/features/movie/playback_state_providers.dart';
 import 'package:nozie_mobile/features/movie/video_error_report_modal.dart';
 import 'package:nozie_mobile/features/movie/movie_info_panel.dart';
@@ -39,7 +37,6 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
   bool _isInitialized = false;
   bool _isPlaying = false;
   bool _showControls = true;
-  bool _isFullscreen = false;
   Timer? _hideControlsTimer;
   Timer? _saveStateTimer;
   double _playbackSpeed = 1.0;
@@ -78,6 +75,8 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
   }
 
   Future<void> _initializePlayer() async {
+    // Read the strings before any await: the context must not be used across async gaps.
+    final player = context.i18n.movie.player;
     // Access check before resolving streams
     final watchService = ref.read(movieWatchServiceProvider);
     final access = await watchService.hasAccess(widget.movie.id);
@@ -94,7 +93,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     // Load saved playback state
     final playbackService = ref.read(playbackStateServiceProvider);
     final savedState = await playbackService.getPlaybackState(widget.movie.id);
-    
+
     if (savedState != null) {
       _playbackSpeed = savedState.playbackSpeed;
       _selectedQuality = savedState.quality;
@@ -109,7 +108,9 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     }
     _stream = stream;
 
-    String? videoUrl = (stream?.streamUrl?.isNotEmpty ?? false) ? stream!.streamUrl : stream?.embedUrl;
+    String? videoUrl = (stream?.streamUrl?.isNotEmpty ?? false)
+        ? stream!.streamUrl
+        : stream?.embedUrl;
 
     // Last resort: a direct-media trailer.
     if (videoUrl == null || videoUrl.isEmpty) {
@@ -131,11 +132,11 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     // Try to initialize video player with the URL
     String? lastError;
     bool initialized = await _tryInitializeVideo(videoUrl, savedState);
-    
+
     if (!initialized) {
-      lastError = context.i18n.movie.player.cannotLoadM3u8;
+      lastError = player.cannotLoadM3u8;
     }
-    
+
     // If failed and it's an m3u8 URL, try fallback to embed link
     if (!initialized && videoUrl.contains('.m3u8')) {
       final fallbackUrl = _getFallbackVideoUrl(widget.movie);
@@ -143,24 +144,30 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
         if (mounted) {
           ToastNotification.showInfo(
             context,
-            message: context.i18n.movie.player.tryingFallback,
+            message: player.tryingFallback,
             duration: const Duration(seconds: 2),
           );
         }
         initialized = await _tryInitializeVideo(fallbackUrl, savedState);
         if (!initialized) {
-          lastError = context.i18n.movie.player.cannotLoadBoth;
+          lastError = player.cannotLoadBoth;
         }
       }
     }
-    
+
     if (!initialized && mounted) {
       final diag = await _diagnoseUrl(videoUrl);
       final details = StringBuffer()
-        ..writeln(lastError ?? context.i18n.movie.player.unknownError)
-        ..writeln('head.status=${diag['head.status']} acceptRanges=${diag['head.acceptRanges']} contentLength=${diag['head.contentLength']}')
-        ..writeln('range.status=${diag['range.status']} rangeSupported=${diag['range.supported']}')
-        ..writeln('m3u8.ok=${diag['m3u8.ok']} m3u8.ct=${diag['m3u8.contentType']} looksPlaylist=${diag['m3u8.looksLikePlaylist']}')
+        ..writeln(lastError ?? player.unknownError)
+        ..writeln(
+          'head.status=${diag['head.status']} acceptRanges=${diag['head.acceptRanges']} contentLength=${diag['head.contentLength']}',
+        )
+        ..writeln(
+          'range.status=${diag['range.status']} rangeSupported=${diag['range.supported']}',
+        )
+        ..writeln(
+          'm3u8.ok=${diag['m3u8.ok']} m3u8.ct=${diag['m3u8.contentType']} looksPlaylist=${diag['m3u8.looksLikePlaylist']}',
+        )
         ..writeln('platform=${diag['platform']}');
       _showErrorReportModal(videoUrl, details.toString());
     }
@@ -179,18 +186,23 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
 
   String? _getFallbackVideoUrl(Movie movie) => _stream?.embedUrl;
 
-  Future<bool> _tryInitializeVideo(String videoUrl, PlaybackState? savedState) async {
+  Future<bool> _tryInitializeVideo(
+    String videoUrl,
+    PlaybackState? savedState,
+  ) async {
     try {
-      _controller?.dispose();
+      unawaited(_controller?.dispose());
       _controller = VideoPlayerController.networkUrl(Uri.parse(videoUrl));
-      
+
       await _controller!.initialize();
-      
+
       // Seek to saved position or provided start position
-      Duration? startPosition = widget.startPosition ?? savedState?.position;
+      final Duration? startPosition =
+          widget.startPosition ?? savedState?.position;
       if (startPosition != null && startPosition > Duration.zero) {
         final duration = _controller!.value.duration;
-        if (duration > Duration.zero && startPosition < duration - const Duration(seconds: 10)) {
+        if (duration > Duration.zero &&
+            startPosition < duration - const Duration(seconds: 10)) {
           await _controller!.seekTo(startPosition);
           _lastSavedPosition = startPosition;
         }
@@ -211,24 +223,28 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
         // Record view + history once
         if (!_viewRecorded) {
           _viewRecorded = true;
-            unawaited(ref.read(movieWatchServiceProvider).addWatchHistory(widget.movie.id));
+          unawaited(
+            ref
+                .read(movieWatchServiceProvider)
+                .addWatchHistory(widget.movie.id),
+          );
         }
         _startPeriodicSave();
         _togglePlayPause();
         _startHideControlsTimer();
       }
-      
+
       return true;
     } catch (e) {
-      print('[Player] Initialize failed. url=$videoUrl error=$e');
-      _controller?.dispose();
+      debugPrint('[Player] Initialize failed. url=$videoUrl error=$e');
+      unawaited(_controller?.dispose());
       _controller = null;
-      
+
       // Store error for reporting
       if (mounted) {
         // Error will be handled in _initializePlayer
       }
-      
+
       return false;
     }
   }
@@ -240,17 +256,23 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
       'platform': Theme.of(context).platform.toString(),
     };
     try {
-      final dio = Dio(BaseOptions(
-        followRedirects: true,
-        validateStatus: (s) => true,
-        headers: {'User-Agent': 'NozieApp/1.0 (Flutter)'},
-      ));
+      final dio = Dio(
+        BaseOptions(
+          followRedirects: true,
+          validateStatus: (s) => true,
+          headers: {'User-Agent': 'NozieApp/1.0 (Flutter)'},
+        ),
+      );
 
       final headResp = await dio.headUri(Uri.parse(url));
       result['head.status'] = headResp.statusCode;
       result['head.contentType'] = headResp.headers['content-type']?.join(',');
-      result['head.contentLength'] = headResp.headers['content-length']?.join(',');
-      result['head.acceptRanges'] = headResp.headers['accept-ranges']?.join(',');
+      result['head.contentLength'] = headResp.headers['content-length']?.join(
+        ',',
+      );
+      result['head.acceptRanges'] = headResp.headers['accept-ranges']?.join(
+        ',',
+      );
 
       final rangeResp = await dio.getUri(
         Uri.parse(url),
@@ -268,12 +290,20 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
       if (url.contains('.m3u8')) {
         final textResp = await dio.getUri(
           Uri.parse(url),
-          options: Options(responseType: ResponseType.plain, validateStatus: (s) => true),
+          options: Options(
+            responseType: ResponseType.plain,
+            validateStatus: (s) => true,
+          ),
         );
-        result['m3u8.ok'] = (textResp.statusCode ?? 0) >= 200 && (textResp.statusCode ?? 0) < 400;
-        final ct = (textResp.headers['content-type']?.join(',') ?? '').toLowerCase();
+        result['m3u8.ok'] =
+            (textResp.statusCode ?? 0) >= 200 &&
+            (textResp.statusCode ?? 0) < 400;
+        final ct = (textResp.headers['content-type']?.join(',') ?? '')
+            .toLowerCase();
         result['m3u8.contentType'] = ct;
-        result['m3u8.looksLikePlaylist'] = (textResp.data is String) && (textResp.data as String).contains('#EXTM3U');
+        result['m3u8.looksLikePlaylist'] =
+            (textResp.data is String) &&
+            (textResp.data as String).contains('#EXTM3U');
       }
     } catch (e) {
       result['diagnose.error'] = e.toString();
@@ -285,7 +315,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
 
   void _onVideoPlayerUpdate() {
     if (_controller == null) return;
-    
+
     if (_controller!.value.isPlaying && !_isPlaying) {
       setState(() => _isPlaying = true);
     } else if (!_controller!.value.isPlaying && _isPlaying) {
@@ -330,7 +360,9 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
 
     try {
       final uri = Uri.parse(url);
-      final mode = _isYouTubeUrl(url) ? LaunchMode.externalApplication : LaunchMode.inAppBrowserView;
+      final mode = _isYouTubeUrl(url)
+          ? LaunchMode.externalApplication
+          : LaunchMode.inAppBrowserView;
       final canOpen = await canLaunchUrl(uri);
       if (!canOpen) {
         _showOpenTrailerError();
@@ -339,7 +371,9 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
       final ok = await launchUrl(
         uri,
         mode: mode,
-        webViewConfiguration: const WebViewConfiguration(enableJavaScript: true),
+        webViewConfiguration: const WebViewConfiguration(
+          enableJavaScript: true,
+        ),
       );
       if (!ok) _showOpenTrailerError();
     } catch (_) {
@@ -347,8 +381,10 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     }
   }
 
-  bool _isDirectUrl(String url) => url.contains('.m3u8') || url.contains('.mp4');
-  bool _isYouTubeUrl(String url) => url.contains('youtube.com') || url.contains('youtu.be');
+  bool _isDirectUrl(String url) =>
+      url.contains('.m3u8') || url.contains('.mp4');
+  bool _isYouTubeUrl(String url) =>
+      url.contains('youtube.com') || url.contains('youtu.be');
 
   void _showOpenTrailerError() {
     if (!mounted) return;
@@ -382,7 +418,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
 
   void _togglePlayPause() {
     if (_controller == null) return;
-    
+
     setState(() {
       if (_controller!.value.isPlaying) {
         _controller!.pause();
@@ -400,7 +436,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     final currentPosition = _controller!.value.position;
     final totalDuration = _controller!.value.duration;
     final newPosition = currentPosition + duration;
-    
+
     Duration clampedPosition;
     if (newPosition < Duration.zero) {
       clampedPosition = Duration.zero;
@@ -409,7 +445,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     } else {
       clampedPosition = newPosition;
     }
-    
+
     _controller!.seekTo(clampedPosition);
     _lastSavedPosition = clampedPosition;
     _savePlaybackState(); // Save immediately on seek
@@ -431,7 +467,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     try {
       final position = _controller!.value.position;
       final duration = _controller!.value.duration;
-      
+
       // Only save if position has changed significantly (at least 3 seconds)
       // and not at the end (within 5 seconds of end)
       if ((position - _lastSavedPosition).abs() < const Duration(seconds: 3)) {
@@ -456,7 +492,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
       _lastSavedPosition = position;
     } catch (e) {
       // Silently handle errors
-      print('Error saving playback state: $e');
+      debugPrint('Error saving playback state: $e');
     }
   }
 
@@ -465,9 +501,8 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    unawaited(SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge));
     setState(() {
-      _isFullscreen = false;
       _showControls = true;
     });
   }
@@ -477,7 +512,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     if (!_isInitialized || _controller == null) {
       return Scaffold(
         backgroundColor: AppColors.getBackground(context),
-        body: Center(
+        body: const Center(
           child: LoadingCustom(
             assetName: ImageConstant.loadingIcon,
             size: 60,
@@ -488,8 +523,9 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     }
 
     // Check if in landscape mode (fullscreen)
-    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
-    
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     if (isLandscape) {
       return _buildLandscapePlayer();
     } else {
@@ -498,10 +534,6 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
   }
 
   Widget _buildPortraitPlayer() {
-    final theme = Theme.of(context);
-    final textColor = AppColors.getText(context);
-    final secondaryText = AppColors.getTextSecondary(context);
-
     return Scaffold(
       backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
@@ -558,8 +590,6 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     );
   }
 
-  
-
   Widget _buildPortraitVideoControls() {
     return Positioned.fill(
       child: Container(
@@ -568,37 +598,17 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.black.withOpacity(0.3),
+              Colors.black.withValues(alpha: 0.3),
               Colors.transparent,
               Colors.transparent,
-              Colors.black.withOpacity(0.5),
+              Colors.black.withValues(alpha: 0.5),
             ],
             stops: const [0.0, 0.3, 0.7, 1.0],
           ),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            _buildProgressBar(),
-            _buildPortraitBottomControls(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBadge(BuildContext context, String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: AppColors.getSurface(context),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.getLine(context)),
-      ),
-      child: Text(
-        text,
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: AppColors.getText(context),
+          children: [_buildProgressBar(), _buildPortraitBottomControls()],
         ),
       ),
     );
@@ -663,9 +673,8 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    unawaited(SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive));
     setState(() {
-      _isFullscreen = true;
       _showControls = true;
     });
     _startHideControlsTimer();
@@ -687,7 +696,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Colors.black.withOpacity(0.7),
+                  Colors.black.withValues(alpha: 0.7),
                   Colors.transparent,
                 ],
               ),
@@ -695,7 +704,10 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
             child: Row(
               children: [
                 IconButton(
-                  icon: Icon(Icons.arrow_back, color: AppColors.getText(context)),
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: AppColors.getText(context),
+                  ),
                   onPressed: _exitFullscreen,
                 ),
                 const Gap(12),
@@ -706,19 +718,19 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
                     children: [
                       Text(
                         widget.movie.title,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                       if (widget.movie.directorString.isNotEmpty)
                         Text(
                           widget.movie.directorString,
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.white70,
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(color: Colors.white70),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -757,10 +769,10 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Colors.black.withOpacity(0.3),
+                Colors.black.withValues(alpha: 0.3),
                 Colors.transparent,
                 Colors.transparent,
-                Colors.black.withOpacity(0.5),
+                Colors.black.withValues(alpha: 0.5),
               ],
               stops: const [0.0, 0.3, 0.7, 1.0],
             ),
@@ -793,9 +805,9 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
           if (_showSpeedMenu) ...[
             Text(
               'Playback Speed',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                color: Colors.white,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleSmall?.copyWith(color: Colors.white),
             ),
             const Gap(12),
             Wrap(
@@ -813,16 +825,23 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
                     _savePlaybackState(); // Save immediately on speed change
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
                     decoration: BoxDecoration(
-                      color: isSelected ? AppColors.primary500 : AppColors.dark4,
+                      color: isSelected
+                          ? AppColors.primary500
+                          : AppColors.dark4,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
                       '${speed}x',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Colors.white,
-                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                        fontWeight: isSelected
+                            ? FontWeight.w600
+                            : FontWeight.normal,
                       ),
                     ),
                   ),
@@ -834,9 +853,9 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
             if (_showSpeedMenu) const Gap(24),
             Text(
               'Quality',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                color: Colors.white,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleSmall?.copyWith(color: Colors.white),
             ),
             const Gap(12),
             Wrap(
@@ -853,16 +872,23 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
                     _savePlaybackState(); // Save immediately on quality change
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
                     decoration: BoxDecoration(
-                      color: isSelected ? AppColors.primary500 : AppColors.dark4,
+                      color: isSelected
+                          ? AppColors.primary500
+                          : AppColors.dark4,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
                       quality,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Colors.white,
-                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                        fontWeight: isSelected
+                            ? FontWeight.w600
+                            : FontWeight.normal,
                       ),
                     ),
                   ),
@@ -890,8 +916,8 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
               allowScrubbing: true,
               colors: VideoProgressColors(
                 playedColor: AppColors.primary500,
-                bufferedColor: Colors.white.withOpacity(0.3),
-                backgroundColor: Colors.white.withOpacity(0.2),
+                bufferedColor: Colors.white.withValues(alpha: 0.3),
+                backgroundColor: Colors.white.withValues(alpha: 0.2),
               ),
             ),
           ),
@@ -901,15 +927,15 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
             children: [
               Text(
                 _formatDuration(_controller!.value.position),
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.white,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: Colors.white),
               ),
               Text(
                 _formatDuration(_controller!.value.duration),
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.white,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: Colors.white),
               ),
             ],
           ),
@@ -952,7 +978,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: Colors.white.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
@@ -982,7 +1008,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: Colors.white.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
@@ -1013,4 +1039,3 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     );
   }
 }
-

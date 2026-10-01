@@ -107,9 +107,7 @@ class _SearchHeaderState extends ConsumerState<SearchHeader>{
             )
                 : null,
 
-            onSubmitted: (value) {
-              _handleSubmit(value);
-            },
+            onSubmitted: _handleSubmit,
 
             backgroundColor: searchState.hasSubmitted
                 ? AppColors.getSurface(context)
@@ -150,7 +148,7 @@ class _SearchHeaderState extends ConsumerState<SearchHeader>{
       context: context,
       barrierDismissible: true,
       barrierLabel: '',
-      barrierColor: Colors.black.withOpacity(0.5),
+      barrierColor: Colors.black.withValues(alpha: 0.5),
       transitionDuration: const Duration(milliseconds: 300),
       pageBuilder: (context, animation, secondaryAnimation) {
         return SearchFilterPage(

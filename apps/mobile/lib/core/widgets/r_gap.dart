@@ -12,7 +12,7 @@ class RGap extends StatelessWidget {
   factory RGap.v(double percent) => RGap._(hPercent: percent);
   
   factory RGap.element(BuildContext context) =>
-      RGap._(wPercent: AppPadding.elementSpacingPercent);
+      const RGap._(wPercent: AppPadding.elementSpacingPercent);
 
   @override
   Widget build(BuildContext context) {

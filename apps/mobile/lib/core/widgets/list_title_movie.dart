@@ -23,7 +23,7 @@ class ListTitleMovie extends ConsumerWidget {
         movieCardType: MovieCardType.vertical,
         width: 120,
         height: 184,
-        genres: [
+        genres: const [
           'Action', 'Drama'
         ],
       ),

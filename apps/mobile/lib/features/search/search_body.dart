@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:nozie_mobile/core/app_export.dart';
 import 'package:nozie_mobile/core/enums/movie_type.dart';
 import 'package:nozie_mobile/core/widgets/movie_card.dart';
-import 'package:nozie_mobile/core/widgets/list_title_movie.dart';
-import 'package:nozie_mobile/core/widgets/loading.dart';
 import 'package:nozie_mobile/core/models/movie_item.dart';
-import 'package:nozie_mobile/app/app_router.dart';
 import 'package:nozie_mobile/features/search/search_state_notifier.dart';
-import 'package:nozie_mobile/features/search/search_result.dart';
 
 class SearchBody extends ConsumerStatefulWidget {
   const SearchBody({super.key});

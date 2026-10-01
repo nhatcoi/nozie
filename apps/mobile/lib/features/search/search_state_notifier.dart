@@ -6,7 +6,7 @@ import 'package:nozie_mobile/features/search/search_repository.dart';
 import 'package:nozie_mobile/features/search/search_screen.dart';
 
 final searchStateProvider = StateNotifierProvider<SearchStateNotifier, SearchState>(
-      (ref) => SearchStateNotifier(ref),
+      SearchStateNotifier.new,
 );
 
 enum SearchStatus { idle, loading, success, error }

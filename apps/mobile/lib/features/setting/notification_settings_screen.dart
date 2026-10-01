@@ -169,11 +169,10 @@ class _ToggleTile extends StatelessWidget {
 
   const _ToggleTile({
     required this.title,
-    this.description,
     required this.value,
     required this.onChanged,
     this.enabled = true,
-  });
+  }) : description = null;
 
   @override
   Widget build(BuildContext context) {
@@ -210,7 +209,7 @@ class _ToggleTile extends StatelessWidget {
         Switch.adaptive(
           value: value,
           onChanged: enabled ? onChanged : null,
-          activeColor: AppColors.primary500,
+          activeThumbColor: AppColors.primary500,
           activeTrackColor: AppColors.primary500,
         ),
       ],

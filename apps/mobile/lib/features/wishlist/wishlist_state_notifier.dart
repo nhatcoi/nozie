@@ -4,7 +4,7 @@ import 'package:nozie_mobile/features/wishlist/wishlist_repository.dart';
 
 final wishlistStateProvider =
     StateNotifierProvider<WishlistStateNotifier, WishlistState>(
-  (ref) => WishlistStateNotifier(ref),
+  WishlistStateNotifier.new,
 );
 
 class WishlistState {

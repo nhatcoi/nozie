@@ -49,7 +49,7 @@ class Modal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color textColor = AppColors.primary500; // mặc định
+    const Color textColor = AppColors.primary500; // mặc định
     final Color textSecondary = AppColors.getText(context);
 
     return Dialog(
@@ -186,7 +186,7 @@ class BlurModalScreen extends StatelessWidget {
           // Nền blur
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
-            child: Container(color: Colors.black.withOpacity(0.4)),
+            child: Container(color: Colors.black.withValues(alpha: 0.4)),
           ),
 
           // Modal chính

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,7 +8,6 @@ import 'package:nozie_mobile/core/app_export.dart';
 import 'package:nozie_mobile/core/models/movie_item.dart';
 import 'package:nozie_mobile/core/models/movie.dart';
 import 'package:nozie_mobile/core/widgets/image_utils.dart';
-import 'package:nozie_mobile/core/widgets/toast_notification.dart';
 import 'package:nozie_mobile/app/app_router.dart';
 import 'package:nozie_mobile/features/movie/movie_repository.dart';
 import 'package:nozie_mobile/features/wishlist/wishlist_repository.dart';
@@ -16,8 +16,6 @@ import 'package:nozie_mobile/features/movie/movie_hero_section.dart';
 import 'package:nozie_mobile/features/movie/movie_rating_section.dart';
 import 'package:nozie_mobile/features/movie/movie_series_section.dart';
 import 'package:nozie_mobile/features/movie/movie_similar_section.dart';
-import 'package:nozie_mobile/features/movie/movie_info_panel.dart';
-
 
 class _WishlistButton extends ConsumerWidget {
   const _WishlistButton({required this.movieId});
@@ -32,7 +30,7 @@ class _WishlistButton extends ConsumerWidget {
       icon: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.5),
+          color: Colors.black.withValues(alpha: 0.5),
           shape: BoxShape.circle,
         ),
         child: isInWishlistAsync.when(
@@ -49,19 +47,16 @@ class _WishlistButton extends ConsumerWidget {
               color: Colors.white,
             ),
           ),
-          error: (_, __) => const Icon(
-            Icons.bookmark_border,
-            color: Colors.white,
-            size: 20,
-          ),
+          error: (_, __) =>
+              const Icon(Icons.bookmark_border, color: Colors.white, size: 20),
         ),
       ),
       onPressed: () async {
         try {
           final repo = ref.read(wishlistRepositoryProvider);
           await repo.toggleWishlist(movieId);
+          final isIn = await repo.isInWishlist(movieId);
           if (context.mounted) {
-            final isIn = await repo.isInWishlist(movieId);
             ToastNotification.showSuccess(
               context,
               message: isIn ? 'Added to wishlist' : 'Removed from wishlist',
@@ -83,10 +78,7 @@ class _WishlistButton extends ConsumerWidget {
 }
 
 class MovieDetailScreen extends ConsumerStatefulWidget {
-  const MovieDetailScreen({
-    super.key,
-    required this.movieId,
-  });
+  const MovieDetailScreen({super.key, required this.movieId});
 
   final String movieId;
 
@@ -136,10 +128,14 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                 icon: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.5),
+                    color: Colors.black.withValues(alpha: 0.5),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.arrow_back, color: Colors.white, size: 20),
+                  child: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                    size: 20,
+                  ),
                 ),
                 onPressed: () => context.pop(),
               ),
@@ -148,14 +144,17 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                   icon: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.5),
+                      color: Colors.black.withValues(alpha: 0.5),
                       shape: BoxShape.circle,
                     ),
                     child: SvgPicture.asset(
                       ImageConstant.sendIcon,
                       width: 20,
                       height: 20,
-                      colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                      colorFilter: const ColorFilter.mode(
+                        Colors.white,
+                        BlendMode.srcIn,
+                      ),
                     ),
                   ),
                   onPressed: () {
@@ -169,9 +168,7 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
             body: _buildMovieContent(context, theme, movie),
           );
         },
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
-        ),
+        loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) => Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -221,7 +218,7 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                       end: Alignment.bottomCenter,
                       colors: [
                         Colors.transparent,
-                        Colors.black.withOpacity(0.3),
+                        Colors.black.withValues(alpha: 0.3),
                       ],
                       stops: const [0.6, 1.0],
                     ),
@@ -238,62 +235,71 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
             delegate: SliverChildListDelegate([
               Builder(
                 builder: (context) {
-                  final isPurchasedAsync = ref.watch(isPurchasedProvider(movie.id));
+                  final isPurchasedAsync = ref.watch(
+                    isPurchasedProvider(movie.id),
+                  );
                   final isPurchased = isPurchasedAsync.value ?? false;
-                  
+
                   final price = movie.priceValue ?? 0.0;
                   final isFree = price == 0.0;
                   final shouldWatchNow = isFree || isPurchased;
-                  
+
                   return MovieHeroSection(
                     movie: movieItem,
-                    author: movie.directorString.isEmpty ? 'Unknown' : movie.directorString,
+                    author: movie.directorString.isEmpty
+                        ? 'Unknown'
+                        : movie.directorString,
                     genres: movie.genres,
                     metadata: movie.metadata,
                     description: movie.description,
                     isPurchased: isPurchased,
                     ratingCount: movie.ratingCount,
-                    durationText: (movie.time ?? '').isEmpty ? null : movie.time,
+                    durationText: (movie.time ?? '').isEmpty
+                        ? null
+                        : movie.time,
                     qualityText: context.i18n.movie.details.quality1080p,
                     viewsText: (movie.view == null) ? null : movie.viewsString,
                     onBuyPressed: () async {
                       if (shouldWatchNow) {
                         if (context.mounted) {
                           final videoUrl = _getVideoUrl(movie);
-                          context.push(
-                            '${AppRouter.videoPlayer}/${movie.id}',
-                            extra: {
-                              'movie': movie,
-                              'videoUrl': videoUrl,
-                            },
+                          unawaited(
+                            context.push(
+                              '${AppRouter.videoPlayer}/${movie.id}',
+                              extra: {'movie': movie, 'videoUrl': videoUrl},
+                            ),
                           );
                         }
                         return;
                       }
-                      
+
                       try {
-                        final purchaseRepo = ref.read(purchaseRepositoryProvider);
+                        final purchaseRepo = ref.read(
+                          purchaseRepositoryProvider,
+                        );
                         // Kiểm tra xem đã purchased chưa
-                        final isAlreadyPurchased = await purchaseRepo.isPurchased(movie.id);
-                        
+                        final isAlreadyPurchased = await purchaseRepo
+                            .isPurchased(movie.id);
+
                         if (isAlreadyPurchased) {
                           if (context.mounted) {
                             ToastNotification.showInfo(
                               context,
-                              message: context.i18n.movie.details.alreadyPurchased,
+                              message:
+                                  context.i18n.movie.details.alreadyPurchased,
                               duration: const Duration(seconds: 3),
                             );
                           }
                           return;
                         }
-                        
+
                         // Navigate to checkout screen
                         if (context.mounted) {
                           final result = await context.push(
                             AppRouter.checkout,
                             extra: {'movie': movie},
                           );
-                          
+
                           if (result == true && context.mounted) {
                             // Purchase successful, refresh
                             ref.invalidate(isPurchasedProvider(movie.id));
@@ -303,7 +309,8 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                         if (context.mounted) {
                           ToastNotification.showError(
                             context,
-                            message: '${context.i18n.common.errorPrefix} ${e.toString()}',
+                            message:
+                                '${context.i18n.common.errorPrefix} ${e.toString()}',
                             duration: const Duration(seconds: 3),
                           );
                         }
@@ -318,23 +325,32 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                   );
                 },
               ),
-              Gap(32),
+              const Gap(32),
               MovieRatingSection(
                 movieId: movie.id,
                 rating: movie.rating ?? 0.0,
                 reviewCount: movie.ratingCount ?? 0,
-                canRate: ((movie.priceValue ?? 0.0) == 0.0) || (ref.read(isPurchasedProvider(movie.id)).value ?? false),
+                canRate:
+                    ((movie.priceValue ?? 0.0) == 0.0) ||
+                    (ref.read(isPurchasedProvider(movie.id)).value ?? false),
                 onViewAllPressed: () {
-                  context.push('${AppRouter.ratings}/${movie.id}', extra: {'title': movie.title});
+                  context.push(
+                    '${AppRouter.ratings}/${movie.id}',
+                    extra: {'title': movie.title},
+                  );
                 },
               ),
               if (movie.franchiseId != null) ...[
-                Gap(32),
-                _buildSeriesSection(context, movie.franchiseId!, movie.franchiseName ?? 'Series'),
+                const Gap(32),
+                _buildSeriesSection(
+                  context,
+                  movie.franchiseId!,
+                  movie.franchiseName ?? 'Series',
+                ),
               ],
-              Gap(32),
+              const Gap(32),
               _buildSimilarSection(context, widget.movieId),
-              Gap(24),
+              const Gap(24),
             ]),
           ),
         ),
@@ -342,8 +358,11 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
     );
   }
 
-
-  Widget _buildSeriesSection(BuildContext context, String franchiseId, String seriesTitle) {
+  Widget _buildSeriesSection(
+    BuildContext context,
+    String franchiseId,
+    String seriesTitle,
+  ) {
     final seriesAsync = ref.watch(seriesMoviesProvider(franchiseId));
 
     return seriesAsync.when(
@@ -369,18 +388,20 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
     return similarAsync.when(
       data: (similarMovies) {
         if (similarMovies.isEmpty) return const SizedBox.shrink();
-        
-        return MovieSimilarSection(
-          similarMovies: similarMovies,
-        );
+
+        return MovieSimilarSection(similarMovies: similarMovies);
       },
       loading: () => const SizedBox.shrink(),
       error: (_, __) => const SizedBox.shrink(),
     );
   }
 
-  PreferredSizeWidget _buildAppBar(BuildContext context, Color textColor, Movie? movie) {
-    final isInWishlistAsync = movie != null 
+  PreferredSizeWidget _buildAppBar(
+    BuildContext context,
+    Color textColor,
+    Movie? movie,
+  ) {
+    final isInWishlistAsync = movie != null
         ? ref.watch(isInWishlistProvider(movie.id))
         : null;
 
@@ -391,7 +412,7 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
         icon: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.5),
+            color: Colors.black.withValues(alpha: 0.5),
             shape: BoxShape.circle,
           ),
           child: const Icon(Icons.arrow_back, color: Colors.white, size: 20),
@@ -403,14 +424,17 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
           icon: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.5),
+              color: Colors.black.withValues(alpha: 0.5),
               shape: BoxShape.circle,
             ),
             child: SvgPicture.asset(
               ImageConstant.sendIcon,
               width: 20,
               height: 20,
-              colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+              colorFilter: const ColorFilter.mode(
+                Colors.white,
+                BlendMode.srcIn,
+              ),
             ),
           ),
           onPressed: () {
@@ -422,59 +446,59 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
             icon: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.5),
+                color: Colors.black.withValues(alpha: 0.5),
                 shape: BoxShape.circle,
               ),
-              child: isInWishlistAsync?.when(
-                data: (isInWishlist) => Icon(
-                  isInWishlist ? Icons.bookmark : Icons.bookmark_border,
-                  color: Colors.white,
-                  size: 20,
-                ),
-                loading: () => const SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
+              child:
+                  isInWishlistAsync?.when(
+                    data: (isInWishlist) => Icon(
+                      isInWishlist ? Icons.bookmark : Icons.bookmark_border,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                    loading: () => const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    ),
+                    error: (_, __) => const Icon(
+                      Icons.bookmark_border,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ) ??
+                  const Icon(
+                    Icons.bookmark_border,
                     color: Colors.white,
+                    size: 20,
                   ),
-                ),
-                error: (_, __) => const Icon(
-                  Icons.bookmark_border,
-                  color: Colors.white,
-                  size: 20,
-                ),
-              ) ?? const Icon(
-                Icons.bookmark_border,
-                color: Colors.white,
-                size: 20,
-              ),
             ),
-            onPressed: movie != null
-                ? () async {
-                    try {
-                      final repo = ref.read(wishlistRepositoryProvider);
-                      await repo.toggleWishlist(movie.id);
-                      if (context.mounted) {
-                        ToastNotification.showSuccess(
-                          context,
-                          message: isInWishlistAsync?.value ?? false
-                              ? 'Removed from wishlist'
-                              : 'Added to wishlist',
-                          duration: const Duration(seconds: 2),
-                        );
-                      }
-                    } catch (e) {
-                      if (context.mounted) {
-                        ToastNotification.showError(
-                          context,
-                          message: 'Error: ${e.toString()}',
-                          duration: const Duration(seconds: 2),
-                        );
-                      }
-                    }
-                  }
-                : null,
+            onPressed: () async {
+              try {
+                final repo = ref.read(wishlistRepositoryProvider);
+                await repo.toggleWishlist(movie.id);
+                if (context.mounted) {
+                  ToastNotification.showSuccess(
+                    context,
+                    message: isInWishlistAsync?.value ?? false
+                        ? 'Removed from wishlist'
+                        : 'Added to wishlist',
+                    duration: const Duration(seconds: 2),
+                  );
+                }
+              } catch (e) {
+                if (context.mounted) {
+                  ToastNotification.showError(
+                    context,
+                    message: 'Error: ${e.toString()}',
+                    duration: const Duration(seconds: 2),
+                  );
+                }
+              }
+            },
           ),
         const SizedBox(width: 8),
       ],
@@ -482,13 +506,10 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
   }
 
   Widget _buildHeroImage(BuildContext context, String imageUrl) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       height: MediaQuery.of(context).size.height * 0.5,
-      child: NetworkOrAssetImage(
-        imageUrl: imageUrl,
-        fit: BoxFit.cover,
-      ),
+      child: NetworkOrAssetImage(imageUrl: imageUrl, fit: BoxFit.cover),
     );
   }
 
@@ -502,19 +523,20 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
         return t;
       }
     }
-    
+
     if (movie.episodes != null && movie.episodes!.isNotEmpty) {
       // Try to get first episode's video URL
       final firstEpisode = movie.episodes!.first;
-      
+
       // Check if it's a server structure (has server_data)
-      if (firstEpisode['server_data'] != null && firstEpisode['server_data'] is List) {
+      if (firstEpisode['server_data'] != null &&
+          firstEpisode['server_data'] is List) {
         final serverData = firstEpisode['server_data'] as List;
         if (serverData.isNotEmpty) {
           final firstVideo = serverData.first;
           if (firstVideo['link_m3u8'] != null &&
               (firstVideo['link_m3u8'].toString().contains('.m3u8') ||
-               firstVideo['link_m3u8'].toString().contains('.mp4'))) {
+                  firstVideo['link_m3u8'].toString().contains('.mp4'))) {
             return firstVideo['link_m3u8'].toString();
           }
           if (firstVideo['link_embed'] != null) {
@@ -522,7 +544,7 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
           }
         }
       }
-      
+
       // Direct episode structure
       if (firstEpisode['url'] != null) {
         return firstEpisode['url'].toString();
@@ -537,7 +559,7 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
         return firstEpisode['link_embed'].toString();
       }
     }
-    
+
     return null;
   }
 }

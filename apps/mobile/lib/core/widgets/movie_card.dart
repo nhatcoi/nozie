@@ -49,7 +49,7 @@ class MovieCard extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
     final scale = width / 180;
 
-    void _handleTap(BuildContext context) {
+    void handleTap(BuildContext context) {
       if (onMore != null) {
         onMore!();
       } else if (enableNavigation) {
@@ -58,7 +58,7 @@ class MovieCard extends StatelessWidget {
     }
 
     return GestureDetector(
-      onTap: () => _handleTap(context),
+      onTap: () => handleTap(context),
       child: movieCardType == MovieCardType.vertical
           ? Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,7 +127,7 @@ class MovieCard extends StatelessWidget {
                   if (overlayOpacity != null)
                     Positioned.fill(
                       child: Container(
-                        color: Colors.black.withOpacity(overlayOpacity!.clamp(0.0, 1.0)),
+                        color: Colors.black.withValues(alpha: overlayOpacity!.clamp(0.0, 1.0)),
                       ),
                     ),
                   Positioned(

@@ -190,7 +190,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
                 scale: 1.2,
                 child: SvgPicture.asset(
                   ImageConstant.dropdownIcon,
-                  colorFilter: ColorFilter.mode(
+                  colorFilter: const ColorFilter.mode(
                     AppColors.primary500,
                     BlendMode.srcIn,
                   ),

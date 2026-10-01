@@ -26,7 +26,7 @@ void main() {
   });
 
   test('purchase item is built from the nested movie summary', () {
-    final p = PurchaseItem.fromApi({
+    final p = PurchaseItem.fromApi(const {
       'movie': {'id': 'm1', 'name': 'Paid', 'priceCents': 300, 'rating': 4.0, 'posterUrl': 'https://x/p.jpg'},
       'purchasedAt': '2026-10-01T03:00:00Z',
     });

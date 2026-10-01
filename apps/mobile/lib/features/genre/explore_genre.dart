@@ -21,9 +21,9 @@ class ExploreGenre extends ConsumerWidget {
         padding: const EdgeInsets.fromLTRB(24,16,24,16),
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final crossAxisCount = 2;
-            final double spacing = 12;
-            final aspectRatio = 160 / 80;
+            const crossAxisCount = 2;
+            const double spacing = 12;
+            const aspectRatio = 160 / 80;
             final screenWidth = constraints.maxWidth;
 
             final cardWidth =
@@ -31,10 +31,10 @@ class ExploreGenre extends ConsumerWidget {
 
             final cardHeight = cardWidth / aspectRatio;
 
-            final genres = GenresVi.all;
+            const genres = GenresVi.all;
             return GridView.builder(
               itemCount: genres.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: crossAxisCount,
                 crossAxisSpacing: spacing,
                 mainAxisSpacing: spacing,

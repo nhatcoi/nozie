@@ -12,9 +12,9 @@ class GridMovie extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
         builder: (context, constraints) {
-          final crossAxisCount = 2;
-          final double spacing = 12;
-          final aspectRatio = 160 / 80;
+          const crossAxisCount = 2;
+          const double spacing = 12;
+          const aspectRatio = 160 / 80;
           final screenWidth = constraints.maxWidth;
 
           final cardWidth =
@@ -24,7 +24,7 @@ class GridMovie extends StatelessWidget {
 
           return GridView.builder(
             itemCount: movies.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: crossAxisCount,
               crossAxisSpacing: spacing,
               mainAxisSpacing: spacing,

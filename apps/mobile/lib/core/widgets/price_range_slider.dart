@@ -41,7 +41,7 @@ class _PriceRangeSliderState extends State<PriceRangeSlider> {
 
         // showValueIndicator: ShowValueIndicator.alwaysVisible, // hiện value
         valueIndicatorColor: AppColors.primary500,
-        valueIndicatorTextStyle: TextStyle(
+        valueIndicatorTextStyle: const TextStyle(
           color: AppColors.white,
           fontWeight: FontWeight.w700,
         )

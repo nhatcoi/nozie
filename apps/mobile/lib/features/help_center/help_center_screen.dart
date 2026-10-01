@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:nozie_mobile/core/app_export.dart';
 import 'package:nozie_mobile/i18n/translations.g.dart';
 
-import 'package:nozie_mobile/core/utils/data.dart';
 import 'package:nozie_mobile/features/help_center/faq.dart';
 import 'package:nozie_mobile/features/help_center/contact.dart';
 import 'package:nozie_mobile/features/help_center/help_center_tabs.dart';

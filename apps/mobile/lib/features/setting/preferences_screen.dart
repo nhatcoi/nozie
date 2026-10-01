@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:nozie_mobile/core/app_export.dart';
-import 'package:nozie_mobile/core/widgets/toast_notification.dart';
 import 'package:nozie_mobile/features/setting/preferences.dart';
 import 'package:nozie_mobile/features/setting/preferences_notifier.dart';
 
@@ -105,18 +104,23 @@ class PreferencesScreen extends ConsumerWidget {
                       ),
                 ),
                 const SizedBox(height: 16),
-                ...options.entries.map(
-                  (option) => RadioListTile<String>(
-                    value: option.key,
-                    groupValue: selected,
-                    onChanged: (value) {
-                      if (value == null) return;
-                      onSelect(value);
-                      Navigator.of(sheetContext).pop();
-                    },
-                    activeColor: AppColors.primary500,
-                    title: Text(option.value),
-                    contentPadding: EdgeInsets.zero,
+                RadioGroup<String>(
+                  groupValue: selected,
+                  onChanged: (value) {
+                    if (value == null) return;
+                    onSelect(value);
+                    Navigator.of(sheetContext).pop();
+                  },
+                  child: Column(
+                    children: [
+                      for (final option in options.entries)
+                        RadioListTile<String>(
+                          value: option.key,
+                          activeColor: AppColors.primary500,
+                          title: Text(option.value),
+                          contentPadding: EdgeInsets.zero,
+                        ),
+                    ],
                   ),
                 ),
                 Align(
@@ -305,7 +309,7 @@ class _ToggleTile extends StatelessWidget {
       ),
       value: value,
       onChanged: onChanged,
-      activeColor: AppColors.primary500,
+      activeThumbColor: AppColors.primary500,
     );
   }
 }

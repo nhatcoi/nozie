@@ -99,7 +99,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       case SearchStatus.loading:
         return _buildLoadingState(context);
       case SearchStatus.success:
-        return SearchBody();
+        return const SearchBody();
       case SearchStatus.error:
         return _buildErrorState(context, searchState.error);
     }
@@ -107,7 +107,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
 
   Widget _buildLoadingState(BuildContext context) {
-    return LoadingCustom(
+    return const LoadingCustom(
       // loading custom widget
       assetName: ImageConstant.loadingIcon,
       size: 60,

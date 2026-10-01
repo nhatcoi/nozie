@@ -18,7 +18,7 @@ class ForgotPasswordNewPassScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var rememberMe = ref.watch(rememberMeProvider);
+    final rememberMe = ref.watch(rememberMeProvider);
     final t = context.i18n;
     final ctxTheme = Theme.of(context).textTheme;
 
@@ -120,6 +120,7 @@ class ForgotPasswordNewPassScreen extends ConsumerWidget {
                   try {
                     final repo = ref.read(forgotPasswordRepositoryProvider);
                     await repo.resetPassword(email: email!, resetToken: resetToken!, newPassword: newPass);
+                    if (!context.mounted) return;
                     await showAppModal(
                       context: context,
                       title: 'Success',
@@ -131,6 +132,7 @@ class ForgotPasswordNewPassScreen extends ConsumerWidget {
                       ),
                     );
                   } catch (e) {
+                    if (!context.mounted) return;
                     await showAppModal(
                       context: context,
                       title: 'Error',

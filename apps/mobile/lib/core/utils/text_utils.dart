@@ -4,7 +4,7 @@ class TextUtils {
   const TextUtils._();
 
   static List<TextSpan> buildDescriptionSpans(String raw, ThemeData theme, Color textColor) {
-    var text = raw
+    final text = raw
         .replaceAll(RegExp(r'</?p[^>]*>', caseSensitive: false), '')
         .replaceAll(RegExp(r'<br\s*/?>', caseSensitive: false), '\n')
         .trim();

@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:nozie_mobile/core/app_export.dart';
 import 'package:nozie_mobile/core/models/movie.dart';
-import 'package:nozie_mobile/core/widgets/toast_notification.dart';
 import 'package:nozie_mobile/core/services/stripe_service.dart';
 import 'package:nozie_mobile/features/purchase/purchase_repository.dart';
 
@@ -69,7 +68,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               color: AppColors.getSurface(context),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 10,
                   offset: const Offset(0, -2),
                 ),
@@ -284,11 +283,13 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               ),
             ),
           ),
-          Radio<String>(
-            value: 'visa',
+          RadioGroup<String>(
             groupValue: 'visa',
             onChanged: (_) {},
-            activeColor: AppColors.primary500,
+            child: const Radio<String>(
+              value: 'visa',
+              activeColor: AppColors.primary500,
+            ),
           ),
         ],
       ),

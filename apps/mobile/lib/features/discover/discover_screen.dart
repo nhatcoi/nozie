@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nozie_mobile/core/app_export.dart';
-import 'package:nozie_mobile/core/constants/app_padding.dart';
 import 'package:nozie_mobile/app/app_router.dart';
 import 'package:nozie_mobile/features/search/search_state_notifier.dart';
 import 'package:nozie_mobile/core/widgets/movie_carousel.dart';
@@ -25,19 +24,19 @@ class DiscoverScreen extends ConsumerWidget {
           ),
           sliver: SliverList(
             delegate: SliverChildListDelegate([
-              _DiscoverSection(
+              const _DiscoverSection(
                 sectionType: DiscoverSectionType.topCharts,
               ),
               const Gap(24),
-              _DiscoverSection(
+              const _DiscoverSection(
                 sectionType: DiscoverSectionType.topSelling,
               ),
               const Gap(24),
-              _DiscoverSection(
+              const _DiscoverSection(
                 sectionType: DiscoverSectionType.topFree,
               ),
               const Gap(24),
-              _DiscoverSection(
+              const _DiscoverSection(
                 sectionType: DiscoverSectionType.topNewReleases,
               ),
               const Gap(24),
@@ -84,7 +83,7 @@ class _DiscoverSection extends ConsumerWidget {
   ) {
     final filters = sectionType.filters;
     // Không set query text vào search bar, chỉ dùng filters
-    final emptyQuery = '';
+    const emptyQuery = '';
 
     ref.read(searchStateProvider.notifier).searchWithFilters(emptyQuery, filters);
 

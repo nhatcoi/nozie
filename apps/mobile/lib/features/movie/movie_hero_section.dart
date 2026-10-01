@@ -6,7 +6,6 @@ import 'package:nozie_mobile/core/utils/format_utils.dart';
 import 'package:nozie_mobile/core/app_export.dart';
 import 'package:nozie_mobile/core/models/movie_item.dart';
 import 'package:nozie_mobile/core/utils/price_utils.dart';
-import 'package:nozie_mobile/core/utils/format_utils.dart';
 import 'package:nozie_mobile/core/utils/text_utils.dart';
 import 'package:nozie_mobile/core/widgets/image_utils.dart';
 
@@ -103,7 +102,7 @@ class MovieHeroSection extends ConsumerWidget {
               ),
               const Gap(8),
               Text(
-                '$author',
+                author,
                 style: theme.textTheme.bodyLarge?.copyWith(
                   color: secondaryText,
                 ),
@@ -254,7 +253,7 @@ class MovieHeroSection extends ConsumerWidget {
                     ),
                   ),
                   const Gap(4),
-                  Icon(
+                  const Icon(
                     Icons.arrow_forward,
                     color: AppColors.primary500,
                     size: 16,

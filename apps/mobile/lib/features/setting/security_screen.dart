@@ -1,8 +1,8 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:nozie_mobile/core/app_export.dart';
-import 'package:nozie_mobile/core/widgets/toast_notification.dart';
 import 'package:nozie_mobile/features/setting/security_settings.dart';
 import 'package:nozie_mobile/features/setting/security_notifier.dart';
 
@@ -39,20 +39,21 @@ class SecurityScreen extends ConsumerWidget {
                 onSignOut: (session) async {
                   await notifier.signOutDevice(session.id);
                   if (sheetContext.mounted) {
-                    Navigator.of(sheetContext).maybePop();
+                    unawaited(Navigator.of(sheetContext).maybePop());
                   }
                   if (context.mounted) {
                     ToastNotification.showSuccess(
                       context,
-                      message: t.profile.security.actions
-                          .signOutDevice(name: session.name),
+                      message: t.profile.security.actions.signOutDevice(
+                        name: session.name,
+                      ),
                     );
                   }
                 },
                 onSignOutAll: () async {
                   await notifier.signOutAllDevices();
                   if (sheetContext.mounted) {
-                    Navigator.of(sheetContext).maybePop();
+                    unawaited(Navigator.of(sheetContext).maybePop());
                   }
                   if (context.mounted) {
                     ToastNotification.showSuccess(
@@ -76,7 +77,9 @@ class SecurityScreen extends ConsumerWidget {
         ),
         title: Text(
           t.profile.security.title,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
         ),
         centerTitle: false,
       ),
@@ -87,9 +90,9 @@ class SecurityScreen extends ConsumerWidget {
           error: (error, _) => Center(
             child: Text(
               t.profile.security.loadError(error: error.toString()),
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.warning,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: AppColors.warning),
             ),
           ),
           data: (_) => Column(
@@ -214,15 +217,15 @@ class _SecurityToggle extends StatelessWidget {
           child: Text(
             title,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: textColor,
-                  fontWeight: FontWeight.w600,
-                ),
+              color: textColor,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
         Switch.adaptive(
           value: value,
           onChanged: onChanged,
-          activeColor: AppColors.primary500,
+          activeThumbColor: AppColors.primary500,
           activeTrackColor: AppColors.primary500,
         ),
       ],
@@ -231,10 +234,7 @@ class _SecurityToggle extends StatelessWidget {
 }
 
 class _SecurityNavigationTile extends StatelessWidget {
-  const _SecurityNavigationTile({
-    required this.title,
-    required this.onTap,
-  });
+  const _SecurityNavigationTile({required this.title, required this.onTap});
 
   final String title;
   final VoidCallback onTap;
@@ -252,15 +252,15 @@ class _SecurityNavigationTile extends StatelessWidget {
               child: Text(
                 title,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: textColor,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  color: textColor,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
             Icon(
               Icons.arrow_forward_ios_rounded,
               size: 18,
-              color: AppColors.getText(context).withOpacity(0.5),
+              color: AppColors.getText(context).withValues(alpha: 0.5),
             ),
           ],
         ),
@@ -305,7 +305,7 @@ class _DeviceManagementSheet extends StatelessWidget {
               height: 4,
               margin: const EdgeInsets.only(bottom: 20),
               decoration: BoxDecoration(
-                color: AppColors.getText(context).withOpacity(0.12),
+                color: AppColors.getText(context).withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(100),
               ),
             ),
@@ -316,9 +316,9 @@ class _DeviceManagementSheet extends StatelessWidget {
                 child: Text(
                   t.profile.security.deviceManagement.title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: textColor,
-                      ),
+                    fontWeight: FontWeight.w700,
+                    color: textColor,
+                  ),
                 ),
               ),
               IconButton(
@@ -330,9 +330,9 @@ class _DeviceManagementSheet extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             t.profile.security.deviceManagement.description,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: secondary,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: secondary),
           ),
           const SizedBox(height: 24),
           ...sessions.map(
@@ -359,10 +359,7 @@ class _DeviceManagementSheet extends StatelessWidget {
 }
 
 class _DeviceSessionRow extends StatelessWidget {
-  const _DeviceSessionRow({
-    required this.session,
-    required this.onSignOut,
-  });
+  const _DeviceSessionRow({required this.session, required this.onSignOut});
 
   final DeviceSession session;
   final VoidCallback onSignOut;
@@ -401,14 +398,17 @@ class _DeviceSessionRow extends StatelessWidget {
                     child: Text(
                       session.name,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: textColor,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        color: textColor,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                   if (session.isCurrent)
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.primary100,
                         borderRadius: BorderRadius.circular(100),
@@ -416,9 +416,9 @@ class _DeviceSessionRow extends StatelessWidget {
                       child: Text(
                         t.profile.security.deviceManagement.current,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: AppColors.primary500,
-                              fontWeight: FontWeight.w600,
-                            ),
+                          color: AppColors.primary500,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                 ],
@@ -426,24 +426,25 @@ class _DeviceSessionRow extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 session.location,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: secondary,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: secondary),
               ),
               const SizedBox(height: 4),
               Text(
                 session.status,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: secondary,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: secondary),
               ),
               const SizedBox(height: 8),
               Text(
-                t.profile.security.deviceManagement
-                    .lastActive(time: session.lastActive),
+                t.profile.security.deviceManagement.lastActive(
+                  time: session.lastActive,
+                ),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: secondary.withOpacity(0.9),
-                    ),
+                  color: secondary.withValues(alpha: 0.9),
+                ),
               ),
               const SizedBox(height: 12),
               TextButton(
@@ -476,5 +477,3 @@ class _DeviceSessionRow extends StatelessWidget {
     }
   }
 }
-
-

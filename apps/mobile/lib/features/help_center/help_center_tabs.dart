@@ -33,7 +33,7 @@ class HelpCenterTabs extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     color: isActive
                         ? AppColors.primary500
-                        : textColor.withOpacity(0.6),
+                        : textColor.withValues(alpha: 0.6),
                   ),
                 ),
                 const SizedBox(height: 8),

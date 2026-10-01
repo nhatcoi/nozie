@@ -1,5 +1,4 @@
 import 'package:nozie_mobile/features/search/filter_section.dart';
-import 'package:nozie_mobile/features/search/search_filter.dart';
 
 /// Translates the search UI's filters into catalog API query parameters.
 class SearchQueryMapper {

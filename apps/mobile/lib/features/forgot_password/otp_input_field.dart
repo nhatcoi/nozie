@@ -58,7 +58,7 @@ class OtpInputField extends StatelessWidget {
             }
           },
           decoration: InputDecoration(
-            counterText: "",
+            counterText: '',
             filled: true,
             fillColor: isFocused
                 ? AppColors.trOrange

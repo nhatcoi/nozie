@@ -64,7 +64,6 @@ class _StepSignupState extends ConsumerState<StepSignup> {
       'rememberMe': _rememberMe,
     };
 
-    print("onSignupCompleted nhận dữ liệu: $account");
 
     widget.onSignupCompleted(account); // gán vào sign up
   }

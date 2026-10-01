@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:nozie_mobile/core/app_export.dart';
-import 'package:nozie_mobile/core/models/movie_item.dart';
 import 'package:nozie_mobile/core/widgets/movie_card.dart';
 import 'package:nozie_mobile/core/widgets/list_title_movie.dart';
 import 'package:nozie_mobile/core/utils/genres.dart';
@@ -22,7 +21,6 @@ class ExploreGenreDetails extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final t = context.i18n;
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
     final mode = ref.watch(viewModeProvider);
 
     final mapped = GenresVi.all.firstWhere(

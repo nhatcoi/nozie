@@ -68,7 +68,7 @@ class RatingsDetailScreen extends ConsumerWidget {
                                     child: LinearProgressIndicator(
                                       value: pct,
                                       backgroundColor: AppColors.getSurface(context),
-                                      valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary500),
+                                      valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary500),
                                       minHeight: 8,
                                     ),
                                   ),
@@ -134,18 +134,18 @@ class RatingsDetailScreen extends ConsumerWidget {
     final rem = normalized - full;
     return Row(
       children: [
-        ...List.generate(full, (_) => Icon(Icons.star, color: AppColors.primary500, size: 22)),
+        ...List.generate(full, (_) => const Icon(Icons.star, color: AppColors.primary500, size: 22)),
         if (rem > 0) Stack(children: [
-          Icon(Icons.star_border, color: AppColors.primary500, size: 22),
+          const Icon(Icons.star_border, color: AppColors.primary500, size: 22),
           ClipRect(
             child: Align(
               alignment: Alignment.centerLeft,
               widthFactor: rem.clamp(0.0, 1.0),
-              child: Icon(Icons.star, color: AppColors.primary500, size: 22),
+              child: const Icon(Icons.star, color: AppColors.primary500, size: 22),
             ),
           )
         ]),
-        ...List.generate(5 - full - (rem > 0 ? 1 : 0), (_) => Icon(Icons.star_border, color: AppColors.primary500.withOpacity(0.3), size: 22)),
+        ...List.generate(5 - full - (rem > 0 ? 1 : 0), (_) => Icon(Icons.star_border, color: AppColors.primary500.withValues(alpha: 0.3), size: 22)),
       ],
     );
   }
@@ -194,7 +194,7 @@ class _ReviewTile extends ConsumerWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.star, color: AppColors.primary500, size: 16),
+                  const Icon(Icons.star, color: AppColors.primary500, size: 16),
                   const Gap(4),
                   Text('$rating', style: t.textTheme.bodyMedium?.copyWith(color: AppColors.primary500, fontWeight: FontWeight.w700)),
                 ],
@@ -242,7 +242,7 @@ class _ReviewTile extends ConsumerWidget {
               ),
             ),
             const Gap(8),
-            Text('${likes}', style: t.textTheme.bodySmall?.copyWith(color: secondary)),
+            Text('$likes', style: t.textTheme.bodySmall?.copyWith(color: secondary)),
             const Gap(12),
             if (timestamp != null)
               Text(FormatUtils.timeAgo(timestamp!), style: t.textTheme.bodySmall?.copyWith(color: secondary)),

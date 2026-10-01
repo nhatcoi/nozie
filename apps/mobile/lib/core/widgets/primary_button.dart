@@ -61,7 +61,7 @@ class PrimaryButton extends StatelessWidget {
       );
     }
 
-    Widget button = SizedBox(
+    final Widget button = SizedBox(
       width: width ?? double.infinity,
       height: height,
       child: ElevatedButton(

@@ -78,7 +78,6 @@ class _StepProfileState extends ConsumerState<StepProfile> {
       if (_selectedImage != null) 'avatarPath': _selectedImage!.path,
     };
 
-    print('StepProfile input: $profile');
 
     widget.onProfileCompleted(profile);
   }

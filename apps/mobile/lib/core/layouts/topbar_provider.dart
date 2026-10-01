@@ -27,13 +27,11 @@ class TopBarState {
 
 
 final topBarProvider = StateNotifierProvider<TopBarNotifier, TopBarState>(
-  (ref) => TopBarNotifier(ref),
+  TopBarNotifier.new,
 );
 
 class TopBarNotifier extends StateNotifier<TopBarState> {
-  final Ref _ref;
-
-  TopBarNotifier(this._ref) : super(const TopBarState(title: 'NoZie', primaryAction: TopBarAction.search, secondaryAction: TopBarAction.notification)) {
+  TopBarNotifier(Ref ref) : super(const TopBarState(title: 'NoZie', primaryAction: TopBarAction.search, secondaryAction: TopBarAction.notification)) {
     // Khởi tạo với title mặc định
   }
 

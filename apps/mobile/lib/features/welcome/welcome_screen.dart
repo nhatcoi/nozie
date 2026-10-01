@@ -5,7 +5,6 @@ import 'package:nozie_mobile/app/app_router.dart';
 import 'package:go_router/go_router.dart';
 import 'dart:async';
 import 'package:nozie_mobile/core/app_export.dart';
-import 'package:nozie_mobile/core/widgets/toast_notification.dart';
 import 'package:nozie_mobile/features/welcome/welcome_constant.dart';
 import 'package:nozie_mobile/features/welcome/welcome_content.dart';
 import 'package:nozie_mobile/features/welcome/page_indicator.dart';
@@ -34,7 +33,7 @@ class WelcomeScreenState extends ConsumerState<WelcomeScreen> {
 
   void _fadingBackground() {
     _bgTimer = Timer.periodic(
-      Duration(seconds: WelcomeAnimationValues.backgroundChangeInterval),
+      const Duration(seconds: WelcomeAnimationValues.backgroundChangeInterval),
       (timer) {
         if (mounted) {
           setState(() {
@@ -93,7 +92,7 @@ class WelcomeScreenState extends ConsumerState<WelcomeScreen> {
 
             Positioned.fill(
               child: AnimatedSwitcher(
-                duration: Duration(
+                duration: const Duration(
                   milliseconds: WelcomeAnimationValues.fadeTransitionDuration,
                 ),
                 transitionBuilder: (Widget child, Animation<double> animation) {
