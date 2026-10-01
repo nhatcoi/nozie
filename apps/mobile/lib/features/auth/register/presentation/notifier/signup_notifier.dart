@@ -5,17 +5,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:movie_fe/core/common/ui_state.dart';
-import 'package:movie_fe/features/auth/shared/providers/auth_repository_provider.dart';
-import 'package:movie_fe/features/auth/shared/providers/firebase_auth_provider.dart';
-import 'package:movie_fe/features/auth/shared/providers/storage_service_provider.dart';
-import 'package:movie_fe/features/auth/shared/services/storage_service.dart';
-import 'package:movie_fe/features/auth/register/domain/models/user_registration.dart';
-import 'package:movie_fe/features/auth/register/domain/repositories/auth_repository.dart';
-import 'package:movie_fe/features/profile/models/user_profile.dart'
+import 'package:nozie_mobile/core/common/ui_state.dart';
+import 'package:nozie_mobile/features/auth/shared/providers/auth_repository_provider.dart';
+import 'package:nozie_mobile/features/auth/shared/providers/firebase_auth_provider.dart';
+import 'package:nozie_mobile/features/auth/shared/providers/storage_service_provider.dart';
+import 'package:nozie_mobile/features/auth/shared/services/storage_service.dart';
+import 'package:nozie_mobile/features/auth/register/domain/models/user_registration.dart';
+import 'package:nozie_mobile/features/auth/register/domain/repositories/auth_repository.dart';
+import 'package:nozie_mobile/features/profile/models/user_profile.dart'
     as profile_models;
-import 'package:movie_fe/features/profile/notifiers/profile_notifier.dart';
-import 'package:movie_fe/features/profile/repository/settings_repository.dart';
+import 'package:nozie_mobile/features/profile/notifiers/profile_notifier.dart';
+import 'package:nozie_mobile/features/profile/repository/settings_repository.dart';
 
 final signupNotifierProvider =
     StateNotifierProvider<SignupNotifier, UIState<UserReg>>((ref) {

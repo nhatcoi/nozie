@@ -1,4 +1,4 @@
-import 'package:movie_fe/i18n/translations.g.dart';
+import 'package:nozie_mobile/i18n/translations.g.dart';
 import '../../models/movie_item.dart';
 
 class PriceUtils {

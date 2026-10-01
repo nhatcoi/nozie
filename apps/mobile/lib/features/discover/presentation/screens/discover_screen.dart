@@ -4,7 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/app_export.dart';
 import '../../../../core/constants/app_padding.dart';
-import '../../../../routes/app_router.dart';
+import 'package:nozie_mobile/app/router/app_router.dart';
 import '../../../../features/search/application/search_state_notifier.dart';
 import '../../../../core/widgets/lists/movie_carousel.dart';
 import '../../data/repositories/discover_repository.dart';

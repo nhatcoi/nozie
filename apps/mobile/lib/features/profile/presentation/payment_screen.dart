@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/features/profile/models/payment_method.dart';
-import 'package:movie_fe/features/profile/notifiers/payment_notifier.dart';
+import 'package:nozie_mobile/core/app_export.dart';
+import 'package:nozie_mobile/features/profile/models/payment_method.dart';
+import 'package:nozie_mobile/features/profile/notifiers/payment_notifier.dart';
 
 class PaymentScreen extends ConsumerWidget {
   const PaymentScreen({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/i18n/translations.g.dart';
+import 'package:nozie_mobile/core/app_export.dart';
+import 'package:nozie_mobile/i18n/translations.g.dart';
 
 import '../../../core/utils/data/data.dart';
 import 'help_center/widgets/faq.dart';

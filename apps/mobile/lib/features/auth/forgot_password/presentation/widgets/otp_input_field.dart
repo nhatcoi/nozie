@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:movie_fe/core/app_export.dart';
+import 'package:nozie_mobile/core/app_export.dart';
 
 class OtpInputField extends StatelessWidget {
   const OtpInputField({

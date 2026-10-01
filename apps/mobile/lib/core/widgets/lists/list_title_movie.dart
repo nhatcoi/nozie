@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:movie_fe/core/enums/movie_type.dart';
-import 'package:movie_fe/core/models/movie_item.dart';
-import 'package:movie_fe/core/widgets/cards/movie_card.dart';
+import 'package:nozie_mobile/core/enums/movie_type.dart';
+import 'package:nozie_mobile/core/models/movie_item.dart';
+import 'package:nozie_mobile/core/widgets/cards/movie_card.dart';
 
 class ListTitleMovie extends ConsumerWidget {
   const ListTitleMovie({super.key, required this.movies});

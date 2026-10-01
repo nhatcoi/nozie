@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:movie_fe/core/app_export.dart';
+import 'package:nozie_mobile/core/app_export.dart';
 
 import '../models/user_profile.dart';
 import '../notifiers/profile_notifier.dart';

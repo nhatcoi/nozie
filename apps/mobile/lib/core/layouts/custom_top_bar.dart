@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:movie_fe/core/app_export.dart';
+import 'package:nozie_mobile/core/app_export.dart';
 import '../utils/data/image_constant.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_typography.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:movie_fe/core/extension/lined_text_divider_theme_extensions.dart';
-import 'package:movie_fe/core/theme/app_colors.dart';
-import 'package:movie_fe/core/theme/app_typography.dart';
+import 'package:nozie_mobile/core/extension/lined_text_divider_theme_extensions.dart';
+import 'package:nozie_mobile/core/theme/app_colors.dart';
+import 'package:nozie_mobile/core/theme/app_typography.dart';
 
 class AppTheme {
   // Light theme

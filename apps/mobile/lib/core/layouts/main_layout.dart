@@ -4,9 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'custom_top_bar.dart';
 import 'custom_bottom_nav_bar.dart';
 import '../theme/app_colors.dart';
-import '../../routes/app_router.dart';
+import 'package:nozie_mobile/app/router/app_router.dart';
 import 'topbar_provider.dart';
-import '../../routes/navigation_utils.dart';
+import 'package:nozie_mobile/app/router/navigation_utils.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class MainLayout extends ConsumerWidget {

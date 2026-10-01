@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:movie_fe/features/search/entities/search_filter.dart';
-import 'package:movie_fe/features/search/entities/filter_section.dart';
+import 'package:nozie_mobile/features/search/entities/search_filter.dart';
+import 'package:nozie_mobile/features/search/entities/filter_section.dart';
 
 
 final filterPageNotifierProvider = StateNotifierProvider<FilterPageNotifier, FilterPageState>(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_fe/core/extension/lined_text_divider_theme_extensions.dart';
+import 'package:nozie_mobile/core/extension/lined_text_divider_theme_extensions.dart';
 
 class LinedTextDivider extends StatelessWidget {
   const LinedTextDivider({

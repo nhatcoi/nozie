@@ -4,11 +4,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/core/models/movie_item.dart';
-import 'package:movie_fe/core/widgets/image_utils.dart';
+import 'package:nozie_mobile/core/app_export.dart';
+import 'package:nozie_mobile/core/models/movie_item.dart';
+import 'package:nozie_mobile/core/widgets/image_utils.dart';
 import '../../repositories/wishlist_repository.dart';
-import '../../../../routes/app_router.dart';
+import 'package:nozie_mobile/app/router/app_router.dart';
 import '../../../../core/repositories/movie_repository.dart';
 
 enum WishlistAction {

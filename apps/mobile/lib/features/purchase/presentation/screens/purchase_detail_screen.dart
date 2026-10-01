@@ -6,7 +6,7 @@ import '../../../../core/app_export.dart';
 import '../../../../core/widgets/image_utils.dart';
 import '../../data/repositories/purchase_repository.dart';
 import '../../models/transaction_item.dart';
-import '../../../../routes/app_router.dart';
+import 'package:nozie_mobile/app/router/app_router.dart';
 
 class PurchaseDetailScreen extends ConsumerWidget {
   final String movieId;

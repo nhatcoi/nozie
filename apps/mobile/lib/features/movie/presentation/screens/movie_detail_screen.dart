@@ -8,7 +8,7 @@ import '../../../../core/models/movie_item.dart';
 import '../../../../core/models/movie.dart';
 import '../../../../core/widgets/image_utils.dart';
 import '../../../../core/widgets/feedback/toast_notification.dart';
-import '../../../../routes/app_router.dart';
+import 'package:nozie_mobile/app/router/app_router.dart';
 import '../../data/repositories/movie_repository.dart';
 import '../../../wishlist/repositories/wishlist_repository.dart';
 import '../../../purchase/data/repositories/purchase_repository.dart';

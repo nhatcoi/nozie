@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:movie_fe/i18n/translations.g.dart';
+import 'package:nozie_mobile/i18n/translations.g.dart';
 
 extension LocalizationExtension on BuildContext {
   /// Hierarchical i18n access method

@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import '../../i18n/translations.g.dart';
-import '../../routes/app_router.dart';
+import 'package:nozie_mobile/app/router/app_router.dart';
 import '../utils/data/image_constant.dart';
 
 enum TopBarAction {

@@ -1,4 +1,4 @@
-package com.example.movie_fe
+package com.oggy.nozie
 
 import io.flutter.embedding.android.FlutterActivity
 

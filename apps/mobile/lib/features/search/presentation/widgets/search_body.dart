@@ -3,13 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/core/enums/movie_type.dart';
-import 'package:movie_fe/core/widgets/cards/movie_card.dart';
-import 'package:movie_fe/core/widgets/lists/list_title_movie.dart';
-import 'package:movie_fe/core/widgets/loading.dart';
+import 'package:nozie_mobile/core/app_export.dart';
+import 'package:nozie_mobile/core/enums/movie_type.dart';
+import 'package:nozie_mobile/core/widgets/cards/movie_card.dart';
+import 'package:nozie_mobile/core/widgets/lists/list_title_movie.dart';
+import 'package:nozie_mobile/core/widgets/loading.dart';
 import '../../../../core/models/movie_item.dart';
-import '../../../../routes/app_router.dart';
+import 'package:nozie_mobile/app/router/app_router.dart';
 import '../../application/search_state_notifier.dart';
 import '../../entities/search_result.dart';
 

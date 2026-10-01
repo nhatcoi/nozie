@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movie_fe/core/theme/app_colors.dart';
-import 'package:movie_fe/core/theme/app_typography.dart';
+import 'package:nozie_mobile/core/theme/app_colors.dart';
+import 'package:nozie_mobile/core/theme/app_typography.dart';
 
 class InfoField extends StatefulWidget {
   final String? label;

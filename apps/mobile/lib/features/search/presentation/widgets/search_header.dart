@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/features/search/application/search_state_notifier.dart';
-import 'package:movie_fe/features/search/presentation/widgets/search_filter_page.dart';
+import 'package:nozie_mobile/core/app_export.dart';
+import 'package:nozie_mobile/features/search/application/search_state_notifier.dart';
+import 'package:nozie_mobile/features/search/presentation/widgets/search_filter_page.dart';
 
 import '../../application/search_history_notifier.dart';
 

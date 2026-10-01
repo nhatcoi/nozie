@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:movie_fe/core/models/movie.dart';
-import 'package:movie_fe/core/models/movie_item.dart';
-import 'package:movie_fe/core/utils/data/genres.dart';
+import 'package:nozie_mobile/core/models/movie.dart';
+import 'package:nozie_mobile/core/models/movie_item.dart';
+import 'package:nozie_mobile/core/utils/data/genres.dart';
 
 final _authProvider = Provider<FirebaseAuth>((_) => FirebaseAuth.instance);
 final _firestoreProvider = Provider<FirebaseFirestore>((_) => FirebaseFirestore.instance);

@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:movie_fe/features/auth/forgot_password/domain/repositories/auth_repository.dart' as domain;
+import 'package:nozie_mobile/features/auth/forgot_password/domain/repositories/auth_repository.dart' as domain;
 
 class ForgotPasswordRepositoryImpl implements domain.AuthRepository {
   ForgotPasswordRepositoryImpl({Dio? client, String? baseUrl})

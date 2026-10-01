@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:movie_fe/features/auth/forgot_password/presentation/providers/otp_vm.dart';
+import 'package:nozie_mobile/features/auth/forgot_password/presentation/providers/otp_vm.dart';
 
 mixin OtpInputController<T extends StatefulWidget> on State<T> {
   late final List<TextEditingController> controllers;

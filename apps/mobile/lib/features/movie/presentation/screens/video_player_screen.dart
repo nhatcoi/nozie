@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:dio/dio.dart';
 import 'package:video_player/video_player.dart';
-import 'package:movie_fe/core/widgets/loading.dart';
+import 'package:nozie_mobile/core/widgets/loading.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/app_export.dart';
 import '../../../../core/widgets/feedback/toast_notification.dart';

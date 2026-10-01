@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:movie_fe/core/app_export.dart';
+import 'package:nozie_mobile/core/app_export.dart';
 
 class NumericKeyboard extends StatelessWidget {
   const NumericKeyboard({

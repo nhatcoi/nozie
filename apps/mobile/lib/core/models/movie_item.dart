@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:movie_fe/core/enums/movie_item_type.dart';
+import 'package:nozie_mobile/core/enums/movie_item_type.dart';
 import 'movie.dart';
 
 class MovieItem extends Equatable {

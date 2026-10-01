@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
-import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/core/models/movie_item.dart';
-import 'package:movie_fe/core/widgets/cards/movie_card.dart';
-import 'package:movie_fe/core/widgets/lists/list_title_movie.dart';
-import 'package:movie_fe/core/utils/data/genres.dart';
-import 'package:movie_fe/core/repositories/movie_repository.dart';
+import 'package:nozie_mobile/core/app_export.dart';
+import 'package:nozie_mobile/core/models/movie_item.dart';
+import 'package:nozie_mobile/core/widgets/cards/movie_card.dart';
+import 'package:nozie_mobile/core/widgets/lists/list_title_movie.dart';
+import 'package:nozie_mobile/core/utils/data/genres.dart';
+import 'package:nozie_mobile/core/repositories/movie_repository.dart';
 
 enum ViewMode { grid, list }
 

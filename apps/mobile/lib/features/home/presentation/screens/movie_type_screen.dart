@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:movie_fe/core/app_export.dart';
+import 'package:nozie_mobile/core/app_export.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
-import 'package:movie_fe/core/widgets/cards/movie_card.dart';
-import 'package:movie_fe/core/widgets/lists/list_title_movie.dart';
+import 'package:nozie_mobile/core/widgets/cards/movie_card.dart';
+import 'package:nozie_mobile/core/widgets/lists/list_title_movie.dart';
 import '../../data/home_providers.dart';
 
 enum MovieListType { recommended, purchase, wishlist, recent }

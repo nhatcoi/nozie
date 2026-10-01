@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_fe/core/app_export.dart';
+import 'package:nozie_mobile/core/app_export.dart';
 
 /// Constants cho padding values trong toàn bộ app
 /// Đảm bảo tính nhất quán và đồng bộ giữa các components

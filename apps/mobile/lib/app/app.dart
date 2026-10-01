@@ -8,7 +8,7 @@ import '../core/services/locale_setting.dart';
 import '../core/services/theme_mode_notifier.dart';
 import '../core/theme/app_theme.dart';
 import '../core/widgets/orientation_lock_widget.dart';
-import '../routes/app_router.dart';
+import 'package:nozie_mobile/app/router/app_router.dart';
 
 
 

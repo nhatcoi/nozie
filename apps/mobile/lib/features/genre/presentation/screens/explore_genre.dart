@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movie_fe/core/enums/movie_type.dart';
-import 'package:movie_fe/core/models/movie_item.dart';
-import 'package:movie_fe/core/utils/data/image_constant.dart';
-import 'package:movie_fe/core/utils/data/genres.dart';
-import 'package:movie_fe/core/widgets/cards/movie_card.dart';
-import 'package:movie_fe/routes/app_router.dart';
+import 'package:nozie_mobile/core/enums/movie_type.dart';
+import 'package:nozie_mobile/core/models/movie_item.dart';
+import 'package:nozie_mobile/core/utils/data/image_constant.dart';
+import 'package:nozie_mobile/core/utils/data/genres.dart';
+import 'package:nozie_mobile/core/widgets/cards/movie_card.dart';
+import 'package:nozie_mobile/app/router/app_router.dart';
 
 class ExploreGenre extends ConsumerWidget {
   const ExploreGenre({super.key, required this.query});

@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/core/widgets/auto_layout.dart';
-import 'package:movie_fe/core/widgets/price_range_slider.dart';
-import 'package:movie_fe/core/widgets/selection/app_checkbox.dart';
-import 'package:movie_fe/features/search/application/filter_section_notifier.dart';
-import 'package:movie_fe/features/search/application/filter_page_notifier.dart';
-import 'package:movie_fe/features/search/entities/filter_section.dart';
-import 'package:movie_fe/features/search/entities/search_filter.dart';
-import 'package:movie_fe/features/search/application/search_state_notifier.dart';
+import 'package:nozie_mobile/core/app_export.dart';
+import 'package:nozie_mobile/core/widgets/auto_layout.dart';
+import 'package:nozie_mobile/core/widgets/price_range_slider.dart';
+import 'package:nozie_mobile/core/widgets/selection/app_checkbox.dart';
+import 'package:nozie_mobile/features/search/application/filter_section_notifier.dart';
+import 'package:nozie_mobile/features/search/application/filter_page_notifier.dart';
+import 'package:nozie_mobile/features/search/entities/filter_section.dart';
+import 'package:nozie_mobile/features/search/entities/search_filter.dart';
+import 'package:nozie_mobile/features/search/application/search_state_notifier.dart';
 
 class SearchFilterPage extends ConsumerStatefulWidget {
   final SearchFilters currentFilters;

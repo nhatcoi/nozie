@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
-import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/core/common/ui_state.dart';
-import 'package:movie_fe/core/widgets/feedback/toast_notification.dart';
-import 'package:movie_fe/core/widgets/buttons/social_button.dart';
-import 'package:movie_fe/core/widgets/layout/lined_text_divider.dart';
-import 'package:movie_fe/features/auth/login/presentation/providers/login_provider.dart';
-import 'package:movie_fe/core/widgets/selection/app_checkbox.dart';
-import 'package:movie_fe/features/auth/login/presentation/notifier/login_notifier.dart';
+import 'package:nozie_mobile/core/app_export.dart';
+import 'package:nozie_mobile/core/common/ui_state.dart';
+import 'package:nozie_mobile/core/widgets/feedback/toast_notification.dart';
+import 'package:nozie_mobile/core/widgets/buttons/social_button.dart';
+import 'package:nozie_mobile/core/widgets/layout/lined_text_divider.dart';
+import 'package:nozie_mobile/features/auth/login/presentation/providers/login_provider.dart';
+import 'package:nozie_mobile/core/widgets/selection/app_checkbox.dart';
+import 'package:nozie_mobile/features/auth/login/presentation/notifier/login_notifier.dart';
 
-import '../../../../routes/app_router.dart';
+import 'package:nozie_mobile/app/router/app_router.dart';
 import 'package:go_router/go_router.dart';
 
 final rememberMeProvider = StateProvider<bool>((ref) => false);

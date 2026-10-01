@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/features/profile/models/language_settings.dart';
-import 'package:movie_fe/features/profile/notifiers/language_notifier.dart';
+import 'package:nozie_mobile/core/app_export.dart';
+import 'package:nozie_mobile/features/profile/models/language_settings.dart';
+import 'package:nozie_mobile/features/profile/notifiers/language_notifier.dart';
 
 class LanguageScreen extends ConsumerWidget {
   const LanguageScreen({super.key});

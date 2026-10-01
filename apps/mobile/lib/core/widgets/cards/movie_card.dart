@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movie_fe/core/enums/movie_type.dart';
+import 'package:nozie_mobile/core/enums/movie_type.dart';
 
 import '../../models/movie_item.dart';
 import '../../theme/app_colors.dart';
 import '../../utils/data/image_constant.dart';
 import '../../utils/data/price_utils.dart';
-import '../../../routes/app_router.dart';
+import 'package:nozie_mobile/app/router/app_router.dart';
 import '../image_utils.dart';
 
 class MovieCard extends StatelessWidget {

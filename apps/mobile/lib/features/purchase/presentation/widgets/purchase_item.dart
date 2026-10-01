@@ -7,7 +7,7 @@ import '../../../../core/app_export.dart';
 import '../../../../core/widgets/image_utils.dart';
 import '../../../../core/widgets/feedback/toast_notification.dart';
 import '../../../../core/repositories/movie_repository.dart';
-import '../../../../routes/app_router.dart';
+import 'package:nozie_mobile/app/router/app_router.dart';
 import '../../models/purchase_item.dart' as purchase_model;
 import '../../application/purchase_state_notifier.dart';
 

@@ -3,15 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/core/widgets/layout/lined_text_divider.dart';
-import 'package:movie_fe/features/auth/shared/providers/firebase_auth_provider.dart';
-import 'package:movie_fe/features/profile/models/language_settings.dart';
-import 'package:movie_fe/features/profile/models/user_profile.dart';
-import 'package:movie_fe/features/profile/notifiers/auth_user_provider.dart';
-import 'package:movie_fe/features/profile/notifiers/language_notifier.dart';
-import 'package:movie_fe/features/profile/services/logout_service.dart';
-import 'package:movie_fe/routes/app_router.dart';
+import 'package:nozie_mobile/core/app_export.dart';
+import 'package:nozie_mobile/core/widgets/layout/lined_text_divider.dart';
+import 'package:nozie_mobile/features/auth/shared/providers/firebase_auth_provider.dart';
+import 'package:nozie_mobile/features/profile/models/language_settings.dart';
+import 'package:nozie_mobile/features/profile/models/user_profile.dart';
+import 'package:nozie_mobile/features/profile/notifiers/auth_user_provider.dart';
+import 'package:nozie_mobile/features/profile/notifiers/language_notifier.dart';
+import 'package:nozie_mobile/features/profile/services/logout_service.dart';
+import 'package:nozie_mobile/app/router/app_router.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});

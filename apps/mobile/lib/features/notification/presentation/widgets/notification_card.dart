@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/core/enums/status_type.dart';
-import 'package:movie_fe/core/utils/data/date_util.dart';
-import 'package:movie_fe/features/notification/models/notification_item.dart';
-import 'package:movie_fe/features/notification/presentation/widgets/notification_icon.dart';
-import 'package:movie_fe/routes/app_router.dart';
+import 'package:nozie_mobile/core/app_export.dart';
+import 'package:nozie_mobile/core/enums/status_type.dart';
+import 'package:nozie_mobile/core/utils/data/date_util.dart';
+import 'package:nozie_mobile/features/notification/models/notification_item.dart';
+import 'package:nozie_mobile/features/notification/presentation/widgets/notification_icon.dart';
+import 'package:nozie_mobile/app/router/app_router.dart';
 
 class NotificationCard extends StatelessWidget {
   const NotificationCard({

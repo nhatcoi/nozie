@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/core/widgets/feedback/toast_notification.dart';
-import 'package:movie_fe/features/profile/models/preferences.dart';
-import 'package:movie_fe/features/profile/notifiers/preferences_notifier.dart';
+import 'package:nozie_mobile/core/app_export.dart';
+import 'package:nozie_mobile/core/widgets/feedback/toast_notification.dart';
+import 'package:nozie_mobile/features/profile/models/preferences.dart';
+import 'package:nozie_mobile/features/profile/notifiers/preferences_notifier.dart';
 
 class PreferencesScreen extends ConsumerWidget {
   const PreferencesScreen({super.key});

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/core/widgets/selection/app_checkbox.dart';
-import '../../../../routes/app_router.dart';
+import 'package:nozie_mobile/core/app_export.dart';
+import 'package:nozie_mobile/core/widgets/selection/app_checkbox.dart';
+import 'package:nozie_mobile/app/router/app_router.dart';
 
 import '../../../../core/widgets/feedback/modal.dart';
-import 'package:movie_fe/features/auth/forgot_password/providers/forgot_password_repository_provider.dart';
+import 'package:nozie_mobile/features/auth/forgot_password/providers/forgot_password_repository_provider.dart';
 
 final rememberMeProvider = StateProvider<bool>((ref) => false);
 

@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movie_fe/core/app_export.dart';
-import 'package:movie_fe/core/widgets/feedback/toast_notification.dart';
-import 'package:movie_fe/features/notification/presentation/widgets/notification_card.dart';
-import 'package:movie_fe/features/notification/providers/notification_providers.dart';
-import 'package:movie_fe/routes/app_router.dart';
+import 'package:nozie_mobile/core/app_export.dart';
+import 'package:nozie_mobile/core/widgets/feedback/toast_notification.dart';
+import 'package:nozie_mobile/features/notification/presentation/widgets/notification_card.dart';
+import 'package:nozie_mobile/features/notification/providers/notification_providers.dart';
+import 'package:nozie_mobile/app/router/app_router.dart';
 
 class NotificationScreen extends ConsumerWidget {
   const NotificationScreen({super.key});

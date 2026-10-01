@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:movie_fe/core/app_export.dart';
+import 'package:nozie_mobile/core/app_export.dart';
 
 class RGap extends StatelessWidget {
   final double? wPercent;

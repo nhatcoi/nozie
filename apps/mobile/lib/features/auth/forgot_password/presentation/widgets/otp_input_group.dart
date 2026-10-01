@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_fe/features/auth/forgot_password/presentation/widgets/otp_input_field.dart';
+import 'package:nozie_mobile/features/auth/forgot_password/presentation/widgets/otp_input_field.dart';
 
 class OtpInputGroup extends StatelessWidget {
   const OtpInputGroup({
