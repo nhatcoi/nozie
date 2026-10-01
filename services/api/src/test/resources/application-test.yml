@@ -1,0 +1,10 @@
+nozie:
+  cors:
+    allowed-origins: http://localhost:3000
+  jwt:
+    secret: test-secret-test-secret-test-secret-123456
+  google:
+    client-ids: test-client-id
+  stripe:
+    secret-key: sk_test_dummy
+    webhook-secret: whsec_test_secret
