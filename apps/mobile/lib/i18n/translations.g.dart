@@ -4,7 +4,7 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 1004 (502 per locale)
+/// Strings: 1046 (523 per locale)
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -166,6 +166,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final _TranslationsPurchaseEn purchase = _TranslationsPurchaseEn._(_root);
 	late final _TranslationsMovieEn movie = _TranslationsMovieEn._(_root);
 	late final _TranslationsWishlistEn wishlist = _TranslationsWishlistEn._(_root);
+	late final _TranslationsErrorsEn errors = _TranslationsErrorsEn._(_root);
 }
 
 // Path: app
@@ -203,6 +204,7 @@ class _TranslationsCommonEn {
 	String get loading => 'Loading…';
 	String get signOut => 'Sign out';
 	String get retry => 'Retry';
+	String get free => 'Free';
 	String get errorPrefix => 'Error:';
 }
 
@@ -450,6 +452,34 @@ class _TranslationsWishlistEn {
 	late final _TranslationsWishlistCommonEn common = _TranslationsWishlistCommonEn._(_root);
 	late final _TranslationsWishlistItemEn item = _TranslationsWishlistItemEn._(_root);
 	late final _TranslationsWishlistEmptyEn empty = _TranslationsWishlistEmptyEn._(_root);
+}
+
+// Path: errors
+class _TranslationsErrorsEn {
+	_TranslationsErrorsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get network => 'No connection. Check your internet and try again.';
+	String get timeout => 'The server took too long to respond. Please try again.';
+	String get server => 'Something went wrong on our side. Please try again later.';
+	String get unauthorized => 'Please sign in to continue.';
+	String get forbidden => 'You don\'t have access to this.';
+	String get notFound => 'We couldn\'t find what you were looking for.';
+	String get validation => 'Please check the highlighted fields.';
+	String get tooManyRequests => 'Too many attempts. Please wait a moment.';
+	String get invalidCredentials => 'Incorrect email or password.';
+	String get emailTaken => 'This email is already registered.';
+	String get usernameTaken => 'This username is taken.';
+	String get invalidOtp => 'The code is wrong or has expired.';
+	String get invalidResetToken => 'This reset link has expired. Request a new code.';
+	String get purchaseRequired => 'Purchase this movie to watch it.';
+	String get alreadyPurchased => 'You already own this movie.';
+	String get paymentUnavailable => 'Payments are unavailable right now. Try again later.';
+	String get fileTooLarge => 'That file is too large.';
+	String get unsupportedFile => 'Only JPEG, PNG or WebP images are accepted.';
+	String get unknown => 'Something went wrong. Please try again.';
 }
 
 // Path: auth.errors
@@ -1023,6 +1053,7 @@ class _TranslationsMovieHeroEn {
 	String get quality => 'quality';
 	String get watched => 'watched';
 	String get watchNow => 'Watch now';
+	String buy({required Object price}) => 'Buy ${price}';
 	String get aboutThisFilm => 'About This Film';
 	String get viewMore => 'View More';
 }
@@ -2306,6 +2337,7 @@ class _TranslationsVi extends Translations {
 	@override late final _TranslationsPurchaseVi purchase = _TranslationsPurchaseVi._(_root);
 	@override late final _TranslationsMovieVi movie = _TranslationsMovieVi._(_root);
 	@override late final _TranslationsWishlistVi wishlist = _TranslationsWishlistVi._(_root);
+	@override late final _TranslationsErrorsVi errors = _TranslationsErrorsVi._(_root);
 }
 
 // Path: app
@@ -2343,6 +2375,7 @@ class _TranslationsCommonVi extends _TranslationsCommonEn {
 	@override String get loading => 'Đang tải…';
 	@override String get signOut => 'Đăng xuất';
 	@override String get retry => 'Thử lại';
+	@override String get free => 'Miễn phí';
 	@override String get errorPrefix => 'Lỗi:';
 }
 
@@ -2590,6 +2623,34 @@ class _TranslationsWishlistVi extends _TranslationsWishlistEn {
 	@override late final _TranslationsWishlistCommonVi common = _TranslationsWishlistCommonVi._(_root);
 	@override late final _TranslationsWishlistItemVi item = _TranslationsWishlistItemVi._(_root);
 	@override late final _TranslationsWishlistEmptyVi empty = _TranslationsWishlistEmptyVi._(_root);
+}
+
+// Path: errors
+class _TranslationsErrorsVi extends _TranslationsErrorsEn {
+	_TranslationsErrorsVi._(_TranslationsVi root) : this._root = root, super._(root);
+
+	@override final _TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get network => 'Không có kết nối. Kiểm tra mạng và thử lại.';
+	@override String get timeout => 'Máy chủ phản hồi quá lâu. Vui lòng thử lại.';
+	@override String get server => 'Hệ thống đang gặp sự cố. Vui lòng thử lại sau.';
+	@override String get unauthorized => 'Vui lòng đăng nhập để tiếp tục.';
+	@override String get forbidden => 'Bạn không có quyền truy cập nội dung này.';
+	@override String get notFound => 'Không tìm thấy nội dung bạn cần.';
+	@override String get validation => 'Vui lòng kiểm tra lại các trường được đánh dấu.';
+	@override String get tooManyRequests => 'Bạn thao tác quá nhiều lần. Vui lòng đợi một chút.';
+	@override String get invalidCredentials => 'Email hoặc mật khẩu không đúng.';
+	@override String get emailTaken => 'Email này đã được đăng ký.';
+	@override String get usernameTaken => 'Tên người dùng đã tồn tại.';
+	@override String get invalidOtp => 'Mã không đúng hoặc đã hết hạn.';
+	@override String get invalidResetToken => 'Phiên đặt lại mật khẩu đã hết hạn. Hãy yêu cầu mã mới.';
+	@override String get purchaseRequired => 'Hãy mua phim này để xem.';
+	@override String get alreadyPurchased => 'Bạn đã sở hữu phim này.';
+	@override String get paymentUnavailable => 'Thanh toán đang tạm thời không khả dụng. Vui lòng thử lại sau.';
+	@override String get fileTooLarge => 'Tệp quá lớn.';
+	@override String get unsupportedFile => 'Chỉ chấp nhận ảnh JPEG, PNG hoặc WebP.';
+	@override String get unknown => 'Đã xảy ra lỗi. Vui lòng thử lại.';
 }
 
 // Path: auth.errors
@@ -3163,6 +3224,7 @@ class _TranslationsMovieHeroVi extends _TranslationsMovieHeroEn {
 	@override String get quality => 'chất lượng';
 	@override String get watched => 'lượt xem';
 	@override String get watchNow => 'Xem ngay';
+	@override String buy({required Object price}) => 'Mua ${price}';
 	@override String get aboutThisFilm => 'Giới thiệu';
 	@override String get viewMore => 'Xem thêm';
 }
@@ -4426,6 +4488,7 @@ extension on Translations {
 			case 'common.loading': return 'Loading…';
 			case 'common.signOut': return 'Sign out';
 			case 'common.retry': return 'Retry';
+			case 'common.free': return 'Free';
 			case 'common.errorPrefix': return 'Error:';
 			case 'notification.title': return 'Notifications';
 			case 'notification.empty': return 'You don\'t have any notification at this time';
@@ -4877,6 +4940,7 @@ extension on Translations {
 			case 'movie.hero.quality': return 'quality';
 			case 'movie.hero.watched': return 'watched';
 			case 'movie.hero.watchNow': return 'Watch now';
+			case 'movie.hero.buy': return ({required Object price}) => 'Buy ${price}';
 			case 'movie.hero.aboutThisFilm': return 'About This Film';
 			case 'movie.hero.viewMore': return 'View More';
 			case 'movie.similar.title': return 'Similar Movies';
@@ -4908,6 +4972,25 @@ extension on Translations {
 			case 'wishlist.item.snackbar.shareComing': return 'Share functionality coming soon';
 			case 'wishlist.empty.title': return 'Your wishlist is empty';
 			case 'wishlist.empty.subtitle': return 'Add movies you want to watch later';
+			case 'errors.network': return 'No connection. Check your internet and try again.';
+			case 'errors.timeout': return 'The server took too long to respond. Please try again.';
+			case 'errors.server': return 'Something went wrong on our side. Please try again later.';
+			case 'errors.unauthorized': return 'Please sign in to continue.';
+			case 'errors.forbidden': return 'You don\'t have access to this.';
+			case 'errors.notFound': return 'We couldn\'t find what you were looking for.';
+			case 'errors.validation': return 'Please check the highlighted fields.';
+			case 'errors.tooManyRequests': return 'Too many attempts. Please wait a moment.';
+			case 'errors.invalidCredentials': return 'Incorrect email or password.';
+			case 'errors.emailTaken': return 'This email is already registered.';
+			case 'errors.usernameTaken': return 'This username is taken.';
+			case 'errors.invalidOtp': return 'The code is wrong or has expired.';
+			case 'errors.invalidResetToken': return 'This reset link has expired. Request a new code.';
+			case 'errors.purchaseRequired': return 'Purchase this movie to watch it.';
+			case 'errors.alreadyPurchased': return 'You already own this movie.';
+			case 'errors.paymentUnavailable': return 'Payments are unavailable right now. Try again later.';
+			case 'errors.fileTooLarge': return 'That file is too large.';
+			case 'errors.unsupportedFile': return 'Only JPEG, PNG or WebP images are accepted.';
+			case 'errors.unknown': return 'Something went wrong. Please try again.';
 			default: return null;
 		}
 	}
@@ -4936,6 +5019,7 @@ extension on _TranslationsVi {
 			case 'common.loading': return 'Đang tải…';
 			case 'common.signOut': return 'Đăng xuất';
 			case 'common.retry': return 'Thử lại';
+			case 'common.free': return 'Miễn phí';
 			case 'common.errorPrefix': return 'Lỗi:';
 			case 'notification.title': return 'Thông báo';
 			case 'notification.empty': return 'Chưa có thông báo nào';
@@ -5387,6 +5471,7 @@ extension on _TranslationsVi {
 			case 'movie.hero.quality': return 'chất lượng';
 			case 'movie.hero.watched': return 'lượt xem';
 			case 'movie.hero.watchNow': return 'Xem ngay';
+			case 'movie.hero.buy': return ({required Object price}) => 'Mua ${price}';
 			case 'movie.hero.aboutThisFilm': return 'Giới thiệu';
 			case 'movie.hero.viewMore': return 'Xem thêm';
 			case 'movie.similar.title': return 'Phim tương tự';
@@ -5418,6 +5503,25 @@ extension on _TranslationsVi {
 			case 'wishlist.item.snackbar.shareComing': return 'Tính năng chia sẻ sẽ có sớm';
 			case 'wishlist.empty.title': return 'Danh sách yêu thích của bạn đang trống';
 			case 'wishlist.empty.subtitle': return 'Thêm những phim bạn muốn xem sau';
+			case 'errors.network': return 'Không có kết nối. Kiểm tra mạng và thử lại.';
+			case 'errors.timeout': return 'Máy chủ phản hồi quá lâu. Vui lòng thử lại.';
+			case 'errors.server': return 'Hệ thống đang gặp sự cố. Vui lòng thử lại sau.';
+			case 'errors.unauthorized': return 'Vui lòng đăng nhập để tiếp tục.';
+			case 'errors.forbidden': return 'Bạn không có quyền truy cập nội dung này.';
+			case 'errors.notFound': return 'Không tìm thấy nội dung bạn cần.';
+			case 'errors.validation': return 'Vui lòng kiểm tra lại các trường được đánh dấu.';
+			case 'errors.tooManyRequests': return 'Bạn thao tác quá nhiều lần. Vui lòng đợi một chút.';
+			case 'errors.invalidCredentials': return 'Email hoặc mật khẩu không đúng.';
+			case 'errors.emailTaken': return 'Email này đã được đăng ký.';
+			case 'errors.usernameTaken': return 'Tên người dùng đã tồn tại.';
+			case 'errors.invalidOtp': return 'Mã không đúng hoặc đã hết hạn.';
+			case 'errors.invalidResetToken': return 'Phiên đặt lại mật khẩu đã hết hạn. Hãy yêu cầu mã mới.';
+			case 'errors.purchaseRequired': return 'Hãy mua phim này để xem.';
+			case 'errors.alreadyPurchased': return 'Bạn đã sở hữu phim này.';
+			case 'errors.paymentUnavailable': return 'Thanh toán đang tạm thời không khả dụng. Vui lòng thử lại sau.';
+			case 'errors.fileTooLarge': return 'Tệp quá lớn.';
+			case 'errors.unsupportedFile': return 'Chỉ chấp nhận ảnh JPEG, PNG hoặc WebP.';
+			case 'errors.unknown': return 'Đã xảy ra lỗi. Vui lòng thử lại.';
 			default: return null;
 		}
 	}

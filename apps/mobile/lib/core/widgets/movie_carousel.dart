@@ -46,7 +46,10 @@ class MovieCarousel extends StatelessWidget {
       builder: (context, constraints) {
         final screenWidth = constraints.maxWidth;
         final cardWidth = _calculateCardWidth(screenWidth);
-        final totalHeight = _calculateTotalHeight(cardWidth,aspectRatio);
+        final posterHeight = cardWidth / aspectRatio;
+        final totalHeight = movieCarouselType == MovieCarouselType.normal
+            ? MovieCard.heightFor(context, width: cardWidth, posterHeight: posterHeight)
+            : posterHeight;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,20 +65,6 @@ class MovieCarousel extends StatelessWidget {
 
   double _calculateCardWidth(double screenWidth) {
     return (screenWidth - spacing * (visibleCards - 1)) / visibleCards;
-  }
-
-  double _calculateTotalHeight(double cardWidth,double aspectRatio) {
-    final posterHeight = cardWidth / aspectRatio;
-    const titleGap = 8.0;
-    const metaGap = 6.0;
-    const approxTitle2Lines = 48.0; // ~2 lines body
-    const approxMetaRow = 24.0; // ~1 line meta
-
-    return posterHeight +
-        titleGap +
-        approxTitle2Lines +
-        metaGap +
-        approxMetaRow;
   }
 
   Widget _buildHeader(ThemeData theme, double cardWidth) {

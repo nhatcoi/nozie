@@ -1,265 +1,74 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nozie_mobile/core/app_export.dart';
-import 'package:nozie_mobile/core/enums/movie_type.dart';
-import 'package:nozie_mobile/core/models/movie_item.dart';
-import 'package:nozie_mobile/core/widgets/movie_card.dart';
-import 'package:nozie_mobile/core/widgets/movie_carousel.dart';
 import 'package:nozie_mobile/app/app_router.dart';
-import 'package:nozie_mobile/features/home/home_providers.dart';
-import 'package:nozie_mobile/core/utils/genres.dart';
+import 'package:nozie_mobile/core/constants/app_padding.dart';
+import 'package:nozie_mobile/core/extension/context_extensions.dart';
 import 'package:nozie_mobile/core/repositories/movie_repository.dart';
+import 'package:nozie_mobile/core/theme/app_spacing.dart';
+import 'package:nozie_mobile/core/widgets/async_value_view.dart';
+import 'package:nozie_mobile/features/home/home_genre_section.dart';
+import 'package:nozie_mobile/features/home/home_hero_carousel.dart';
+import 'package:nozie_mobile/features/home/home_providers.dart';
+import 'package:nozie_mobile/features/home/home_section.dart';
 
+/// Landing tab. The page is one scrollable list so pull-to-refresh reloads every section.
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-
-    return ContentWrappers.page(
-      context,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _Section(
-            title: '',
-            provider: moviesProvider,
-            onMore: () {},
-          ),
-          _Section(
-            title: context.i18n.home.sections.recommendedForYou,
-            provider: recommendedMoviesProvider,
-            onMore: () => context.push('${AppRouter.movieType}/recommended'),
-          ),
-          const Gap(16),
-          const _ExploreByGenreSection(),
-
-          _Section(
-            title: context.i18n.home.sections.yourPurchases,
-            provider: purchasedMoviesProvider,
-            onMore: () => context.push('${AppRouter.movieType}/purchase'),
-          ),
-          _Section(
-            title: context.i18n.home.sections.yourWishlist,
-            provider: wishlistMoviesProvider,
-            onMore: () => context.push('${AppRouter.movieType}/wishlist'),
-            minimal: false,
-          ),
-          _Section(
-            title: context.i18n.home.sections.recentlyWatched,
-            provider: recentMoviesProvider,
-            onMore: () => context.push('${AppRouter.movieType}/recent'),
-          ),
-        ],
-      ),
-    );
+  Future<void> _refresh(WidgetRef ref) async {
+    ref
+      ..invalidate(moviesProvider)
+      ..invalidate(recommendedMoviesProvider)
+      ..invalidate(preferredGenresProvider)
+      ..invalidate(purchasedMoviesProvider)
+      ..invalidate(wishlistMoviesProvider)
+      ..invalidate(recentMoviesProvider);
+    // Wait for the headline list so the spinner lasts as long as the page is really empty.
+    await ref.read(moviesProvider.future).then((_) {}, onError: (_) {});
   }
-}
-
-class _Section extends ConsumerWidget {
-  const _Section({
-    required this.title,
-    required this.provider,
-    this.onMore,
-    this.minimal = false,
-  });
-
-  final String title;
-  final AutoDisposeFutureProvider<List<MovieItem>> provider;
-  final VoidCallback? onMore;
-  final bool minimal;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final async = ref.watch(provider);
-    return async.when(
-      data: (items) {
-        if (items.isEmpty) return const SizedBox.shrink();
-        if (title.isEmpty) {
-          return _AutoSlideMovies(items: items);
-        }
-        return MovieCarousel(
-          title: title,
-          items: items,
-          onMore: onMore ?? () {},
-          movieCarouselType: minimal ? MovieCarouselType.minimal : MovieCarouselType.normal,
-        );
-      },
-      loading: () => const Padding(
-        padding: EdgeInsets.symmetric(vertical: 16),
-        child: Center(child: CircularProgressIndicator()),
-      ),
-      error: (_, __) => const SizedBox.shrink(),
-    );
-  }
-}
+    final t = context.i18n.home.sections;
+    final headline = ref.watch(moviesProvider);
 
-class _AutoSlideMovies extends StatefulWidget {
-  const _AutoSlideMovies({required this.items});
-  final List<MovieItem> items;
-
-  @override
-  State<_AutoSlideMovies> createState() => _AutoSlideMoviesState();
-}
-
-class _AutoSlideMoviesState extends State<_AutoSlideMovies> {
-  final PageController _controller = PageController(viewportFraction: 0.8);
-  int _index = 0;
-  Timer? _timer;
-
-  @override
-  void initState() {
-    super.initState();
-    _start();
-    _controller.addListener(() {
-      if (mounted) setState(() {});
-    });
-  }
-
-  void _start() {
-    _timer?.cancel();
-    if (widget.items.length <= 1) return;
-    _timer = Timer.periodic(const Duration(seconds: 5), (_) {
-      if (!mounted || !_controller.hasClients) return;
-      _index = (_index + 1) % widget.items.length;
-      _controller.animateToPage(
-        _index,
-        duration: const Duration(milliseconds: 700),
-        curve: Curves.easeInOutCubic,
-      );
-    });
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final cardWidth = screenWidth * 0.8;
-    const aspect = 160 / 80; // title-in-image card aspect
-    final posterHeight = cardWidth / aspect;
-    final totalHeight = posterHeight; // no extra metadata below to avoid overflow
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          height: totalHeight,
-          child: PageView.builder(
-            controller: _controller,
-            onPageChanged: (i) => setState(() => _index = i),
-            itemCount: widget.items.length,
-            itemBuilder: (context, i) {
-              final m = widget.items[i];
-              final compact = MovieItem(id: m.id, title: m.title, imageUrl: m.imageUrl);
-              final currentPage = _controller.hasClients ? (_controller.page ?? _index.toDouble()) : _index.toDouble();
-              final delta = (i - currentPage).abs().clamp(0.0, 1.0);
-              final scale = 0.9 + (0.2 * (1 - delta));
-              final dimOpacity = 0.4 * delta; // center bright, sides darker
-              return Padding(
-                padding: const EdgeInsets.only(right: 12),
-                child: Transform.scale(
-                  scale: scale,
-                  alignment: Alignment.center,
-                  child: Stack(
-                    children: [
-                      MovieCard(
-                        movie: compact,
-                        width: cardWidth,
-                        height: posterHeight,
-                        movieCardType: MovieCardType.titleInImg,
-                      ),
-                      Positioned.fill(
-                        child: IgnorePointer(
-                          child: Container(color: Colors.black.withValues(alpha: dimOpacity)),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-        const Gap(8),
-      ],
-    );
-  }
-}
-
-class _ExploreByGenreSection extends ConsumerWidget {
-  const _ExploreByGenreSection();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final async = ref.watch(preferredGenresProvider);
-    return async.when(
-      data: (genres) {
-        final theme = Theme.of(context);
-        final mapped = GenresVi.fromNames(genres);
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return RefreshIndicator(
+      onRefresh: () => _refresh(ref),
+      child: AsyncValueView(
+        value: headline,
+        onRetry: () => ref.invalidate(moviesProvider),
+        loading: const HomeSkeleton(),
+        data: (movies) => ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: ResponsivePadding.content(context).copyWith(bottom: AppSpacing.xl),
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  context.i18n.home.sections.exploreByGenre,
-                  style: theme.textTheme.headlineLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 22,
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.arrow_forward, color: AppColors.primary500),
-                  onPressed: () => context.push('${AppRouter.explore}/genre'),
-                ),
-              ],
+            HomeHeroCarousel(items: movies),
+            const SizedBox(height: AppSpacing.lg),
+            HomeMovieSection(
+              title: t.recommendedForYou,
+              provider: recommendedMoviesProvider,
+              onMore: () => context.push('${AppRouter.movieType}/recommended'),
             ),
-            const Gap(10),
-            SizedBox(
-              height: 100,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: mapped.length,
-                separatorBuilder: (_, __) => const Gap(12),
-                itemBuilder: (context, index) {
-                  final g = mapped[index];
-                  final name = g['name'] ?? '';
-                  final slug = g['slug'] ?? name;
-                  final img = g['imageUrl'] ?? ImageConstant.imgCard;
-                  final m = MovieItem(
-                    id: slug,
-                    title: name,
-                    imageUrl: img,
-                  );
-                  return MovieCard(
-                    movie: m,
-                    width: 160,
-                    height: 80,
-                    movieCardType: MovieCardType.titleInImg,
-                    enableNavigation: false,
-                    onMore: () => context.push('${AppRouter.explore}/$slug'),
-                    titleFontSize: 16,
-                    overlayOpacity: 0.18,
-                  );
-                },
-              ),
+            const HomeGenreSection(),
+            HomeMovieSection(
+              title: t.yourPurchases,
+              provider: purchasedMoviesProvider,
+              onMore: () => context.push('${AppRouter.movieType}/purchase'),
             ),
-            const Gap(10),
+            HomeMovieSection(
+              title: t.yourWishlist,
+              provider: wishlistMoviesProvider,
+              onMore: () => context.push('${AppRouter.movieType}/wishlist'),
+            ),
+            HomeMovieSection(
+              title: t.recentlyWatched,
+              provider: recentMoviesProvider,
+              onMore: () => context.push('${AppRouter.movieType}/recent'),
+            ),
           ],
-        );
-      },
-      loading: () => const SizedBox.shrink(),
-      error: (_, __) => const SizedBox.shrink(),
+        ),
+      ),
     );
   }
 }

@@ -1,94 +1,56 @@
-import 'package:nozie_mobile/i18n/translations.g.dart';
+import 'package:intl/intl.dart';
 import 'package:nozie_mobile/core/models/movie_item.dart';
+import 'package:nozie_mobile/i18n/translations.g.dart';
 
-class PriceUtils {
-  PriceUtils._();
-
-  /// Lấy giá trị price từ dynamic (có thể là Map hoặc num)
-  /// Ưu tiên USD cho sorting/filtering
+/// Price display. The catalog stores USD; the Vietnamese UI shows a rounded VND equivalent.
+abstract final class PriceUtils {
+  /// Numeric price from a `{usd, vnd}` map or a plain number (USD preferred).
   static double? getPriceValue(dynamic price) {
     if (price == null) return null;
     if (price is num) return price.toDouble();
     if (price is Map) {
-      final usd = price['usd'] as num?;
-      if (usd != null) return usd.toDouble();
-      final vnd = price['vnd'] as num?;
-      if (vnd != null) return vnd.toDouble();
+      final usd = price['usd'];
+      if (usd is num) return usd.toDouble();
+      final vnd = price['vnd'];
+      if (vnd is num) return vnd.toDouble();
     }
     return null;
   }
 
-  /// Format số lớn thành format ngắn gọn (K, M)
-  static String _formatNumber(double number) {
-    if (number >= 1000000) {
-      return '${(number / 1000000).toStringAsFixed(1)}M';
-    } else if (number >= 1000) {
-      return '${(number / 1000).toStringAsFixed(1)}K';
+  /// `$2.99` or `69.000 ₫` (VND is rounded to the nearest 1.000 so it never shows odd amounts).
+  /// Returns an empty string when there is no price in the requested currency.
+  static String formatAmount({double? usd, num? vnd, required bool vietnamese}) {
+    if (vietnamese) {
+      if (vnd == null) return '';
+      final rounded = (vnd / 1000).round() * 1000;
+      return '${NumberFormat.decimalPattern('vi').format(rounded)} ₫';
     }
-    return number.toStringAsFixed(0);
+    if (usd == null) return '';
+    return NumberFormat.currency(locale: 'en', symbol: r'$', decimalDigits: 2).format(usd);
   }
 
-  /// Format price string theo locale (VND cho tiếng Việt, USD cho tiếng Anh)
-  static String formatPrice(MovieItem movie) {
-    final locale = LocaleSettings.currentLocale;
-    final isVietnamese = locale == AppLocale.vi;
+  static bool get _vietnamese => LocaleSettings.currentLocale == AppLocale.vi;
 
-    if (movie.priceData != null) {
-      if (isVietnamese) {
-        final vnd = movie.priceData!['vnd'] as num?;
-        if (vnd != null) {
-          return '${_formatNumber(vnd.toDouble())} ₫';
-        }
-        // Nếu không có VND và locale là tiếng Việt, không hiển thị giá
-        return '';
-      } else {
-        final usd = movie.priceData!['usd'] as num?;
-        if (usd != null) {
-          return '\$${usd.toStringAsFixed(2)}';
-        }
-        // Nếu không có USD và locale là tiếng Anh, không hiển thị giá
-        return '';
-      }
-    } else if (movie.price != null) {
-      // Nếu không có priceData, chỉ hiển thị USD cho tiếng Anh
-      if (isVietnamese) {
-        return '';
-      }
-      return '\$${movie.price!.toStringAsFixed(2)}';
-    }
-
-    return '';
-  }
-
-  /// Format price string cho button (có prefix "Buy")
-  static String formatPriceForButton(MovieItem movie) {
-    final locale = LocaleSettings.currentLocale;
-    final priceText = formatPrice(movie);
-    
-    if (priceText.isEmpty) return 'Buy';
-    
-    if (locale != AppLocale.vi && priceText.startsWith('\$')) {
-      return 'Buy USD $priceText';
-    }
-    
-    return 'Buy $priceText';
-  }
-
-  /// Kiểm tra xem movie có free không (price = 0 hoặc không có price)
   static bool isFree(MovieItem movie) {
-    final locale = LocaleSettings.currentLocale;
-    final isVietnamese = locale == AppLocale.vi;
-
-    if (movie.priceData != null) {
-      if (isVietnamese) {
-        final vnd = movie.priceData!['vnd'] as num?;
-        return vnd == null || vnd.toDouble() == 0.0;
-      } else {
-        final usd = movie.priceData!['usd'] as num?;
-        return usd == null || usd.toDouble() == 0.0;
-      }
+    final data = movie.priceData;
+    if (data != null) {
+      final amount = data[_vietnamese ? 'vnd' : 'usd'] as num?;
+      return amount == null || amount == 0;
     }
-    return movie.price == null || movie.price == 0.0;
+    return movie.price == null || movie.price == 0;
   }
-}
 
+  /// "Free" for free movies, otherwise the formatted price.
+  static String formatPrice(MovieItem movie) {
+    if (isFree(movie)) return t.common.free;
+    final data = movie.priceData;
+    return formatAmount(
+      usd: (data?['usd'] as num?)?.toDouble() ?? movie.price,
+      vnd: data?['vnd'] as num?,
+      vietnamese: _vietnamese,
+    );
+  }
+
+  /// Label for the purchase button ("Buy $2.99" / "Mua 69.000 ₫").
+  static String formatPriceForButton(MovieItem movie) => t.movie.hero.buy(price: formatPrice(movie));
+}

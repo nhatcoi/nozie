@@ -24,6 +24,7 @@ common:
   loading: "Loading…"
   signOut: Sign out
   retry: Retry
+  free: Free
   errorPrefix: "Error:"
 
 notification:
@@ -702,6 +703,7 @@ movie:
     quality: quality
     watched: watched
     watchNow: Watch now
+    buy(price): Buy $price
     aboutThisFilm: About This Film
     viewMore: View More
   similar:
@@ -745,3 +747,25 @@ wishlist:
   empty:
     title: Your wishlist is empty
     subtitle: Add movies you want to watch later
+
+# Error messages shown to users. Keys follow the API's error codes (see ErrorCode on the server).
+errors:
+  network: No connection. Check your internet and try again.
+  timeout: The server took too long to respond. Please try again.
+  server: Something went wrong on our side. Please try again later.
+  unauthorized: Please sign in to continue.
+  forbidden: You don't have access to this.
+  notFound: We couldn't find what you were looking for.
+  validation: Please check the highlighted fields.
+  tooManyRequests: Too many attempts. Please wait a moment.
+  invalidCredentials: Incorrect email or password.
+  emailTaken: This email is already registered.
+  usernameTaken: This username is taken.
+  invalidOtp: The code is wrong or has expired.
+  invalidResetToken: This reset link has expired. Request a new code.
+  purchaseRequired: Purchase this movie to watch it.
+  alreadyPurchased: You already own this movie.
+  paymentUnavailable: Payments are unavailable right now. Try again later.
+  fileTooLarge: That file is too large.
+  unsupportedFile: Only JPEG, PNG or WebP images are accepted.
+  unknown: Something went wrong. Please try again.

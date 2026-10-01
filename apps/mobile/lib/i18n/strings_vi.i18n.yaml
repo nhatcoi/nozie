@@ -24,6 +24,7 @@ common:
   loading: "Đang tải…"
   signOut: Đăng xuất
   retry: Thử lại
+  free: Miễn phí
   errorPrefix: "Lỗi:"
 
 notification:
@@ -703,6 +704,7 @@ movie:
     quality: chất lượng
     watched: lượt xem
     watchNow: Xem ngay
+    buy(price): Mua $price
     aboutThisFilm: Giới thiệu
     viewMore: Xem thêm
   similar:
@@ -746,3 +748,25 @@ wishlist:
   empty:
     title: Danh sách yêu thích của bạn đang trống
     subtitle: Thêm những phim bạn muốn xem sau
+
+# Thông báo lỗi hiển thị cho người dùng. Khóa theo mã lỗi của API (ErrorCode phía server).
+errors:
+  network: Không có kết nối. Kiểm tra mạng và thử lại.
+  timeout: Máy chủ phản hồi quá lâu. Vui lòng thử lại.
+  server: Hệ thống đang gặp sự cố. Vui lòng thử lại sau.
+  unauthorized: Vui lòng đăng nhập để tiếp tục.
+  forbidden: Bạn không có quyền truy cập nội dung này.
+  notFound: Không tìm thấy nội dung bạn cần.
+  validation: Vui lòng kiểm tra lại các trường được đánh dấu.
+  tooManyRequests: Bạn thao tác quá nhiều lần. Vui lòng đợi một chút.
+  invalidCredentials: Email hoặc mật khẩu không đúng.
+  emailTaken: Email này đã được đăng ký.
+  usernameTaken: Tên người dùng đã tồn tại.
+  invalidOtp: Mã không đúng hoặc đã hết hạn.
+  invalidResetToken: Phiên đặt lại mật khẩu đã hết hạn. Hãy yêu cầu mã mới.
+  purchaseRequired: Hãy mua phim này để xem.
+  alreadyPurchased: Bạn đã sở hữu phim này.
+  paymentUnavailable: Thanh toán đang tạm thời không khả dụng. Vui lòng thử lại sau.
+  fileTooLarge: Tệp quá lớn.
+  unsupportedFile: Chỉ chấp nhận ảnh JPEG, PNG hoặc WebP.
+  unknown: Đã xảy ra lỗi. Vui lòng thử lại.

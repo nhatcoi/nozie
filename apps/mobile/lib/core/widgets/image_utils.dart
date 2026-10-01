@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nozie_mobile/core/utils/image_constant.dart';
+import 'package:nozie_mobile/core/widgets/skeleton.dart';
 
 class NetworkOrAssetImage extends StatelessWidget {
   const NetworkOrAssetImage({
@@ -22,6 +23,12 @@ class NetworkOrAssetImage extends StatelessWidget {
            imageUrl.startsWith('https://');
   }
 
+  int? _cacheWidth(BuildContext context) {
+    final w = width;
+    if (w == null || !w.isFinite) return null;
+    return (w * MediaQuery.devicePixelRatioOf(context)).round();
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_isNetworkUrl) {
@@ -39,21 +46,12 @@ class NetworkOrAssetImage extends StatelessWidget {
             fit: BoxFit.cover,
           );
         },
+        // Decode no larger than needed: full-size posters in a carousel are wasted memory.
+        cacheWidth: _cacheWidth(context),
+        // A shaped skeleton (not a spinner) keeps the layout stable until the image arrives.
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) return child;
-          return Container(
-            width: width,
-            height: height,
-            color: Colors.grey[200],
-            child: Center(
-              child: CircularProgressIndicator(
-                value: loadingProgress.expectedTotalBytes != null
-                    ? loadingProgress.cumulativeBytesLoaded /
-                        loadingProgress.expectedTotalBytes!
-                    : null,
-              ),
-            ),
-          );
+          return Skeleton(width: width, height: height ?? 120, radius: 0);
         },
       );
     } else {
